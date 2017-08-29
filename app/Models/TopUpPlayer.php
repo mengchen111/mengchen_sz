@@ -10,9 +10,11 @@ class TopUpPlayer extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'provider', 'player', 'type', 'amount'
+        'provider_id', 'player_id', 'type', 'amount'
     ];
 
-
-
+    public function provider()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'provider_id');
+    }
 }

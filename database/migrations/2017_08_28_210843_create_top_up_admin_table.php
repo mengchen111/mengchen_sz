@@ -15,8 +15,8 @@ class CreateTopUpAdminTable extends Migration
     {
         Schema::create('top_up_admin', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('provider')->comment('发起充值者');
-            $table->string('receiver')->comment('充值到账的代理商');
+            $table->unsignedInteger('provider_id')->comment('发起充值者id');
+            $table->unsignedInteger('receiver_id')->comment('充值到账的代理商id');
             $table->string('type')->default('1')->comment('道具类型');
             $table->unsignedInteger('amount')->comment('充值数量');
             $table->timestamps();

@@ -23,7 +23,7 @@ class AgentController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'email' => 'string|email|max:255',
             'phone' => 'integer|digits:11',
-            'group_id' => 'required|integer',
+            'group_id' => 'required|integer|not_in:1',  //管理员不能创建管理员
             'parent_id' => 'required|integer',
         ])->validate();
 

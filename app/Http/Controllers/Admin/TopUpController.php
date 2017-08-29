@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class TopUpController extends Controller
 {
-    //给代理商充卡
+    //给总代理商充卡
     public function topUp2Agent(Request $request, $receiver, $amount)
     {
         Validator::make($request->route()->parameters,[
@@ -23,7 +23,7 @@ class TopUpController extends Controller
         ])->validate();
 
         //TODO 完成权限控制之后需要更新session此值
-        $provider = session('user') ? session('user')->account : 'admin';
+        $provider = session('user') ? session('user')->id : 1;
 
         $receiver = User::where('account', $receiver)->firstOrFail();
 
@@ -35,8 +35,8 @@ class TopUpController extends Controller
 
         DB::transaction(function () use ($provider, $receiver, $amount){
             TopUpAdmin::create([
-                'provider' => $provider,
-                'receiver' => $receiver->account,
+                'provider_id' => $provider,
+                'receiver_id' => $receiver->id,
                 'amount' => $amount,
             ]);
 
@@ -45,6 +45,7 @@ class TopUpController extends Controller
             ]);
         });
 
+        //TODO 日志记录
         return [
             'message' => '充值成功',
         ];
@@ -58,19 +59,22 @@ class TopUpController extends Controller
     //管理员给总代的充卡记录
     public function topUp2TopAgentHistory()
     {
-        return TopUpAdmin::all();
+        //TODO 日志记录
+        return TopUpAdmin::with(['provider', 'receiver'])->get();
     }
 
     //上级代理商给下级的充卡记录
     public function Agent2AgentHistory()
     {
-        return TopUpAgent::all();
+        //TODO 日志记录
+        return TopUpAgent::with(['provider', 'receiver'])->get();
     }
 
     //代理商给玩家的充卡记录
     public function Agent2PlayerHistory()
     {
-        return TopUpPlayer::all();
+        //TODO 日志记录
+        return TopUpPlayer::with('provider')->get();
     }
 
 }

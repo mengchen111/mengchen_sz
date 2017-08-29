@@ -27,8 +27,15 @@ Route::prefix('admin')->group(function () {
     Route::delete('agent/{user}', 'Admin\AgentController@destroy')->where('user', '[0-9]+');
     Route::put('agent/{user}', 'Admin\AgentController@update')->where('user', '[0-9]+');
 
-    Route::post('top-up/agent/{receiver}/{amount}', 'Admin\TopUpController@topUp2Agent')->where('amount', '[0-9]+');
     Route::get('top-up/top-agent', 'Admin\TopUpController@topUp2TopAgentHistory');
     Route::get('top-up/agent', 'Admin\TopUpController@Agent2AgentHistory');
     Route::get('top-up/player', 'Admin\TopUpController@Agent2PlayerHistory');
+    Route::post('top-up/agent/{receiver}/{amount}', 'Admin\TopUpController@topUp2Agent')->where('amount', '[0-9]+');
+});
+
+Route::prefix('agent')->group(function () {
+    Route::get('subagent', 'Agent\SubAgentController@show');
+    Route::post('subagent', 'Agent\SubAgentController@create');
+    Route::put('subagent', 'Agent\SubAgentController@update');
+    Route::put('subagent/{child}', 'Agent\SubAgentController@updateChild')->where('child', '[0-9]+');
 });
