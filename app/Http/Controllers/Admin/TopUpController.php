@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class TopUpController extends Controller
 {
     //给总代理商充卡
-    public function topUp2Agent(Request $request, $receiver, $amount)
+    public function topUp2TopAgent(Request $request, $receiver, $amount)
     {
         Validator::make($request->route()->parameters,[
             'receiver' => 'string|exists:users,account',
@@ -28,7 +28,7 @@ class TopUpController extends Controller
         $receiver = User::where('account', $receiver)->firstOrFail();
 
         if (! $this->isTopAgent($receiver)) {
-            return [ 'error' => '只能给总代充值' ];
+            return [ 'error' => '只能给总代理商充值' ];
         }
 
         $amount += $receiver->cards;

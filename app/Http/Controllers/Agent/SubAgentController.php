@@ -132,7 +132,7 @@ class SubAgentController extends Controller
         }
     }
 
-    public function isChild($child)
+    protected function isChild($child)
     {
         return $this->currentAgent->id === $child->parent_id;
     }

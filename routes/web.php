@@ -30,7 +30,7 @@ Route::prefix('admin')->group(function () {
     Route::get('top-up/top-agent', 'Admin\TopUpController@topUp2TopAgentHistory');
     Route::get('top-up/agent', 'Admin\TopUpController@Agent2AgentHistory');
     Route::get('top-up/player', 'Admin\TopUpController@Agent2PlayerHistory');
-    Route::post('top-up/agent/{receiver}/{amount}', 'Admin\TopUpController@topUp2Agent')->where('amount', '[0-9]+');
+    Route::post('top-up/top-agent/{receiver}/{amount}', 'Admin\TopUpController@topUp2TopAgent')->where('amount', '[0-9]+');
 });
 
 Route::prefix('agent')->group(function () {
@@ -38,4 +38,6 @@ Route::prefix('agent')->group(function () {
     Route::post('subagent', 'Agent\SubAgentController@create');
     Route::put('subagent', 'Agent\SubAgentController@update');
     Route::put('subagent/{child}', 'Agent\SubAgentController@updateChild')->where('child', '[0-9]+');
+
+    Route::post('top-up/child/{receiver}/{amount}', 'Agent\TopUpController@topUp2Child')->where('amount', '[0-9]+');
 });
