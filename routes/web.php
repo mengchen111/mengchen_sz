@@ -26,4 +26,6 @@ Route::prefix('admin')->group(function () {
     Route::post('agent', 'Admin\AgentController@create');
     Route::delete('agent/{user}', 'Admin\AgentController@destroy')->where('user', '[0-9]+');
     Route::put('agent/{user}', 'Admin\AgentController@update')->where('user', '[0-9]+');
+
+    Route::post('top-up/agent/{receiver}/{amount}', 'Admin\TopUpController@topUp2Agent')->where('amount', '[0-9]+');
 });

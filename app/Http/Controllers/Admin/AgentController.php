@@ -94,7 +94,7 @@ class AgentController extends Controller
         }
 
         if ($user->update($data)) {
-            //TODO 操作日志记录，待完成登录之后追加
+            //TODO 操作日志记录，待完成登录之后追加，用户id从session里面拿
             //OperationLogs::insert(1, $request->path(), $request->method(), '更新用户信息', json_encode($data));
             return [
                 'message' => '更新用户数据成功'
