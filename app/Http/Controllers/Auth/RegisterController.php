@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -49,8 +51,10 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'account' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'email' => 'string|email|max:255',
+            'phone' => 'integer|max:20',
         ]);
     }
 
@@ -64,8 +68,23 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
-            'email' => $data['email'],
+            'account' => $data['account'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        //$this->guard()->login($user);
+
+        return [
+            'message' => '注册成功',
+        ];
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
     }
 }
