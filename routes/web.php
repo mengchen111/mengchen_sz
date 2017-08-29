@@ -17,4 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/list-session', 'DevToolsController@listSession');
+Route::get('list-session', 'DevToolsController@listSession');
+Route::get('hashed-pass/{pass}', 'DevToolsController@hashedPass');
+
+
+Route::prefix('admin')->group(function () {
+    Route::get('agent', 'Admin\AgentController@showAll');
+    Route::post('agent', 'Admin\AgentController@create');
+    Route::delete('agent/{user}', 'Admin\AgentController@destroy')->where('user', '[0-9]+');
+    Route::put('agent/{user}', 'Admin\AgentController@update')->where('user', '[0-9]+');
+});

@@ -12,4 +12,9 @@ class DevToolsController extends Controller
     {
         return $request->session()->all();
     }
+
+    public function hashedPass($pass)
+    {
+        return bcrypt($pass);
+    }
 }
