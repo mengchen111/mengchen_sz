@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\TopUpAdmin;
+use App\Models\TopUpAgent;
+use App\Models\TopUpPlayer;
 use Illuminate\Support\Facades\Validator;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\DB;
@@ -21,15 +23,20 @@ class TopUpController extends Controller
         ])->validate();
 
         //TODO 完成权限控制之后需要更新session此值
-        $providerId = session('user') ? session('user')->id : 1;
+        $provider = session('user') ? session('user')->account : 'admin';
+
         $receiver = User::where('account', $receiver)->firstOrFail();
+
+        if (! $this->isTopAgent($receiver)) {
+            return [ 'error' => '只能给总代充值' ];
+        }
 
         $amount += $receiver->cards;
 
-        DB::transaction(function () use ($providerId, $receiver, $amount){
+        DB::transaction(function () use ($provider, $receiver, $amount){
             TopUpAdmin::create([
-                'provider_id' => $providerId,
-                'receiver_id' => $receiver->id,
+                'provider' => $provider,
+                'receiver' => $receiver->account,
                 'amount' => $amount,
             ]);
 
@@ -43,9 +50,27 @@ class TopUpController extends Controller
         ];
     }
 
-    //查看管理员给总代的充卡历史
-    public function topUp2AgentHistory()
+    protected function isTopAgent($agent)
     {
-
+        return 2 == $agent->group_id;
     }
+
+    //管理员给总代的充卡记录
+    public function topUp2TopAgentHistory()
+    {
+        return TopUpAdmin::all();
+    }
+
+    //上级代理商给下级的充卡记录
+    public function Agent2AgentHistory()
+    {
+        return TopUpAgent::all();
+    }
+
+    //代理商给玩家的充卡记录
+    public function Agent2PlayerHistory()
+    {
+        return TopUpPlayer::all();
+    }
+
 }

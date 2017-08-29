@@ -52,7 +52,7 @@ class AgentController extends Controller
 
     protected function isAdmin($user)
     {
-        return $user->group_id == 1;
+        return 1 == $user->group_id;
     }
 
     protected function hasSubAgent($user)

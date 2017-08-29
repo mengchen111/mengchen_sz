@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TopUpAdmin extends Model
+class TopUpAgent extends Model
 {
-    protected $table = 'top_up_admin';
+    protected $table = 'top_up_agent';
     protected $primaryKey = 'id';
 
     protected $fillable = [

@@ -28,4 +28,7 @@ Route::prefix('admin')->group(function () {
     Route::put('agent/{user}', 'Admin\AgentController@update')->where('user', '[0-9]+');
 
     Route::post('top-up/agent/{receiver}/{amount}', 'Admin\TopUpController@topUp2Agent')->where('amount', '[0-9]+');
+    Route::get('top-up/top-agent', 'Admin\TopUpController@topUp2TopAgentHistory');
+    Route::get('top-up/agent', 'Admin\TopUpController@Agent2AgentHistory');
+    Route::get('top-up/player', 'Admin\TopUpController@Agent2PlayerHistory');
 });
