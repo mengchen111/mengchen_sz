@@ -38,6 +38,48 @@ class TopUpController extends Controller
             ];
         }
 
+        DB::transaction(function () use ($receiver, $amount){
+            TopUpAgent::create([
+                'provider_id' => $this->currentAgent->id,
+                'receiver_id' => $receiver->id,
+                'amount' => $amount,
+            ]);
+
+            $totalCards = $amount + $receiver->cards;
+            $receiver->update([
+                'cards' => $totalCards,
+            ]);
+        });
+
+        //TODO 日志记录
+        return [
+            'message' => '充值成功',
+        ];
+    }
+
+    protected function isChild($child)
+    {
+        return $this->currentAgent->id === $child->parent_id;
+    }
+
+    public function topUp2Player(Request $request, $receiver, $amount)
+    {
+        Validator::make($request->route()->parameters,[
+            'receiver' => 'string',
+            'amount' => 'integer|not_in:0',
+        ])->validate();
+
+        //查找玩家
+        //$receiver = User::where('account', $receiver)->firstOrFail();
+
+        //判断是否为本代理商自己的玩家
+        /*if (! $this->isMyPlayer($receiver)) {
+            return [
+                'error' => '只能给您的下级代理商充值'
+            ];
+        }*/
+
+        //给玩家充值
         $amount += $receiver->cards;
 
         DB::transaction(function () use ($receiver, $amount){
@@ -56,10 +98,5 @@ class TopUpController extends Controller
         return [
             'message' => '充值成功',
         ];
-    }
-
-    protected function isChild($child)
-    {
-        return $this->currentAgent->id === $child->parent_id;
     }
 }

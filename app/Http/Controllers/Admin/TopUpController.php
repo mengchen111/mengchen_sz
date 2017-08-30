@@ -31,8 +31,6 @@ class TopUpController extends Controller
             return [ 'error' => '只能给总代理商充值' ];
         }
 
-        $amount += $receiver->cards;
-
         DB::transaction(function () use ($provider, $receiver, $amount){
             TopUpAdmin::create([
                 'provider_id' => $provider,
@@ -40,8 +38,9 @@ class TopUpController extends Controller
                 'amount' => $amount,
             ]);
 
+            $totalCards = $amount + $receiver->cards;
             $receiver->update([
-                'cards' => $amount,
+                'cards' => $totalCards,
             ]);
         });
 
