@@ -30,6 +30,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function group()
+    {
+        return $this->hasOne('App\Models\Group', 'id', 'group_id');
+    }
+
     //一对一拿到的是模型，一对多拿到的是集合，一个代理商只能有一种道具类型的库存
     public function inventory()
     {

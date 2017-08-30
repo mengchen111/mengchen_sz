@@ -4,9 +4,9 @@
     <!-- Logo -->
     <a href="/admin" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>宏</b>海</span>
+        <span class="logo-mini"><b>梦</b>晨</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>宏海</b>管理后台</span>
+        <span class="logo-lg"><b>梦晨</b>管理后台</span>
     </a>
 
     <!-- Header Navbar -->
@@ -55,7 +55,8 @@
                          Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <button class="btn btn-default btn-flat" data-toggle="modal" data-target="#change-password-modal">
+                                <button class="btn btn-default btn-flat" data-toggle="modal"
+                                        data-target="#change-password-modal" style="display: none">
                                     修改密码
                                 </button>
                             </div>
@@ -121,7 +122,7 @@
 
         created: function () {
             var _self = this;
-            axios.get('/admin/info')
+            axios.get('/info')
                 .then(function (response) {
                     _self.adminInfo = response.data;
                 });

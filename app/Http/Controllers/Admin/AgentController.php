@@ -12,7 +12,7 @@ class AgentController extends Controller
 {
     public function showAll()
     {
-        return User::all();
+        return User::with(['group'])->get();
     }
 
     //创建代理商
