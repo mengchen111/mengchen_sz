@@ -23,33 +23,23 @@ class TopUpController extends Controller
     }
 
     //给当前代理商的下级代理商充房卡
-    public function topUp2Child(Request $request, $receiver, $amount)
+    public function topUp2Child(Request $request, $receiver, $type, $amount)
     {
         Validator::make($request->route()->parameters,[
-            'receiver' => 'string|exists:users,account',
-            'amount' => 'integer|not_in:0',
+            'receiver' => 'required|string|exists:users,account',
+            'type' => 'required|integer|exists:item_type,id',
+            'amount' => 'required|integer|not_in:0',
         ])->validate();
 
-        $receiver = User::where('account', $receiver)->firstOrFail();
+        $receiverModel = User::with(['inventory' => function ($query) use ($type) {
+            $query->where('item_id', $type);
+        }])->where('account', $receiver)->firstOrFail();
 
-        if (! $this->isChild($receiver)) {
-            return [
-                'error' => '只能给您的下级代理商充值'
-            ];
+        if (! $this->isChild($receiverModel)) {
+            return [ 'error' => '只能给您的下级代理商充值' ];
         }
 
-        DB::transaction(function () use ($receiver, $amount){
-            TopUpAgent::create([
-                'provider_id' => $this->currentAgent->id,
-                'receiver_id' => $receiver->id,
-                'amount' => $amount,
-            ]);
-
-            $totalCards = $amount + $receiver->cards;
-            $receiver->update([
-                'cards' => $totalCards,
-            ]);
-        });
+        $this->topUp4Child($receiverModel, $type, $amount);
 
         //TODO 日志记录
         return [
@@ -60,6 +50,33 @@ class TopUpController extends Controller
     protected function isChild($child)
     {
         return $this->currentAgent->id === $child->parent_id;
+    }
+
+    protected function topUp4Child($receiver, $type, $amount)
+    {
+        return DB::transaction(function () use ($receiver, $type, $amount){
+            //记录充值流水
+            TopUpAgent::create([
+                'provider_id' => $this->currentAgent->id,
+                'receiver_id' => $receiver->id,
+                'type' => $type,
+                'amount' => $amount,
+            ]);
+
+            //更新库存
+            if (empty($receiver->inventory)) {
+                $receiver->inventory()->create([
+                    'user_id' => $receiver->id,
+                    'item_id' => $type,
+                    'stock' => $amount,
+                ]);
+            } else {
+                $totalStock = $amount + $receiver->inventory->stock;
+                $receiver->inventory->update([
+                    'stock' => $totalStock,
+                ]);
+            }
+        });
     }
 
     public function topUp2Player(Request $request, $receiver, $amount)
