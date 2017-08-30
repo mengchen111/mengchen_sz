@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Log in</title>
+    <title>梦晨 | Login</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -27,7 +27,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="/"><b>Admin</b>LTE</a>
+        <a href="/"><b>梦晨</b>管理后台</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -36,10 +36,10 @@
 
         <form action="/login" method="POST" v-on:submit.prevent="login">
             <div class="form-group has-feedback">
-                <input name="email" type="text" class="form-control" placeholder="邮箱" v-model="formData.email" v-focus
-                       v-validate="'required|email'">
+                <input name="account" type="text" class="form-control" placeholder="账户" v-model="formData.account" v-focus
+                       v-validate="'required'">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                <span v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</span>
+                <span v-show="errors.has('account')" class="text-danger">{{ errors.first('email') }}</span>
             </div>
             <div class="form-group has-feedback">
                 <input name="password" type="password" class="form-control" placeholder="密码" v-model="formData.password"
@@ -63,57 +63,10 @@
             </div>
         </form>
 
-<!--        <div class="social-auth-links text-center">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-                Facebook</a>
-            <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-                Google+</a>
-        </div>-->
-        <!-- /.social-auth-links -->
-
-        <div class="row">
-            <div class="col-xs-8">
-                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#reset-password-modal">忘记密码</button>
-            </div>
-            <div class="col-xs-4 text-right">
-                <a type="button" class="btn btn-link" href="/register">用户注册</a>
-            </div>
-        </div>
-
-
     </div>
     <!-- /.login-box-body -->
 </div>
 <!-- /.login-box -->
-
-<!-- 忘记密码提示框 -->
-<div id="reset-password-modal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog" style="width: 380px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" type="button" data-dismiss="modal">x</button>
-                <h3 class="text-center">密码重置</h3>
-            </div>
-
-            <div class="modal-body">
-                <form role="form" class="form-group" method="POST" action="/password/email" @submit.prevent="sendResetEmail">
-                    <div class="form-group has-feedback">
-                        <input name="email" type="email" class="form-control" placeholder="注册邮箱" v-focus v-model="formData.email">
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                        <div>
-                            <p :class="ifSuccess ? 'text-green' : 'text-danger'">{{ sendResetEmailMessage }}</p>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-block btn-flat" type="submit">发送密码重置邮件</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- jQuery 2.2.0 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -156,7 +109,7 @@
                 warning: false,
             },
             formData: {
-                email: '',
+                account: '',
                 password: '',
                 remember: false,
             },
@@ -199,57 +152,6 @@
         },
     });
 
-    var resetApp = new Vue({
-        el: '#reset-password-modal',
-
-        data: {
-            formData: {
-                email: '',
-            },
-            ifSuccess: false,
-            sendResetEmailMessage: null,
-        },
-
-        methods: {
-            sendResetEmail: function () {
-                var _self = this;
-
-                axios({
-                    method: 'POST',
-                    url: '/password/email',
-                    data: _self.formData,
-                    timeout: 20000,                          //超时时间
-                    xsrfCookieName: 'XSRF-TOKEN',
-                    xsrfHeaderName: 'X-XSRF-TOKEN',
-                    validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
-                        return status >= 200 && status < 500 && status != 404;
-                    }
-                })
-                    .then(function (response) {
-                        if (response.status === 200) {
-                            var responseData = response.data;
-
-                            if (responseData.hasOwnProperty('error')) {
-                                _self.sendResetEmailMessage = response.data.error;
-                                _self.ifSuccess = false;
-                            } else if (responseData.hasOwnProperty('success')) {
-                                _self.sendResetEmailMessage = response.data.success;
-                                _self.ifSuccess = true;
-                            }
-                        } else if (response.status === 422) {
-                            _self.sendResetEmailMessage = response.data.email[0];
-                            _self.ifSuccess = false;
-                        } else {
-                            alert('重置密码邮件发送失败，错误代码：' + response.status);
-                        }
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
-            }
-        }
-    });
 </script>
 </body>
 </html>
