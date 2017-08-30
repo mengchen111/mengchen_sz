@@ -29,5 +29,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
+
+    //一对一拿到的是模型，一对多拿到的是集合，一个代理商只能有一种道具类型的库存
+    public function inventory()
+    {
+        return $this->hasOne('App\Models\Inventory', 'user_id', 'id');
+    }
 }

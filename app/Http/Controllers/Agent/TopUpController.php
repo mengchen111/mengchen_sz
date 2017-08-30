@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class TopUpController extends Controller
 {
-    protected $currentAgent = [];
+    protected $currentAgent = null;
 
     public function __construct(Request $request)
     {
@@ -102,12 +102,12 @@ class TopUpController extends Controller
     public function topUp2ChildHistory()
     {
         //TODO 日志记录
-        return TopUpAgent::with(['provider', 'receiver'])->where('provider_id', $this->currentAgent->id)->get();
+        return TopUpAgent::with(['provider', 'receiver', 'item'])->where('provider_id', $this->currentAgent->id)->get();
     }
 
     public function topUp2PlayerHistory()
     {
         //TODO 日志记录
-        return TopUpPlayer::with(['provider'])->where('provider_id', $this->currentAgent->id)->get();
+        return TopUpPlayer::with(['provider', 'item'])->where('provider_id', $this->currentAgent->id)->get();
     }
 }

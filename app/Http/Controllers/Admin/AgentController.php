@@ -15,6 +15,7 @@ class AgentController extends Controller
         return User::all();
     }
 
+    //创建代理商
     public function create(Request $request)
     {
         Validator::make($request->all(), [

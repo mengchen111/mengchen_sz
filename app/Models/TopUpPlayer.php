@@ -17,4 +17,9 @@ class TopUpPlayer extends Model
     {
         return $this->hasOne('App\Models\User', 'id', 'provider_id');
     }
+
+    public function item()
+    {
+        return $this->hasOne('App\Models\ItemType', 'id', 'type');
+    }
 }

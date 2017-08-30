@@ -22,4 +22,9 @@ class TopUpAgent extends Model
     {
         return $this->hasOne('App\Models\User', 'id', 'receiver_id');
     }
+
+    public function item()
+    {
+        return $this->hasOne('App\Models\ItemType', 'id', 'type');
+    }
 }
