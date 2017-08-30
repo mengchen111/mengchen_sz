@@ -10,9 +10,25 @@ use App\Models\OperationLogs;
 
 class AgentController extends Controller
 {
-    public function showAll()
+    public function showAll(Request $request)
     {
-        return User::with(['group'])->get();
+        //给per_page设定默认值，比起参数默认值这样子可以兼容uri传参和变量名传参，变量名传递过来的参数优先
+        $per_page = $request->per_page ?: 10;
+        $order = $request->sort ? explode('|', $request->sort) : ['id', 'desc'];
+
+        //查找，只查找account
+        if ($request->has('filter')) {
+            $filterText = $request->filter;
+            return User::with(['group', 'parent', 'inventorys.item'])
+                ->where('account', 'like', '%'.$filterText.'%')
+                ->where('group_id', '!=', 1)
+                ->orderBy($order[0], $order[1])
+                ->paginate($per_page);
+        }
+
+        return User::with(['group', 'parent', 'inventorys.item'])
+            ->where('group_id', '!=', 1)->orderBy($order[0], $order[1])
+            ->paginate($per_page);
     }
 
     //创建代理商

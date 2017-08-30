@@ -94,14 +94,11 @@
     var tableActions = {
         template: `
                 <div class="table-actions">
-                    <button class="btn btn-default" data-toggle="modal" data-target="#user-info-modal"
-                        @click="editInfoAction(rowData)" title="编辑用户信息"><i class="glyphicon glyphicon-edit"></i>
-                    </button>
                     <button class="btn btn-default" data-toggle="modal" data-target="#user-password-modal"
-                        @click="changePasswordAction(rowData)" title="更改用户密码"><i class="glyphicon glyphicon-pencil"></i>
+                        @click="changePasswordAction(rowData)" title="更新代理商信息"><i class="glyphicon glyphicon-pencil"></i>
                     </button>
                     <button class="btn btn-default" data-toggle="modal" data-target="#delete-user-modal"
-                        @click="deleteUserAction(rowData)" title="删除用户"><i class="glyphicon glyphicon-trash"></i>
+                        @click="deleteUserAction(rowData)" title="删除代理商"><i class="glyphicon glyphicon-trash"></i>
                     </button>
                 </div>`,
         props: {
@@ -114,9 +111,6 @@
             }
         },
         methods: {
-            editInfoAction (data) {
-                Hub.$emit('editInfoEvent', data);
-            },
             changePasswordAction (data) {
                 Hub.$emit('changeUserPasswordEvent', data);
             },
@@ -132,7 +126,11 @@
         template: `
             <div @click="onClick">
               <div class="">
-                <label>注册时间:&nbsp;&nbsp;</label>
+                <label>金币数量:&nbsp;&nbsp;</label>
+                <span>{{coins}}</span>
+              </div>
+              <div class="">
+                <label>创建时间:&nbsp;&nbsp;</label>
                 <span>{{rowData.created_at}}</span>
               </div>
               <div class="">
@@ -149,11 +147,25 @@
                 type: Number
             }
         },
+        data: function () {
+            return {
+                coins: null,
+            }
+        },
         methods: {
             onClick (event) {
                 //console.log('my-detail-row: on-click', event.target)
             }
         },
+        created: function () {
+            if (this.rowData.inventorys.length > 0) {
+                for (var inventory of this.rowData.inventorys) {
+                    if (inventory.item.name === '金币') {
+                        this.coins = inventory.stock;
+                    }
+                }
+            }
+        }
     }
     Vue.component('detail-row', detailRow);
 
@@ -187,12 +199,6 @@
     var app = new Vue({
         el: '#app',
         data: {
-            rollType: {
-                1: '普通用户',
-                2: '管理员',
-                3: 'vip用户'
-            },
-
             activatedRow: {},       //待编辑的行
 
             editUserResponse: {     //编辑用户信息
@@ -219,28 +225,31 @@
                 },
                 {
                     name: 'name',
-                    title: '代理商昵称',
+                    title: '昵称',
                 },
                 {
                     name: 'account',
-                    title: '用户账号',
+                    title: '登录账号',
                     sortField: 'account',
                 },
                 {
-                    name: 'phone',
-                    title: '用户手机',
-                    visible: false,
+                    name: 'group.name',
+                    title: '代理级别',
                 },
                 {
-                    name: 'roll_type',
-                    title: '用户角色',
-                    callback: 'getRollType',
+                    name: 'parent.account',
+                    title: '上级代理',
+                },
+                {
+                    name: 'inventorys',
+                    title: '房卡数量',
+                    callback: 'getCardsCount'
                 },
                 {
                     name: '__component:table-actions',
-                    title: '编辑',
+                    title: '操作',
                     titleClass: 'text-center',
-                    dataClass: 'text-left',
+                    dataClass: 'text-center',
                 },
             ],
 
@@ -296,38 +305,15 @@
                 this.$refs.vuetable.toggleDetailRow(data.id);
             },
 
-            getRollType (value) {
-                return this.rollType[value];
-            },
-            editUserInfo () {
-                var _self = this;
-
-                if (this.errors.any()) { return false; }    //表单验证，验证失败不提交
-
-                axios({
-                    method: 'POST',
-                    url: '/admin/user/' + this.activatedRow.id,
-                    data: this.activatedRow,
-                    timeout: 5000,                          //超时时间
-                    xsrfCookieName: 'XSRF-TOKEN',
-                    xsrfHeaderName: 'X-XSRF-TOKEN',
-                    validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
-                        return status >= 200 && status < 500 && status != 404;
+            getCardsCount (inventorys) {
+                if (0 === inventorys.length) {
+                    return null;
+                }
+                for (var inventory of inventorys) {
+                    if (inventory.item.name === '房卡') {
+                        return inventory.stock;
                     }
-                })
-                    .then(function (response) {
-                        if (response.status === 422) {
-                            _self.editUserResponse.ifSuccess = false;
-                            _self.editUserResponse.message = JSON.stringify(response.data);
-                            return false;
-                        }
-                        _self.editUserResponse.ifSuccess = true;
-                        _self.editUserResponse.message = response.data.message;
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
+                }
             },
             updateUserPassword () {
                 var _self = this;
@@ -388,9 +374,6 @@
         mounted: function () {
             var _self = this;
 
-            Hub.$on('editInfoEvent', function (data) {
-                _self.activatedRow = data;
-            });
             Hub.$on('changeUserPasswordEvent', function (data) {
                 _self.activatedRow = data;
             });
