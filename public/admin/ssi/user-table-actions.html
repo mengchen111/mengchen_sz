@@ -1,0 +1,108 @@
+<!-- 更改用户信息 -->
+<div id="user-info-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width: 380px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal">x</button>
+                <h3 class="text-center">修改用户信息</h3>
+            </div>
+            <div class="modal-body">
+                <form role="form" class="form-group" method="POST" action="#" @submit.prevent="editUserInfo">
+                    <div class="form-group has-feedback">
+                        <label>用户昵称</label>
+                        <input name="name" type="text" class="form-control" v-validate="'required|min: 6'"
+                               v-model.trim="activatedRow.name" placeholder="用户昵称">
+                        <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
+                        <span v-show="errors.has('name')" class="text-danger">{{ errors.first('name') }}</span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label>用户邮箱</label>
+                        <input name="email" type="email" class="form-control" v-validate="'required|email'"
+                               v-model.trim="activatedRow.email" placeholder="用户邮箱">
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        <span v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>用户角色</label>
+                        <select class="form-control" v-model="activatedRow.roll_type">
+                            <option v-for="(roll, index) in rollType" :value="index"
+                                    v-if="roll == rollType[activatedRow.roll_type]" selected>
+                                {{ roll }}
+                            </option>
+                            <option v-else :value="index">
+                                {{ roll }}
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <p :class="editUserResponse.ifSuccess ? 'text-green' : 'text-danger'">{{ editUserResponse.message }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 更改用户密码 -->
+<div id="user-password-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width: 380px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal">x</button>
+                <h3 class="text-center">修改用户密码</h3>
+            </div>
+            <div class="modal-body">
+                <form role="form" class="form-group" method="POST" action="#" @submit.prevent="updateUserPassword">
+                    <div class="form-group has-feedback">
+                        <input name="password" type="password" class="form-control" v-validate="'required|min: 6'"
+                               placeholder="用户密码" v-model.trim="changePassword.password">
+                        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
+                        <span v-show="errors.has('password')" class="text-danger">{{ errors.first('password') }}</span>
+                        <div>
+                            <p :class="changePassword.ifSuccess ? 'text-green' : 'text-danger'">
+                                {{ changePassword.message }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 删除用户 -->
+<div id="delete-user-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width: 360px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal">x</button>
+                <h3 class="text-center text-danger">确定删除此用户？</h3>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-flat btn-danger btn-lg pull-left" @click="deleteUser">
+                    删除
+                </button>
+                <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
+                    取消
+                </button>
+            </div>
+
+            <div style="margin-left: 15px; padding-bottom: 1px;">
+                <p :class="deleteUserResponse.ifSuccess ? 'text-green' : 'text-danger'">
+                    {{ deleteUserResponse.message }}
+                </p>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</div>

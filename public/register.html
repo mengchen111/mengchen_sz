@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | Registration Page</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="dist/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="dist/js/html5shiv.min.js"></script>
+    <script src="dist/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition register-page">
+<div class="register-box">
+    <div class="register-logo">
+        <a href="/"><b>Admin</b>LTE</a>
+    </div>
+
+    <div class="register-box-body">
+        <p class="register-box-msg" v-bind:class="{ 'text-danger': registerMessage.warning }">{{ registerMessage.message }}</p>
+
+        <form action="/register" method="POST" v-on:submit.prevent="register">
+            <div class="form-group has-feedback">
+                <input name="email" type="email" class="form-control" placeholder="邮箱" v-model="formData.email" v-focus
+                       v-validate="'required|email'">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <span v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</span>
+            </div>
+            <div class="form-group has-feedback">
+                <input name="name" type="text" class="form-control" placeholder="昵称" v-model="formData.name" v-validate="'required'">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span v-show="errors.has('name')" class="text-danger">{{ errors.first('name') }}</span>
+            </div>
+            <div class="form-group has-feedback">
+                <input name="password" type="password" class="form-control" placeholder="密码" v-model="formData.password"
+                       v-validate="'required|min: 6'">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <span v-show="errors.has('password')" class="text-danger">{{ errors.first('password') }}</span>
+            </div>
+            <div class="form-group has-feedback">
+                <input name="password_confirmation" type="password" class="form-control" placeholder="再次输入密码"
+                       v-model="formData.password_confirmation" v-validate="'required|min: 6'">
+                <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                <span v-show="errors.has('password_confirmation')" class="text-danger">{{ errors.first('password_confirmation') }}</span>
+            </div>
+            <div class="center-block">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">立即注册</button>
+            </div>
+            <!--<div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox"> I agree to the <a href="#">terms</a>
+                        </label>
+                    </div>
+                </div>
+                &lt;!&ndash; /.col &ndash;&gt;
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+                </div>
+                &lt;!&ndash; /.col &ndash;&gt;
+            </div>-->
+        </form>
+
+        <!--<div class="social-auth-links text-center">-->
+            <!--<p>- OR -</p>-->
+            <!--<a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using-->
+                <!--Facebook</a>-->
+            <!--<a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using-->
+                <!--Google+</a>-->
+        <!--</div>-->
+
+        <a href="/login" class="text-center">返回登录</a>
+    </div>
+    <!-- /.form-box -->
+</div>
+<!-- /.register-box -->
+
+<!-- jQuery 2.2.0 -->
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<!-- Vue 2.3.0 -->
+<script src="dist/js/vue/vue.min.js"></script>
+<!-- Vee-validate 2.0.0-rc.3 -->
+<script src="dist/js/vue/vee-validate.min.js"></script>
+<!-- axios -->
+<script src="dist/js/axios.js"></script>
+<script>
+    'use strict';
+
+    Vue.use(VeeValidate);   //注册vee-validate插件
+
+    var app = new Vue({
+        el: '.register-box',
+        data: {
+            registerMessage: {
+                message: '账号注册',
+                warning: false,
+            },
+            formData: {
+                email: '',
+                name: '',
+                password: '',
+                password_confirmation: '',
+            }
+        },
+        methods: {
+            register: function () {
+                var _self = this;
+                if (this.errors.any()) { return false; }    //表单验证，验证失败不提交
+                axios({
+                    method: 'POST',
+                    url: '/register',
+                    data: _self.formData,
+                    timeout: 5000,
+                    xsrfCookieName: 'XSRF-TOKEN',
+                    xsrfHeaderName: 'X-XSRF-TOKEN',
+                    validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
+                        return status >= 200 && status < 500 && status != 404;
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            window.location.href='/';   //注册成功，跳转首页
+                        } else if (response.status === 422 || response.status === 423) {
+                            var responseData = response.data.email || response.data.password || response.data.name;
+                            _self.registerMessage.message = responseData[0];
+                            _self.registerMessage.warning = true;
+                        } else {
+                            alert('注册失败，错误代码：' + response.status);
+                        }
+                    })
+                    .catch(function (err) {
+                        alert(err);
+                        console.log(err);
+                    });
+            }
+        },
+        //自定义获取焦点的指令
+        directives: {
+            focus: {
+                inserted: function (el) {
+                    el.focus();
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

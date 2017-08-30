@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | Starter</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/dist/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/dist/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins -->
+    <link rel="stylesheet" href="/dist/css/skins/skin-blue.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="/dist/js/html5shiv.min.js"></script>
+    <script src="/dist/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- REQUIRED JS SCRIPTS -->
+
+    <!-- jQuery 2.2.3 -->
+    <script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <!-- DataTables -->
+    <!--<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables/dataTables.bootstrap.min.js"></script>-->
+    <!-- AdminLTE App -->
+    <script src="/dist/js/app.min.js"></script>
+    <!-- Vue 2.3.0 -->
+    <script src="/dist/js/vue/vue.min.js"></script>
+    <!-- Vee-validate 2.0.0-rc.3 -->
+    <script src="/dist/js/vue/vee-validate.min.js"></script>
+    <!-- axios -->
+    <script src="/dist/js/axios.js"></script>
+    <!-- vue table plugin -->
+    <script src="/dist/js/vue/vuetable-2.js"></script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- Main Header -->
+    <!--#include virtual="/admin/ssi/main-header.html"-->
+
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar Menu -->
+            <ul class="sidebar-menu">
+                <li class="header">HEADER</li>
+                <!-- Optionally, you can add icons to the links -->
+                <li><a href="/admin/"><i class="fa fa-users"></i> <span>用户管理</span></a></li>
+                <li class="active"><a href="/admin/wangwang/approving"><i class="fa fa-user"></i> <span>旺旺信息审核</span></a></li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-share"></i> <span>下拉菜单</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="#">Link in level 2</a></li>
+                        <li><a href="#">Link in level 2</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" id="app">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                旺旺信息审核
+                <!--<small>注册用户</small>-->
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">wangwang</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <div class="box">
+                <div class="box-header">
+                    <!--<h3 class="box-title">用户列表</h3>-->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <template>
+                        <vuetable ref="vuetable"
+                                  api-url="/admin/wangwang/need-approve"
+                                  :fields="fields"
+                                  :sort-order="sortOrder"
+                                  :css="css.table"
+                                  pagination-path=""
+                                  :per-page="10"
+                                  @vuetable:pagination-data="onPaginationData"
+                                  detail-row-component="detail-row"
+                                  @vuetable:cell-clicked="onCellClicked"
+                        ></vuetable>
+
+                        <div class="pagination pull-left">
+                            <vuetable-pagination-info ref="paginationInfo"
+                            ></vuetable-pagination-info>
+                        </div>
+                        <vuetable-pagination ref="pagination"
+                                             :css="css.pagination"
+                                             @vuetable-pagination:change-page="onChangePage"
+                        ></vuetable-pagination>
+                    </template>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+
+        </section>
+        <!-- /.content -->
+
+        <!-- 审核旺旺信息 -->
+        <div id="audit-wangwang-modal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog" style="width: 360px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal">x</button>
+                        <h3 class="text-center text-danger">是否审核通过</h3>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-flat btn-success btn-lg pull-left" @click="auditWangwang(2)"
+                            data-dismiss="modal">
+                            审核通过
+                        </button>
+                        <button class="btn btn-flat btn-danger btn-lg" @click="auditWangwang(3)"
+                            data-dismiss="modal">
+                            审核失败
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.content-wrapper -->
+</div>
+
+    <!-- Main Footer -->
+    <!--#include virtual="/admin/ssi/main-footer.html"-->
+
+</div>
+<!-- ./wrapper -->
+
+<script>
+    Vue.use(Vuetable);      //注册vuetable-2插件
+    Vue.use(VeeValidate);   //注册vee-validate插件
+    var Hub = new Vue();    //event hub，事件中心，用于非父子组件中的事件传递
+
+    //注册Detail Row，达到点击每行显示更多信息的效果
+    var detailRow = {
+        template: `
+            <div @click="onClick">
+              <div class="">
+                <label>添加时间:&nbsp;&nbsp;</label>
+                <span>{{rowData.created_at}}</span>
+              </div>
+              <div class="">
+                <label>最后更新时间:&nbsp;&nbsp;</label>
+                <span>{{rowData.updated_at}}</span>
+              </div>
+            </div>`,
+        props: {
+            rowData: {
+                type: Object,
+                required: true
+            },
+            rowIndex: {
+                type: Number
+            }
+        },
+        methods: {
+            onClick (event) {
+                //console.log('my-detail-row: on-click', event.target)
+            }
+        },
+    }
+    Vue.component('detail-row', detailRow);
+
+    //注册审核动作的组件
+    var auditAction = {
+        template: `
+                <div class="audit-actions">
+                    <button class="btn btn-default" data-toggle="modal" data-target="#audit-wangwang-modal"
+                        @click="auditAction(rowData)" title="审核"><i class="glyphicon glyphicon-edit"></i>
+                    </button>
+                </div>`,
+        props: {
+            rowData: {
+                type: Object,
+                required: true
+            },
+            rowIndex: {
+                type: Number
+            }
+        },
+        methods: {
+            auditAction (data) {
+                Hub.$emit('auditEvent', data);
+            }
+        }
+    }
+    Vue.component('audit-action', auditAction);
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            activatedRow: {},       //待编辑的行
+
+            fields: [
+                {
+                    name: 'id',
+                    title: 'ID',
+                    sortField: 'id',
+                },
+                {
+                    name: 'user.email',
+                    title: '所属用户',
+                },
+                {
+                    name: 'wangwang_id',
+                    title: '旺旺账号',
+                },
+                {
+                    name: '__component:audit-action',
+                    title: '审核',
+                    titleClass: 'text-center',
+                    dataClass: 'text-center',
+                },
+            ],
+
+            sortOrder: [
+                {
+                    field: 'id',
+                    sortField: 'id',
+                    direction: 'desc',
+                }
+            ],
+
+            css: {
+                table: {
+                    tableClass: 'table table-striped table-bordered',
+                    ascendingIcon: 'glyphicon glyphicon-chevron-up',
+                    descendingIcon: 'glyphicon glyphicon-chevron-down',
+                    handleIcon: 'glyphicon glyphicon-menu-hamburger',
+                    renderIcon: function(classes, options) {
+                        return `<span class="${classes.join(' ')}"></span>`
+                    }
+                },
+                pagination: {
+                    wrapperClass: "pagination pull-right",
+                    activeClass: "btn-primary",
+                    disabledClass: "disabled",
+                    pageClass: "btn btn-border",
+                    linkClass: "btn btn-border",
+                    icons: {
+                        first: "",
+                        prev: "",
+                        next: "",
+                        last: ""
+                    }
+                }
+            },
+        },
+
+        methods: {
+            onPaginationData (paginationData) {
+                this.$refs.pagination.setPaginationData(paginationData);
+                this.$refs.paginationInfo.setPaginationData(paginationData);
+            },
+            onChangePage (page) {
+                this.$refs.vuetable.changePage(page);
+            },
+            onCellClicked (data, field, event) {
+                this.$refs.vuetable.toggleDetailRow(data.id);
+            },
+
+            auditWangwang (approvedCode) {
+                var _self = this;
+
+                axios({
+                    method: 'POST',
+                    url: '/admin/wangwang/approved/' + this.activatedRow.id,
+                    data: { approved: approvedCode},
+                    timeout: 5000,                          //超时时间
+                    //xsrfCookieName: 'XSRF-TOKEN',
+                    //xsrfHeaderName: 'X-XSRF-TOKEN',
+                })
+                    .then(function (response) {
+                        //审核之后重新刷新表格数据
+                        Vue.nextTick(function (){
+                            _self.$refs.vuetable.refresh();
+                        })
+                    })
+                    .catch(function (err) {
+                        alert(err);
+                        console.log(err);
+                    });
+            },
+        },
+
+        mounted: function () {
+            var _self = this;
+
+            Hub.$on('auditEvent', function (data) {
+                _self.activatedRow = data;
+            });
+        }
+    });
+
+</script>
+</body>
+</html>

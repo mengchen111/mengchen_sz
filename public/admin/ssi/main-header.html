@@ -1,0 +1,185 @@
+<!-- Main Header -->
+<header class="main-header">
+
+    <!-- Logo -->
+    <a href="/admin" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>宏</b>海</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b>宏海</b>管理后台</span>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <!-- User Account Menu -->
+                <li class="dropdown user user-menu">
+                    <!-- Menu Toggle Button -->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <!-- The user image in the navbar-->
+                        <!--<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">-->
+                        <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                        <span class="hidden-xs">{{ adminInfo.name }}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- The user image in the menu -->
+                        <!--<li class="user-header">
+                            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                            <p>
+                                Alexander Pierce - Web Developer
+                                <small>Member since Nov. 2012</small>
+                            </p>
+                        </li>
+                        &lt;!&ndash; Menu Body &ndash;&gt;
+                        <li class="user-body">
+                            <div class="row">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Sales</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Friends</a>
+                                </div>
+                            </div>
+                            &lt;!&ndash; /.row &ndash;&gt;
+                        </li>
+                         Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <button class="btn btn-default btn-flat" data-toggle="modal" data-target="#change-password-modal">
+                                    修改密码
+                                </button>
+                            </div>
+                            <div class="pull-right">
+                                <form id="logout-form" action="/logout" method="POST">
+                                    <button type="submit" class="btn btn-default btn-flat">退出登录</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!-- 重置密码提示框 -->
+<div id="change-password-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog" style="width: 380px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal">x</button>
+                <h3 class="text-center">修改密码</h3>
+            </div>
+            <div class="modal-body">
+                <form role="form" class="form-group" method="POST" action="/admin/password" @submit.prevent="changePasswordAction">
+                    <div class="form-group has-feedback">
+                        <input name="password" type="password" class="form-control" required
+                               placeholder="旧密码" v-model="formData.password">
+                        <span class="fa fa-user-secret form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input name="new_password" type="password" class="form-control" required
+                               placeholder="新密码" v-model="formData.new_password">
+                        <span class="fa fa-pencil form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input name="new_password_confirmation" type="password" class="form-control" required
+                               placeholder="再次输入新密码" v-model="formData.new_password_confirmation">
+                        <span class="fa fa-pencil form-control-feedback"></span>
+                    </div>
+                    <div>
+                        <p :class="changePassword.ifSuccess ? 'text-green' : 'text-danger'">{{ changePassword.message }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var mainHeaderApp = new Vue({
+        el: '.main-header',
+        data:  {
+            adminInfo: {            //当前登录的管理员信息
+                name: 'admin',
+            }
+        },
+
+        created: function () {
+            var _self = this;
+            axios.get('/admin/info')
+                .then(function (response) {
+                    _self.adminInfo = response.data;
+                });
+        },
+    });
+
+    var changePasswordApp = new Vue({
+        el: '#change-password-modal',
+        data: {
+            formData: {
+                password: '',
+                new_password: '',
+                new_password_confirmation: '',
+            },
+            changePassword: {       //修改用户密码
+                password: '',
+                message: '',
+                ifSuccess: false,
+            },
+        },
+
+        methods: {
+            changePasswordAction () {
+                var _self = this;
+
+                axios({
+                    method: 'POST',
+                    url: '/admin/password',
+                    data: _self.formData,
+                    timeout: 5000,                          //超时时间
+                    xsrfCookieName: 'XSRF-TOKEN',
+                    xsrfHeaderName: 'X-XSRF-TOKEN',
+                    validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
+                        return status == 200 || status == 422;
+                    }
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        if (response.status === 422) {
+                            _self.changePassword.ifSuccess = false;
+                            _self.changePassword.message = JSON.stringify(response.data);
+                            return false;
+                        }
+                        if (! response.data.result) {
+                            _self.changePassword.ifSuccess = false;
+                            _self.changePassword.message = response.data.message;
+                            return false;
+                        }
+                        _self.changePassword.ifSuccess = true;
+                        _self.changePassword.message = response.data.message;
+                    })
+                    .catch(function (err) {
+                        alert(err);
+                        console.log(err);
+                    });
+            },
+        }
+
+    });
+
+</script>
