@@ -79,13 +79,11 @@ class TopUpController extends Controller
             ];
         }*/
 
-        //给玩家充值
-        $amount += $receiver->cards;
-
+        //TODO 完善玩家充值流程
         DB::transaction(function () use ($receiver, $amount){
             TopUpAgent::create([
                 'provider_id' => $this->currentAgent->id,
-                'receiver_id' => $receiver->id,
+                'player' => $receiver->id,
                 'amount' => $amount,
             ]);
 

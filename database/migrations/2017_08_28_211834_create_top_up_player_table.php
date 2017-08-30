@@ -16,7 +16,7 @@ class CreateTopUpPlayerTable extends Migration
         Schema::create('top_up_player', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('provider_id')->comment('发起充值的代理商id');
-            $table->unsignedInteger('player_id')->comment('充值到账的玩家');
+            $table->string('player')->comment('充值到账的玩家');
             $table->string('type')->default('1')->comment('道具类型');
             $table->unsignedInteger('amount')->comment('充值数量');
             $table->timestamps();
