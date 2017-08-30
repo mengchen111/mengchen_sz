@@ -22,7 +22,6 @@ class CreateUsersTable extends Migration
             $table->string('phone', 20)->nullable();
             $table->unsignedInteger('group_id')->default(0)->comment('所属组');
             $table->integer('parent_id')->default(0)->comment('上级代理');
-            $table->unsignedBigInteger('cards')->default(0)->comment('房卡数');
             $table->rememberToken();
             $table->timestamps();
         });
