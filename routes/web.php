@@ -40,4 +40,7 @@ Route::prefix('agent')->group(function () {
     Route::put('subagent/{child}', 'Agent\SubAgentController@updateChild')->where('child', '[0-9]+');
 
     Route::post('top-up/child/{receiver}/{amount}', 'Agent\TopUpController@topUp2Child')->where('amount', '[0-9]+');
+    //Route::post('top-up/player/{receiver}/{amount}', 'Agent\TopUpController@topUp2Player')->where('amount', '[0-9]+');
+    Route::get('top-up/child', 'Agent\TopUpController@topUp2ChildHistory');
+    Route::get('top-up/player', 'Agent\TopUpController@topUp2PlayerHistory');
 });

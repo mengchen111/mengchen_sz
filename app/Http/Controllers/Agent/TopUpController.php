@@ -97,4 +97,17 @@ class TopUpController extends Controller
             'message' => '充值成功',
         ];
     }
+
+    //给下级代理商的充卡记录
+    public function topUp2ChildHistory()
+    {
+        //TODO 日志记录
+        return TopUpAgent::with(['provider', 'receiver'])->where('provider_id', $this->currentAgent->id)->get();
+    }
+
+    public function topUp2PlayerHistory()
+    {
+        //TODO 日志记录
+        return TopUpPlayer::with(['provider'])->where('provider_id', $this->currentAgent->id)->get();
+    }
 }

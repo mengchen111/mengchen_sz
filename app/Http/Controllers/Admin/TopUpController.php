@@ -73,7 +73,7 @@ class TopUpController extends Controller
     public function Agent2PlayerHistory()
     {
         //TODO 日志记录
-        return TopUpPlayer::with('provider')->get();
+        return TopUpPlayer::with(['provider'])->get();
     }
 
 }
