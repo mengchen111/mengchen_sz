@@ -7,36 +7,36 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/dist/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="/dist/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
     <!-- iCheck -->
-    <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
+    <link rel="stylesheet" href="/plugins/iCheck/square/blue.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    <script src="dist/js/html5shiv.min.js"></script>
-    <script src="dist/js/respond.min.js"></script>
+    <script src="/dist/js/html5shiv.min.js"></script>
+    <script src="/dist/js/respond.min.js"></script>
     <![endif]-->
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="/"><b>Admin</b>LTE</a>
+        <a href="/admin/"><b>管理</b>后台</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
         <p id="login-message" class="login-box-msg" v-bind:class="{ 'text-danger': loginMessage.warning }">
             {{ loginMessage.message }}</p>
 
-        <form action="/login" method="POST" v-on:submit.prevent="login">
+        <form action="/admin/login" method="POST" v-on:submit.prevent="login">
             <div class="form-group has-feedback">
-                <input name="email" type="text" class="form-control" placeholder="邮箱" v-model="formData.email" v-focus
+                <input name="email" type="" class="form-control" placeholder="邮箱" v-model="formData.email" v-focus
                        v-validate="'required|email'">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 <span v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</span>
@@ -72,61 +72,23 @@
         </div>-->
         <!-- /.social-auth-links -->
 
-        <div class="row">
-            <div class="col-xs-8">
-                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#reset-password-modal">忘记密码</button>
-            </div>
-            <div class="col-xs-4 text-right">
-                <a type="button" class="btn btn-link" href="/register">用户注册</a>
-            </div>
-        </div>
-
-
     </div>
     <!-- /.login-box-body -->
 </div>
 <!-- /.login-box -->
 
-<!-- 忘记密码提示框 -->
-<div id="reset-password-modal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog" style="width: 380px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" type="button" data-dismiss="modal">x</button>
-                <h3 class="text-center">密码重置</h3>
-            </div>
-
-            <div class="modal-body">
-                <form role="form" class="form-group" method="POST" action="/password/email" @submit.prevent="sendResetEmail">
-                    <div class="form-group has-feedback">
-                        <input name="email" type="email" class="form-control" placeholder="注册邮箱" v-focus v-model="formData.email">
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                        <div>
-                            <p :class="ifSuccess ? 'text-green' : 'text-danger'">{{ sendResetEmailMessage }}</p>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-block btn-flat" type="submit">发送密码重置邮件</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- jQuery 2.2.0 -->
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
-<script src="plugins/iCheck/icheck.min.js"></script>
+<script src="/plugins/iCheck/icheck.min.js"></script>
 <!-- Vue 2.3.0 -->
-<script src="dist/js/vue/vue.min.js"></script>
+<script src="/dist/js/vue/vue.min.js"></script>
 <!-- Vee-validate 2.0.0-rc.3 -->
-<script src="dist/js/vue/vee-validate.min.js"></script>
+<script src="/dist/js/vue/vee-validate.min.js"></script>
 <!-- axios -->
-<script src="dist/js/axios.js"></script>
+<script src="/dist/js/axios.js"></script>
 <script>
     'use strict';
 
@@ -152,7 +114,7 @@
 
         data: {
             loginMessage: {
-                message: '用户登录',
+                message: '管理员登录',
                 warning: false,
             },
             formData: {
@@ -170,7 +132,7 @@
 
                 axios({
                     method: 'POST',
-                    url: '/login',
+                    url: '/admin/login',
                     data: _self.formData,
                     timeout: 5000,                          //超时时间
                     xsrfCookieName: 'XSRF-TOKEN',
@@ -181,7 +143,7 @@
                 })
                     .then(function (response) {
                         if (response.status === 200) {
-                            window.location.href='/';   //登录成功，跳转首页
+                            window.location.href='/admin/';   //登录成功，跳转首页
                         } else if (response.status === 422 || response.status === 423) {
                             var responseData = response.data.email || response.data.password;
                             _self.loginMessage.message = responseData.__proto__.constructor === Array ? responseData[0]
@@ -199,57 +161,6 @@
         },
     });
 
-    var resetApp = new Vue({
-        el: '#reset-password-modal',
-
-        data: {
-            formData: {
-                email: '',
-            },
-            ifSuccess: false,
-            sendResetEmailMessage: null,
-        },
-
-        methods: {
-            sendResetEmail: function () {
-                var _self = this;
-
-                axios({
-                    method: 'POST',
-                    url: '/password/email',
-                    data: _self.formData,
-                    timeout: 20000,                          //超时时间
-                    xsrfCookieName: 'XSRF-TOKEN',
-                    xsrfHeaderName: 'X-XSRF-TOKEN',
-                    validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
-                        return status >= 200 && status < 500 && status != 404;
-                    }
-                })
-                    .then(function (response) {
-                        if (response.status === 200) {
-                            var responseData = response.data;
-
-                            if (responseData.hasOwnProperty('error')) {
-                                _self.sendResetEmailMessage = response.data.error;
-                                _self.ifSuccess = false;
-                            } else if (responseData.hasOwnProperty('success')) {
-                                _self.sendResetEmailMessage = response.data.success;
-                                _self.ifSuccess = true;
-                            }
-                        } else if (response.status === 422) {
-                            _self.sendResetEmailMessage = response.data.email[0];
-                            _self.ifSuccess = false;
-                        } else {
-                            alert('重置密码邮件发送失败，错误代码：' + response.status);
-                        }
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
-            }
-        }
-    });
 </script>
 </body>
 </html>
