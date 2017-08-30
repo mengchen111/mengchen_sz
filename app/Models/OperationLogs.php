@@ -13,7 +13,7 @@ class OperationLogs extends Model
         'user_id', 'uri', 'method', 'description', 'data'
     ];
 
-    public static function insert($userId, $uri, $method, $description, $data)
+    public static function insert($userId, $uri, $method, $description, $data = '')
     {
         return self::create([
             'user_id' => $userId,

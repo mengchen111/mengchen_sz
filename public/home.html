@@ -94,11 +94,14 @@
     var tableActions = {
         template: `
                 <div class="table-actions">
-                    <button class="btn btn-default" data-toggle="modal" data-target="#user-password-modal"
-                        @click="changePasswordAction(rowData)" title="更新代理商信息"><i class="glyphicon glyphicon-pencil"></i>
+                    <button class="btn btn-default" data-toggle="modal" data-target="#agent-info-modal"
+                        @click="editInfoAction(rowData)" title="更新代理商信息"><i class="glyphicon glyphicon-edit"></i>
                     </button>
-                    <button class="btn btn-default" data-toggle="modal" data-target="#delete-user-modal"
-                        @click="deleteUserAction(rowData)" title="删除代理商"><i class="glyphicon glyphicon-trash"></i>
+                    <button class="btn btn-default" data-toggle="modal" data-target="#agent-password-modal"
+                        @click="changePasswordAction(rowData)" title="更改密码"><i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                    <button class="btn btn-default" data-toggle="modal" data-target="#delete-agent-modal"
+                        @click="deleteAgentAction(rowData)" title="删除代理商"><i class="glyphicon glyphicon-trash"></i>
                     </button>
                 </div>`,
         props: {
@@ -111,11 +114,14 @@
             }
         },
         methods: {
-            changePasswordAction (data) {
-                Hub.$emit('changeUserPasswordEvent', data);
+            editInfoAction (data) {
+                Hub.$emit('editInfoEvent', data);
             },
-            deleteUserAction (data) {
-                Hub.$emit('deleteUserEvent', data);
+            changePasswordAction (data) {
+                Hub.$emit('changeAgentPasswordEvent', data);
+            },
+            deleteAgentAction (data) {
+                Hub.$emit('deleteAgentEvent', data);
             },
         }
     }
@@ -189,7 +195,6 @@
         },
         methods: {
             doFilter () {
-                console.log('doFilter:', this.filterText);
                 Hub.$emit('filterEvent', this.filterText);
             },
         }
@@ -199,9 +204,15 @@
     var app = new Vue({
         el: '#app',
         data: {
+            agentType: {
+                2: '总代理',
+                3: '钻石代理',
+                4: '金牌代理'
+            },
+
             activatedRow: {},       //待编辑的行
 
-            editUserResponse: {     //编辑用户信息
+            editAgentResponse: {     //编辑用户信息
                 message: '',
                 ifSuccess: false,
             },
@@ -212,7 +223,7 @@
                 ifSuccess: false,
             },
 
-            deleteUserResponse: {   //删除用户
+            deleteAgentResponse: {   //删除用户
                 message: '',
                 ifSuccess: false,
             },
@@ -315,14 +326,44 @@
                     }
                 }
             },
-            updateUserPassword () {
+            editAgentInfo () {
                 var _self = this;
 
                 if (this.errors.any()) { return false; }    //表单验证，验证失败不提交
 
                 axios({
-                    method: 'POST',
-                    url: '/admin/user/password/' + this.activatedRow.id,
+                    method: 'PUT',
+                    url: '/admin/agent/' + _self.activatedRow.id,
+                    data: _self.activatedRow,
+                    timeout: 5000,                          //超时时间
+                    xsrfCookieName: 'XSRF-TOKEN',
+                    xsrfHeaderName: 'X-XSRF-TOKEN',
+                    validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
+                        return status >= 200 && status < 500 && status != 404;
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status === 422) {
+                            _self.editAgentResponse.ifSuccess = false;
+                            _self.editAgentResponse.message = JSON.stringify(response.data);
+                            return false;
+                        }
+                        _self.editAgentResponse.ifSuccess = true;
+                        _self.editAgentResponse.message = response.data.message;
+                    })
+                    .catch(function (err) {
+                        alert(err);
+                        console.log(err);
+                    });
+            },
+            updateAgentPassword () {
+                var _self = this;
+
+                if (this.errors.any()) { return false; }    //表单验证，验证失败不提交
+
+                axios({
+                    method: 'PUT',
+                    url: '/admin/agent/pass/' + this.activatedRow.id,
                     data: this.changePassword,
                     timeout: 5000,                          //超时时间
                     xsrfCookieName: 'XSRF-TOKEN',
@@ -341,23 +382,28 @@
                         _self.changePassword.message = response.data.message;
                     })
                     .catch(function (err) {
-                        alert(err);
                         console.log(err);
+
+                        alert(err);
                     });
             },
-            deleteUser () {
+            deleteAgent () {
                 var _self = this;
 
                 axios({
                     method: 'DELETE',
-                    url: '/admin/user/' + this.activatedRow.id,
+                    url: '/admin/agent/' + this.activatedRow.id,
                     timeout: 5000,                          //超时时间
                     xsrfCookieName: 'XSRF-TOKEN',
                     xsrfHeaderName: 'X-XSRF-TOKEN',
                 })
                     .then(function (response) {
-                        _self.deleteUserResponse.ifSuccess = true;
-                        _self.deleteUserResponse.message = response.data.message;
+                        _self.deleteAgentResponse.ifSuccess = true;
+
+                        if (response.data.error) {
+                            return alert(response.data.error);
+                        }
+                        _self.deleteAgentResponse.message = response.data.message;
 
                         //删除完成用户之后重新刷新表格数据，避免被删除用户继续留存在表格中
                         Vue.nextTick(function (){
@@ -374,10 +420,13 @@
         mounted: function () {
             var _self = this;
 
-            Hub.$on('changeUserPasswordEvent', function (data) {
+            Hub.$on('editInfoEvent', function (data) {
                 _self.activatedRow = data;
             });
-            Hub.$on('deleteUserEvent', function (data) {
+            Hub.$on('changeAgentPasswordEvent', function (data) {
+                _self.activatedRow = data;
+            });
+            Hub.$on('deleteAgentEvent', function (data) {
                 _self.activatedRow = data;
             });
             Hub.$on('filterEvent', function (filterText) {

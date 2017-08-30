@@ -30,6 +30,7 @@ Route::group([
     Route::post('agent', 'AgentController@create');
     Route::delete('agent/{user}', 'AgentController@destroy')->where('user', '[0-9]+');
     Route::put('agent/{user}', 'AgentController@update')->where('user', '[0-9]+');
+    Route::put('agent/pass/{user}', 'AgentController@updatePass')->where('user', '[0-9]+');
 
     Route::get('top-up/top-agent', 'TopUpController@topUp2TopAgentHistory');
     Route::get('top-up/agent', 'TopUpController@Agent2AgentHistory');

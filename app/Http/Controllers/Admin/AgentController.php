@@ -26,6 +26,7 @@ class AgentController extends Controller
                 ->paginate($per_page);
         }
 
+        OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '查看代理商列表');
         return User::with(['group', 'parent', 'inventorys.item'])
             ->where('group_id', '!=', 1)->orderBy($order[0], $order[1])
             ->paginate($per_page);
@@ -50,7 +51,7 @@ class AgentController extends Controller
         return User::create($data);
     }
 
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
         if ($this->isAdmin($user)) {
             return [
@@ -64,6 +65,7 @@ class AgentController extends Controller
             ];
         }
 
+        OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '删除代理商');
         return $user->delete() ? ['message' => '删除成功'] : ['message' => '删除失败'];
     }
 
@@ -89,7 +91,6 @@ class AgentController extends Controller
         Validator::make($input, [
             'name' => 'string|max:255',
             'account' => 'string|max:255|unique:users',
-            'password' => 'string|min:6',
             'email' => 'string|email|max:255',
             'phone' => 'integer|digits:11',
             'group_id' => 'integer|not_in:1',   //不能将代理商改成管理员
@@ -97,22 +98,39 @@ class AgentController extends Controller
         ])->validate();
 
         $data = $request->intersect(
-            'name', 'account', 'password', 'email', 'phone', 'group_id'
+            'name', 'account', 'email', 'phone', 'group_id'
         );
 
-        $parentId = User::where('account', $request->get('parent_account'))->first()->id;
-        $data = array_merge($data, ['parent_id' => $parentId]);
+        if ($request->has('parent_account')) {
+            $parentId = User::where('account', $request->get('parent_account'))->first()->id;
+            $data = array_merge($data, ['parent_id' => $parentId]);
+        }
 
         //管理员只能改自己的密码、邮箱和手机信息，其他信息暂不允许修改
         if ($this->isAdmin($user)) {
             $data = $request->intersect(
-                'password', 'email', 'phone'
+                'email', 'phone'
             );
         }
 
         if ($user->update($data)) {
-            //TODO 操作日志记录，待完成登录之后追加，用户id从session里面拿
-            //OperationLogs::insert(1, $request->path(), $request->method(), '更新用户信息', json_encode($data));
+            OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '更新代理商信息', json_encode($data));
+            return [
+                'message' => '更新用户数据成功'
+            ];
+        }
+    }
+
+    public function updatePass(Request $request, User $user)
+    {
+        Validator::make($request->all(), [
+            'password' => 'required|min:6'
+        ])->validate();
+
+        $data = ['password' => bcrypt($request->get('password')) ];
+
+        if ($user->update($data)) {
+            OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '更新代理商密码', json_encode($data));
             return [
                 'message' => '更新用户数据成功'
             ];
