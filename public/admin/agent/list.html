@@ -94,6 +94,9 @@
     var tableActions = {
         template: `
                 <div class="table-actions">
+                    <button class="btn btn-default" data-toggle="modal" data-target="#top-up-modal"
+                        @click="topUpAgentAction(rowData)" title="充卡"><i class="glyphicon glyphicon-credit-card"></i>
+                    </button>
                     <button class="btn btn-default" data-toggle="modal" data-target="#agent-info-modal"
                         @click="editInfoAction(rowData)" title="更新代理商信息"><i class="glyphicon glyphicon-edit"></i>
                     </button>
@@ -114,6 +117,9 @@
             }
         },
         methods: {
+            topUpAgentAction (data) {
+                Hub.$emit('topUpAgentEvent', data);
+            },
             editInfoAction (data) {
                 Hub.$emit('editInfoEvent', data);
             },
@@ -210,7 +216,20 @@
                 4: '金牌代理'
             },
 
-            activatedRow: {},       //待编辑的行
+            topUpData: {
+                type: {
+                    1: '房卡',
+                    2: '金币'
+                },
+                typeId: 1,
+                amount: null,
+            },
+
+            activatedRow: {
+                group: '',
+                parent: '',
+                topUpType: 1,
+            },       //待编辑的行
 
             editAgentResponse: {     //编辑用户信息
                 message: '',
@@ -326,6 +345,31 @@
                     }
                 }
             },
+            topUpAgent () {
+                var _self = this;
+
+                if (_self.errors.any()) { return false; }    //表单验证，验证失败不提交
+
+                axios({
+                    method: 'POST',
+                    url: `/admin/api/top-up/top-agent/${_self.activatedRow.account}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
+                    validateStatus: function (status) {
+                        return status == 200 || status == 422;
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status === 422) {
+                            alert(JSON.stringify(response.data))
+                        } else {
+                            response.data.error ? alert(response.data.error) : alert(response.data.message);
+                            _self.topUpData.amount = null;
+                        }
+                    })
+                    .catch(function (err) {
+                        alert(err);
+                        console.log(err);
+                    });
+            },
             editAgentInfo () {
                 var _self = this;
 
@@ -419,6 +463,9 @@
         mounted: function () {
             var _self = this;
 
+            Hub.$on('topUpAgentEvent', function (data) {
+                _self.activatedRow = data;
+            });
             Hub.$on('editInfoEvent', function (data) {
                 _self.activatedRow = data;
             });

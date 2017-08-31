@@ -14,14 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class TopUpController extends Controller
 {
-    protected $currentAdmin = null;
-
-    public function __construct()
-    {
-        //TODO 完成权限控制之后需要更新session此值
-        $this->currentAdmin = session('user') ?: User::find(1);
-    }
-
     //给总代理商充卡
     public function topUp2TopAgent(Request $request, $receiver, $type, $amount)
     {
@@ -41,7 +33,8 @@ class TopUpController extends Controller
 
         $this->topUp($receiverModel, $type, $amount);
 
-        //TODO 日志记录
+        OperationLogs::insert(session('user')->id, $request->path(), $request->method(),
+            '给总代理商充值', json_encode($request->route()->parameters));
         return [
             'message' => '充值成功',
         ];
@@ -57,7 +50,7 @@ class TopUpController extends Controller
         return DB::transaction(function () use ($receiver, $type, $amount){
             //记录充值流水
             TopUpAdmin::create([
-                'provider_id' => $this->currentAdmin->id,
+                'provider_id' => session('user')->id,
                 'receiver_id' => $receiver->id,
                 'type' => $type,
                 'amount' => $amount,
