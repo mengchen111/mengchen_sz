@@ -19,6 +19,7 @@
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#"> Agent</a></li>
                 <li class="active">List</li>
             </ol>
         </section>
@@ -50,7 +51,7 @@
                                   :sort-order="sortOrder"
                                   :css="css.table"
                                   pagination-path=""
-                                  :per-page="10"
+                                  :per-page="15"
                                   :append-params="moreParams"
                                   @vuetable:pagination-data="onPaginationData"
                                   detail-row-component="detail-row"
@@ -265,6 +266,7 @@
                 {
                     name: 'group.name',
                     title: '代理级别',
+                    sortField: 'group_id'
                 },
                 {
                     name: 'parent.account',

@@ -73,10 +73,29 @@ class TopUpController extends Controller
     }
 
     //管理员给总代的充卡记录
-    public function topUp2TopAgentHistory()
+    public function topUp2TopAgentHistory(Request $request)
     {
-        //TODO 日志记录
-        return TopUpAdmin::with(['provider', 'receiver', 'item'])->get();
+        $per_page = $request->per_page ?: 10;
+        $order = $request->sort ? explode('|', $request->sort) : ['id', 'desc'];
+
+        OperationLogs::insert(session('user')->id, $request->path(), $request->method(),
+            '总代理商充卡记录', json_encode($request->all()));
+
+        //搜索代理商
+        if ($request->has('filter')) {
+            $receivers = array_column(User::where('account', 'like', "%{$request->filter}%")->get()->toArray(), 'id');
+            if (empty($receivers)) {
+                return null;
+            }
+            return  TopUpAdmin::with(['provider', 'receiver', 'item'])
+                ->whereIn('receiver_id', $receivers)
+                ->orderBy($order[0], $order[1])
+                ->paginate($per_page);
+        }
+
+        return TopUpAdmin::with(['provider', 'receiver', 'item'])
+            ->orderBy($order[0], $order[1])
+            ->paginate($per_page);
     }
 
     //上级代理商给下级的充卡记录

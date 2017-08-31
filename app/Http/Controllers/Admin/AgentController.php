@@ -16,19 +16,19 @@ class AgentController extends Controller
         $per_page = $request->per_page ?: 10;
         $order = $request->sort ? explode('|', $request->sort) : ['id', 'desc'];
 
-        //查找，只查找account
+        OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '查看代理商列表');
+
+        //查找接收者账号
         if ($request->has('filter')) {
             $filterText = $request->filter;
             return User::with(['group', 'parent', 'inventorys.item'])
-                ->where('account', 'like', '%'.$filterText.'%')
+                ->where('account', 'like', "%{$filterText}%")
                 ->where('group_id', '!=', 1)
                 ->orderBy($order[0], $order[1])
                 ->paginate($per_page);
         }
-
-        OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '查看代理商列表');
         return User::with(['group', 'parent', 'inventorys.item'])
-            ->where('group_id', '!=', 1)->orderBy($order[0], $order[1])
+            ->where('group_id', '!=', 1)->orderBy($order[0], $order[1])     //不允许查看管理员
             ->paginate($per_page);
     }
 
