@@ -196,17 +196,6 @@
                 //console.log('cellClicked: ', field.name, data.email)
                 //this.$refs.vuetable.toggleDetailRow(data.id);
             },
-
-            getCardsCount (inventorys) {
-                if (0 === inventorys.length) {
-                    return null;
-                }
-                for (var inventory of inventorys) {
-                    if (inventory.item.name === '房卡') {
-                        return inventory.stock;
-                    }
-                }
-            },
         },
 
         mounted: function () {
