@@ -21,9 +21,10 @@ Route::get('list-session', 'DevToolsController@listSession');
 Route::get('hashed-pass/{pass}', 'DevToolsController@hashedPass');
 Route::get('info', 'InfoController@info');
 
+//ajax接口
 Route::group([
     'middleware' => ['auth'],
-    'prefix' => 'admin',
+    'prefix' => 'admin/api',
     'namespace' => 'Admin'
 ], function () {
     Route::get('agent', 'AgentController@showAll');
@@ -36,6 +37,15 @@ Route::group([
     Route::get('top-up/agent', 'TopUpController@Agent2AgentHistory');
     Route::get('top-up/player', 'TopUpController@Agent2PlayerHistory');
     Route::post('top-up/top-agent/{receiver}/{type}/{amount}', 'TopUpController@topUp2TopAgent')->where('amount', '[0-9]+');
+});
+
+//视图路由
+Route::group([
+    'middleware' => ['auth'],
+    'prefix' => 'admin',
+    'namespace' => 'Admin'
+], function () {
+    Route::get('agent/list', 'ViewController@agentList');
 });
 
 Route::group([

@@ -45,7 +45,7 @@
                         ></vuetable-pagination>-->
 
                         <vuetable ref="vuetable"
-                                  api-url="/admin/api/agent"
+                                  api-url="/admin/agent"
                                   :fields="fields"
                                   :sort-order="sortOrder"
                                   :css="css.table"
@@ -333,7 +333,7 @@
 
                 axios({
                     method: 'PUT',
-                    url: '/admin/api/agent/' + _self.activatedRow.id,
+                    url: '/admin/agent/' + _self.activatedRow.id,
                     data: _self.activatedRow,
                     timeout: 5000,                          //超时时间
                     xsrfCookieName: 'XSRF-TOKEN',
@@ -363,7 +363,7 @@
 
                 axios({
                     method: 'PUT',
-                    url: '/admin/api/agent/pass/' + this.activatedRow.id,
+                    url: '/admin/agent/pass/' + this.activatedRow.id,
                     data: this.changePassword,
                     timeout: 5000,                          //超时时间
                     xsrfCookieName: 'XSRF-TOKEN',
@@ -392,7 +392,7 @@
 
                 axios({
                     method: 'DELETE',
-                    url: '/admin/api/agent/' + this.activatedRow.id,
+                    url: '/admin/agent/' + this.activatedRow.id,
                     timeout: 5000,                          //超时时间
                     xsrfCookieName: 'XSRF-TOKEN',
                     xsrfHeaderName: 'X-XSRF-TOKEN',
