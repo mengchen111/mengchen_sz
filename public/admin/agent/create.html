@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--#include virtual="/ssi/header.html"-->
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- Main Header -->
+    <!--#include virtual="/ssi/main-header.html"-->
+
+    <!-- Main sidebar -->
+    <!--#include virtual="/ssi/sidebar.html"-->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" id="app">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                梦晨
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">Create</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">新建代理商</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form class="form-horizontal" @submit.prevent="createAgent">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">账号</label>
+                            <div class="col-sm-4">
+                                <input name="account" type="text" class="form-control" placeholder="登录账号"
+                                       v-model.trim="formData.account" v-validate="'required|min: 6'">
+                                <span v-show="errors.has('account')" class="text-danger">{{ errors.first('account') }}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">密码</label>
+                            <div class="col-sm-4">
+                                <input name="password" type="password" class="form-control" placeholder="密码"
+                                       v-model.trim="formData.password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">密码确认</label>
+                            <div class="col-sm-4">
+                                <input name="password_confirmation" type="password" class="form-control" placeholder="再次输入密码"
+                                       v-model.trim="formData.password_confirmation">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">昵称</label>
+                            <div class="col-sm-4">
+                                <input name="name" type="text" class="form-control" placeholder="昵称"
+                                       v-model.trim="formData.name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">代理类型</label>
+                            <div class="col-sm-4">
+                                <select name="group_id" class="form-control" v-model="formData.group_id" disabled>
+                                    <option value="2" selected>总代理</option>
+                                    <option value="3">钻石代理</option>
+                                    <option value="4">金牌代理</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-4">
+                                <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+
+        </section>
+        <!-- /.content -->
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    <!--#include virtual="/ssi/main-footer.html"-->
+
+</div>
+<!-- ./wrapper -->
+
+<script>
+    Vue.use(VeeValidate);   //注册vee-validate插件
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            formData: {
+                group_id: 2,
+            },
+            currentUserInfo: {},
+        },
+        methods: {
+            createAgent () {
+                var _self = this;
+
+                if (_self.errors.any()) { return false; }    //表单验证，验证失败不提交
+
+                axios({
+                    method: 'POST',
+                    url: '/admin/api/agent/',
+                    data: _self.formData,
+                    validateStatus: function (status) {
+                        return status == 200 || status == 422;
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status === 422) {
+                            alert(JSON.stringify(response.data))
+                        } else {
+                            alert('添加总代理商成功');
+                            //清空表单数据
+                            for (var index of Object.keys(_self.formData)) {
+                                _self.formData[index] = index === 'group_id' ? _self.formData[index] : '';
+                            }
+                        }
+                    })
+                    .catch(function (err) {
+                        alert(err);
+                        console.log(err);
+                    });
+            }
+
+        },
+    })
+</script>
+</body>
+</html>

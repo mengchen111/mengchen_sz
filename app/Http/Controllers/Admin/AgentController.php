@@ -32,7 +32,7 @@ class AgentController extends Controller
             ->paginate($per_page);
     }
 
-    //创建代理商
+    //创建代理商(总代)
     public function create(Request $request)
     {
         Validator::make($request->all(), [
@@ -41,13 +41,18 @@ class AgentController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'email' => 'string|email|max:255',
             'phone' => 'integer|digits:11',
-            'group_id' => 'required|integer|not_in:1',  //管理员不能创建管理员
-            'parent_id' => 'required|integer',
+            'group_id' => 'required|integer|not_in:1|in:2',  //管理员不能创建管理员，暂时只允许创建总代
+            //'parent_id' => 'required|integer|in:1',
         ])->validate();
 
         $data = $request->intersect(
-            'name', 'account', 'password', 'email', 'phone', 'group_id', 'parent_id'
+            'name', 'account', 'password', 'email', 'phone', 'group_id'
         );
+
+        $data['password'] = bcrypt($data['password']);
+        $data = array_merge($data, ['parent_id' => session('user')->id]);
+
+        OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '添加总代理商', json_encode($data));
         return User::create($data);
     }
 
