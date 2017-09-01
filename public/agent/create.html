@@ -8,7 +8,7 @@
     <!--#include virtual="/ssi/main-header.html"-->
 
     <!-- Main sidebar -->
-    <!--#include virtual="/ssi/admin/sidebar.html"-->
+    <!--#include virtual="/ssi/agent/sidebar.html"-->
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" id="app">
@@ -29,7 +29,7 @@
 
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">新建代理商</h3>
+                    <h3 class="box-title">新建子代理商</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -66,10 +66,11 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">代理类型</label>
                             <div class="col-sm-4">
-                                <select name="group_id" class="form-control" v-model="formData.group_id" disabled>
-                                    <option value="2" selected>总代理</option>
-                                    <option value="3">钻石代理</option>
-                                    <option value="4">金牌代理</option>
+                                <select name="group_id" class="form-control" disabled>
+                                    <option v-for="(type, index) in agentType"
+                                            v-if="index == currentAgentInfo['group_id'] + 1" selected>
+                                        {{ type }}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -101,10 +102,14 @@
     var app = new Vue({
         el: '#app',
         data: {
-            formData: {
-                group_id: 2,
+            agentType: {
+                2: '总代理',
+                3: '钻石代理',
+                4: '金牌代理',
+                5: '金牌代理无法创建下级代理'
             },
-            currentUserInfo: {},
+            formData: {},
+            currentAgentInfo: {},
         },
         methods: {
             createAgent () {
@@ -112,9 +117,13 @@
 
                 if (_self.errors.any()) { return false; }    //表单验证，验证失败不提交
 
+                if (_self.currentAgentInfo['group_id'] >= 4) {
+                    return alert('金牌代理无法创建下级代理商');
+                }
+
                 axios({
                     method: 'POST',
-                    url: '/admin/api/agent/',
+                    url: '/agent/api/subagent/',
                     data: _self.formData,
                     validateStatus: function (status) {
                         return status == 200 || status == 422;
@@ -124,11 +133,11 @@
                         if (response.status === 422) {
                             alert(JSON.stringify(response.data))
                         } else {
-                            response.data.error ? alert(response.data.error) : alert('添加总代理商成功');
+                            response.data.error ? alert(response.data.error) : alert('添加子代理商成功');
 
                             //清空表单数据
                             for (var index of Object.keys(_self.formData)) {
-                                _self.formData[index] = index === 'group_id' ? _self.formData[index] : '';
+                                _self.formData[index] = '';
                             }
                         }
                     })
@@ -137,8 +146,18 @@
                         console.log(err);
                     });
             }
-
         },
+        created: function () {
+            var _self = this;
+
+            axios({
+                method: 'GET',
+                url: '/api/info/',
+            })
+                .then(function (response) {
+                    _self.currentAgentInfo = response.data;
+                })
+        }
     })
 </script>
 </body>

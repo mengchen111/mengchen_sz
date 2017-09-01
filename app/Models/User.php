@@ -12,6 +12,9 @@ class User extends Authenticatable
     protected $table = 'users';
     protected $primaryKey = 'id';
 
+    protected $lowestAgentId = 4;
+    protected $adminId = 1;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -52,5 +55,16 @@ class User extends Authenticatable
     public function inventorys()
     {
         return $this->hasMany('App\Models\Inventory', 'user_id', 'id');
+    }
+
+    //定义访问器
+    public function getIsLowestAgentAttribute()
+    {
+        return $this->attributes['group_id'] >= $this->lowestAgentId;
+    }
+
+    public function getIsAdminAttribute()
+    {
+        return $this->attributes['group_id'] == $this->adminId;
     }
 }
