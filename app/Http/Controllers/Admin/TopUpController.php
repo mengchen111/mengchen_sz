@@ -42,8 +42,8 @@ class TopUpController extends Controller
 
         $this->topUp($receiverModel, $type, $amount);
 
-        OperationLogs::insert(session('user')->id, $request->path(), $request->method(),
-            '给总代理商充值', json_encode($request->route()->parameters));
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '给总代理商充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
         return [
             'message' => '充值成功',
         ];
@@ -84,8 +84,8 @@ class TopUpController extends Controller
     //管理员给总代的充值记录
     public function topUp2TopAgentHistory(Request $request)
     {
-        OperationLogs::insert(session('user')->id, $request->path(), $request->method(),
-            '总代理商充值记录', json_encode($request->all()));
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '总代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索代理商
         if ($request->has('filter')) {
@@ -107,8 +107,8 @@ class TopUpController extends Controller
     //上级代理商给下级的充值记录
     public function Agent2AgentHistory(Request $request)
     {
-        OperationLogs::insert(session('user')->id, $request->path(), $request->method(),
-            '代理商给代理商充值记录', json_encode($request->all()));
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '代理商给代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索代理商，查找字符串包括发放者和接收者
         if ($request->has('filter')) {
@@ -129,10 +129,26 @@ class TopUpController extends Controller
     }
 
     //代理商给玩家的充值记录
-    public function Agent2PlayerHistory()
+    public function Agent2PlayerHistory(Request $request)
     {
-        //TODO 日志记录
-        return TopUpPlayer::with(['provider', 'item'])->get();
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '代理商给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
+
+        //搜索provider
+        if ($request->has('filter')) {
+            $accounts = array_column(User::where('account', 'like', "%{$request->filter}%")->get()->toArray(), 'id');
+            if (empty($accounts)) {
+                return null;
+            }
+            return TopUpPlayer::with(['provider', 'item'])
+                ->whereIn('provider_id', $accounts)
+                ->orderBy($this->order[0], $this->order[1])
+                ->paginate($this->per_page);
+        }
+
+        return TopUpPlayer::with(['provider', 'item'])
+            ->orderBy($this->order[0], $this->order[1])
+            ->paginate($this->per_page);
     }
 
 }

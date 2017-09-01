@@ -10,17 +10,18 @@ class OperationLogs extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'user_id', 'uri', 'method', 'description', 'data'
+        'user_id', 'uri', 'method', 'description', 'data', 'user_agent'
     ];
 
-    public static function insert($userId, $uri, $method, $description, $data = '')
+    public static function add($userId, $uri, $method, $description, $userAgent = 'undefined', $data = '')
     {
         return self::create([
             'user_id' => $userId,
             'uri' => $uri,
             'method' => $method,
             'description' => $description,
-            'data' => $data
+            'data' => $data,
+            'user_agent' => $userAgent
         ]);
     }
 }

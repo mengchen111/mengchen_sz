@@ -19,7 +19,8 @@ class CreateOperationLogsTable extends Migration
             $table->string('uri');
             $table->string('method');
             $table->string('description');
-            $table->text('data')->comment('操作的数据');
+            $table->text('data')->nullable()->comment('操作的数据');
+            $table->text('user_agent')->nullable()->comment('发起调用的客户端');
             $table->timestamps();
         });
     }

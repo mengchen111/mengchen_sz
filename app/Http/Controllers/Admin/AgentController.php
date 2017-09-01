@@ -16,7 +16,8 @@ class AgentController extends Controller
         $per_page = $request->per_page ?: 10;
         $order = $request->sort ? explode('|', $request->sort) : ['id', 'desc'];
 
-        OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '查看代理商列表');
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '查看代理商列表', $request->header('User-Agent'));
 
         //查找接收者账号
         if ($request->has('filter')) {
@@ -52,7 +53,8 @@ class AgentController extends Controller
         $data['password'] = bcrypt($data['password']);
         $data = array_merge($data, ['parent_id' => session('user')->id]);
 
-        OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '添加总代理商', json_encode($data));
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(), '添加总代理商',
+            $request->header('User-Agent'), json_encode($data));
         return User::create($data);
     }
 
@@ -70,7 +72,8 @@ class AgentController extends Controller
             ];
         }
 
-        OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '删除代理商');
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '删除代理商', $request->header('User-Agent'));
         return $user->delete() ? ['message' => '删除成功'] : ['message' => '删除失败'];
     }
 
@@ -119,7 +122,8 @@ class AgentController extends Controller
         }
 
         if ($user->update($data)) {
-            OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '更新代理商信息', json_encode($data));
+            OperationLogs::add(session('user')->id, $request->path(), $request->method(), '更新代理商信息',
+                $request->header('User-Agent'), json_encode($data));
             return [
                 'message' => '更新用户数据成功'
             ];
@@ -135,7 +139,8 @@ class AgentController extends Controller
         $data = ['password' => bcrypt($request->get('password')) ];
 
         if ($user->update($data)) {
-            OperationLogs::insert(session('user')->id, $request->path(), $request->method(), '更新代理商密码', json_encode($data));
+            OperationLogs::add(session('user')->id, $request->path(), $request->method(), '更新代理商密码',
+                $request->header('User-Agent'), json_encode($data));
             return [
                 'message' => '更新用户数据成功'
             ];
