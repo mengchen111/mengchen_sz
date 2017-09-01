@@ -46,7 +46,7 @@
                         ></vuetable-pagination>-->
 
                         <vuetable ref="vuetable"
-                                  api-url="/admin/api/top-up/player"
+                                  :api-url="vuetableUrl"
                                   :fields="fields"
                                   :sort-order="sortOrder"
                                   :css="css.table"
@@ -117,6 +117,8 @@
     var app = new Vue({
         el: '#app',
         data: {
+            vuetableUrl: '/admin/api/top-up/player',
+
             activatedRow: {},       //选中的行
 
             fields: [

@@ -46,7 +46,7 @@
                         ></vuetable-pagination>-->
 
                         <vuetable ref="vuetable"
-                                  api-url="/admin/api/agent"
+                                  :api-url="vuetableUrl"
                                   :fields="fields"
                                   :sort-order="sortOrder"
                                   :css="css.table"
@@ -211,6 +211,8 @@
     var app = new Vue({
         el: '#app',
         data: {
+            vuetableUrl: '/admin/api/agent',
+
             agentType: {
                 2: '总代理',
                 3: '钻石代理',
