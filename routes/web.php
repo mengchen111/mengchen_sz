@@ -76,6 +76,7 @@ Route::group([
 ], function () {
     Route::get('subagent', 'SubAgentController@show');
     Route::post('subagent', 'SubAgentController@create');
+    Route::delete('subagent/{user}', 'SubAgentController@destroy')->where('user', '[0-9]+');
     Route::put('subagent', 'SubAgentController@update');
     Route::put('subagent/{child}', 'SubAgentController@updateChild')->where('child', '[0-9]+');
 

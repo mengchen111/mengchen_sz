@@ -5,23 +5,32 @@ namespace App\Http\Controllers\Agent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\OperationLogs;
 use Illuminate\Support\Facades\Validator;
 
 class SubAgentController extends Controller
 {
-    protected $currentAgent = [];
-
-    public function __construct(Request $request)
-    {
-        //TODO 登录功能完成之后更改
-        $this->currentAgent = session('user') ? session('user') : User::find(2);
-    }
-
     //查看下级代理商列表
-    public function show()
+    public function show(Request $request)
     {
-        //TODO 记录日志
-        return User::where('parent_id', $this->currentAgent->id)->get();
+        $per_page = $request->per_page ?: 10;
+        $order = $request->sort ? explode('|', $request->sort) : ['id', 'desc'];
+
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '查看子代理商列表', $request->header('User-Agent'));
+
+        if ($request->has('filter')) {
+            $filterText = $request->filter;
+            return User::with(['group', 'parent', 'inventorys.item'])
+                ->where('account', 'like', "%{$filterText}%")
+                ->where('parent_id', session('user')->id)
+                ->orderBy($order[0], $order[1])
+                ->paginate($per_page);
+        }
+        return User::with(['group', 'parent', 'inventorys.item'])
+            ->where('parent_id', session('user')->id)
+            ->orderBy($order[0], $order[1])
+            ->paginate($per_page);
     }
 
     //创建下级代理商
@@ -39,13 +48,13 @@ class SubAgentController extends Controller
         $data = $request->intersect(
             'name', 'account', 'password', 'email', 'phone', 'group_id'
         );
-        $data = array_merge($data, [ 'parent_id' => $this->currentAgent->id ]);
+        $data = array_merge($data, [ 'parent_id' => session('user')->id ]);
         //TODO 记录日志
         return User::create($data);
     }
 
     //删除下级代理商
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
         if ($this->isAdmin($user)) {
             return [
@@ -59,8 +68,10 @@ class SubAgentController extends Controller
             ];
         }
 
-        //TODO 记录日志
-        return $user->delete() ? ['message' => '删除成功'] : ['message' => '删除失败'];
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '删除子代理商', $request->header('User-Agent'), $user->toJson());
+
+        return $user->delete() ? ['message' => '删除成功'] : ['error' => '删除失败'];
     }
 
     protected function isAdmin($user)
@@ -74,7 +85,7 @@ class SubAgentController extends Controller
     }
 
     //代理商更改自己的个人信息
-    protected function update(Request $request)
+    public function update(Request $request)
     {
         Validator::make($request->all(), [
             'name' => 'string|max:255',
@@ -87,7 +98,7 @@ class SubAgentController extends Controller
             'name', 'password', 'email', 'phone'
         );
 
-        if ($this->currentAgent->update($data)) {
+        if (session('user')->update($data)) {
             //TODO 操作日志记录
             return [
                 'message' => '更新用户数据成功'
@@ -124,8 +135,14 @@ class SubAgentController extends Controller
             'name', 'account', 'password', 'email', 'phone'
         );
 
+        if (array_key_exists('password', $data)) {    //如果有传递密码过来
+            $data['password'] = bcrypt($data['password']);  //加密密码
+        }
+
         if ($child->update($data)) {
-            //TODO 操作日志记录
+            OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+                '更新子代理商信息', $request->header('User-Agent'), json_encode($data));
+
             return [
                 'message' => '更新用户数据成功'
             ];
@@ -134,6 +151,6 @@ class SubAgentController extends Controller
 
     protected function isChild($child)
     {
-        return $this->currentAgent->id === $child->parent_id;
+        return session('user')->id === $child->parent_id;
     }
 }

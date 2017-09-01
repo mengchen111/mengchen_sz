@@ -19,7 +19,7 @@ class AgentController extends Controller
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
             '查看代理商列表', $request->header('User-Agent'));
 
-        //查找接收者账号
+        //查找用户名
         if ($request->has('filter')) {
             $filterText = $request->filter;
             return User::with(['group', 'parent', 'inventorys.item'])
@@ -73,8 +73,8 @@ class AgentController extends Controller
         }
 
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '删除代理商', $request->header('User-Agent'));
-        return $user->delete() ? ['message' => '删除成功'] : ['message' => '删除失败'];
+            '删除代理商', $request->header('User-Agent'), $user->toJson());
+        return $user->delete() ? ['message' => '删除成功'] : ['error' => '删除失败'];
     }
 
     protected function isAdmin($user)

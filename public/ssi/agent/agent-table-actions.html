@@ -4,10 +4,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal">x</button>
-                <h3 class="text-center">总代理商信息</h3>
+                <h3 class="text-center">子代理商充值</h3>
             </div>
             <div class="modal-body">
-                <form role="form" class="form-group" method="POST" action="#" @submit.prevent="topUpAgent">
+                <form role="form" class="form-group" method="POST" action="#" @submit.prevent="topUpChild">
                     <div class="form-group has-feedback">
                         <label>代理级别</label>
                         <input name="group_name" type="text" class="form-control"
@@ -48,10 +48,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal">x</button>
-                <h3 class="text-center">修改代理商信息</h3>
+                <h3 class="text-center">修改子代理商信息</h3>
             </div>
             <div class="modal-body">
-                <form role="form" class="form-group" method="POST" action="#" @submit.prevent="editAgentInfo">
+                <form role="form" class="form-group" method="POST" action="#" @submit.prevent="editChildInfo">
                     <div class="form-group has-feedback">
                         <label>昵称</label>
                         <input name="name" type="text" class="form-control" v-validate="'required|min: 6'"
@@ -66,60 +66,12 @@
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                         <span v-show="errors.has('account')" class="text-danger">{{ errors.first('account') }}</span>
                     </div>
-<!--                    <div class="form-group">
-                        <label>代理类型</label>
-                        <select class="form-control" v-model="activatedRow.group_id">
-                            <option v-for="(agent, index) in agentType" :value="index"
-                                    v-if="agent == agentType[activatedRow.group_id]" selected>
-                                {{ agent }}
-                            </option>
-                            <option v-else :value="index">
-                                {{ agent }}
-                            </option>
-                        </select>
-                    </div>
                     <div class="form-group has-feedback">
-                        <label>上级代理</label>
-                        <input name="parent_account" type="parent_account" class="form-control" v-validate="'required|min: 6'"
-                               v-model.trim="activatedRow.parent.name" placeholder="上级代理账号名">
+                        <label>密码</label>
+                        <input name="password" type="password" class="form-control"
+                               v-model.trim="activatedRow.password" placeholder="留空不修改密码">
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                        <span v-show="errors.has('parent_account')" class="text-danger">{{ errors.first('parent_account') }}</span>
-                    </div>-->
-                    <div>
-                        <p :class="editAgentResponse.ifSuccess ? 'text-green' : 'text-danger'">{{ editAgentResponse.message }}</p>
                     </div>
-
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 更新代理商密码 -->
-<div id="agent-password-modal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog" style="width: 380px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" type="button" data-dismiss="modal">x</button>
-                <h3 class="text-center">修改代理商密码</h3>
-            </div>
-            <div class="modal-body">
-                <form role="form" class="form-group" method="POST" action="#" @submit.prevent="updateAgentPassword">
-                    <div class="form-group has-feedback">
-                        <input name="password" type="password" class="form-control" v-validate="'required|min: 6'"
-                               placeholder="代理商密码" v-model.trim="changePassword.password">
-                        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
-                        <span v-show="errors.has('password')" class="text-danger">{{ errors.first('password') }}</span>
-                        <div>
-                            <p :class="changePassword.ifSuccess ? 'text-green' : 'text-danger'">
-                                {{ changePassword.message }}
-                            </p>
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
                     </div>
@@ -146,13 +98,6 @@
                     取消
                 </button>
             </div>
-
-            <div style="margin-left: 15px; padding-bottom: 1px;">
-                <p :class="deleteAgentResponse.ifSuccess ? 'text-green' : 'text-danger'">
-                    {{ deleteAgentResponse.message }}
-                </p>
-            </div>
-
             </div>
         </div>
     </div>

@@ -14,14 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class TopUpController extends Controller
 {
-    protected $currentAgent = null;
-
-    public function __construct(Request $request)
-    {
-        //TODO 登录功能完成之后更改
-        $this->currentAgent = session('user') ? session('user') : User::find(2);
-    }
-
     //给当前代理商的下级代理商充房卡
     public function topUp2Child(Request $request, $receiver, $type, $amount)
     {
@@ -43,13 +35,13 @@ class TopUpController extends Controller
 
         //TODO 日志记录
         return [
-            'message' => '充值成功',
+            'message' => '充值成功'
         ];
     }
 
     protected function isChild($child)
     {
-        return $this->currentAgent->id === $child->parent_id;
+        return session('user')->id === $child->parent_id;
     }
 
     protected function topUp4Child($receiver, $type, $amount)
@@ -57,7 +49,7 @@ class TopUpController extends Controller
         return DB::transaction(function () use ($receiver, $type, $amount){
             //记录充值流水
             TopUpAgent::create([
-                'provider_id' => $this->currentAgent->id,
+                'provider_id' => session('user')->id,
                 'receiver_id' => $receiver->id,
                 'type' => $type,
                 'amount' => $amount,
@@ -99,7 +91,7 @@ class TopUpController extends Controller
         //TODO 完善玩家充值流程
         DB::transaction(function () use ($receiver, $amount){
             TopUpAgent::create([
-                'provider_id' => $this->currentAgent->id,
+                'provider_id' => session('user')->id,
                 'player' => $receiver->id,
                 'amount' => $amount,
             ]);
@@ -119,12 +111,12 @@ class TopUpController extends Controller
     public function topUp2ChildHistory()
     {
         //TODO 日志记录
-        return TopUpAgent::with(['provider', 'receiver', 'item'])->where('provider_id', $this->currentAgent->id)->get();
+        return TopUpAgent::with(['provider', 'receiver', 'item'])->where('provider_id', session('user')->id)->get();
     }
 
     public function topUp2PlayerHistory()
     {
         //TODO 日志记录
-        return TopUpPlayer::with(['provider', 'item'])->where('provider_id', $this->currentAgent->id)->get();
+        return TopUpPlayer::with(['provider', 'item'])->where('provider_id', session('user')->id)->get();
     }
 }
