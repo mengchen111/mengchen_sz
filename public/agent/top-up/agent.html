@@ -8,7 +8,7 @@
     <!--#include virtual="/ssi/main-header.html"-->
 
     <!-- Main sidebar -->
-    <!--#include virtual="/ssi/admin/sidebar.html"-->
+    <!--#include virtual="/ssi/agent/sidebar.html"-->
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" id="app">
@@ -117,7 +117,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            vuetableUrl: '/admin/api/top-up/agent',
+            vuetableUrl: '/agent/api/top-up/child',
 
             activatedRow: {},       //选中的行
 

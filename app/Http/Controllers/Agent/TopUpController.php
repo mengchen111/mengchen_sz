@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\DB;
 
 class TopUpController extends Controller
 {
+    protected $per_page = 15;
+    protected $order = ['id', 'desc'];
+
+    public function __construct(Request $request)
+    {
+        $this->per_page = $request->per_page ?: $this->per_page;
+        $this->order = $request->sort ? explode('|', $request->sort) : $this->order;
+    }
+
     //给当前代理商的下级代理商充房卡
     public function topUp2Child(Request $request, $receiver, $type, $amount)
     {
@@ -108,10 +117,27 @@ class TopUpController extends Controller
     }
 
     //给下级代理商的充卡记录
-    public function topUp2ChildHistory()
+    public function topUp2ChildHistory(Request $request)
     {
-        //TODO 日志记录
-        return TopUpAgent::with(['provider', 'receiver', 'item'])->where('provider_id', session('user')->id)->get();
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '总代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
+
+        //搜索下级代理商
+        if ($request->has('filter')) {
+            $receivers = array_column(User::where('account', 'like', "%{$request->filter}%")->get()->toArray(), 'id');
+            if (empty($receivers)) {
+                return null;
+            }
+            return  TopUpAgent::with(['provider', 'receiver', 'item'])
+                ->whereIn('receiver_id', $receivers)
+                ->orderBy($this->order[0], $this->order[1])
+                ->paginate($this->per_page);
+        }
+
+        return TopUpAgent::with(['provider', 'receiver', 'item'])
+            ->orderBy($this->order[0], $this->order[1])
+            ->paginate($this->per_page);
+        //return TopUpAgent::with(['provider', 'receiver', 'item'])->where('provider_id', session('user')->id)->get();
     }
 
     public function topUp2PlayerHistory()
