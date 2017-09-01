@@ -24,4 +24,9 @@ class OperationLogs extends Model
             'user_agent' => $userAgent
         ]);
     }
+
+    public function user()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
+    }
 }

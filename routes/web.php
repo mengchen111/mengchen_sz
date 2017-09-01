@@ -45,6 +45,8 @@ Route::group([
     Route::get('top-up/agent', 'TopUpController@Agent2AgentHistory');
     Route::get('top-up/player', 'TopUpController@Agent2PlayerHistory');
     Route::post('top-up/top-agent/{receiver}/{type}/{amount}', 'TopUpController@topUp2TopAgent')->where('amount', '[0-9]+');
+
+    Route::get('system/log', 'SystemController@showLog');
 });
 
 //视图路由
