@@ -85,7 +85,7 @@ class TopUpController extends Controller
     public function topUp2TopAgentHistory(Request $request)
     {
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '总代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '查看总代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索代理商
         if ($request->has('filter')) {
@@ -108,7 +108,7 @@ class TopUpController extends Controller
     public function Agent2AgentHistory(Request $request)
     {
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '代理商给代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '查看代理商给代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索代理商，查找字符串包括发放者和接收者
         if ($request->has('filter')) {
@@ -132,7 +132,7 @@ class TopUpController extends Controller
     public function Agent2PlayerHistory(Request $request)
     {
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '代理商给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '查看代理商给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索provider
         if ($request->has('filter')) {

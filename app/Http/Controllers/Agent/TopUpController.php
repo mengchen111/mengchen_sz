@@ -120,7 +120,7 @@ class TopUpController extends Controller
     public function topUp2ChildHistory(Request $request)
     {
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '总代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '查看给子代理商的充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索下级代理商
         if ($request->has('filter')) {
@@ -140,9 +140,27 @@ class TopUpController extends Controller
         //return TopUpAgent::with(['provider', 'receiver', 'item'])->where('provider_id', session('user')->id)->get();
     }
 
-    public function topUp2PlayerHistory()
+    public function topUp2PlayerHistory(Request $request)
     {
-        //TODO 日志记录
-        return TopUpPlayer::with(['provider', 'item'])->where('provider_id', session('user')->id)->get();
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '查看代理商给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
+
+        //搜索provider
+        if ($request->has('filter')) {
+            /*$accounts = array_column(User::where('account', 'like', "%{$request->filter}%")->get()->toArray(), 'id');
+            if (empty($accounts)) {
+                return null;
+            }*/
+            return TopUpPlayer::with(['provider', 'item'])
+                ->where('player', 'like', "%{$request->filter}%")
+                ->where('provider_id', session('user')->id)     //只能查看自己给玩家的充值
+                ->orderBy($this->order[0], $this->order[1])
+                ->paginate($this->per_page);
+        }
+
+        return TopUpPlayer::with(['provider', 'item'])
+            ->where('provider_id', session('user')->id)
+            ->orderBy($this->order[0], $this->order[1])
+            ->paginate($this->per_page);
     }
 }
