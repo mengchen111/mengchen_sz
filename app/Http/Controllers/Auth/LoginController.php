@@ -24,10 +24,15 @@ class LoginController extends Controller
 
     /**
      * Where to redirect users after login.
+     * 如果存在redirectTo方法，那么redirectTo方法的返回值会覆盖此值
      *
      * @var string
      */
-    protected $redirectTo = '/home.html';
+    protected $redirectTo = '/admin/home';
+
+    protected $adminId = 1;
+    protected $adminHomePath = '/admin/home';
+    protected $agentHomePath = '/agent/home';
 
     /**
      * Create a new controller instance.
@@ -65,5 +70,15 @@ class LoginController extends Controller
     {
         $request->session()->put('user', $user);
         $request->session()->put('group', $user->group);
+    }
+
+    protected function redirectTo()
+    {
+        return $this->isAdmin() ? $this->adminHomePath : $this->agentHomePath;
+    }
+
+    protected function isAdmin()
+    {
+        return $this->adminId == session('group')->id;
     }
 }

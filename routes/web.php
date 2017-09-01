@@ -14,6 +14,7 @@
 Route::get('/', function () {
     return redirect('/login');
 });
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
@@ -24,12 +25,12 @@ Route::prefix('dev')->group(function () {
 
 });
 
-//公共ajax接口
+//公共接口
 Route::prefix('api')->group(function () {
     Route::get('info', 'InfoController@info');
 });
 
-//ajax接口
+//管理员接口
 Route::group([
     'middleware' => ['auth'],
     'prefix' => 'admin/api',
@@ -49,15 +50,17 @@ Route::group([
     Route::get('system/log', 'SystemController@showLog');
 });
 
-//视图路由
+//管理员视图路由
 Route::group([
     'middleware' => ['auth'],
     'prefix' => 'admin',
     'namespace' => 'Admin'
 ], function () {
+    Route::get('home', 'ViewController@home');
     Route::get('agent/list', 'ViewController@agentList');
 });
 
+//代理商接口
 Route::group([
     'middleware' => ['auth'],
     'prefix' => 'agent/api',
@@ -74,10 +77,11 @@ Route::group([
     Route::get('top-up/player', 'TopUpController@topUp2PlayerHistory');
 });
 
+//代理商视图
 Route::group([
     'middleware' => ['auth'],
     'prefix' => 'agent',
     'namespace' => 'Agent'
 ], function () {
-    //Route::get('agent/list', 'ViewController@agentList');
+    Route::get('home', 'ViewController@home');
 });

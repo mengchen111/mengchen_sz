@@ -6,7 +6,7 @@
  * Time: 09:56
  */
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Agent;
 
 
 use App\Http\Controllers\Controller;
@@ -16,11 +16,6 @@ class ViewController extends Controller
 {
     public function home(Request $request)
     {
-        return view('admin.home');
-    }
-
-    public function agentList()
-    {
-        return view('admin.agent.list');
+        return view('agent.home');
     }
 }

@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
 {
+    protected $adminId = 1;
+    protected $adminHomePath = '/admin/home';
+    protected $agentHomePath = '/agent/home';
+
     /**
      * Handle an incoming request.
      * 这里只有的登录控制器调用完成之后才会调用此处理器，已经登录过的不经过它
@@ -19,10 +23,14 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            //TODO 在这里可以实现如果不同的用户选择redirect不同的页面
-            return redirect('/home.html');
+            return $this->isAdmin() ? redirect($this->adminHomePath) : redirect($this->agentHomePath);
         }
 
         return $next($request);
+    }
+
+    protected function isAdmin()
+    {
+        return $this->adminId == session('group')->id;
     }
 }
