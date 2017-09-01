@@ -109,7 +109,9 @@ class SubAgentController extends Controller
         );
 
         if (session('user')->update($data)) {
-            //TODO 操作日志记录
+            OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+                '更新代理商个人信息', $request->header('User-Agent'), json_encode($data));
+
             return [
                 'message' => '更新用户数据成功'
             ];

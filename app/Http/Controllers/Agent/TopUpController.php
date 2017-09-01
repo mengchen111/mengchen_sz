@@ -42,7 +42,8 @@ class TopUpController extends Controller
 
         $this->topUp4Child($receiverModel, $type, $amount);
 
-        //TODO 日志记录
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '给子代理商充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
         return [
             'message' => '充值成功'
         ];

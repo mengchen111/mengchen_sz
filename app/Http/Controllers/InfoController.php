@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class InfoController extends Controller
@@ -30,6 +31,6 @@ class InfoController extends Controller
      */
     public function info(Request $request)
     {
-        return $request->session()->get('user');
+        return User::with(['group', 'parent', 'inventorys.item'])->find(session('user')->id);
     }
 }
