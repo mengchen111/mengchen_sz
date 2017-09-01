@@ -18,4 +18,29 @@ class ViewController extends Controller
     {
         return view('agent.home');
     }
+
+    public function subagentList()
+    {
+        return view('agent.subagent.list');
+    }
+
+    public function subagentCreate()
+    {
+        return view('agent.subagent.create');
+    }
+
+    public function topUpAgent()
+    {
+        return view('agent.top-up.agent');
+    }
+
+    public function topUpPlayer()
+    {
+        return view('agent.top-up.player');
+    }
+
+    public function info()
+    {
+        return view('agent.info');
+    }
 }

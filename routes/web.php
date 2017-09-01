@@ -93,4 +93,12 @@ Route::group([
     'namespace' => 'Agent'
 ], function () {
     Route::get('home', 'ViewController@home');
+
+    Route::get('subagent/list', 'ViewController@subagentList');
+    Route::get('subagent/create', 'ViewController@subagentCreate');
+
+    Route::get('top-up/agent', 'ViewController@topUpAgent');
+    Route::get('top-up/player', 'ViewController@topUpPlayer');
+
+    Route::get('info', 'ViewController@info');
 });
