@@ -23,4 +23,29 @@ class ViewController extends Controller
     {
         return view('admin.agent.list');
     }
+
+    public function agentCreate()
+    {
+        return view('admin.agent.create');
+    }
+
+    public function topUpAdmin()
+    {
+        return view('admin.top-up.admin');
+    }
+
+    public function topUpAgent()
+    {
+        return view('admin.top-up.agent');
+    }
+
+    public function topUpPlayer()
+    {
+        return view('admin.top-up.player');
+    }
+
+    public function systemLog()
+    {
+        return view('admin.system.log');
+    }
 }

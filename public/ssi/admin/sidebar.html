@@ -1,5 +1,5 @@
 <!-- Left side column. contains the logo and sidebar -->
-<aside class="main-sidebar">
+<aside class="main-sidebar" id="sidebar">
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
@@ -7,14 +7,14 @@
         <ul class="sidebar-menu">
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="#"><i class="fa fa-home"></i> <span>首页</span></a></li>
+            <li class=""><a href="/admin/home"><i class="fa fa-home"></i> <span>首页</span></a></li>
             <li class="treeview">
-                <a href="#"><i class="fa fa-users"></i> <span>代理管理</span>
+                <a href="#"><i class="fa fa-users"></i> <span>代理商管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle"></i>代理商列表</a></li>
-                    <li><a href="#"><i class="fa fa-circle"></i>新建代理商</a></li>
+                    <li class=""><a href="/admin/agent/list"><i class="fa fa-circle-o"></i>代理商列表</a></li>
+                    <li><a href="/admin/agent/create"><i class="fa fa-circle-o"></i>新建代理商</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -22,9 +22,9 @@
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle"></i>管理员充值记录</a></li>
-                    <li><a href="#"><i class="fa fa-circle"></i>代理商充值记录</a></li>
-                    <li><a href="#"><i class="fa fa-circle"></i>玩家充值记录</a></li>
+                    <li><a href="/admin/top-up/admin"><i class="fa fa-circle-o"></i>管理员充值记录</a></li>
+                    <li><a href="/admin/top-up/agent"><i class="fa fa-circle-o"></i>代理商充值记录</a></li>
+                    <li><a href="/admin/top-up/player"><i class="fa fa-circle-o"></i>玩家充值记录</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -32,7 +32,7 @@
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle"></i>系统日志</a></li>
+                    <li><a href="/admin/system/log"><i class="fa fa-circle-o"></i>系统日志</a></li>
                 </ul>
             </li>
         </ul>
@@ -40,3 +40,20 @@
     </section>
     <!-- /.sidebar -->
 </aside>
+
+<script>
+    var sideBarApp = new Vue({
+        el: '#sidebar',
+        data: {
+            test: 'test',
+        },
+        methods: {
+
+        },
+        created: function () {
+            var _self = this;
+            console.log(_self.test);
+        }
+    })
+
+</script>

@@ -57,7 +57,15 @@ Route::group([
     'namespace' => 'Admin'
 ], function () {
     Route::get('home', 'ViewController@home');
+
     Route::get('agent/list', 'ViewController@agentList');
+    Route::get('agent/create', 'ViewController@agentCreate');
+
+    Route::get('top-up/admin', 'ViewController@topUpAdmin');
+    Route::get('top-up/agent', 'ViewController@topUpAgent');
+    Route::get('top-up/player', 'ViewController@topUpPlayer');
+
+    Route::get('system/log', 'ViewController@systemLog');
 });
 
 //代理商接口
