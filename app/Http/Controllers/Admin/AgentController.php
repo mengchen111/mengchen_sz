@@ -102,24 +102,18 @@ class AgentController extends Controller
             'email' => 'string|email|max:255',
             'phone' => 'integer|digits:11',
             'group_id' => 'integer|not_in:1',   //不能将代理商改成管理员
-            'parent_account' => 'string|exists:users,account',
+            //'parent_account' => 'string|exists:users,account',
         ])->validate();
 
         $data = $request->intersect(
             'name', 'account', 'email', 'phone', 'group_id'
         );
 
-        if ($request->has('parent_account')) {
+        //暂不支持改上级
+        /*if ($request->has('parent_account')) {
             $parentId = User::where('account', $request->get('parent_account'))->first()->id;
             $data = array_merge($data, ['parent_id' => $parentId]);
-        }
-
-        //管理员只能改自己的密码、邮箱和手机信息，其他信息暂不允许修改
-        if ($this->isAdmin($user)) {
-            $data = $request->intersect(
-                'email', 'phone'
-            );
-        }
+        }*/
 
         if ($user->update($data)) {
             OperationLogs::add(session('user')->id, $request->path(), $request->method(), '更新代理商信息',

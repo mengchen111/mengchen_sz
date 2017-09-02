@@ -56,7 +56,7 @@
                         <li class="user-footer">
                             <div class="pull-left">
                                 <button class="btn btn-default btn-flat" data-toggle="modal"
-                                        data-target="#change-password-modal" style="display: none">
+                                        data-target="#change-password-modal">
                                     修改密码
                                 </button>
                             </div>
@@ -82,24 +82,21 @@
                 <h3 class="text-center">修改密码</h3>
             </div>
             <div class="modal-body">
-                <form role="form" class="form-group" method="POST" action="/admin/password" @submit.prevent="changePasswordAction">
+                <form role="form" class="form-group" method="POST" action="#" @submit.prevent="changePasswordAction">
                     <div class="form-group has-feedback">
                         <input name="password" type="password" class="form-control" required
-                               placeholder="旧密码" v-model="formData.password">
+                               placeholder="旧密码" v-model.trim="formData.password">
                         <span class="fa fa-user-secret form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
                         <input name="new_password" type="password" class="form-control" required
-                               placeholder="新密码" v-model="formData.new_password">
+                               placeholder="新密码" v-model.trim="formData.new_password">
                         <span class="fa fa-pencil form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
                         <input name="new_password_confirmation" type="password" class="form-control" required
-                               placeholder="再次输入新密码" v-model="formData.new_password_confirmation">
+                               placeholder="再次输入新密码" v-model.trim="formData.new_password_confirmation">
                         <span class="fa fa-pencil form-control-feedback"></span>
-                    </div>
-                    <div>
-                        <p :class="changePassword.ifSuccess ? 'text-green' : 'text-danger'">{{ changePassword.message }}</p>
                     </div>
 
                     <div class="form-group">
@@ -112,6 +109,8 @@
 </div>
 
 <script>
+    //Vue.use(VeeValidate);   //注册vee-validate插件, 不能注册，报错，与其他ssi冲突
+
     var mainHeaderApp = new Vue({
         el: '.main-header',
         data:  {
@@ -137,11 +136,6 @@
                 new_password: '',
                 new_password_confirmation: '',
             },
-            changePassword: {       //修改用户密码
-                password: '',
-                message: '',
-                ifSuccess: false,
-            },
         },
 
         methods: {
@@ -149,8 +143,8 @@
                 var _self = this;
 
                 axios({
-                    method: 'POST',
-                    url: '/admin/password',
+                    method: 'PUT',
+                    url: '/admin/api/self/password',
                     data: _self.formData,
                     timeout: 5000,                          //超时时间
                     xsrfCookieName: 'XSRF-TOKEN',
@@ -160,19 +154,15 @@
                     }
                 })
                     .then(function (response) {
-                        console.log(response);
                         if (response.status === 422) {
-                            _self.changePassword.ifSuccess = false;
-                            _self.changePassword.message = JSON.stringify(response.data);
-                            return false;
+                            return alert(JSON.stringify(response.data));
                         }
-                        if (! response.data.result) {
-                            _self.changePassword.ifSuccess = false;
-                            _self.changePassword.message = response.data.message;
-                            return false;
+                        response.data.error ? alert(response.data.error) : alert(response.data.message);
+                        for (var index of Object.keys(_self.formData)) {
+                            console.log(index);
+                            _self.formData[index] = '';
                         }
-                        _self.changePassword.ifSuccess = true;
-                        _self.changePassword.message = response.data.message;
+                        return true;
                     })
                     .catch(function (err) {
                         alert(err);

@@ -36,6 +36,8 @@ Route::group([
     'prefix' => 'admin/api',
     'namespace' => 'Admin'
 ], function () {
+    Route::put('self/password', 'AdminController@updatePass');
+
     Route::get('agent', 'AgentController@showAll');
     Route::post('agent', 'AgentController@create');
     Route::delete('agent/{user}', 'AgentController@destroy')->where('user', '[0-9]+');
