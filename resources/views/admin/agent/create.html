@@ -38,7 +38,7 @@
                             <label class="col-sm-2 control-label">账号</label>
                             <div class="col-sm-4">
                                 <input name="account" type="text" class="form-control" placeholder="登录账号"
-                                       v-model.trim="formData.account" v-validate="'required|min: 6'">
+                                       v-model.trim="formData.account" v-validate="'required|max:255'">
                                 <span v-show="errors.has('account')" class="text-danger">{{ errors.first('account') }}</span>
                             </div>
                         </div>
@@ -46,21 +46,24 @@
                             <label class="col-sm-2 control-label">密码</label>
                             <div class="col-sm-4">
                                 <input name="password" type="password" class="form-control" placeholder="密码"
-                                       v-model.trim="formData.password">
+                                       v-model.trim="formData.password" v-validate="'required|min:6|confirmed'">
+                                <span v-show="errors.has('password')" class="text-danger">{{ errors.first('password') }}</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">密码确认</label>
                             <div class="col-sm-4">
                                 <input name="password_confirmation" type="password" class="form-control" placeholder="再次输入密码"
-                                       v-model.trim="formData.password_confirmation">
+                                       v-model.trim="formData.password_confirmation" v-validate="'required|min:6'">
+                                <span v-show="errors.has('password_confirmation')" class="text-danger">{{ errors.first('password_confirmation') }}</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">昵称</label>
                             <div class="col-sm-4">
                                 <input name="name" type="text" class="form-control" placeholder="昵称"
-                                       v-model.trim="formData.name">
+                                       v-model.trim="formData.name" v-validate="'required|max:255'">
+                                <span v-show="errors.has('name')" class="text-danger">{{ errors.first('name') }}</span>
                             </div>
                         </div>
                         <div class="form-group">

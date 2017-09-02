@@ -234,15 +234,8 @@
                 topUpType: 1,
             },       //待编辑的行
 
-            editAgentResponse: {     //编辑用户信息
-                message: '',
-                ifSuccess: false,
-            },
-
             changePassword: {       //修改用户密码
                 password: '',
-                message: '',
-                ifSuccess: false,
             },
 
             deleteAgentResponse: {   //删除用户
@@ -392,12 +385,9 @@
                 })
                     .then(function (response) {
                         if (response.status === 422) {
-                            _self.editAgentResponse.ifSuccess = false;
-                            _self.editAgentResponse.message = JSON.stringify(response.data);
-                            return false;
+                            return alert(JSON.stringify(response.data));
                         }
-                        _self.editAgentResponse.ifSuccess = true;
-                        _self.editAgentResponse.message = response.data.message;
+                        return alert(response.data.message);
                     })
                     .catch(function (err) {
                         alert(err);
@@ -422,12 +412,9 @@
                 })
                     .then(function (response) {
                         if (response.status === 422) {
-                            _self.changePassword.ifSuccess = false;
-                            _self.changePassword.message = JSON.stringify(response.data);
-                            return false;
+                            return alert(JSON.stringify(response.data));
                         }
-                        _self.changePassword.ifSuccess = true;
-                        _self.changePassword.message = response.data.message;
+                        return alert(response.data.message);
                     })
                     .catch(function (err) {
                         console.log(err);

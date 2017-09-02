@@ -125,7 +125,7 @@ class AgentController extends Controller
             OperationLogs::add(session('user')->id, $request->path(), $request->method(), '更新代理商信息',
                 $request->header('User-Agent'), json_encode($data));
             return [
-                'message' => '更新用户数据成功'
+                'message' => '更新信息成功'
             ];
         }
     }
@@ -142,7 +142,7 @@ class AgentController extends Controller
             OperationLogs::add(session('user')->id, $request->path(), $request->method(), '更新代理商密码',
                 $request->header('User-Agent'), json_encode($data));
             return [
-                'message' => '更新用户数据成功'
+                'message' => '更新密码成功'
             ];
         }
     }

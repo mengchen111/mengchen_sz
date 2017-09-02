@@ -54,14 +54,14 @@
                 <form role="form" class="form-group" method="POST" action="#" @submit.prevent="editAgentInfo">
                     <div class="form-group has-feedback">
                         <label>昵称</label>
-                        <input name="name" type="text" class="form-control" v-validate="'required|min: 6'"
+                        <input name="name" type="text" class="form-control" v-validate="'required|max:255'"
                                v-model.trim="activatedRow.name" placeholder="昵称">
                         <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
                         <span v-show="errors.has('name')" class="text-danger">{{ errors.first('name') }}</span>
                     </div>
                     <div class="form-group has-feedback">
                         <label>账号</label>
-                        <input name="account" type="account" class="form-control" v-validate="'required|min: 6'"
+                        <input name="account" type="account" class="form-control" v-validate="'required|max:255'"
                                v-model.trim="activatedRow.account" placeholder="账号">
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                         <span v-show="errors.has('account')" class="text-danger">{{ errors.first('account') }}</span>
@@ -85,9 +85,6 @@
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                         <span v-show="errors.has('parent_account')" class="text-danger">{{ errors.first('parent_account') }}</span>
                     </div>-->
-                    <div>
-                        <p :class="editAgentResponse.ifSuccess ? 'text-green' : 'text-danger'">{{ editAgentResponse.message }}</p>
-                    </div>
 
                     <div class="form-group">
                         <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
@@ -113,11 +110,6 @@
                                placeholder="代理商密码" v-model.trim="changePassword.password">
                         <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
                         <span v-show="errors.has('password')" class="text-danger">{{ errors.first('password') }}</span>
-                        <div>
-                            <p :class="changePassword.ifSuccess ? 'text-green' : 'text-danger'">
-                                {{ changePassword.message }}
-                            </p>
-                        </div>
                     </div>
 
                     <div class="form-group">
