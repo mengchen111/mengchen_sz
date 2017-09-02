@@ -47,7 +47,7 @@
 
                         <vuetable ref="vuetable"
                                   :api-url="vuetableUrl"
-                                  :fields="fields"
+                                  :fields="tableFields"
                                   :sort-order="sortOrder"
                                   :css="css.table"
                                   pagination-path=""
@@ -243,7 +243,7 @@
                 ifSuccess: false,
             },
 
-            fields: [
+            tableFields: [
                 {
                     name: 'id',
                     title: 'ID',

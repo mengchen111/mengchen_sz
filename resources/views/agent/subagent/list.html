@@ -47,7 +47,7 @@
 
                         <vuetable ref="vuetable"
                                   :api-url="vuetableUrl"
-                                  :fields="fields"
+                                  :fields="tableFields"
                                   :sort-order="sortOrder"
                                   :css="css.table"
                                   pagination-path=""
@@ -232,7 +232,7 @@
                 password: false,
             },                      //待编辑的行
 
-            fields: [
+            tableFields: [
                 {
                     name: 'id',
                     title: 'ID',
