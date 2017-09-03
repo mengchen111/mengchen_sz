@@ -32,6 +32,9 @@ class TopUpController extends Controller
             'amount' => 'required|integer|not_in:0',
         ])->validate();
 
+        $provider = User::with(['inventory' => function ($query) use ($type) {
+            $query->where('item_id', $type);
+        }])->find(session('user')->id);
         $receiverModel = User::with(['inventory' => function ($query) use ($type) {
             $query->where('item_id', $type);
         }])->where('account', $receiver)->firstOrFail();
@@ -40,7 +43,11 @@ class TopUpController extends Controller
             return [ 'error' => '只能给您的下级代理商充值' ];
         }
 
-        $this->topUp4Child($receiverModel, $type, $amount);
+        if (! $this->checkStock($provider, $amount)) {
+            return [ 'error' => '库存不足，无法充值'];
+        }
+
+        $this->topUp4Child($provider, $receiverModel, $type, $amount);
 
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
             '给子代理商充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
@@ -49,14 +56,19 @@ class TopUpController extends Controller
         ];
     }
 
+    protected function checkStock(User $provider, $amount)
+    {
+        return (! empty($provider->inventory)) and $provider->inventory->stock >= $amount;
+    }
+
     protected function isChild($child)
     {
         return session('user')->id === $child->parent_id;
     }
 
-    protected function topUp4Child($receiver, $type, $amount)
+    protected function topUp4Child($provider, $receiver, $type, $amount)
     {
-        return DB::transaction(function () use ($receiver, $type, $amount){
+        return DB::transaction(function () use ($provider, $receiver, $type, $amount){
             //记录充值流水
             TopUpAgent::create([
                 'provider_id' => session('user')->id,
@@ -65,7 +77,7 @@ class TopUpController extends Controller
                 'amount' => $amount,
             ]);
 
-            //更新库存
+            //更新下级代理库存
             if (empty($receiver->inventory)) {
                 $receiver->inventory()->create([
                     'user_id' => $receiver->id,
@@ -78,6 +90,12 @@ class TopUpController extends Controller
                     'stock' => $totalStock,
                 ]);
             }
+
+            //更新自己的库存
+            $leftStock = $provider->inventory->stock - $amount;
+            $provider->inventory->update([
+                'stock' => $leftStock,
+            ]);
         });
     }
 

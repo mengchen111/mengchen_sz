@@ -132,7 +132,7 @@ class SubAgentController extends Controller
                 '更新子代理商信息', $request->header('User-Agent'), json_encode($data));
 
             return [
-                'message' => '更新用户数据成功'
+                'message' => '更新信息成功'
             ];
         }
     }
