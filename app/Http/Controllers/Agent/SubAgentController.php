@@ -94,30 +94,6 @@ class SubAgentController extends Controller
         return User::where('parent_id', $user->id)->get()->count();
     }
 
-    //代理商更改自己的个人信息
-    public function update(Request $request)
-    {
-        Validator::make($request->all(), [
-            'name' => 'string|max:255',
-            'password' => 'string|min:6',
-            'email' => 'string|email|max:255',
-            'phone' => 'integer|digits:11',
-        ])->validate();
-
-        $data = $request->intersect(
-            'name', 'password', 'email', 'phone'
-        );
-
-        if (session('user')->update($data)) {
-            OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-                '更新代理商个人信息', $request->header('User-Agent'), json_encode($data));
-
-            return [
-                'message' => '更新用户数据成功'
-            ];
-        }
-    }
-
     //代理商更新其子代理商的信息
     public function updateChild(Request $request, User $child)
     {

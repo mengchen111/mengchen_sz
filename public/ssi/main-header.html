@@ -141,10 +141,11 @@
         methods: {
             changePasswordAction () {
                 var _self = this;
+                var role = location.href.match(/http:\/\/[\w\.-]+\/([\w-]+\/)/)[1];   //管理员还是代理商
 
                 axios({
                     method: 'PUT',
-                    url: '/admin/api/self/password',
+                    url: `/${role}api/self/password`,
                     data: _self.formData,
                     timeout: 5000,                          //超时时间
                     xsrfCookieName: 'XSRF-TOKEN',
@@ -159,7 +160,6 @@
                         }
                         response.data.error ? alert(response.data.error) : alert(response.data.message);
                         for (var index of Object.keys(_self.formData)) {
-                            console.log(index);
                             _self.formData[index] = '';
                         }
                         return true;

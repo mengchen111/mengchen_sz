@@ -156,7 +156,7 @@
 
                 axios({
                     method: 'PUT',
-                    url: '/agent/api/subagent/',
+                    url: '/agent/api/self/info',
                     data: _self.currentAgentInfo,
                     validateStatus: function (status) {
                         return status == 200 || status == 422;

@@ -140,6 +140,7 @@
                             _self.loginMessage.message = responseData.__proto__.constructor === Array ? responseData[0]
                                 : responseData;
                             _self.loginMessage.warning = true;
+                            _self.formData.password = '';
                         } else {
                             alert('登录失败，错误代码：' + response.status);
                         }

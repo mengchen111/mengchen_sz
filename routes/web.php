@@ -76,10 +76,12 @@ Route::group([
     'prefix' => 'agent/api',
     'namespace' => 'Agent'
 ], function () {
+    Route::put('self/info', 'AgentController@update');
+    Route::put('self/password', 'AgentController@updatePass');
+
     Route::get('subagent', 'SubAgentController@show');
     Route::post('subagent', 'SubAgentController@create');
     Route::delete('subagent/{user}', 'SubAgentController@destroy')->where('user', '[0-9]+');
-    Route::put('subagent', 'SubAgentController@update');
     Route::put('subagent/{child}', 'SubAgentController@updateChild')->where('child', '[0-9]+');
 
     Route::post('top-up/child/{receiver}/{type}/{amount}', 'TopUpController@topUp2Child')->where('amount', '[0-9]+');
