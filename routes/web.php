@@ -101,7 +101,8 @@ Route::group([
     Route::get('subagent/list', 'ViewController@subagentList');
     Route::get('subagent/create', 'ViewController@subagentCreate');
 
-    Route::get('top-up/agent', 'ViewController@topUpAgent');
+    //给自代理商的充值记录
+    Route::get('top-up/child', 'ViewController@topUpChild');
     Route::get('top-up/player', 'ViewController@topUpPlayer');
 
     Route::get('info', 'ViewController@info');

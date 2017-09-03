@@ -29,9 +29,9 @@ class ViewController extends Controller
         return view('agent.subagent.create');
     }
 
-    public function topUpAgent()
+    public function topUpChild()
     {
-        return view('agent.top-up.agent');
+        return view('agent.top-up.child');
     }
 
     public function topUpPlayer()
