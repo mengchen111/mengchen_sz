@@ -69,9 +69,9 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">代理类型</label>
                             <div class="col-sm-4">
-                                <select name="group_id" class="form-control" disabled>
-                                    <option v-for="(type, index) in agentType"
-                                            v-if="index == currentAgentInfo['group_id'] + 1" selected>
+                                <select name="group_id" class="form-control" v-model.trim="formData.group_id">
+                                    <option v-for="(type, index) in agentType" :value="index"
+                                            v-if="index >= currentAgentInfo['group_id'] + 1">
                                         {{ type }}
                                     </option>
                                 </select>
@@ -109,7 +109,6 @@
                 2: '总代理',
                 3: '钻石代理',
                 4: '金牌代理',
-                5: '金牌代理无法创建下级代理'
             },
             formData: {},
             currentAgentInfo: {},

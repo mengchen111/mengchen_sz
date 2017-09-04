@@ -42,7 +42,7 @@ class SubAgentController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'email' => 'string|email|max:255',
             'phone' => 'integer|digits:11',
-            //'group_id' => 'required|integer|not_in:1,2',    //不能创建管理员和总代理
+            'group_id' => 'required|integer|not_in:1,2|exists:groups,id',    //不能创建管理员和总代理
         ])->validate();
 
         if (session('user')->is_lowest_agent) {
@@ -52,11 +52,10 @@ class SubAgentController extends Controller
         }
 
         $data = $request->intersect(
-            'name', 'account', 'password', 'email', 'phone'
+            'name', 'account', 'password', 'email', 'phone', 'group_id'
         );
         $data['password'] = bcrypt($data['password']);
         $data = array_merge($data, [ 'parent_id' => session('user')->id ]);
-        $data['group_id'] = session('user')->group_id + 1;    //下级代理商组id
 
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
             '创建子代理商', $request->header('User-Agent'), json_encode($data));
