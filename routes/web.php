@@ -38,6 +38,8 @@ Route::group([
 ], function () {
     Route::put('self/password', 'AdminController@updatePass');
 
+    Route::get('player', 'PlayerController@show');
+
     Route::get('agent', 'AgentController@showAll');
     Route::post('agent', 'AgentController@create');
     Route::delete('agent/{user}', 'AgentController@destroy')->where('user', '[0-9]+');
@@ -59,6 +61,8 @@ Route::group([
     'namespace' => 'Admin'
 ], function () {
     Route::get('home', 'ViewController@home');
+
+    Route::get('player/list', 'ViewController@playerList');
 
     Route::get('agent/list', 'ViewController@agentList');
     Route::get('agent/create', 'ViewController@agentCreate');

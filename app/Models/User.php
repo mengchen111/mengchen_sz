@@ -33,6 +33,13 @@ class User extends Authenticatable
         'password', 'remember_token', 'email', 'phone'
     ];
 
+    /**
+     * 自动更新created_at和updated_at字段
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+
     //所属组
     public function group()
     {

@@ -8,6 +8,15 @@
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
             <li :class="{ active: uri.home.isActive }"><a href="/admin/home"><i class="fa fa-home"></i> <span>首页</span></a></li>
+            <li class="treeview" :class="{ active: uri.player.isActive }">
+                <a href="#"><i class="fa fa-gamepad"></i> <span>玩家管理</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li :class="{ active: uri.player.list.isActive }"><a href="/admin/player/list"><i class="fa fa-circle-o"></i>玩家列表</a></li>
+                    <!--<li :class="{ active: uri.player.top_up.isActive }"><a href="/admin/player/top-up"><i class="fa fa-circle-o"></i>玩家充值</a></li>-->
+                </ul>
+            </li>
             <li class="treeview" :class="{ active: uri.agent.isActive }">
                 <a href="#"><i class="fa fa-users"></i> <span>代理商管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -48,6 +57,15 @@
             uri: {
                 home: {
                     isActive: false,
+                },
+                player: {
+                    isActive: false,
+                    list: {
+                        isActive: false,
+                    },
+                    top_up: {
+                        isActive: false,
+                    }
                 },
                 agent: {
                     isActive: false,

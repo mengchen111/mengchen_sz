@@ -19,6 +19,11 @@ class ViewController extends Controller
         return view('admin.home');
     }
 
+    public function playerList()
+    {
+        return view('admin.player.list');
+    }
+
     public function agentList()
     {
         return view('admin.agent.list');
