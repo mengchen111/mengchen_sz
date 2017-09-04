@@ -36,12 +36,13 @@ class PlayerController extends Controller
             if (empty($players)) {
                 return null;
             }
-            return  Player::whereIn('rid', $players)
+            return  Player::with(['card', 'items'])
+                ->whereIn('rid', $players)
                 ->orderBy($this->order[0], $this->order[1])
                 ->paginate($this->per_page);
         }
 
-        return Player::orderBy($this->order[0], $this->order[1])
+        return Player::with(['card', 'items'])->orderBy($this->order[0], $this->order[1])
             ->paginate($this->per_page);
     }
 }

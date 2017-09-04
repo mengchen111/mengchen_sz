@@ -24,7 +24,7 @@ class TopUpController extends Controller
     }
 
     //给代理商充值（自己的下级）
-    public function topUp2TopAgent(Request $request, $receiver, $type, $amount)
+    public function topUp2Agent(Request $request, $receiver, $type, $amount)
     {
         Validator::make($request->route()->parameters,[
             'receiver' => 'required|string|exists:users,account',

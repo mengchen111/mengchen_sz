@@ -351,7 +351,7 @@
 
                 axios({
                     method: 'POST',
-                    url: `/admin/api/top-up/top-agent/${_self.activatedRow.account}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
+                    url: `/admin/api/top-up/agent/${_self.activatedRow.account}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
                     validateStatus: function (status) {
                         return status == 200 || status == 422;
                     }
