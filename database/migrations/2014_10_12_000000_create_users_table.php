@@ -6,6 +6,15 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateUsersTable extends Migration
 {
+    protected $defaultUser = [
+        'id' => 1,
+        'name' => 'admin',
+        'account' => 'admin',
+        'password' => '$2y$10$j/GVCtP1ydEn3ApfJueDm.XKzVFTIooksLoaWXUlDHdl7sMSZoEiC',
+        'group_id' => '1',
+        'parent_id' => '-1',
+    ];
+
     /**
      * Run the migrations.
      *
@@ -25,6 +34,8 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+        
+        DB::table('users')->insert($this->defaultUser);
     }
 
     /**

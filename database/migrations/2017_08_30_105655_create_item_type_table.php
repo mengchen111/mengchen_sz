@@ -3,9 +3,21 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateItemTypeTable extends Migration
 {
+    protected $defaultData = [
+        [
+            'id' => 1,
+            'name' => '房卡',
+        ],
+        [
+            'id' => 2,
+            'name' => '金币',
+        ]
+    ];
+
     /**
      * Run the migrations.
      *
@@ -17,6 +29,8 @@ class CreateItemTypeTable extends Migration
             $table->increments('id');
             $table->string('name')->comment('道具类型');
         });
+
+        DB::table('item_type')->insert($this->defaultData);
     }
 
     /**

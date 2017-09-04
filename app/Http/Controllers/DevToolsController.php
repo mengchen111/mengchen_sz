@@ -15,6 +15,7 @@ class DevToolsController extends Controller
 
     public function hashedPass($pass)
     {
+        //特殊字符会被过滤掉
         return bcrypt($pass);
     }
 }
