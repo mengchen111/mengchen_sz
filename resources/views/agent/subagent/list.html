@@ -136,10 +136,6 @@
         template: `
             <div @click="onClick">
               <div class="">
-                <label>金币数量:&nbsp;&nbsp;</label>
-                <span>{{coins}}</span>
-              </div>
-              <div class="">
                 <label>创建时间:&nbsp;&nbsp;</label>
                 <span>{{rowData.created_at}}</span>
               </div>
@@ -167,15 +163,6 @@
                 //console.log('my-detail-row: on-click', event.target)
             }
         },
-        created: function () {
-            if (this.rowData.inventorys.length > 0) {
-                for (var inventory of this.rowData.inventorys) {
-                    if (inventory.item.name === '金币') {
-                        this.coins = inventory.stock;
-                    }
-                }
-            }
-        }
     }
     Vue.component('detail-row', detailRow);
 
@@ -262,6 +249,11 @@
                     callback: 'getCardsCount'
                 },
                 {
+                    name: 'inventorys',
+                    title: '金币数量',
+                    callback: 'getCoinsCount'
+                },
+                {
                     name: '__component:table-actions',
                     title: '操作',
                     titleClass: 'text-center',
@@ -327,6 +319,16 @@
                 }
                 for (var inventory of inventorys) {
                     if (inventory.item.name === '房卡') {
+                        return inventory.stock;
+                    }
+                }
+            },
+            getCoinsCount (inventorys) {
+                if (0 === inventorys.length) {
+                    return null;
+                }
+                for (var inventory of inventorys) {
+                    if (inventory.item.name === '金币') {
                         return inventory.stock;
                     }
                 }
