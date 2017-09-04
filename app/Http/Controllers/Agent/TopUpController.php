@@ -50,7 +50,7 @@ class TopUpController extends Controller
         $this->topUp4Child($provider, $receiverModel, $type, $amount);
 
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '给子代理商充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
+            '代理商给子代理商充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
         return [
             'message' => '充值成功'
         ];
@@ -139,7 +139,7 @@ class TopUpController extends Controller
     public function topUp2ChildHistory(Request $request)
     {
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '查看给子代理商的充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '代理商查看其充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索下级代理商
         if ($request->has('filter')) {
@@ -162,7 +162,7 @@ class TopUpController extends Controller
     public function topUp2PlayerHistory(Request $request)
     {
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '查看代理商给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '代理商查看其给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索provider
         if ($request->has('filter')) {

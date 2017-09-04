@@ -69,7 +69,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">代理类型</label>
                             <div class="col-sm-4">
-                                <select name="group_id" class="form-control" v-model="formData.group_id" disabled>
+                                <select name="group_id" class="form-control" v-model="formData.group_id">
                                     <option value="2" selected>总代理</option>
                                     <option value="3">钻石代理</option>
                                     <option value="4">金牌代理</option>
@@ -127,7 +127,7 @@
                         if (response.status === 422) {
                             alert(JSON.stringify(response.data))
                         } else {
-                            response.data.error ? alert(response.data.error) : alert('添加总代理商成功');
+                            response.data.error ? alert(response.data.error) : alert('添加代理商成功');
 
                             //清空表单数据
                             for (var index of Object.keys(_self.formData)) {

@@ -23,7 +23,7 @@ class TopUpController extends Controller
         $this->order = $request->sort ? explode('|', $request->sort) : $this->order;
     }
 
-    //给总代理商充卡
+    //给代理商充值（自己的下级）
     public function topUp2TopAgent(Request $request, $receiver, $type, $amount)
     {
         Validator::make($request->route()->parameters,[
@@ -32,31 +32,43 @@ class TopUpController extends Controller
             'amount' => 'required|integer|not_in:0',
         ])->validate();
 
+        $provider = User::with(['inventory' => function ($query) use ($type) {
+            $query->where('item_id', $type);
+        }])->find(session('user')->id);
         $receiverModel = User::with(['inventory' => function ($query) use ($type) {
             $query->where('item_id', $type);
         }])->where('account', $receiver)->firstOrFail();
 
-        if (! $this->isTopAgent($receiverModel)) {
-            return [ 'error' => '只能给总代理商充值' ];
+        if (! $this->isChild($receiverModel)) {
+            return [ 'error' => '只能给自己的下级代理商充值' ];
         }
 
-        $this->topUp($receiverModel, $type, $amount);
+        if (! $this->checkStock($provider, $amount)) {
+            return [ 'error' => '库存不足，无法充值'];
+        }
+
+        $this->topUp($provider, $receiverModel, $type, $amount);
 
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '给总代理商充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
+            '管理员给代理商充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
         return [
             'message' => '充值成功',
         ];
     }
 
-    protected function isTopAgent($agent)
+    protected function isChild($receiver)
     {
-        return 2 == $agent->group_id;
+        return session('user')->id === $receiver->parent_id;
     }
 
-    protected function topUp($receiver, $type, $amount)
+    protected function checkStock(User $provider, $amount)
     {
-        return DB::transaction(function () use ($receiver, $type, $amount){
+        return (! empty($provider->inventory)) and $provider->inventory->stock >= $amount;
+    }
+
+    protected function topUp($provider, $receiver, $type, $amount)
+    {
+        return DB::transaction(function () use ($provider, $receiver, $type, $amount){
             //记录充值流水
             TopUpAdmin::create([
                 'provider_id' => session('user')->id,
@@ -78,6 +90,12 @@ class TopUpController extends Controller
                     'stock' => $totalStock,
                 ]);
             }
+
+            //减管理员的库存
+            $leftStock = $provider->inventory->stock - $amount;
+            $provider->inventory->update([
+                'stock' => $leftStock,
+            ]);
         });
     }
 
@@ -85,7 +103,7 @@ class TopUpController extends Controller
     public function topUp2TopAgentHistory(Request $request)
     {
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '查看总代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '管理员查看其充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索代理商
         if ($request->has('filter')) {
@@ -108,7 +126,7 @@ class TopUpController extends Controller
     public function Agent2AgentHistory(Request $request)
     {
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '查看代理商给代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '管理员查看代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索代理商，查找字符串包括发放者和接收者
         if ($request->has('filter')) {
@@ -132,7 +150,7 @@ class TopUpController extends Controller
     public function Agent2PlayerHistory(Request $request)
     {
         OperationLogs::add(session('user')->id, $request->path(), $request->method(),
-            '查看代理商给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '管理员查看代理商给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索provider
         if ($request->has('filter')) {

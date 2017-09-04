@@ -3,9 +3,17 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateInventoryTable extends Migration
 {
+    protected $adminInitStock = [
+        'id' => 1,
+        'user_id' => 1,
+        'item_id' => 1, //1房卡，2金币
+        'stock' => 10000,
+    ];
+
     /**
      * Run the migrations.
      *
@@ -20,6 +28,8 @@ class CreateInventoryTable extends Migration
             $table->unsignedInteger('stock')->comment('库存');
             $table->timestamps();
         });
+
+        DB::table('inventory')->insert($this->adminInitStock);
     }
 
     /**
