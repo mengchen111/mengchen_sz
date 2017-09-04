@@ -15,6 +15,14 @@
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
         </a>
+        <!-- Left Menu -->
+        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class=""><a href="#">房卡库存：{{ inventoryAmount.cards }}</a></li>
+                <li class=""><a href="#">金币库存：{{ inventoryAmount.coins }}</a></li>
+            </ul>
+        </div>
+
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
@@ -116,6 +124,10 @@
         data:  {
             adminInfo: {            //当前登录的管理员信息
                 account: 'admin',
+            },
+            inventoryAmount: {
+                cards: 0,
+                coins: 0,
             }
         },
 
@@ -124,6 +136,21 @@
             axios.get('/api/info')
                 .then(function (response) {
                     _self.adminInfo = response.data;
+
+                    if (_self.adminInfo.inventorys.length > 0) {
+                        for (var inventory of _self.adminInfo.inventorys) {
+                            switch(inventory.item.name) {
+                                case '房卡':
+                                    _self.inventoryAmount.cards = inventory.stock;
+                                    break;
+                                case '金币':
+                                    _self.inventoryAmount.coins = inventory.stock;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
                 });
         },
     });
