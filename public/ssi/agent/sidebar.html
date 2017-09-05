@@ -13,8 +13,7 @@
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.player.list.isActive }"><a href="#"><i class="fa fa-circle-o"></i>玩家列表（待添加）</a></li>
-                    <li :class="{ active: uri.player.top_up.isActive }"><a href="#"><i class="fa fa-circle-o"></i>玩家充值（待添加）</a></li>
+                    <li :class="{ active: uri.player.top_up.isActive }"><a href="/agent/player/top-up"><i class="fa fa-circle-o"></i>玩家充值</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.subagent.isActive }">
@@ -52,9 +51,6 @@
                 },
                 player: {
                     isActive: false,
-                    list: {
-                        isActive: false,
-                    },
                     top_up: {
                         isActive: false,
                     },

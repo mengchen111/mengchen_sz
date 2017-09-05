@@ -90,7 +90,7 @@ Route::group([
     Route::put('subagent/{child}', 'SubAgentController@updateChild')->where('child', '[0-9]+');
 
     Route::post('top-up/child/{receiver}/{type}/{amount}', 'TopUpController@topUp2Child')->where('amount', '[0-9]+');
-    //Route::post('top-up/player/{receiver}/{amount}', 'TopUpController@topUp2Player')->where('amount', '[0-9]+');
+    Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '[0-9]+');
     Route::get('top-up/child', 'TopUpController@topUp2ChildHistory');
     Route::get('top-up/player', 'TopUpController@topUp2PlayerHistory');
 });
@@ -103,10 +103,12 @@ Route::group([
 ], function () {
     Route::get('home', 'ViewController@home');
 
+    Route::get('player/top-up', 'ViewController@playerTopUp');  //玩家充值页面
+
     Route::get('subagent/list', 'ViewController@subagentList');
     Route::get('subagent/create', 'ViewController@subagentCreate');
 
-    //给自代理商的充值记录
+    //给子代理商的充值记录
     Route::get('top-up/child', 'ViewController@topUpChild');
     Route::get('top-up/player', 'ViewController@topUpPlayer');
 
