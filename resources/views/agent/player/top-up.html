@@ -27,19 +27,48 @@
         <!-- Main content -->
         <section class="content">
 
-            <div class="box">
-                <div class="box-header">
+            <div class="box box-primary">
+                <div class="box-header with-border">
                     <h3 class="box-title">玩家充值</h3>
                 </div>
                 <!-- /.box-header -->
-                <div class="box-body">
-                </div>
+                <form role="form" id="player-top-up-form" class="form-group" method="POST"
+                      action="#" @submit.prevent="topUpPlayer">
+                    <div class="box-body">
+                        <div class="form-group has-feedback">
+                            <label>玩家ID</label>
+                            <input name="player" type="number" class="form-control" placeholder="玩家ID"
+                                   v-model.trim="topUpData.playerId">
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>充值类型</label>
+                            <select class="form-control" v-model.trim="topUpData.typeId">
+                                <option v-for="(value, index) in topUpData.type" :value="index"
+                                        v-if="index == topUpData.typeId" selected>
+                                    {{ value }}
+                                </option>
+                                <option v-else :value="index">
+                                    {{ value }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label>充值数量</label>
+                            <input name="amount" type="number" min="1" class="form-control" placeholder="充值数量"
+                                   v-model.trim="topUpData.amount">
+                            <span class="glyphicon glyphicon-yen form-control-feedback"></span>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                        </div>
+                    </div>
+                </form>
                 <!-- /.box-body -->
             </div>
 
         </section>
         <!-- /.content -->
-
     </div>
     <!-- /.content-wrapper -->
 
@@ -49,5 +78,46 @@
 </div>
 <!-- ./wrapper -->
 
+<script>
+    var playerTopUpApp = new Vue({
+        el: '#player-top-up-form',
+        data: {
+            topUpData: {
+                playerId: '',
+                type: {
+                    1: '房卡',
+                    2: '金币'
+                },
+                typeId: 1,
+                amount: null,
+            },
+        },
+        methods: {
+            topUpPlayer () {
+                var _self = this;
+
+                axios({
+                    method: 'POST',
+                    url: `/agent/api/top-up/player/${_self.topUpData.playerId}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
+                    validateStatus: function (status) {
+                        return status == 200 || status == 422;
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status === 422) {
+                            alert(JSON.stringify(response.data))
+                        } else {
+                            response.data.error ? alert(response.data.error) : alert(response.data.message);
+                            _self.topUpData.amount = null;
+                        }
+                    })
+                    .catch(function (err) {
+                        alert(err);
+                        console.log(err);
+                    });
+            }
+        }
+    });
+</script>
 </body>
 </html>
