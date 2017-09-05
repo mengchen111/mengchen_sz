@@ -124,6 +124,7 @@ class StockController extends Controller
 
     protected function checkStock($approver, $applicant, $amount)
     {
+        //如果是管理员自己申请的，就不检查库存情况
         return $applicant->is_admin or (!empty($approver->inventory)) and $approver->inventory->stock >= $amount;
     }
 
