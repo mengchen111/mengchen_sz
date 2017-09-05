@@ -34,6 +34,11 @@ class ViewController extends Controller
         return view('admin.stock.apply-list');
     }
 
+    public function stockApplyHistory()
+    {
+        return view('admin.stock.apply-history');
+    }
+
     public function agentList()
     {
         return view('admin.agent.list');

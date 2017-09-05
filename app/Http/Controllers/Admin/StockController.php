@@ -89,6 +89,13 @@ class StockController extends Controller
             ->paginate($this->per_page);
     }
 
+    /**
+     * 同意库存申请，扣除库存，新添库存
+     *
+     * @param Request $request
+     * @param StockApply $entry
+     * @return array
+     */
     public function approve(Request $request, StockApply $entry)
     {
         Validator::make($request->all(), [
@@ -109,7 +116,7 @@ class StockController extends Controller
         $this->doApprove($approver, $applicant, $entry, $request->remark);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '管理员审核库存申请通过', $request->header('User-Agent'), $entry->toJson());
+            '管理员同意库存申请', $request->header('User-Agent'), $entry->toJson());
         return [
             'message' => '审核通过',
         ];
@@ -155,5 +162,62 @@ class StockController extends Controller
                 'stock' => $leftStock,
             ]);
         });
+    }
+
+    /**
+     * 拒绝库存申请
+     *
+     * @param Request $request
+     * @param StockApply $entry
+     * @return array
+     */
+    public function decline(Request $request, StockApply $entry)
+    {
+        Validator::make($request->all(), [
+            'approver_remark' => 'nullable|string|max:255'
+        ])->validate();
+
+        $entry->update([
+            'state' => 3,
+            'approver_id' => $request->user()->id,
+            'approver_remark' => $request->approver_remark,
+        ]);
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '管理员拒绝库存申请', $request->header('User-Agent'), $entry->toJson());
+
+        return [
+            'message' => '操作成功',
+        ];
+    }
+
+    /**
+     * 查看审核历史
+     *
+     * @param Request $request
+     * @return null
+     */
+    public function applyHistory(Request $request)
+    {
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '管理员查看审核历史', $request->header('User-Agent'));
+
+        //搜索申请人账号
+        if ($request->has('filter')) {
+            $applicants = array_column(User::where('account', 'like', "%{$request->filter}%")->get()->toArray(), 'id');
+            if (empty($applicants)) {
+                return null;
+            }
+            return StockApply::with(['applicant', 'approver', 'item'])
+                ->whereIn('applicant_id', $applicants)
+                ->applyHistory()
+                ->orderBy($this->order[0], $this->order[1])
+                ->paginate($this->per_page);
+        }
+
+        return StockApply::with(['applicant', 'approver', 'item'])
+            ->applyHistory()
+            ->orderBy($this->order[0], $this->order[1])
+            ->paginate($this->per_page);
     }
 }

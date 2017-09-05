@@ -20,7 +20,7 @@
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li><a href="#"> Stock</a></li>
-                <li class="active">Apply-List</li>
+                <li class="active">History</li>
             </ol>
         </section>
 
@@ -29,7 +29,7 @@
 
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">库存申请列表</h3>
+                    <h3 class="box-title">查看审核历史</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -47,7 +47,7 @@
 
                         <vuetable ref="vuetable"
                                   :api-url="vuetableUrl"
-                                  :fields="tableFields"
+                                  :fields="fields"
                                   :sort-order="sortOrder"
                                   :css="css.table"
                                   pagination-path=""
@@ -86,35 +86,7 @@
 
 <script>
     Vue.use(Vuetable);      //注册vuetable-2插件
-    Vue.use(VeeValidate);   //注册vee-validate插件
     var Hub = new Vue();    //event hub，事件中心，用于非父子组件中的事件传递
-
-    //注册处理每行数据的组件
-    var tableActions = {
-        template: `
-                <div class="table-actions">
-                    <button class="btn btn-primary" @click="applyApproveAction(rowData)">通过</button>
-                    <button class="btn btn-danger" @click="applyDeclineAction(rowData)">拒绝</button>
-                </div>`,
-        props: {
-            rowData: {
-                type: Object,
-                required: true
-            },
-            rowIndex: {
-                type: Number
-            }
-        },
-        methods: {
-            applyApproveAction (data) {
-                Hub.$emit('applyApproveEvent', data);
-            },
-            applyDeclineAction (data) {
-                Hub.$emit('applyDeclineEvent', data);
-            },
-        }
-    }
-    Vue.component('table-actions', tableActions);
 
     //注册搜索条组件
     var filterBar = {
@@ -145,11 +117,16 @@
     var app = new Vue({
         el: '#app',
         data: {
-            vuetableUrl: '/admin/api/stock/list',
+            vuetableUrl: '/admin/api/stock/history',
 
-            activatedRow: {},       //待编辑的行
+            activatedRow: {},       //选中的行
 
-            tableFields: [
+            stateType: {
+                2: '通过',
+                3: '拒绝',
+            },
+
+            fields: [
                 {
                     name: 'created_at',
                     title: '申请时间',
@@ -174,11 +151,19 @@
                     title: '备注',
                 },
                 {
-                    name: '__component:table-actions',
-                    title: '审批',
-                    titleClass: 'text-center',
-                    dataClass: 'text-center',
+                    name: 'approver.name',
+                    title: '审批人',
                 },
+                {
+                    name: 'updated_at',
+                    title: '审批时间',
+                },
+                {
+                    name: 'state',
+                    title: '审核状态',
+                    //dataClass: 'btn btn-block btn-success',
+                    callback: 'transState',
+                }
             ],
 
             sortOrder: [
@@ -232,46 +217,16 @@
                 //console.log('cellClicked: ', field.name, data.email)
                 //this.$refs.vuetable.toggleDetailRow(data.id);
             },
+
+            transState (value) {
+                return value == 2
+                    ? '<button class="btn btn-block btn-success btn-flat">通过</button>'
+                    : '<button class="btn btn-block btn-danger btn-flat">拒绝</button>'
+            }
         },
 
         mounted: function () {
             var _self = this;
-
-            Hub.$on('applyApproveEvent', function (data) {
-                axios({
-                    method: 'POST',
-                    url: `/admin/api/stock/approval/${data.id}`,
-                })
-                    .then(function (response) {
-                        response.data.error ? alert(response.data.error) : alert(response.data.message);
-
-                        return Vue.nextTick(function (){
-                            _self.$refs.vuetable.refresh();
-                        })
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
-            });
-
-            Hub.$on('applyDeclineEvent', function (data) {
-                axios({
-                    method: 'POST',
-                    url: `/admin/api/stock/decline/${data.id}`,
-                })
-                    .then(function (response) {
-                        response.data.error ? alert(response.data.error) : alert(response.data.message);
-
-                        return Vue.nextTick(function (){
-                            _self.$refs.vuetable.refresh();
-                        })
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
-            });
 
             Hub.$on('filterEvent', function (filterText) {
                 _self.moreParams = {

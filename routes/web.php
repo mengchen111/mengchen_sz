@@ -42,7 +42,9 @@ Route::group([
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');
+    Route::get('stock/history', 'StockController@applyHistory');
     Route::post('stock/approval/{entry}', 'StockController@approve')->where('entry', '[0-9]+');
+    Route::post('stock/decline/{entry}', 'StockController@decline')->where('entry', '[0-9]+');
 
     Route::get('agent', 'AgentController@showAll');
     Route::post('agent', 'AgentController@create');
@@ -71,6 +73,7 @@ Route::group([
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-list', 'ViewController@stockApplyList');
+    Route::get('stock/apply-history', 'ViewController@stockApplyHistory');
 
     Route::get('agent/list', 'ViewController@agentList');
     Route::get('agent/create', 'ViewController@agentCreate');

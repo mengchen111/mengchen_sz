@@ -24,6 +24,7 @@
                 <ul class="treeview-menu">
                     <li :class="{ active: uri.stock.apply_request.isActive }"><a href="/admin/stock/apply-request"><i class="fa fa-circle-o"></i>申请库存</a></li>
                     <li :class="{ active: uri.stock.apply_list.isActive }"><a href="/admin/stock/apply-list"><i class="fa fa-circle-o"></i>申请列表</a></li>
+                    <li :class="{ active: uri.stock.apply_history.isActive }"><a href="/admin/stock/apply-history"><i class="fa fa-circle-o"></i>审核记录</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.agent.isActive }">
@@ -83,7 +84,10 @@
                     },
                     apply_list: {
                         isActive: false,
-                    }
+                    },
+                    apply_history: {
+                        isActive: false,
+                    },
                 },
                 agent: {
                     isActive: false,
