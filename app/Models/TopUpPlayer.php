@@ -10,7 +10,7 @@ class TopUpPlayer extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'provider_id', 'player_id', 'type', 'amount'
+        'provider_id', 'player', 'type', 'amount'
     ];
 
     public function provider()

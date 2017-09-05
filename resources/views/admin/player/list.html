@@ -143,9 +143,9 @@
                     <button class="btn btn-default" data-toggle="modal" data-target="#player-top-up-modal"
                         @click="topUpPlayerAction(rowData)" title="充值"><i class="glyphicon glyphicon-credit-card"></i>
                     </button>
-                    <button class="btn btn-default" data-toggle="modal" data-target="#player-block-modal"
+                    <!--<button class="btn btn-default" data-toggle="modal" data-target="#player-block-modal"
                         @click="blockPlayerAction(rowData)" title="封禁"><i class="glyphicon glyphicon-ban-circle"></i>
-                    </button>
+                    </button>-->
                 </div>`,
         props: {
             rowData: {
@@ -178,10 +178,6 @@
               <div class="">
                 <label>创建时间:&nbsp;&nbsp;</label>
                 <span>{{rowData.create_time}}</span>
-              </div>
-              <div class="">
-                <label>最后离线时间:&nbsp;&nbsp;</label>
-                <span>{{rowData.last_offline_time}}</span>
               </div>
             </div>`,
         props: {
@@ -243,6 +239,8 @@
                 amount: null,
             },
 
+            onlineState: ['离线', '在线'],
+
             tableFields: [
                 {
                     name: 'rid',
@@ -265,11 +263,16 @@
                 {
                     name: 'online',
                     title: '在线状态',
-                    sortField: 'online'
+                    sortField: 'online',
+                    callback: 'getOnlineState'
                 },
                 {
                     name: 'last_login_time',
-                    title: '上次登录时间',
+                    title: '最后登录时间',
+                },
+                {
+                    name: 'last_offline_time',
+                    title: '最后离线时间'
                 },
                 {
                     name: '__component:table-actions',
@@ -331,12 +334,15 @@
                 this.$refs.vuetable.toggleDetailRow(data.rid);
             },
 
+            getOnlineState (state) {
+                return this.onlineState[state];
+            },
+
             topUpPlayer () {
                 var _self = this;
 
                 if (_self.errors.any()) { return false; }    //表单验证，验证失败不提交
 
-                return console.log(`/admin/api/top-up/player/${_self.activatedRow.rid}/${_self.topUpData.typeId}/${_self.topUpData.amount}`);
                 axios({
                     method: 'POST',
                     url: `/admin/api/top-up/player/${_self.activatedRow.rid}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
