@@ -22,16 +22,26 @@ class StockApply extends Model
 
     public function applicant()
     {
-        return $this->belongsTo('App\Models\User', 'id', 'applicant_id');
+        return $this->belongsTo('App\Models\User', 'applicant_id', 'id');
     }
 
     public function approver()
     {
-        return $this->belongsTo('App\Models\User', 'id', 'approver_id');
+        return $this->belongsTo('App\Models\User', 'approver_id', 'id');
     }
 
     public function item()
     {
-        return $this->belongsTo('App\Models\ItemType', 'id', 'item_id');
+        return $this->belongsTo('App\Models\ItemType', 'item_id', 'id');
+    }
+
+    public function scopeApplyList($query)
+    {
+        return $query->where('state', 1);
+    }
+
+    public function scopeApplyHistory($query)
+    {
+        return $query->where('state', '!=', 1);
     }
 }
