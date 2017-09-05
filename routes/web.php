@@ -40,6 +40,8 @@ Route::group([
 
     Route::get('player', 'PlayerController@show');
 
+    Route::post('stock', 'StockController@apply'); //TODO 完成申请库存接口
+
     Route::get('agent', 'AgentController@showAll');
     Route::post('agent', 'AgentController@create');
     Route::delete('agent/{user}', 'AgentController@destroy')->where('user', '[0-9]+');
@@ -64,6 +66,8 @@ Route::group([
     Route::get('home', 'ViewController@home');
 
     Route::get('player/list', 'ViewController@playerList');
+
+    Route::get('stock/apply', 'ViewController@stockApply');
 
     Route::get('agent/list', 'ViewController@agentList');
     Route::get('agent/create', 'ViewController@agentCreate');

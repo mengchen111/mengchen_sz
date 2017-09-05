@@ -24,6 +24,11 @@ class ViewController extends Controller
         return view('admin.player.list');
     }
 
+    public function stockApply()
+    {
+        return view('admin.stock.apply');
+    }
+
     public function agentList()
     {
         return view('admin.agent.list');

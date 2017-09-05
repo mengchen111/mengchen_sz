@@ -17,6 +17,14 @@
                     <!--<li :class="{ active: uri.player.top_up.isActive }"><a href="/admin/player/top-up"><i class="fa fa-circle-o"></i>玩家充值</a></li>-->
                 </ul>
             </li>
+            <li class="treeview" :class="{ active: uri.stock.isActive }">
+                <a href="#"><i class="fa fa-gamepad"></i> <span>库存管理</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li :class="{ active: uri.stock.apply.isActive }"><a href="/admin/stock/apply"><i class="fa fa-circle-o"></i>库存申请</a></li>
+                </ul>
+            </li>
             <li class="treeview" :class="{ active: uri.agent.isActive }">
                 <a href="#"><i class="fa fa-users"></i> <span>代理商管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -64,6 +72,12 @@
                         isActive: false,
                     },
                     top_up: {
+                        isActive: false,
+                    }
+                },
+                stock: {
+                    isActive: false,
+                    apply: {
                         isActive: false,
                     }
                 },
