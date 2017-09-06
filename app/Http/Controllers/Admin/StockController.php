@@ -109,6 +109,10 @@ class StockController extends Controller
             $query->where('item_id', $entry->item_id);
         }])->find($entry->applicant_id);
 
+        if (! $this->isValidApplicant($applicant)) {
+            return [ 'error' => '审批失败，只能审批管理员和总代提交的申请' ];
+        }
+
         if (! $this->checkStock($approver, $applicant, $entry->amount)) {
             return [ 'error' => '库存不足，无法审批' ];
         }
@@ -120,6 +124,12 @@ class StockController extends Controller
         return [
             'message' => '审核通过',
         ];
+    }
+
+    //库存只有管理员和总代可以申请
+    protected function isValidApplicant($applicant)
+    {
+        return in_array($applicant->group->id, [1, 2]);
     }
 
     protected function checkStock($approver, $applicant, $amount)

@@ -16,6 +16,15 @@
                     <li :class="{ active: uri.player.top_up.isActive }"><a href="/agent/player/top-up"><i class="fa fa-circle-o"></i>玩家充值</a></li>
                 </ul>
             </li>
+            <li class="treeview" :class="{ active: uri.stock.isActive }" v-show="isTopAgent">
+                <a href="#"><i class="fa fa-suitcase"></i> <span>库存管理</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li :class="{ active: uri.stock.apply_request.isActive }"><a href="/agent/stock/apply-request"><i class="fa fa-circle-o"></i>申请库存</a></li>
+                    <li :class="{ active: uri.stock.apply_list.isActive }"><a href="/agent/stock/apply-list"><i class="fa fa-circle-o"></i>申请记录</a></li>
+                </ul>
+            </li>
             <li class="treeview" :class="{ active: uri.subagent.isActive }">
                 <a href="#"><i class="fa fa-users"></i> <span>子代理商管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -45,6 +54,7 @@
     var sideBarApp = new Vue({
         el: '#sidebar',
         data: {
+            isTopAgent: false,
             uri: {
                 home: {
                     isActive: false,
@@ -54,6 +64,15 @@
                     top_up: {
                         isActive: false,
                     },
+                },
+                stock: {
+                    isActive: false,
+                    apply_request: {
+                        isActive: false,
+                    },
+                    apply_list: {
+                        isActive: false,
+                    }
                 },
                 subagent: {
                     isActive: false,
@@ -83,9 +102,19 @@
         },
         created: function () {
             var _self = this;
+
+            axios.get('/agent/api/self/agent-type')
+                .then(function (response) {
+                    _self.isTopAgent = '总代理' === response.data.name ? true : false;
+                })
+                .catch(function (error) {
+                    alert(error)
+                });
+
             var uri = location.href.match(/http:\/\/[\w\.-]+\/agent\/([\w\/-]+)/)[1]
                 .replace('-', '_')
                 .split('/');
+
             uri.reduce(function (lastValue, currentValue) {
                 lastValue[currentValue].isActive = true;
                 return lastValue[currentValue];

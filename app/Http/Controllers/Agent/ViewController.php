@@ -19,9 +19,14 @@ class ViewController extends Controller
         return view('agent.home');
     }
 
-    public function playerTopUp(Request $request)
+    public function playerTopUp()
     {
         return view('agent.player.top-up');
+    }
+
+    public function stockApplyRequest()
+    {
+        return view('agent.stock.apply-request');
     }
 
     public function subagentList()

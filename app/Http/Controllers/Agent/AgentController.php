@@ -66,4 +66,10 @@ class AgentController extends Controller
             ];
         }
     }
+
+    //获取个人的代理级别类型
+    public function agentType(Request $request)
+    {
+        return $request->user()->group;
+    }
 }
