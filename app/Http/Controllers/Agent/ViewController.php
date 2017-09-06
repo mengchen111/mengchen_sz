@@ -29,6 +29,11 @@ class ViewController extends Controller
         return view('agent.stock.apply-request');
     }
 
+    public function stockApplyHistory()
+    {
+        return view('agent.stock.apply-history');
+    }
+
     public function subagentList()
     {
         return view('agent.subagent.list');

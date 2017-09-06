@@ -22,7 +22,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li :class="{ active: uri.stock.apply_request.isActive }"><a href="/agent/stock/apply-request"><i class="fa fa-circle-o"></i>申请库存</a></li>
-                    <li :class="{ active: uri.stock.apply_list.isActive }"><a href="/agent/stock/apply-list"><i class="fa fa-circle-o"></i>申请记录</a></li>
+                    <li :class="{ active: uri.stock.apply_history.isActive }"><a href="/agent/stock/apply-history"><i class="fa fa-circle-o"></i>申请记录</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.subagent.isActive }">
@@ -70,7 +70,7 @@
                     apply_request: {
                         isActive: false,
                     },
-                    apply_list: {
+                    apply_history: {
                         isActive: false,
                     }
                 },

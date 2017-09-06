@@ -96,6 +96,7 @@ Route::group([
     Route::get('self/agent-type', 'AgentController@agentType');
 
     Route::post('stock', 'StockController@apply');
+    Route::get('stock/history', 'StockController@applyHistory');
 
     Route::get('subagent', 'SubAgentController@show');
     Route::post('subagent', 'SubAgentController@create');
@@ -119,6 +120,7 @@ Route::group([
     Route::get('player/top-up', 'ViewController@playerTopUp');  //玩家充值页面
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
+    Route::get('stock/apply-history', 'ViewController@stockApplyHistory');
 
     Route::get('subagent/list', 'ViewController@subagentList');
     Route::get('subagent/create', 'ViewController@subagentCreate');

@@ -68,4 +68,34 @@ class StockController extends Controller
             'item_id', 'amount', 'remark'
         );
     }
+
+    /**
+     * 总代查看库存申请历史
+     *
+     * @param Request $request
+     * @return null
+     */
+    public function applyHistory(Request $request)
+    {
+        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            '总代理查看申请记录', $request->header('User-Agent'));
+
+        //搜索申请人账号(前端暂时屏蔽了搜索条)
+        if ($request->has('filter')) {
+            $applicants = array_column(User::where('account', 'like', "%{$request->filter}%")->get()->toArray(), 'id');
+            if (empty($applicants)) {
+                return null;
+            }
+            return StockApply::with(['applicant', 'approver', 'item'])
+                ->whereIn('applicant_id', $applicants)
+                ->where('applicant_id', $request->user()->id)   //总代只能查看自己的申请记录
+                ->orderBy($this->order[0], $this->order[1])
+                ->paginate($this->per_page);
+        }
+
+        return StockApply::with(['applicant', 'approver', 'item'])
+            ->where('applicant_id', $request->user()->id)
+            ->orderBy($this->order[0], $this->order[1])
+            ->paginate($this->per_page);
+    }
 }
