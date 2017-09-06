@@ -26,7 +26,7 @@ Route::prefix('dev')->group(function () {
 });
 
 //公共接口
-Route::prefix('api')->group(function () {
+Route::prefix('api')->middleware(['auth'])->group(function () {
     Route::get('info', 'InfoController@info');
 });
 

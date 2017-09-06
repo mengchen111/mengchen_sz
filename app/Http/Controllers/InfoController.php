@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InfoController extends Controller
 {
@@ -21,7 +22,6 @@ class InfoController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
     }
 
     /**
@@ -31,6 +31,6 @@ class InfoController extends Controller
      */
     public function info(Request $request)
     {
-        return User::with(['group', 'parent', 'inventorys.item'])->find(session('user')->id);
+        return User::with(['group', 'parent', 'inventorys.item'])->find($request->user()->id);
     }
 }

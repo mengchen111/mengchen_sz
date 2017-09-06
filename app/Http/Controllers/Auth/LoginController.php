@@ -68,8 +68,9 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        $request->session()->put('user', $user);
-        $request->session()->put('group', $user->group);
+        //使用$request->user()获取登录用户信息
+        //$request->session()->put('user', $user);
+        //$request->session()->put('group', $user->group);
     }
 
     protected function redirectTo()
