@@ -210,7 +210,7 @@ class StockController extends Controller
      */
     public function applyHistory(Request $request)
     {
-        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看审核历史', $request->header('User-Agent'));
 
         //搜索申请人账号

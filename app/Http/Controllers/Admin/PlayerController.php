@@ -27,7 +27,7 @@ class PlayerController extends Controller
     //查看玩家列表
     public function show(Request $request)
     {
-        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看玩家列表', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索玩家

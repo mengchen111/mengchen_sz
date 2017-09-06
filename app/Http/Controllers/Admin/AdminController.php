@@ -26,14 +26,14 @@ class AdminController extends Controller
             'new_password' => 'required|min:6|confirmed',
         ])->validate();
 
-        $user = User::find(session('user')->id);
+        $user = User::find($request->user()->id);
         if (! Hash::check($request->password, $user->password)) {
             return [
                 'error' => '原密码输入错误',
             ];
         }
 
-        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '更新密码', $request->header('User-Agent'));
         return $user->update([
             'password' => bcrypt($request->new_password)

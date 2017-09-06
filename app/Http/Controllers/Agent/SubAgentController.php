@@ -16,19 +16,19 @@ class SubAgentController extends Controller
         $per_page = $request->per_page ?: 10;
         $order = $request->sort ? explode('|', $request->sort) : ['id', 'desc'];
 
-        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '查看子代理商列表', $request->header('User-Agent'));
 
         if ($request->has('filter')) {
             $filterText = $request->filter;
             return User::with(['group', 'parent', 'inventorys.item'])
                 ->where('account', 'like', "%{$filterText}%")
-                ->where('parent_id', session('user')->id)
+                ->where('parent_id', $request->user()->id)
                 ->orderBy($order[0], $order[1])
                 ->paginate($per_page);
         }
         return User::with(['group', 'parent', 'inventorys.item'])
-            ->where('parent_id', session('user')->id)
+            ->where('parent_id', $request->user()->id)
             ->orderBy($order[0], $order[1])
             ->paginate($per_page);
     }
@@ -45,7 +45,7 @@ class SubAgentController extends Controller
             'group_id' => 'required|integer|not_in:1,2|exists:groups,id',    //不能创建管理员和总代理
         ])->validate();
 
-        if (session('user')->is_lowest_agent) {
+        if ($request->user()->is_lowest_agent) {
             return [
                 'error' => '最下级代理商无法创建子代理商'
             ];
@@ -55,9 +55,9 @@ class SubAgentController extends Controller
             'name', 'account', 'password', 'email', 'phone', 'group_id'
         );
         $data['password'] = bcrypt($data['password']);
-        $data = array_merge($data, [ 'parent_id' => session('user')->id ]);
+        $data = array_merge($data, [ 'parent_id' => $request->user()->id ]);
 
-        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '创建子代理商', $request->header('User-Agent'), json_encode($data));
         return User::create($data);
     }
@@ -77,7 +77,7 @@ class SubAgentController extends Controller
             ];
         }
 
-        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '删除子代理商', $request->header('User-Agent'), $user->toJson());
 
         return $user->delete() ? ['message' => '删除成功'] : ['error' => '删除失败'];
@@ -97,7 +97,7 @@ class SubAgentController extends Controller
     public function updateChild(Request $request, User $child)
     {
         //检查是否是其子代理商
-        if (! $this->isChild($child)) {
+        if (! $this->isChild($request, $child)) {
             return [
                 'error' => '只允许更新属于您自己的下级'
             ];
@@ -127,7 +127,7 @@ class SubAgentController extends Controller
         }
 
         if ($child->update($data)) {
-            OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+            OperationLogs::add($request->user()->id, $request->path(), $request->method(),
                 '更新子代理商信息', $request->header('User-Agent'), json_encode($data));
 
             return [
@@ -136,8 +136,8 @@ class SubAgentController extends Controller
         }
     }
 
-    protected function isChild($child)
+    protected function isChild($request, $child)
     {
-        return session('user')->id === $child->parent_id;
+        return $request->user()->id === $child->parent_id;
     }
 }

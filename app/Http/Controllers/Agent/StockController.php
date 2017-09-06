@@ -77,7 +77,7 @@ class StockController extends Controller
      */
     public function applyHistory(Request $request)
     {
-        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '总代理查看申请记录', $request->header('User-Agent'));
 
         //搜索申请人账号(前端暂时屏蔽了搜索条)

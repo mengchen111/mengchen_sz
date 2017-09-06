@@ -27,7 +27,7 @@ class SystemController extends Controller
 
     public function showLog(Request $request)
     {
-        OperationLogs::add(session('user')->id, $request->path(), $request->method(),
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '查看系统操作日志', $request->header('User-Agent'));
 
         //搜索provider

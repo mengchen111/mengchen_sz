@@ -75,6 +75,6 @@ class LoginController extends Controller
 
     protected function redirectTo()
     {
-        return session('user')->is_admin ? $this->adminHomePath : $this->agentHomePath;
+        return Auth::user()->is_admin ? $this->adminHomePath : $this->agentHomePath;
     }
 }
