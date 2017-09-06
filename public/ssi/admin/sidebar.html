@@ -17,6 +17,15 @@
                     <!--<li :class="{ active: uri.player.top_up.isActive }"><a href="/admin/player/top-up"><i class="fa fa-circle-o"></i>玩家充值</a></li>-->
                 </ul>
             </li>
+            <li class="treeview" :class="{ active: uri.notification.isActive }">
+                <a href="#"><i class="fa fa-bell"></i> <span>公告管理</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li :class="{ active: uri.notification.marquee.isActive }"><a href="/admin/notification/marquee"><i class="fa fa-circle-o"></i>跑马灯公告</a></li>
+                    <li :class="{ active: uri.notification.login.isActive }"><a href="/admin/notification/login"><i class="fa fa-circle-o"></i>登录公告</a></li>
+                </ul>
+            </li>
             <li class="treeview" :class="{ active: uri.stock.isActive }">
                 <a href="#"><i class="fa fa-suitcase"></i> <span>库存管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -74,6 +83,15 @@
                         isActive: false,
                     },
                     top_up: {
+                        isActive: false,
+                    }
+                },
+                notification: {
+                    isActive: false,
+                    marquee: {
+                        isActive: false,
+                    },
+                    login: {
                         isActive: false,
                     }
                 },

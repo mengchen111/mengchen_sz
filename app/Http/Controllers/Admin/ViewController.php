@@ -24,6 +24,16 @@ class ViewController extends Controller
         return view('admin.player.list');
     }
 
+    public function notificationMarquee()
+    {
+        return view('admin.notification.marquee');
+    }
+
+    public function notificationLogin()
+    {
+        return view('admin.notification.login');
+    }
+
     public function stockApplyRequest()
     {
         return view('admin.stock.apply-request');

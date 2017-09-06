@@ -71,6 +71,9 @@ Route::group([
 
     Route::get('player/list', 'ViewController@playerList');
 
+    Route::get('notification/marquee', 'ViewController@notificationMarquee');
+    Route::get('notification/login', 'ViewController@notificationLogin');
+
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-list', 'ViewController@stockApplyList');
     Route::get('stock/apply-history', 'ViewController@stockApplyHistory');
