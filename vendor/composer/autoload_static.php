@@ -335,9 +335,11 @@ class ComposerStaticInitab15ae922988d6e16dfbe01c9f2881a1
 
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\Exceptions\\CustomException' => __DIR__ . '/../..' . '/app/Exceptions/CustomException.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Admin\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/AdminController.php',
         'App\\Http\\Controllers\\Admin\\AgentController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/AgentController.php',
+        'App\\Http\\Controllers\\Admin\\MarqueeNotificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/MarqueeNotificationController.php',
         'App\\Http\\Controllers\\Admin\\PlayerController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/PlayerController.php',
         'App\\Http\\Controllers\\Admin\\StockController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/StockController.php',
         'App\\Http\\Controllers\\Admin\\SystemController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/SystemController.php',
@@ -361,6 +363,7 @@ class ComposerStaticInitab15ae922988d6e16dfbe01c9f2881a1
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Models\\GameNotificationMarquee' => __DIR__ . '/../..' . '/app/Models/GameNotificationMarquee.php',
         'App\\Models\\Game\\PackItem' => __DIR__ . '/../..' . '/app/Models/Game/PackItem.php',
         'App\\Models\\Game\\Player' => __DIR__ . '/../..' . '/app/Models/Game/Player.php',
         'App\\Models\\Group' => __DIR__ . '/../..' . '/app/Models/Group.php',

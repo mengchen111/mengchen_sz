@@ -7,9 +7,11 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\Exceptions\\CustomException' => $baseDir . '/app/Exceptions/CustomException.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\Admin\\AdminController' => $baseDir . '/app/Http/Controllers/Admin/AdminController.php',
     'App\\Http\\Controllers\\Admin\\AgentController' => $baseDir . '/app/Http/Controllers/Admin/AgentController.php',
+    'App\\Http\\Controllers\\Admin\\MarqueeNotificationController' => $baseDir . '/app/Http/Controllers/Admin/MarqueeNotificationController.php',
     'App\\Http\\Controllers\\Admin\\PlayerController' => $baseDir . '/app/Http/Controllers/Admin/PlayerController.php',
     'App\\Http\\Controllers\\Admin\\StockController' => $baseDir . '/app/Http/Controllers/Admin/StockController.php',
     'App\\Http\\Controllers\\Admin\\SystemController' => $baseDir . '/app/Http/Controllers/Admin/SystemController.php',
@@ -33,6 +35,7 @@ return array(
     'App\\Http\\Middleware\\RedirectIfAuthenticated' => $baseDir . '/app/Http/Middleware/RedirectIfAuthenticated.php',
     'App\\Http\\Middleware\\TrimStrings' => $baseDir . '/app/Http/Middleware/TrimStrings.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
+    'App\\Models\\GameNotificationMarquee' => $baseDir . '/app/Models/GameNotificationMarquee.php',
     'App\\Models\\Game\\PackItem' => $baseDir . '/app/Models/Game/PackItem.php',
     'App\\Models\\Game\\Player' => $baseDir . '/app/Models/Game/Player.php',
     'App\\Models\\Group' => $baseDir . '/app/Models/Group.php',

@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendMarqueeNotification;
 use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -68,92 +69,49 @@ class MarqueeNotificationController extends Controller
     //启用跑马灯公告，发送http请求到游戏服接口
     public function enable(Request $request, GameNotificationMarquee $marquee)
     {
+        $marquee->switch = 1;   //开启公告
         $marquee->sync_state = 2;
         $marquee->save();       //更改同步状态为同步中（写入数据库）
 
-        $marquee->switch = 1;   //开启公告（此更新未保存到数据库）
 
         $this->prepareFormData($marquee->toArray());
 
-        try {
-            $response = $this->sendMarqueeRequest($marquee->switch);
-        } catch (ConnectException $e) {
-            $marquee->sync_state = 4;
-            $marquee->failed_description = $e->getMessage();
-            $marquee->save();
-            return ['error' => '同步失败：' . $e->getMessage() ];
-        }
+        //分发任务到队列，异步同步公告状态
+        dispatch(new SendMarqueeNotification($marquee, $this->formData, $this->apiAddress));
 
-        if (200 == $response->getStatusCode()) {
-            if (1 == json_decode($response->getBody()->getContents())->result) {
-                $marquee->sync_state = 3;
-                $marquee->failed_description = '';
-                $marquee->save();
-                return ['message' => '跑马灯公告开启成功'];
-            }
-        }
+        OperationLogs::add(Auth::id(), $request->path(), $request->method(), '启用跑马灯公告',
+            $request->header('User-Agent'));
 
-        $marquee->sync_state = 4;
-        $marquee->save();
-        return ['error' => '跑马灯公告开启失败'];
+        return ['message' => '开启公告成功'];
     }
 
     //停用跑马灯公告，发送http请求到游戏服接口
     public function disable(Request $request, GameNotificationMarquee $marquee)
     {
+        $marquee->switch = 2;   //停用公告
         $marquee->sync_state = 2;
         $marquee->save();       //更改同步状态为同步中（写入数据库）
 
-        $marquee->switch = 2;   //停用公告（此更新未保存到数据库）
-
         $this->prepareFormData($marquee->toArray());
 
-        try {
-            $response = $this->sendMarqueeRequest($marquee->switch);
-        } catch (ConnectException $e) {
-            $marquee->sync_state = 4;
-            $marquee->failed_description = $e->getMessage();
-            $marquee->save();
-            return ['error' => '同步失败：' . $e->getMessage() ];
-        }
+        dispatch(new SendMarqueeNotification($marquee, $this->formData, $this->apiAddress));
 
-        if (200 == $response->getStatusCode()) {
-            if (1 == json_decode($response->getBody()->getContents())->result) {
-                $marquee->sync_state = 3;
-                $marquee->failed_description = '';
-                $marquee->save();
-                return ['message' => '跑马灯公告关闭成功'];
-            }
-        }
+        OperationLogs::add(Auth::id(), $request->path(), $request->method(), '禁用跑马灯公告',
+            $request->header('User-Agent'));
 
-        $marquee->sync_state = 4;
-        $marquee->save();
-        return ['error' => '跑马灯公告关闭失败'];
+        return ['message' => '停用公告成功'];
     }
 
     //构建POST需要提交的数据
     protected function prepareFormData($data)
     {
         $this->formData['type'] = 1;    //跑马灯公告类型
+        $this->formData['status'] = $data['switch'];    //公告状态
         $this->formData['id'] = $data['id'];
         $this->formData['level'] = $data['priority'];
         $this->formData['diff_time'] = $data['interval'];
         $this->formData['stime'] = $data['start_at'];
         $this->formData['etime'] = $data['end_at'];
         $this->formData['content'] = $data['content'];
-    }
-
-    protected function sendMarqueeRequest($status)
-    {
-        $this->formData['status'] = $status;    //公告状态
-
-        $httpClient = new Client([
-            'timeout' => 5,    //设置超时时间
-        ]);
-
-        return $httpClient->request('POST', $this->apiAddress, [
-            'form_params' => $this->formData,   //发送 application/x-www-form-urlencoded POST请求
-        ]);
-
     }
 }
