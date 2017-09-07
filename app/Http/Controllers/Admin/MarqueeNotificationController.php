@@ -45,6 +45,9 @@ class MarqueeNotificationController extends Controller
         ]);
 
         if (GameNotificationMarquee::create($data)) {
+            OperationLogs::add(Auth::id(), $request->path(), $request->method(), '添加跑马灯公告',
+                $request->header('User-Agent'), json_encode($data));
+
             return [
                 'message' => '添加跑马灯公告成功'
             ];

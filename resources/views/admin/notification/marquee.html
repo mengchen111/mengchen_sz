@@ -93,15 +93,9 @@
                         <form role="form" class="form-group" method="POST" action="#" @submit.prevent="createMarquee">
                             <div class="form-group has-feedback">
                                 <label>优先级</label>
-                                <input name="player_id" type="text" class="form-control"
-                                       v-model.trim="activatedRow.rid" disabled>
-                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                            </div>
-                            <div class="form-group has-feedback">
-                                <label>充值类型</label>
-                                <select class="form-control" v-model.trim="topUpData.typeId">
-                                    <option v-for="(value, index) in topUpData.type" :value="index"
-                                            v-if="index == topUpData.typeId" selected>
+                                <select class="form-control" v-model.trim="createMarqueeData.priority">
+                                    <option v-for="(value, index) in priorityType" :value="index"
+                                            v-if="index == createMarqueeData.priority" selected>
                                         {{ value }}
                                     </option>
                                     <option v-else :value="index">
@@ -110,11 +104,25 @@
                                 </select>
                             </div>
                             <div class="form-group has-feedback">
-                                <label>充值数量</label>
-                                <input name="amount" type="text" class="form-control" v-validate="'required|numeric'"
-                                       v-model.trim="topUpData.amount">
-                                <span class="glyphicon glyphicon-yen form-control-feedback"></span>
-                                <span v-show="errors.has('amount')" class="text-danger">{{ errors.first('amount') }}</span>
+                                <label>时间间隔</label>
+                                <input name="interval" type="number" min="1" required class="form-control"
+                                       v-model.trim="createMarqueeData.interval">
+                                <span class="glyphicon glyphicon-time form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>开始时间</label>
+                                <date-picker required v-model.trim="createMarqueeData.start_at"></date-picker>
+                                <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>结束时间</label>
+                                <date-picker required v-model.trim="createMarqueeData.end_at"></date-picker>
+                                <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>公告内容</label>
+                                <textarea type="text" class="form-control" row="3" required
+                                          v-model.trim="createMarqueeData.content"></textarea>
                             </div>
                             <div class="form-group">
                                 <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
@@ -135,8 +143,9 @@
 <!-- ./wrapper -->
 
 <script>
+    Vue.component('date-picker', VueBootstrapDatetimePicker.default);   //注册date-picker组件
+
     Vue.use(Vuetable);      //注册vuetable-2插件
-    Vue.use(VeeValidate);   //注册vee-validate插件
     var Hub = new Vue();    //event hub，事件中心，用于非父子组件中的事件传递
 
     //注册处理每行数据的组件
@@ -207,11 +216,17 @@
 
             activatedRow: {},       //待编辑的行
 
+            priorityType: {
+                1: '高',
+                2: '低'
+            },
+
             createMarqueeData: {
-                priority: {
-                    1: '高',
-                    2: '低'
-                }
+                priority: 1,
+                interval: null,
+                start_at: null,
+                end_at: null,
+                content: null,
             },
 
             topUpData: {
@@ -347,6 +362,41 @@
                         console.log(err);
                     });
             },
+
+            createMarquee () {
+                var _self = this;
+
+                //格式化moment对象为时间戳
+                _self.createMarqueeData.start_at = _self.createMarqueeData.start_at.format('X');
+                _self.createMarqueeData.end_at = _self.createMarqueeData.end_at.format('X');
+
+                if (_self.createMarqueeData.end_at <= _self.createMarqueeData.start_at) {
+                    return alert('结束时间不能早于开始时间');
+                }
+
+                axios({
+                    method: 'POST',
+                    url: '/admin/api/notification/marquee',
+                    data: _self.createMarqueeData,
+                    validateStatus: function (status) {
+                        return status == 200 || status == 422;
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status === 422) {
+                            alert(JSON.stringify(response.data))
+                        } else {
+                            response.data.error ? alert(response.data.error) : alert(response.data.message);
+                            for (var index of Object.keys(_self.createMarqueeData)) {
+                                _self.createMarqueeData[index] = null;
+                            }
+                        }
+                    })
+                    .catch(function (err) {
+                        alert(err);
+                        console.log(err);
+                    });
+            }
         },
 
         mounted: function () {
