@@ -39,6 +39,7 @@ Route::group([
     Route::put('self/password', 'AdminController@updatePass');
 
     Route::get('player', 'PlayerController@show');
+    Route::post('notification/marquee', 'MarqueeNotificationController@create');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');

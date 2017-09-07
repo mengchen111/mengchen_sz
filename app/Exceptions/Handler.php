@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use App\Exceptions\CustomException;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +45,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        //自定义异常类，输出错误信息给前端
+        if ($exception instanceof CustomException) {
+            return response()->json(['error' => $exception->getMessage()], 200);
+        }
         return parent::render($request, $exception);
     }
 

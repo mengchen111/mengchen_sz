@@ -15,6 +15,9 @@ class OperationLogs extends Model
 
     public static function add($userId, $uri, $method, $description, $userAgent = 'undefined', $data = '')
     {
+        if (! env('OPERATION_LOG', true)) {
+            return true;
+        }
         return self::create([
             'user_id' => $userId,
             'uri' => $uri,

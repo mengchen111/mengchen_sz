@@ -33,8 +33,13 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
+                    <div class="row col-md-3">
+                        <button class="btn btn-block btn-primary btn-flat" data-toggle="modal"
+                                data-target="#new-marquee-modal">
+                            新建跑马灯公告
+                        </button>
+                    </div>
                     <template>
-                        <filter-bar></filter-bar>
 
                         <!--<div class="pagination pull-left">
                             <vuetable-pagination-info ref="paginationInfoTop"
@@ -76,19 +81,18 @@
         </section>
         <!-- /.content -->
 
-        <!-- Player Table Actions -->
-        <!-- 给玩家充值 -->
-        <div id="player-top-up-modal" class="modal fade" tabindex="-1">
+        <!-- 新建跑马灯公告模态框 -->
+        <div id="new-marquee-modal" class="modal fade" tabindex="-1">
             <div class="modal-dialog" style="width: 380px;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal">x</button>
-                        <h3 class="text-center">玩家充值</h3>
+                        <h3 class="text-center">新建跑马灯公告</h3>
                     </div>
                     <div class="modal-body">
-                        <form role="form" class="form-group" method="POST" action="#" @submit.prevent="topUpPlayer">
+                        <form role="form" class="form-group" method="POST" action="#" @submit.prevent="createMarquee">
                             <div class="form-group has-feedback">
-                                <label>玩家ID</label>
+                                <label>优先级</label>
                                 <input name="player_id" type="text" class="form-control"
                                        v-model.trim="activatedRow.rid" disabled>
                                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -120,7 +124,6 @@
                 </div>
             </div>
         </div>
-        <!-- end Player Table Actions -->
 
     </div>
     <!-- /.content-wrapper -->
@@ -197,38 +200,19 @@
     }
     Vue.component('detail-row', detailRow);
 
-    //注册搜索条组件
-    var filterBar = {
-        template: `
-            <div class="row" style="margin-right: 50px;margin-bottom: 8px;">
-                <div class="input-group col-xs-4 pull-right">
-                      <input type="text" v-model.trim="filterText" class="form-control" @keyup.enter="doFilter" placeholder="查找玩家ID...">
-                      <span class="input-group-btn">
-                        <button class="btn btn-flat" @click="doFilter">
-                            <i class="glyphicon glyphicon-search"></i>
-                        </button>
-                      </span>
-                </div>
-            </div>`,
-        data: function () {
-            return {
-                filterText: '',
-            }
-        },
-        methods: {
-            doFilter () {
-                Hub.$emit('filterEvent', this.filterText);
-            },
-        }
-    };
-    Vue.component('filter-bar', filterBar);
-
     var app = new Vue({
         el: '#app',
         data: {
             vuetableUrl: '/admin/api/player',
 
             activatedRow: {},       //待编辑的行
+
+            createMarqueeData: {
+                priority: {
+                    1: '高',
+                    2: '低'
+                }
+            },
 
             topUpData: {
                 type: {
@@ -373,14 +357,6 @@
             });
             Hub.$on('blockPlayerEvent', function (data) {
                 _self.activatedRow = data;
-            });
-            Hub.$on('filterEvent', function (filterText) {
-                _self.moreParams = {
-                    'filter': filterText,
-                };
-                Vue.nextTick(function (){
-                    _self.$refs.vuetable.refresh();
-                })
             });
         },
     });
