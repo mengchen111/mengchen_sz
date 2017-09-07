@@ -40,6 +40,8 @@ Route::group([
 
     Route::get('player', 'PlayerController@show');
     Route::post('notification/marquee', 'MarqueeNotificationController@create');
+    Route::put('notification/marquee/enable/{marquee}', 'MarqueeNotificationController@enable')->where('marquee', '[0-9]+');
+    Route::put('notification/marquee/disable/{marquee}', 'MarqueeNotificationController@disable')->where('marquee', '[0-9]+');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');

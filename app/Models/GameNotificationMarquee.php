@@ -17,6 +17,6 @@ class GameNotificationMarquee extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'priority', 'interval', 'start_at', 'end_at', 'content', 'switch', 'sync_state'
+        'priority', 'interval', 'start_at', 'end_at', 'content', 'switch', 'sync_state', 'failed_description'
     ];
 }
