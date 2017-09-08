@@ -363,6 +363,7 @@ class ComposerStaticInitab15ae922988d6e16dfbe01c9f2881a1
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Jobs\\SendMarqueeNotification' => __DIR__ . '/../..' . '/app/Jobs/SendGameNotification.php',
         'App\\Models\\GameNotificationMarquee' => __DIR__ . '/../..' . '/app/Models/GameNotificationMarquee.php',
         'App\\Models\\Game\\PackItem' => __DIR__ . '/../..' . '/app/Models/Game/PackItem.php',
         'App\\Models\\Game\\Player' => __DIR__ . '/../..' . '/app/Models/Game/Player.php',

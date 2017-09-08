@@ -11,25 +11,25 @@ use App\Models\GameNotificationMarquee;
 use GuzzleHttp\Client;
 use App\Models\OperationLogs;
 
-class SendMarqueeNotification implements ShouldQueue
+class SendGameNotification implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $marquee;     //跑马灯公告模型
-    protected $formData;    //POST数据
-    protected $apiAddress;  //游戏服地址
+    protected $notificationModel;    //公告模型实例
+    protected $formData;        //POST数据
+    protected $apiAddress;      //游戏服地址
 
-    public $tries = 3;      //最大重试次数
-    public $timeout = 10;   //任务执行的最长时间
+    public $tries = 3;          //最大重试次数
+    public $timeout = 10;       //任务执行的最长时间
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(GameNotificationMarquee $marquee, $formData, $apiAddress)
+    public function __construct($notificationModel, $formData, $apiAddress)
     {
-        $this->marquee = $marquee;
+        $this->notificationModel = $notificationModel;
         $this->formData = $formData;
         $this->apiAddress = $apiAddress;
     }
@@ -51,9 +51,9 @@ class SendMarqueeNotification implements ShouldQueue
 
         if (200 == $response->getStatusCode()) {
             if (1 == json_decode($response->getBody()->getContents())->result) {
-                $this->marquee->sync_state = 3;
-                $this->marquee->failed_description = '';
-                $this->marquee->save();
+                $this->notificationModel->sync_state = 3;
+                $this->notificationModel->failed_description = '';
+                $this->notificationModel->save();
 
                 OperationLogs::add(1, $this->apiAddress, 'POST', '后台队列同步跑马灯公告成功',
                     'Guzzle', json_encode($this->formData));
@@ -67,12 +67,12 @@ class SendMarqueeNotification implements ShouldQueue
         throw new \Exception('状态返回码非200，同步失败');
     }
 
-    //如果请求过程中Guzzle抛出异常，则记录在marquee表中
+    //如果请求过程中Guzzle抛出异常，则记录在notificationModel模型表中
     public function failed(\Exception $e)
     {
-        $this->marquee->sync_state = 4;
-        $this->marquee->failed_description = $e->getMessage();
-        $this->marquee->save();
+        $this->notificationModel->sync_state = 4;
+        $this->notificationModel->failed_description = $e->getMessage();
+        $this->notificationModel->save();
 
         throw $e;   //将异常重新抛出
     }

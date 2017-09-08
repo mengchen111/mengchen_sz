@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SendMarqueeNotification;
+use App\Jobs\SendGameNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -87,7 +87,7 @@ class MarqueeNotificationController extends Controller
         $this->prepareFormData($marquee->toArray());
 
         //分发任务到队列，异步同步公告状态
-        dispatch(new SendMarqueeNotification($marquee, $this->formData, $this->apiAddress));
+        dispatch(new SendGameNotification($marquee, $this->formData, $this->apiAddress));
 
         OperationLogs::add(Auth::id(), $request->path(), $request->method(), '启用跑马灯公告',
             $request->header('User-Agent'));
@@ -104,7 +104,7 @@ class MarqueeNotificationController extends Controller
 
         $this->prepareFormData($marquee->toArray());
 
-        dispatch(new SendMarqueeNotification($marquee, $this->formData, $this->apiAddress));
+        dispatch(new SendGameNotification($marquee, $this->formData, $this->apiAddress));
 
         OperationLogs::add(Auth::id(), $request->path(), $request->method(), '禁用跑马灯公告',
             $request->header('User-Agent'));

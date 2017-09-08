@@ -35,6 +35,7 @@ return array(
     'App\\Http\\Middleware\\RedirectIfAuthenticated' => $baseDir . '/app/Http/Middleware/RedirectIfAuthenticated.php',
     'App\\Http\\Middleware\\TrimStrings' => $baseDir . '/app/Http/Middleware/TrimStrings.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
+    'App\\Jobs\\SendMarqueeNotification' => $baseDir . '/app/Jobs/SendGameNotification.php',
     'App\\Models\\GameNotificationMarquee' => $baseDir . '/app/Models/GameNotificationMarquee.php',
     'App\\Models\\Game\\PackItem' => $baseDir . '/app/Models/Game/PackItem.php',
     'App\\Models\\Game\\Player' => $baseDir . '/app/Models/Game/Player.php',
