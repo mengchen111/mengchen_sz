@@ -47,7 +47,7 @@ class MarqueeNotificationController extends Controller
         $this->validateMarquee($request);
 
         $data = $request->intersect([
-            'priority', 'interval', 'start_at', 'end_at', 'content', 'switch'
+            'priority', 'interval', 'start_at', 'end_at', 'content',
         ]);
 
         if (GameNotificationMarquee::create($data)) {
@@ -65,12 +65,13 @@ class MarqueeNotificationController extends Controller
         $this->validate($request, [
             'priority' => 'required|in:1,2',        //1-高，2-低
             'interval' => 'required|integer',
-            'start_at' => 'required|digits:10',     //时间戳
-            'end_at' => 'required|digits:10',
+            'start_at' => 'required|date_format:"Y-m-d H:i:s"',
+            'end_at' => 'required|date_format:"Y-m-d H:i:s"',
             'content' => 'required|max:255',
             'switch' => 'integer|in:1,2',           //默认值2
+            'failed_description' => 'nullable|string'
         ]);
-        if ($request->end_at <= $request->start_at) {
+        if ($request->end_at <= $request->start_at) {   //经测试不用转为时间戳，可以直接比较
             throw new CustomException('结束时间不能小于开始时间');
         }
     }
@@ -91,7 +92,7 @@ class MarqueeNotificationController extends Controller
         OperationLogs::add(Auth::id(), $request->path(), $request->method(), '启用跑马灯公告',
             $request->header('User-Agent'));
 
-        return ['message' => '开启公告成功'];
+        return ['message' => '开启公告成功，等待同步完成'];
     }
 
     //停用跑马灯公告，发送http请求到游戏服接口
@@ -108,7 +109,7 @@ class MarqueeNotificationController extends Controller
         OperationLogs::add(Auth::id(), $request->path(), $request->method(), '禁用跑马灯公告',
             $request->header('User-Agent'));
 
-        return ['message' => '停用公告成功'];
+        return ['message' => '停用公告成功，等待同步完成'];
     }
 
     //构建POST需要提交的数据
@@ -132,5 +133,42 @@ class MarqueeNotificationController extends Controller
 
         return GameNotificationMarquee::orderBy($this->order[0], $this->order[1])
             ->paginate($this->per_page);
+    }
+
+    //编辑跑马灯公告
+    public function update(Request $request, GameNotificationMarquee $marquee)
+    {
+        if ($marquee->is_syncing) {
+            return [ 'error' => '此公告正在同步中，禁止编辑' ];
+        }
+
+        $this->validateMarquee($request);
+
+        $data = $request->intersect([
+            'priority', 'interval', 'start_at', 'end_at', 'content',
+        ]);
+        $data = array_merge($data, [
+            'switch' => 2,              //公告状态改为关闭
+            'sync_state' => 1,          //同步状态改为未同步
+            'failed_description' => '', //清空错误描述
+        ]);
+
+        if ($marquee->update($data)) {
+            OperationLogs::add(Auth::id(), $request->path(), $request->method(), '编辑跑马灯公告',
+                $request->header('User-Agent'), json_encode($data));
+
+            return [ 'message' => '更新跑马灯公告成功' ];
+        }
+    }
+
+    public function destroy(Request $request, GameNotificationMarquee $marquee)
+    {
+        if ($marquee->is_enabled) {
+            return [ 'error' => '此公告已经同步到游戏服，不能删除。请先停用此公告'];
+        }
+
+        OperationLogs::add(Auth::id(), $request->path(), $request->method(),
+            '删除跑马灯公告', $request->header('User-Agent'), $marquee->toJson());
+        return $marquee->delete() ? ['message' => '删除成功'] : ['error' => '删除失败'];
     }
 }

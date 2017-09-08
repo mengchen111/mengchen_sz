@@ -21,13 +21,15 @@ class GameNotificationMarquee extends Model
         'priority', 'interval', 'start_at', 'end_at', 'content', 'switch', 'sync_state', 'failed_description'
     ];
 
-    public function getStartAtAttribute($value)
+    public function getIsEnabledAttribute($value)
     {
-        return Carbon::createFromTimestamp($value)->format('Y-m-d H:i:s');
+        //处于同步状态的 或者 开启状态，且同步成功的公告
+        return 2 == $this->attributes['sync_state']
+            or (1 == $this->attributes['switch'] && 3 == $this->attributes['sync_state']);
     }
 
-    public function getEndAtAttribute($value)
+    public function getIsSyncingAttribute()
     {
-        return Carbon::createFromTimestamp($value)->format('Y-m-d H:i:s');
+        return 2 == $this->attributes['sync_state'];
     }
 }

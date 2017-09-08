@@ -111,18 +111,70 @@
                             </div>
                             <div class="form-group has-feedback">
                                 <label>开始时间</label>
-                                <date-picker required :config='datePickerConf' v-model.trim="createMarqueeData.start_at"></date-picker>
+                                <date-picker required :config='datePickerConf' v-model="createMarqueeData.start_at"></date-picker>
                                 <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
                             </div>
                             <div class="form-group has-feedback">
                                 <label>结束时间</label>
-                                <date-picker required :config='datePickerConf' v-model.trim="createMarqueeData.end_at"></date-picker>
+                                <date-picker required :config='datePickerConf' v-model="createMarqueeData.end_at"></date-picker>
                                 <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
                             </div>
                             <div class="form-group">
                                 <label>公告内容</label>
                                 <textarea type="text" class="form-control" row="3" required
                                           v-model.trim="createMarqueeData.content"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 编辑跑马灯公告模态框 -->
+        <div id="edit-marquee-modal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog" style="width: 380px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal">x</button>
+                        <h3 class="text-center">编辑跑马灯公告</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" class="form-group" method="POST" action="#" @submit.prevent="editMarquee">
+                            <div class="form-group has-feedback">
+                                <label>优先级</label>
+                                <select class="form-control" v-model.trim="activatedRow.priority">
+                                    <option v-for="(value, index) in priorityType" :value="index"
+                                            v-if="index == activatedRow.priority" selected>
+                                        {{ value }}
+                                    </option>
+                                    <option v-else :value="index">
+                                        {{ value }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>时间间隔</label>
+                                <input name="interval" type="number" min="1" required class="form-control"
+                                       v-model.trim="activatedRow.interval">
+                                <span class="glyphicon glyphicon-time form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>开始时间</label>
+                                <date-picker required :config='datePickerConf' v-model.trim="activatedRow.start_at"></date-picker>
+                                <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>结束时间</label>
+                                <date-picker required :config='datePickerConf' v-model.trim="activatedRow.end_at"></date-picker>
+                                <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>公告内容</label>
+                                <textarea type="text" class="form-control" row="3" required
+                                          v-model.trim="activatedRow.content"></textarea>
                             </div>
                             <div class="form-group">
                                 <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
@@ -152,12 +204,18 @@
     var tableActions = {
         template: `
                 <div class="table-actions">
-                    <button class="btn btn-default" data-toggle="modal" data-target="#player-top-up-modal"
-                        @click="topUpPlayerAction(rowData)" title="充值"><i class="glyphicon glyphicon-credit-card"></i>
+                    <button class="btn btn-success btn-flat" @click="enableMarquee(rowData)">
+                        开启
                     </button>
-                    <!--<button class="btn btn-default" data-toggle="modal" data-target="#player-block-modal"
-                        @click="blockPlayerAction(rowData)" title="封禁"><i class="glyphicon glyphicon-ban-circle"></i>
-                    </button>-->
+                    <button class="btn btn-warning btn-flat" @click="disableMarquee(rowData)">
+                        关闭
+                    </button>
+                    <button class="btn btn-primary btn-flat" data-toggle="modal" data-target="#edit-marquee-modal"
+                        @click="editMarqueeAction(rowData)">修改
+                    </button>
+                    <button class="btn btn-danger btn-flat"
+                        @click="deleteMarqueeAction(rowData)">删除
+                    </button>
                 </div>`,
         props: {
             rowData: {
@@ -169,12 +227,51 @@
             }
         },
         methods: {
-            topUpPlayerAction (data) {
-                Hub.$emit('topUpPlayerEvent', data);
+            enableMarquee (data) {
+                var uri = `/admin/api/notification/marquee/enable/${data.id}`;
+                axios.put(uri, {})
+                    .then(function (response) {
+                        if (response.data.error) {
+                            return alert(response.data.error);
+                        }
+                        alert(response.data.message);
+                        return Hub.$emit('enableMarqueeEvent', data);     //发送开启公告事件，刷新表格
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
             },
-            blockPlayerAction (data) {
-                Hub.$emit('blockPlayerEvent', data);
+            disableMarquee (data) {
+                var uri = `/admin/api/notification/marquee/disable/${data.id}`;
+                axios.put(uri, {})
+                    .then(function (response) {
+                        if (response.data.error) {
+                            return alert(response.data.error);
+                        }
+                        alert(response.data.message);
+                        return Hub.$emit('disableMarqueeEvent', data);     //发送停用公告事件，刷新表格
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
             },
+            editMarqueeAction (data) {
+                Hub.$emit('editMarqueeEvent', data);
+            },
+            deleteMarqueeAction (data) {
+                var uri = `/admin/api/notification/marquee/${data.id}`;
+                axios.delete(uri, {})
+                    .then(function (response) {
+                        if (response.data.error) {
+                            return alert(response.data.error);
+                        }
+                        alert(response.data.message);
+                        return Hub.$emit('deleteMarqueeEvent', data);     //发送删除事件，刷新表格
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+            }
         }
     }
     Vue.component('table-actions', tableActions);
@@ -183,10 +280,10 @@
     var detailRow = {
         template: `
             <div @click="onClick">
-              <!--<div class="">
+              <div class="">
                 <label>失败原因:&nbsp;&nbsp;</label>
                 <span>{{rowData.failed_description}}</span>
-              </div>-->
+              </div>
               <div class="">
                 <label>创建时间:&nbsp;&nbsp;</label>
                 <span>{{rowData.created_at}}</span>
@@ -222,6 +319,7 @@
 
             datePickerConf: {       //datePicker配置项
                 locale: moment().local('zh_cn'),
+                format: 'YYYY-MM-DD HH:mm:ss',
             },
 
             priorityType: {         //跑马灯公告优先级
@@ -249,17 +347,6 @@
                 content: null,
             },
 
-            topUpData: {
-                type: {
-                    1: '房卡',
-                    2: '金币'
-                },
-                typeId: 1,
-                amount: null,
-            },
-
-            onlineState: ['离线', '在线'],
-
             tableFields: [
                 {
                     name: 'id',
@@ -275,11 +362,13 @@
                     name: 'start_at',
                     title: '开始时间',
                     sortField: 'start_at',
+                    callback: 'transStartTime'
                 },
                 {
                     name: 'end_at',
                     title: '结束时间',
                     sortField: 'end_at',
+                    callback: 'transEndTime'
                 },
                 {
                     name: 'content',
@@ -297,11 +386,11 @@
                     sortField: 'sync_state',
                     callback: 'transSyncState'
                 },
-                {
+                /*{
                     name: 'failed_description',
                     title: '同步失败原因',
                     callback: 'transDescription',
-                },
+                },*/
                 {
                     name: '__component:table-actions',
                     title: '操作',
@@ -361,36 +450,6 @@
                 this.$refs.vuetable.toggleDetailRow(data.id);
             },
 
-            getOnlineState (state) {
-                return this.onlineState[state];
-            },
-
-            topUpPlayer () {
-                var _self = this;
-
-                if (_self.errors.any()) { return false; }    //表单验证，验证失败不提交
-
-                axios({
-                    method: 'POST',
-                    url: `/admin/api/top-up/player/${_self.activatedRow.rid}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
-                    validateStatus: function (status) {
-                        return status == 200 || status == 422;
-                    }
-                })
-                    .then(function (response) {
-                        if (response.status === 422) {
-                            alert(JSON.stringify(response.data))
-                        } else {
-                            response.data.error ? alert(response.data.error) : alert(response.data.message);
-                            _self.topUpData.amount = null;
-                        }
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
-            },
-
             transPriority (value) {
                 return this.priorityType[value];
             },
@@ -420,33 +479,126 @@
                 return value ? `<span style="color: #dd4b39;"><b>${value}</b></span>` : null;
             },
 
-            createMarquee () {
-                var _self = this;
-
-                //格式化moment对象为时间戳
-                _self.createMarqueeData.start_at = _self.createMarqueeData.start_at.format('X');
-                _self.createMarqueeData.end_at = _self.createMarqueeData.end_at.format('X');
-
-                if (_self.createMarqueeData.end_at <= _self.createMarqueeData.start_at) {
-                    return alert('结束时间不能早于开始时间');
+            transStartTime (value) {
+                //当编辑公告的时候，activatedRow待编辑的行的数据会与这一行显示的数据双向绑定
+                //初次打开页面的时候，后端返回的是string格式的字符串，而编辑的时候绑定的是moment对象
+                if (moment.isMoment(value)) {
+                    return value.format('YYYY-MM-DD HH:mm:ss');
                 }
+                return value;
+            },
+
+            transEndTime (value) {
+                if (moment.isMoment(value)) {
+                    return value.format('YYYY-MM-DD HH:mm:ss');
+                }
+                return value;
+            },
+
+            createMarquee () {
+                var formData = {};
+                var _self = this;
+                var startTime = _self.createMarqueeData.start_at;
+                var endTime = _self.createMarqueeData.end_at;
+
+                if (endTime.isBefore(startTime)) {
+                    return alert('开始时间不能大于结束时间');
+                }
+
+                //重新构建formData，引用_self.createMarqueeData的值发送POST数据是start_at和end_数据格式不对
+                formData.priority = _self.createMarqueeData.priority;
+                formData.interval = _self.createMarqueeData.interval;
+                formData.content = _self.createMarqueeData.content;
+                //格式化moment对象为相应的字符串时间格式
+                formData.start_at = startTime.format('YYYY-MM-DD HH:mm:ss');
+                formData.end_at = endTime.format('YYYY-MM-DD HH:mm:ss');
 
                 axios({
                     method: 'POST',
                     url: '/admin/api/notification/marquee',
-                    data: _self.createMarqueeData,
+                    data: formData,
                     validateStatus: function (status) {
                         return status == 200 || status == 422;
                     }
                 })
                     .then(function (response) {
                         if (response.status === 422) {
-                            alert(JSON.stringify(response.data))
+                            return alert(JSON.stringify(response.data))
                         } else {
-                            response.data.error ? alert(response.data.error) : alert(response.data.message);
-                            /*for (var index of Object.keys(_self.createMarqueeData)) {
+                            if (response.data.error) {
+                                return alert(response.data.error)
+                            }
+
+                            alert(response.data.message);
+
+                            //清空表单数据
+                            for (var index of Object.keys(_self.createMarqueeData)) {
                                 _self.createMarqueeData[index] = null;
-                            }*/
+                            }
+
+                            //添加成功，刷新表格
+                            Vue.nextTick(function (){
+                                _self.$refs.vuetable.refresh();
+                            });
+
+                            return true;
+                        }
+                    })
+                    .catch(function (err) {
+                        alert(err);
+                        console.log(err);
+                    });
+            },
+
+            editMarquee () {
+                var formData = {};
+                var _self = this;
+                var startTime = _self.activatedRow.start_at;
+                var endTime = _self.activatedRow.end_at;
+
+                if (endTime.isBefore(startTime)) {
+                    return alert('开始时间不能大于结束时间');
+                }
+
+                //重新构建formData，引用_self.createMarqueeData的值发送POST数据是start_at和end_数据格式不对
+                formData.priority = _self.activatedRow.priority;
+                formData.interval = _self.activatedRow.interval;
+                formData.content = _self.activatedRow.content;
+                //格式化moment对象为相应的字符串时间格式
+                formData.start_at = startTime.format('YYYY-MM-DD HH:mm:ss');
+                formData.end_at = endTime.format('YYYY-MM-DD HH:mm:ss');
+                axios({
+                    method: 'PUT',
+                    url: `/admin/api/notification/marquee/${_self.activatedRow.id}`,
+                    data: formData,
+                    validateStatus: function (status) {
+                        return status == 200 || status == 422;
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status === 422) {
+                            return alert(JSON.stringify(response.data))
+                        } else {
+                            if (response.data.error) {
+                                return alert(response.data.error)
+                            }
+
+                            alert(response.data.message);
+
+                            //清空表单数据
+                            for (var index of Object.keys(_self.activatedRow)) {
+                                _self.activatedRow[index] = null;
+                            }
+
+                            //添加成功，刷新表格
+                            Vue.nextTick(function (){
+                                _self.$refs.vuetable.refresh();
+                            });
+
+                            return true;
+
+                            response.data.error ? alert(response.data.error) : alert(response.data.message);
+                            return true;
                         }
                     })
                     .catch(function (err) {
@@ -459,11 +611,26 @@
         mounted: function () {
             var _self = this;
 
-            Hub.$on('topUpPlayerEvent', function (data) {
+            Hub.$on('editMarqueeEvent', function (data) {
                 _self.activatedRow = data;
             });
-            Hub.$on('blockPlayerEvent', function (data) {
-                _self.activatedRow = data;
+            Hub.$on('deleteMarqueeEvent', function (data) {
+                //删除成功，刷新表格
+                Vue.nextTick(function (){
+                    _self.$refs.vuetable.refresh();
+                })
+            })
+            Hub.$on('enableMarqueeEvent', function (data) {
+                //启用成功，刷新表格
+                Vue.nextTick(function (){
+                    _self.$refs.vuetable.refresh();
+                })
+            });
+            Hub.$on('disableMarqueeEvent', function (data) {
+                //停用成功，刷新表格
+                Vue.nextTick(function (){
+                    _self.$refs.vuetable.refresh();
+                })
             });
         },
     });
