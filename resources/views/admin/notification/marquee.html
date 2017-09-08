@@ -60,7 +60,7 @@
                                   :append-params="moreParams"
                                   @vuetable:pagination-data="onPaginationData"
                                   detail-row-component="detail-row"
-                                  track-by="rid"
+                                  track-by="id"
                                   @vuetable:cell-clicked="onCellClicked"
                         ></vuetable>
 
@@ -183,13 +183,17 @@
     var detailRow = {
         template: `
             <div @click="onClick">
-              <div class="">
-                <label>上次登录ip:&nbsp;&nbsp;</label>
-                <span>{{rowData.last_login_ip}}</span>
-              </div>
+              <!--<div class="">
+                <label>失败原因:&nbsp;&nbsp;</label>
+                <span>{{rowData.failed_description}}</span>
+              </div>-->
               <div class="">
                 <label>创建时间:&nbsp;&nbsp;</label>
-                <span>{{rowData.create_time}}</span>
+                <span>{{rowData.created_at}}</span>
+              </div>
+              <div class="">
+                <label>更新时间:&nbsp;&nbsp;</label>
+                <span>{{rowData.updated_at}}</span>
               </div>
             </div>`,
         props: {
@@ -212,7 +216,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            vuetableUrl: '/admin/api/player',
+            vuetableUrl: '/admin/api/notification/marquee',
 
             activatedRow: {},       //待编辑的行
 
@@ -220,12 +224,24 @@
                 locale: moment().local('zh_cn'),
             },
 
-            priorityType: {
+            priorityType: {         //跑马灯公告优先级
                 1: '高',
                 2: '低'
             },
 
-            createMarqueeData: {
+            switchType: {           //公告开启状态
+                1: '开启',
+                2: '关闭'
+            },
+
+            syncState: {           //公告同步状态
+                1: '未同步',
+                2: '同步中',
+                3: '同步成功',
+                4: '同步失败',
+            },
+
+            createMarqueeData: {    //创建公告表单数据
                 priority: 1,
                 interval: null,
                 start_at: null,
@@ -246,36 +262,45 @@
 
             tableFields: [
                 {
-                    name: 'rid',
-                    title: '玩家ID',
-                    sortField: 'rid',
+                    name: 'id',
+                    title: '公告ID',
+                    sortField: 'id',
                 },
                 {
-                    name: 'nick',
-                    title: '玩家昵称',
+                    name: 'priority',
+                    title: '优先级',
+                    callback: 'transPriority',
                 },
                 {
-                    name: 'card.count',
-                    title: '房卡数量'
+                    name: 'start_at',
+                    title: '开始时间',
+                    sortField: 'start_at',
                 },
                 {
-                    name: 'gold',
-                    title: '金币数量',
-                    sortField: 'gold',
+                    name: 'end_at',
+                    title: '结束时间',
+                    sortField: 'end_at',
                 },
                 {
-                    name: 'online',
-                    title: '在线状态',
-                    sortField: 'online',
-                    callback: 'getOnlineState'
+                    name: 'content',
+                    title: '公告内容',
                 },
                 {
-                    name: 'last_login_time',
-                    title: '最后登录时间',
+                    name: 'switch',
+                    title: '开启状态',
+                    sortField: 'switch',
+                    callback: 'transSwitch'
                 },
                 {
-                    name: 'last_offline_time',
-                    title: '最后离线时间'
+                    name: 'sync_state',
+                    title: '同步状态',
+                    sortField: 'sync_state',
+                    callback: 'transSyncState'
+                },
+                {
+                    name: 'failed_description',
+                    title: '同步失败原因',
+                    callback: 'transDescription',
                 },
                 {
                     name: '__component:table-actions',
@@ -287,8 +312,8 @@
 
             sortOrder: [    //默认的排序
                 {
-                    field: 'rid',
-                    sortField: 'rid',
+                    field: 'id',
+                    sortField: 'id',
                     direction: 'desc',
                 }
             ],
@@ -333,8 +358,7 @@
                 this.$refs.vuetable.changePage(page);
             },
             onCellClicked (data, field, event) {
-                //console.log('cellClicked: ', field.name, data.email)
-                this.$refs.vuetable.toggleDetailRow(data.rid);
+                this.$refs.vuetable.toggleDetailRow(data.id);
             },
 
             getOnlineState (state) {
@@ -367,6 +391,35 @@
                     });
             },
 
+            transPriority (value) {
+                return this.priorityType[value];
+            },
+
+            transSwitch (value) {
+                return this.switchType[value];
+            },
+
+            transSyncState (value) {
+                var state = this.syncState[value];
+                switch (value)
+                {
+                    case 1:
+                        return `<span><b>${state}</b></span>`;
+                    case 2:
+                        return `<span style="color: #00c0ef;"><b>${state}</b></span>`;
+                    case 3:
+                        return `<span style="color: #00a65a;"><b>${state}</b></span>`;
+                    case 4:
+                        return `<span style="color: #dd4b39;"><b>${state}</b></span>`;
+                    default:
+                        return true;
+                }
+            },
+
+            transDescription (value) {
+                return value ? `<span style="color: #dd4b39;"><b>${value}</b></span>` : null;
+            },
+
             createMarquee () {
                 var _self = this;
 
@@ -391,9 +444,9 @@
                             alert(JSON.stringify(response.data))
                         } else {
                             response.data.error ? alert(response.data.error) : alert(response.data.message);
-                            for (var index of Object.keys(_self.createMarqueeData)) {
+                            /*for (var index of Object.keys(_self.createMarqueeData)) {
                                 _self.createMarqueeData[index] = null;
-                            }
+                            }*/
                         }
                     })
                     .catch(function (err) {

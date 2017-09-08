@@ -22,6 +22,9 @@ use GuzzleHttp\Client;
 
 class MarqueeNotificationController extends Controller
 {
+    protected $per_page = 15;
+    protected $order = ['id', 'desc'];
+
     protected $apiAddress = '';     //游戏服开放的接口的url地址
     protected $formData = [         //游戏服接口必须要填充的数据，不然报错
         'title' => '',
@@ -31,11 +34,14 @@ class MarqueeNotificationController extends Controller
         'pop_rate' => '',
     ];
 
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->apiAddress = env('GAME_SERVER_API_ADDRESS') . '?action=notice.systemSendNOticeToAll';
+        $this->per_page = $request->per_page ?: $this->per_page;
+        $this->order = $request->sort ? explode('|', $request->sort) : $this->order;
     }
 
+    //创建跑马灯公告接口
     public function create(Request $request)
     {
         $this->validateMarquee($request);
@@ -116,5 +122,15 @@ class MarqueeNotificationController extends Controller
         $this->formData['stime'] = $data['start_at'];
         $this->formData['etime'] = $data['end_at'];
         $this->formData['content'] = $data['content'];
+    }
+
+    //跑马灯公告列表
+    public function show(Request $request)
+    {
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '管理员查看跑马灯公告列表', $request->header('User-Agent'), json_encode($request->all()));
+
+        return GameNotificationMarquee::orderBy($this->order[0], $this->order[1])
+            ->paginate($this->per_page);
     }
 }

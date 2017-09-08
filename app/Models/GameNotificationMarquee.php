@@ -10,6 +10,7 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class GameNotificationMarquee extends Model
 {
@@ -19,4 +20,14 @@ class GameNotificationMarquee extends Model
     protected $fillable = [
         'priority', 'interval', 'start_at', 'end_at', 'content', 'switch', 'sync_state', 'failed_description'
     ];
+
+    public function getStartAtAttribute($value)
+    {
+        return Carbon::createFromTimestamp($value)->format('Y-m-d H:i:s');
+    }
+
+    public function getEndAtAttribute($value)
+    {
+        return Carbon::createFromTimestamp($value)->format('Y-m-d H:i:s');
+    }
 }

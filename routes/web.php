@@ -39,6 +39,8 @@ Route::group([
     Route::put('self/password', 'AdminController@updatePass');
 
     Route::get('player', 'PlayerController@show');
+
+    Route::get('notification/marquee', 'MarqueeNotificationController@show');
     Route::post('notification/marquee', 'MarqueeNotificationController@create');
     Route::put('notification/marquee/enable/{marquee}', 'MarqueeNotificationController@enable')->where('marquee', '[0-9]+');
     Route::put('notification/marquee/disable/{marquee}', 'MarqueeNotificationController@disable')->where('marquee', '[0-9]+');
