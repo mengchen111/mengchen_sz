@@ -88,7 +88,6 @@
 
 <script>
     Vue.use(Vuetable);      //注册vuetable-2插件
-    Vue.use(VeeValidate);   //注册vee-validate插件
     var Hub = new Vue();    //event hub，事件中心，用于非父子组件中的事件传递
 
     //注册处理每行数据的组件
@@ -347,8 +346,6 @@
             topUpAgent () {
                 var _self = this;
 
-                if (_self.errors.any()) { return false; }    //表单验证，验证失败不提交
-
                 axios({
                     method: 'POST',
                     url: `/admin/api/top-up/agent/${_self.activatedRow.account}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
@@ -371,8 +368,6 @@
             },
             editAgentInfo () {
                 var _self = this;
-
-                if (_self.errors.any()) { return false; }    //表单验证，验证失败不提交
 
                 axios({
                     method: 'PUT',
@@ -398,8 +393,6 @@
             },
             updateAgentPassword () {
                 var _self = this;
-
-                if (_self.errors.any()) { return false; }    //表单验证，验证失败不提交
 
                 axios({
                     method: 'PUT',

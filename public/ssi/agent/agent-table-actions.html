@@ -28,10 +28,9 @@
                     </div>
                     <div class="form-group has-feedback">
                         <label>充值数量</label>
-                        <input name="amount" type="text" class="form-control" v-validate="'required|numeric'"
+                        <input name="amount" type="number" class="form-control" required min="1"
                                v-model.trim="topUpData.amount">
                         <span class="glyphicon glyphicon-yen form-control-feedback"></span>
-                        <span v-show="errors.has('amount')" class="text-danger">{{ errors.first('amount') }}</span>
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
@@ -54,17 +53,15 @@
                 <form role="form" class="form-group" method="POST" action="#" @submit.prevent="editChildInfo">
                     <div class="form-group has-feedback">
                         <label>昵称</label>
-                        <input name="name" type="text" class="form-control" v-validate="'required|max:255'"
+                        <input name="name" type="text" class="form-control" required
                                v-model.trim="activatedRow.name" placeholder="昵称">
                         <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
-                        <span v-show="errors.has('name')" class="text-danger">{{ errors.first('name') }}</span>
                     </div>
                     <div class="form-group has-feedback">
                         <label>账号</label>
-                        <input name="account" type="account" class="form-control" v-validate="'required|max:255'"
+                        <input name="account" type="text" class="form-control" required
                                v-model.trim="activatedRow.account" placeholder="账号">
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                        <span v-show="errors.has('account')" class="text-danger">{{ errors.first('account') }}</span>
                     </div>
                     <div class="form-group has-feedback">
                         <label>密码</label>
