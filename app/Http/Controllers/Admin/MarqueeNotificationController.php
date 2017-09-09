@@ -79,10 +79,11 @@ class MarqueeNotificationController extends Controller
     //启用跑马灯公告，发送http请求到游戏服接口
     public function enable(Request $request, GameNotificationMarquee $marquee)
     {
+        $this->validateSyncState($marquee);
+
         $marquee->switch = 1;   //开启公告
         $marquee->sync_state = 2;
         $marquee->save();       //更改同步状态为同步中（写入数据库）
-
 
         $this->prepareFormData($marquee->toArray());
 
@@ -98,6 +99,8 @@ class MarqueeNotificationController extends Controller
     //停用跑马灯公告，发送http请求到游戏服接口
     public function disable(Request $request, GameNotificationMarquee $marquee)
     {
+        $this->validateSyncState($marquee);
+
         $marquee->switch = 2;   //停用公告
         $marquee->sync_state = 2;
         $marquee->save();       //更改同步状态为同步中（写入数据库）
@@ -138,11 +141,9 @@ class MarqueeNotificationController extends Controller
     //编辑跑马灯公告
     public function update(Request $request, GameNotificationMarquee $marquee)
     {
-        if ($marquee->is_syncing) {
-            return [ 'error' => '此公告正在同步中，禁止编辑' ];
-        }
-
         $this->validateMarquee($request);
+
+        $this->validateSyncState($marquee);
 
         $data = $request->intersect([
             'priority', 'interval', 'start_at', 'end_at', 'content',
@@ -163,12 +164,24 @@ class MarqueeNotificationController extends Controller
 
     public function destroy(Request $request, GameNotificationMarquee $marquee)
     {
-        if ($marquee->is_enabled) {
-            return [ 'error' => '此公告已经同步到游戏服，不能删除。请先停用此公告'];
-        }
+        $this->validateEnabledState($marquee);
 
         OperationLogs::add(Auth::id(), $request->path(), $request->method(),
             '删除跑马灯公告', $request->header('User-Agent'), $marquee->toJson());
         return $marquee->delete() ? ['message' => '删除成功'] : ['error' => '删除失败'];
+    }
+
+    protected function validateSyncState(GameNotificationMarquee $marquee)
+    {
+        if ($marquee->is_syncing) {
+            throw new CustomException('此公告正在同步中，禁止操作');
+        }
+    }
+
+    protected function validateEnabledState(GameNotificationMarquee $marquee)
+    {
+        if ($marquee->is_enabled) {
+            throw new CustomException('此公告已经同步到游戏服，不能删除。请先停用此公告');
+        }
     }
 }
