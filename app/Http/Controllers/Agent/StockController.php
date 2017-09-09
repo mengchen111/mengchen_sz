@@ -50,8 +50,10 @@ class StockController extends Controller
             '总代理申请库存', $request->header('User-Agent'), json_encode($data));
 
         //给管理员发邮件通知
-        $admin = User::find($this->adminId);
-        $admin->notify(new StockApplied($stockApplication));
+        if (env('EMAIL_NOTIFICATION', false)) {
+            $admin = User::find($this->adminId);
+            $admin->notify(new StockApplied($stockApplication));
+        }
 
         return ['message' => '提交申请成功'];
     }
