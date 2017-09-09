@@ -69,7 +69,7 @@
                                 </button>
                             </div>
                             <div class="pull-right">
-                                <form id="logout-form" action="/logout" method="POST">
+                                <form id="logout-form" action="/logout" method="POST" @submit.prevent="logoutAction">
                                     <button type="submit" class="btn btn-default btn-flat">退出登录</button>
                                 </form>
                             </div>
@@ -128,6 +128,15 @@
             inventoryAmount: {
                 cards: 0,
                 coins: 0,
+            }
+        },
+        methods: {
+            logoutAction () {
+                axios.post('/logout')
+                    .then(function (response) {
+                        console.log(response);
+                        window.location.href = '/';
+                });
             }
         },
 
