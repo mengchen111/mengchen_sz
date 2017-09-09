@@ -74,4 +74,10 @@ class User extends Authenticatable
     {
         return $this->attributes['group_id'] == $this->adminId;
     }
+
+    //指定mail通知channel的地址（默认就为email字段）
+    public function routeNotificationForMail()
+    {
+        return $this->email;
+    }
 }

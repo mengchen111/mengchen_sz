@@ -8,18 +8,21 @@
 
 namespace App\Http\Controllers\Agent;
 
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\StockApply;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\Validator;
+use App\Exceptions\CustomException;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\StockApplied;
 
 class StockController extends Controller
 {
     protected $per_page = 15;
     protected $order = ['id', 'desc'];
+    protected $adminId = 1;
 
     public function __construct(Request $request)
     {
@@ -37,23 +40,27 @@ class StockController extends Controller
     {
         $data = $this->validateApply($request);
 
-        if (! $this->isValidApplicant($request->user())) {
-            return ['error' => '提交库存申请失败，只有总代能提交申请' ];
-        }
+        $this->validateApplicant(Auth::user());
 
-        $data = array_merge($data, ['applicant_id' => $request->user()->id]);
+        $data = array_merge($data, ['applicant_id' => Auth::id()]);
 
-        StockApply::create($data);
+        $stockApplication = StockApply::create($data);
 
-        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+        OperationLogs::add(Auth::id(), $request->path(), $request->method(),
             '总代理申请库存', $request->header('User-Agent'), json_encode($data));
+
+        //给管理员发邮件通知
+        $admin = User::find($this->adminId);
+        $admin->notify(new StockApplied($stockApplication));
 
         return ['message' => '提交申请成功'];
     }
 
-    protected function isValidApplicant($applicant)
+    protected function validateApplicant($applicant)
     {
-        return 2 == $applicant->group->id;
+        if (2 != $applicant->group->id) {
+            throw new CustomException('提交库存申请失败，只有总代能提交申请');
+        }
     }
 
     protected function validateApply($request)
