@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\AdminRequest;
 use App\Models\User;
 use App\Models\TopUpAdmin;
 use App\Models\TopUpAgent;
@@ -27,7 +28,7 @@ class TopUpController extends Controller
     }
 
     //给代理商充值（自己的下级）
-    public function topUp2Agent(Request $request, $receiver, $type, $amount)
+    public function topUp2Agent(AdminRequest $request, $receiver, $type, $amount)
     {
         Validator::make($request->route()->parameters,[
             'receiver' => 'required|string|exists:users,account',
@@ -103,7 +104,7 @@ class TopUpController extends Controller
     }
 
     //管理员给总代的充值记录
-    public function topUp2TopAgentHistory(Request $request)
+    public function topUp2TopAgentHistory(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看其充值记录', $request->header('User-Agent'), json_encode($request->all()));
@@ -126,7 +127,7 @@ class TopUpController extends Controller
     }
 
     //上级代理商给下级的充值记录
-    public function Agent2AgentHistory(Request $request)
+    public function Agent2AgentHistory(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
@@ -150,7 +151,7 @@ class TopUpController extends Controller
     }
 
     //代理商给玩家的充值记录
-    public function Agent2PlayerHistory(Request $request)
+    public function Agent2PlayerHistory(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看代理商给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
@@ -178,7 +179,7 @@ class TopUpController extends Controller
      * @param $type     道具类型
      * @param $amount   数量
      */
-    public function topUp2Player(Request $request, $player, $type, $amount)
+    public function topUp2Player(AdminRequest $request, $player, $type, $amount)
     {
         Validator::make($request->route()->parameters,[
             'player' => 'required|string|exists:mysql-game.role,rid',

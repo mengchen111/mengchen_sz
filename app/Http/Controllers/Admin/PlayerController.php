@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Game\Player;
 use App\Models\OperationLogs;
 use Illuminate\Http\Request;
+use App\Http\Requests\AdminRequest;
 
 class PlayerController extends Controller
 {
@@ -25,7 +26,7 @@ class PlayerController extends Controller
     }
 
     //查看玩家列表
-    public function show(Request $request)
+    public function show(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看玩家列表', $request->header('User-Agent'), json_encode($request->all()));

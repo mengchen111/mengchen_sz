@@ -8,9 +8,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\AdminRequest as Request;
 
 class ViewController extends Controller
 {
@@ -19,62 +18,62 @@ class ViewController extends Controller
         return view('admin.home');
     }
 
-    public function playerList()
+    public function playerList(Request $request)
     {
         return view('admin.player.list');
     }
 
-    public function notificationMarquee()
+    public function notificationMarquee(Request $request)
     {
         return view('admin.notification.marquee');
     }
 
-    public function notificationLogin()
+    public function notificationLogin(Request $request)
     {
         return view('admin.notification.login');
     }
 
-    public function stockApplyRequest()
+    public function stockApplyRequest(Request $request)
     {
         return view('admin.stock.apply-request');
     }
 
-    public function stockApplyList()
+    public function stockApplyList(Request $request)
     {
         return view('admin.stock.apply-list');
     }
 
-    public function stockApplyHistory()
+    public function stockApplyHistory(Request $request)
     {
         return view('admin.stock.apply-history');
     }
 
-    public function agentList()
+    public function agentList(Request $request)
     {
         return view('admin.agent.list');
     }
 
-    public function agentCreate()
+    public function agentCreate(Request $request)
     {
         return view('admin.agent.create');
     }
 
-    public function topUpAdmin()
+    public function topUpAdmin(Request $request)
     {
         return view('admin.top-up.admin');
     }
 
-    public function topUpAgent()
+    public function topUpAgent(Request $request)
     {
         return view('admin.top-up.agent');
     }
 
-    public function topUpPlayer()
+    public function topUpPlayer(Request $request)
     {
         return view('admin.top-up.player');
     }
 
-    public function systemLog()
+    public function systemLog(Request $request)
     {
         return view('admin.system.log');
     }

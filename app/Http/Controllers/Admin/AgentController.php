@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\AdminRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use App\Models\OperationLogs;
 
 class AgentController extends Controller
 {
-    public function showAll(Request $request)
+    public function showAll(AdminRequest $request)
     {
         //给per_page设定默认值，比起参数默认值这样子可以兼容uri传参和变量名传参，变量名传递过来的参数优先
         $per_page = $request->per_page ?: 10;
@@ -34,7 +35,7 @@ class AgentController extends Controller
     }
 
     //创建代理商
-    public function create(Request $request)
+    public function create(AdminRequest $request)
     {
         Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -57,7 +58,7 @@ class AgentController extends Controller
         return User::create($data);
     }
 
-    public function destroy(Request $request, User $user)
+    public function destroy(AdminRequest $request, User $user)
     {
         if ($this->isAdmin($user)) {
             return [
@@ -86,7 +87,7 @@ class AgentController extends Controller
         return User::where('parent_id', $user->id)->get()->count();
     }
 
-    public function update(Request $request, User $user)
+    public function update(AdminRequest $request, User $user)
     {
         $input = $request->all();
 
@@ -123,7 +124,7 @@ class AgentController extends Controller
         }
     }
 
-    public function updatePass(Request $request, User $user)
+    public function updatePass(AdminRequest $request, User $user)
     {
         Validator::make($request->all(), [
             'password' => 'required|min:6'

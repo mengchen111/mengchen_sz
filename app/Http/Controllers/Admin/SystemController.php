@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\AdminRequest;
 use App\Models\OperationLogs;
 use App\Models\User;
 
@@ -25,7 +26,7 @@ class SystemController extends Controller
         $this->order = $request->sort ? explode('|', $request->sort) : $this->order;
     }
 
-    public function showLog(Request $request)
+    public function showLog(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '查看系统操作日志', $request->header('User-Agent'));

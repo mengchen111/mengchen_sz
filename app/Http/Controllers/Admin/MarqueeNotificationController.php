@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendGameNotification;
 use Illuminate\Http\Request;
+use App\Http\Requests\AdminRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\GameNotificationMarquee;
@@ -42,7 +43,7 @@ class MarqueeNotificationController extends Controller
     }
 
     //创建跑马灯公告接口
-    public function create(Request $request)
+    public function create(AdminRequest $request)
     {
         $this->validateMarquee($request);
 
@@ -77,7 +78,7 @@ class MarqueeNotificationController extends Controller
     }
 
     //启用跑马灯公告，发送http请求到游戏服接口
-    public function enable(Request $request, GameNotificationMarquee $marquee)
+    public function enable(AdminRequest $request, GameNotificationMarquee $marquee)
     {
         $this->validateSyncState($marquee);
 
@@ -97,7 +98,7 @@ class MarqueeNotificationController extends Controller
     }
 
     //停用跑马灯公告，发送http请求到游戏服接口
-    public function disable(Request $request, GameNotificationMarquee $marquee)
+    public function disable(AdminRequest $request, GameNotificationMarquee $marquee)
     {
         $this->validateSyncState($marquee);
 
@@ -129,7 +130,7 @@ class MarqueeNotificationController extends Controller
     }
 
     //跑马灯公告列表
-    public function show(Request $request)
+    public function show(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看跑马灯公告列表', $request->header('User-Agent'), json_encode($request->all()));
@@ -139,7 +140,7 @@ class MarqueeNotificationController extends Controller
     }
 
     //编辑跑马灯公告
-    public function update(Request $request, GameNotificationMarquee $marquee)
+    public function update(AdminRequest $request, GameNotificationMarquee $marquee)
     {
         $this->validateMarquee($request);
 
@@ -162,7 +163,7 @@ class MarqueeNotificationController extends Controller
         }
     }
 
-    public function destroy(Request $request, GameNotificationMarquee $marquee)
+    public function destroy(AdminRequest $request, GameNotificationMarquee $marquee)
     {
         $this->validateEnabledState($marquee);
 

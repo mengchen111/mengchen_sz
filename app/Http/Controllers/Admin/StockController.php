@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\AdminRequest;
 use App\Models\StockApply;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ class StockController extends Controller
      * @param Request $request
      * @return array
      */
-    public function apply(Request $request)
+    public function apply(AdminRequest $request)
     {
         $data = $this->validateApply($request);
         $data = array_merge($data, ['applicant_id' => $request->user()->id]);
@@ -65,7 +66,7 @@ class StockController extends Controller
      * @param Request $request
      * @return null
      */
-    public function applyList(Request $request)
+    public function applyList(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看库存申请列表', $request->header('User-Agent'), json_encode($request->all()));
@@ -96,7 +97,7 @@ class StockController extends Controller
      * @param StockApply $entry
      * @return array
      */
-    public function approve(Request $request, StockApply $entry)
+    public function approve(AdminRequest $request, StockApply $entry)
     {
         Validator::make($request->all(), [
             'approver_remark' => 'nullable|string|max:255'
@@ -182,7 +183,7 @@ class StockController extends Controller
      * @param StockApply $entry
      * @return array
      */
-    public function decline(Request $request, StockApply $entry)
+    public function decline(AdminRequest $request, StockApply $entry)
     {
         Validator::make($request->all(), [
             'approver_remark' => 'nullable|string|max:255'
@@ -208,7 +209,7 @@ class StockController extends Controller
      * @param Request $request
      * @return null
      */
-    public function applyHistory(Request $request)
+    public function applyHistory(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看审核历史', $request->header('User-Agent'));
