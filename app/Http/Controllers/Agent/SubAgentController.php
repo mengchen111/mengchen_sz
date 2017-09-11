@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Agent;
 
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class SubAgentController extends Controller
 {
@@ -46,9 +48,7 @@ class SubAgentController extends Controller
         ])->validate();
 
         if ($request->user()->is_lowest_agent) {
-            return [
-                'error' => '最下级代理商无法创建子代理商'
-            ];
+            throw new CustomException('最下级代理商无法创建子代理商');
         }
 
         $data = $request->intersect(
@@ -57,35 +57,40 @@ class SubAgentController extends Controller
         $data['password'] = bcrypt($data['password']);
         $data = array_merge($data, [ 'parent_id' => $request->user()->id ]);
 
+        User::create($data);
+
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '创建子代理商', $request->header('User-Agent'), json_encode($data));
-        return User::create($data);
+
+        return [
+            'message' => '创建子代理商成功'
+        ];
     }
 
     //删除下级代理商
     public function destroy(Request $request, User $user)
     {
-        if ($this->isAdmin($user)) {
-            return [
-                'error' => '不能删除管理员'
-            ];
+        if ($user->is_admin) {
+            throw new CustomException('不能删除管理员');
         }
 
         if ($this->hasSubAgent($user)) {
-            return [
-                'error' => '此代理商下存在下级代理'
-            ];
+            throw new CustomException('此代理商下存在下级代理');
+        }
+
+        //检查当前操作的代理商是否是被删除代理商的上级
+        if (! $user->isChild(Auth::id())) {
+            throw new CustomException('只能删除您自己的子代理商');
         }
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '删除子代理商', $request->header('User-Agent'), $user->toJson());
 
-        return $user->delete() ? ['message' => '删除成功'] : ['error' => '删除失败'];
-    }
+        $user->delete();
 
-    protected function isAdmin($user)
-    {
-        return 1 == $user->group_id;
+        return [
+            'message' => '删除成功'
+        ];
     }
 
     protected function hasSubAgent($user)
@@ -97,10 +102,8 @@ class SubAgentController extends Controller
     public function updateChild(Request $request, User $child)
     {
         //检查是否是其子代理商
-        if (! $this->isChild($request, $child)) {
-            return [
-                'error' => '只允许更新属于您自己的下级'
-            ];
+        if (! $child->isChild(Auth::id())) {
+            throw new CustomException('只允许更新属于您自己的下级');
         }
 
         $input = $request->all();
@@ -126,18 +129,13 @@ class SubAgentController extends Controller
             $data['password'] = bcrypt($data['password']);  //加密密码
         }
 
-        if ($child->update($data)) {
-            OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-                '更新子代理商信息', $request->header('User-Agent'), json_encode($data));
+        $child->update($data);
 
-            return [
-                'message' => '更新信息成功'
-            ];
-        }
-    }
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '更新子代理商信息', $request->header('User-Agent'), json_encode($data));
 
-    protected function isChild($request, $child)
-    {
-        return $request->user()->id === $child->parent_id;
+        return [
+            'message' => '更新信息成功'
+        ];
     }
 }

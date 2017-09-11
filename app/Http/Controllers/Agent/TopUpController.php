@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Agent;
 
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -10,6 +11,7 @@ use App\Models\TopUpAgent;
 use App\Models\TopUpPlayer;
 use App\Models\Game\Player;
 use App\Models\ItemType;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\DB;
@@ -42,18 +44,19 @@ class TopUpController extends Controller
             $query->where('item_id', $type);
         }])->where('account', $receiver)->firstOrFail();
 
-        if (! $this->isChild($request, $receiverModel)) {
-            return [ 'error' => '只能给您的下级代理商充值' ];
+        if (! $receiverModel->isChild(Auth::id())) {
+            throw new CustomException('只能给您的下级代理商充值');
         }
 
         if (! $this->checkStock($provider, $amount)) {
-            return [ 'error' => '库存不足，无法充值'];
+            throw new CustomException('库存不足，无法充值');
         }
 
         $this->topUp4Child($request, $provider, $receiverModel, $type, $amount);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '代理商给子代理商充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
+
         return [
             'message' => '充值成功'
         ];
@@ -62,11 +65,6 @@ class TopUpController extends Controller
     protected function checkStock(User $provider, $amount)
     {
         return (! empty($provider->inventory)) and $provider->inventory->stock >= $amount;
-    }
-
-    protected function isChild($request, $child)
-    {
-        return $request->user()->id === $child->parent_id;
     }
 
     protected function topUp4Child($request, $provider, $receiver, $type, $amount)
@@ -168,7 +166,7 @@ class TopUpController extends Controller
         $itemType = ItemType::find($type);
 
         if (! $this->checkStock($provider, $amount)) {
-            return [ 'error' => '库存不足，无法充值'];
+            throw new CustomException('库存不足，无法充值');
         }
 
         switch ($itemType->name) {
@@ -179,11 +177,12 @@ class TopUpController extends Controller
                 $this->topUpGold4Player($request, $provider, $playerModel, $type, $amount);
                 break;
             default:
-                return ['error' => '只能充值房卡和金币'];
+                throw new CustomException('只能充值房卡和金币');
         }
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '代理商给玩家充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
+
         return [
             'message' => '充值成功',
         ];
@@ -212,7 +211,7 @@ class TopUpController extends Controller
                 'gold' => $totalStock,
             ]);
 
-            //减管理员的库存
+            //减库存
             $leftStock = $provider->inventory->stock - $amount;
             $provider->inventory->update([
                 'stock' => $leftStock,
@@ -248,7 +247,7 @@ class TopUpController extends Controller
                 ]);
             }
 
-            //减管理员的库存
+            //减库存
             $leftStock = $provider->inventory->stock - $amount;
             $provider->inventory->update([
                 'stock' => $leftStock,

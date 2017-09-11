@@ -51,14 +51,14 @@ class MarqueeNotificationController extends Controller
             'priority', 'interval', 'start_at', 'end_at', 'content',
         ]);
 
-        if (GameNotificationMarquee::create($data)) {
-            OperationLogs::add(Auth::id(), $request->path(), $request->method(), '添加跑马灯公告',
-                $request->header('User-Agent'), json_encode($data));
+        GameNotificationMarquee::create($data);
 
-            return [
-                'message' => '添加跑马灯公告成功'
-            ];
-        }
+        OperationLogs::add(Auth::id(), $request->path(), $request->method(), '添加跑马灯公告',
+            $request->header('User-Agent'), json_encode($data));
+
+        return [
+            'message' => '添加跑马灯公告成功'
+        ];
     }
 
     protected function validateMarquee(Request $request)
@@ -94,7 +94,9 @@ class MarqueeNotificationController extends Controller
         OperationLogs::add(Auth::id(), $request->path(), $request->method(), '启用跑马灯公告',
             $request->header('User-Agent'));
 
-        return ['message' => '开启公告成功，等待同步完成'];
+        return [
+            'message' => '开启公告成功，等待同步完成'
+        ];
     }
 
     //停用跑马灯公告，发送http请求到游戏服接口
@@ -113,7 +115,9 @@ class MarqueeNotificationController extends Controller
         OperationLogs::add(Auth::id(), $request->path(), $request->method(), '禁用跑马灯公告',
             $request->header('User-Agent'));
 
-        return ['message' => '停用公告成功，等待同步完成'];
+        return [
+            'message' => '停用公告成功，等待同步完成'
+        ];
     }
 
     //构建POST需要提交的数据
@@ -155,12 +159,14 @@ class MarqueeNotificationController extends Controller
             'failed_description' => '', //清空错误描述
         ]);
 
-        if ($marquee->update($data)) {
-            OperationLogs::add(Auth::id(), $request->path(), $request->method(), '编辑跑马灯公告',
-                $request->header('User-Agent'), json_encode($data));
+        $marquee->update($data);
 
-            return [ 'message' => '更新跑马灯公告成功' ];
-        }
+        OperationLogs::add(Auth::id(), $request->path(), $request->method(), '编辑跑马灯公告',
+            $request->header('User-Agent'), json_encode($data));
+
+        return [
+            'message' => '更新跑马灯公告成功'
+        ];
     }
 
     public function destroy(AdminRequest $request, GameNotificationMarquee $marquee)

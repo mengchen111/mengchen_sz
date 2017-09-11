@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
@@ -55,31 +56,28 @@ class AgentController extends Controller
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(), '管理员添加代理商',
             $request->header('User-Agent'), json_encode($data));
+
         return User::create($data);
     }
 
     public function destroy(AdminRequest $request, User $user)
     {
-        if ($this->isAdmin($user)) {
-            return [
-                'error' => '不能删除管理员'
-            ];
+        if ($user->is_admin) {
+            throw new CustomException('不能删除管理员');
         }
 
         if ($this->hasSubAgent($user)) {
-            return [
-                'error' => '此代理商下存在下级代理'
-            ];
+            throw new CustomException('此代理商下存在下级代理');
         }
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '删除代理商', $request->header('User-Agent'), $user->toJson());
-        return $user->delete() ? ['message' => '删除成功'] : ['error' => '删除失败'];
-    }
 
-    protected function isAdmin($user)
-    {
-        return 1 == $user->group_id;
+        $user->delete();
+
+        return [
+            'message' => '删除成功'
+        ];
     }
 
     protected function hasSubAgent($user)
@@ -115,13 +113,14 @@ class AgentController extends Controller
             $data = array_merge($data, ['parent_id' => $parentId]);
         }*/
 
-        if ($user->update($data)) {
-            OperationLogs::add($request->user()->id, $request->path(), $request->method(), '更新代理商信息',
-                $request->header('User-Agent'), json_encode($data));
-            return [
-                'message' => '更新信息成功'
-            ];
-        }
+        $user->update($data);
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(), '更新代理商信息',
+            $request->header('User-Agent'), json_encode($data));
+
+        return [
+            'message' => '更新信息成功'
+        ];
     }
 
     public function updatePass(AdminRequest $request, User $user)
@@ -132,12 +131,13 @@ class AgentController extends Controller
 
         $data = ['password' => bcrypt($request->get('password')) ];
 
-        if ($user->update($data)) {
-            OperationLogs::add($request->user()->id, $request->path(), $request->method(), '更新代理商密码',
-                $request->header('User-Agent'), json_encode($data));
-            return [
-                'message' => '更新密码成功'
-            ];
-        }
+        $user->update($data);
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(), '更新代理商密码',
+            $request->header('User-Agent'), json_encode($data));
+
+        return [
+            'message' => '更新密码成功'
+        ];
     }
 }

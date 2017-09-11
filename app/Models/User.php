@@ -80,4 +80,9 @@ class User extends Authenticatable
     {
         return $this->email;
     }
+
+    public function isChild($parentId)
+    {
+        return $parentId == $this->parent_id;
+    }
 }

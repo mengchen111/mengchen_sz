@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
 use App\Models\User;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -27,21 +29,20 @@ class AdminController extends Controller
             'new_password' => 'required|min:6|confirmed',
         ])->validate();
 
-        $user = User::find($request->user()->id);
+        $user = Auth::user();
         if (! Hash::check($request->password, $user->password)) {
-            return [
-                'error' => '原密码输入错误',
-            ];
+            throw new CustomException('原密码输入错误');
         }
 
-        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+        OperationLogs::add($user->id, $request->path(), $request->method(),
             '更新密码', $request->header('User-Agent'));
-        return $user->update([
+
+        $user->update([
             'password' => bcrypt($request->new_password)
-        ]) ? [
+        ]);
+
+        return [
             'message' => '更新密码成功'
-        ] : [
-            'error' => '更新密码失败'
         ];
     }
 }

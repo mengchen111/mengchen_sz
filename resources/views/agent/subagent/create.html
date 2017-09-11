@@ -127,7 +127,7 @@
                         if (response.status === 422) {
                             alert(JSON.stringify(response.data))
                         } else {
-                            response.data.error ? alert(response.data.error) : alert('添加子代理商成功');
+                            response.data.error ? alert(response.data.error) : alert(response.data.message);
 
                             //清空表单数据
                             for (var index of Object.keys(_self.formData)) {

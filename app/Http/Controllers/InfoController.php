@@ -31,6 +31,6 @@ class InfoController extends Controller
      */
     public function info(Request $request)
     {
-        return User::with(['group', 'parent', 'inventorys.item'])->find($request->user()->id);
+        return User::with(['group', 'parent', 'inventorys.item'])->find(Auth::id());
     }
 }

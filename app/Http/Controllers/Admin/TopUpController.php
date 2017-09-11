@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
@@ -43,26 +44,22 @@ class TopUpController extends Controller
             $query->where('item_id', $type);
         }])->where('account', $receiver)->firstOrFail();
 
-        if (! $this->isChild($request, $receiverModel)) {
-            return [ 'error' => '只能给自己的下级代理商充值' ];
+        if (! $receiverModel->isChild(Auth::id())) {
+            throw new CustomException('只能给自己的下级代理商充值');
         }
 
         if (! $this->checkStock($provider, $amount)) {
-            return [ 'error' => '库存不足，无法充值'];
+            throw new CustomException('库存不足，无法充值');
         }
 
         $this->topUp4Child($request, $provider, $receiverModel, $type, $amount);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员给代理商充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
+
         return [
             'message' => '充值成功',
         ];
-    }
-
-    protected function isChild($request, $receiver)
-    {
-        return $request->user()->id === $receiver->parent_id;
     }
 
     protected function checkStock(User $provider, $amount)
@@ -194,7 +191,7 @@ class TopUpController extends Controller
         $itemType = ItemType::find($type);
 
         if (! $this->checkStock($provider, $amount)) {
-            return [ 'error' => '库存不足，无法充值'];
+            throw new CustomException('库存不足，无法充值');
         }
 
         switch ($itemType->name) {
@@ -205,11 +202,12 @@ class TopUpController extends Controller
                 $this->topUpGold4Player($request, $provider, $playerModel, $type, $amount);
                 break;
             default:
-                return ['error' => '只能充值房卡和金币'];
+                throw new CustomException('只能充值房卡和金币');
         }
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员给玩家充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
+
         return [
             'message' => '充值成功',
         ];

@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
 use App\Models\User;
@@ -44,7 +45,9 @@ class StockController extends Controller
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员申请库存', $request->header('User-Agent'), json_encode($data));
 
-        return ['message' => '提交申请成功'];
+        return [
+            'message' => '提交申请成功'
+        ];
     }
 
     protected function validateApply($request)
@@ -111,17 +114,18 @@ class StockController extends Controller
         }])->find($entry->applicant_id);
 
         if (! $this->isValidApplicant($applicant)) {
-            return [ 'error' => '审批失败，只能审批管理员和总代提交的申请' ];
+            throw new CustomException('审批失败，只能审批管理员和总代提交的申请');
         }
 
         if (! $this->checkStock($approver, $applicant, $entry->amount)) {
-            return [ 'error' => '库存不足，无法审批' ];
+            throw new CustomException('库存不足，无法审批');
         }
 
         $this->doApprove($approver, $applicant, $entry, $request->remark);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员同意库存申请', $request->header('User-Agent'), $entry->toJson());
+
         return [
             'message' => '审核通过',
         ];
