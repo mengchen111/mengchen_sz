@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
+use App\Models\TopUpAdmin;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
@@ -153,6 +154,9 @@ class StockController extends Controller
                 'approver_remark' => $remark
             ]);
 
+            //添加充值记录
+            $this->addTopUpHistory($approver, $entry);
+
             //更新申请者的库存
             if (empty($applicant->inventory)) {
                 $applicant->inventory()->create([
@@ -172,12 +176,22 @@ class StockController extends Controller
                 return true;
             }
 
-            //减审批者的库存
+            //减审批者（管理员）的库存
             $leftStock = $approver->inventory->stock - $entry->amount;
             $approver->inventory->update([
                 'stock' => $leftStock,
             ]);
         });
+    }
+
+    protected function addTopUpHistory($approver, $entry)
+    {
+        TopUpAdmin::create([
+            'provider_id' => $approver->id,
+            'receiver_id' => $entry->applicant_id,
+            'type' => $entry->item_id,
+            'amount' => $entry->amount,
+        ]);
     }
 
     /**
