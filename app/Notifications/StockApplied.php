@@ -11,7 +11,7 @@ class StockApplied extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $stockApplication;    //库存申请模型
+    public $stockApplication;    //库存申请模型
     protected $stockApplyUri = '/admin/stock/apply-list';   //管理员审核库存uri地址
 
     /**
