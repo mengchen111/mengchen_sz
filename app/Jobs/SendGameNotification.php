@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\GameNotificationMarquee;
 use GuzzleHttp\Client;
 use App\Models\OperationLogs;
+use Illuminate\Support\Facades\Log;
 
 class SendGameNotification implements ShouldQueue
 {
@@ -57,6 +58,9 @@ class SendGameNotification implements ShouldQueue
 
                 OperationLogs::add(1, $this->apiAddress, 'POST', '后台队列同步跑马灯公告成功',
                     'Guzzle', json_encode($this->formData));
+
+                //Log::info("后台队列同步跑马灯公告到游戏服成功 同步数据：" . json_encode($this->formData));
+
                 return true;
             }
 
