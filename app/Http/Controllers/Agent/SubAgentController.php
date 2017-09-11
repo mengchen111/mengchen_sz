@@ -74,7 +74,7 @@ class SubAgentController extends Controller
             throw new CustomException('不能删除管理员');
         }
 
-        if ($this->hasSubAgent($user)) {
+        if ($user->hasChild()) {
             throw new CustomException('此代理商下存在下级代理');
         }
 
@@ -91,11 +91,6 @@ class SubAgentController extends Controller
         return [
             'message' => '删除成功'
         ];
-    }
-
-    protected function hasSubAgent($user)
-    {
-        return User::where('parent_id', $user->id)->get()->count();
     }
 
     //代理商更新其子代理商的信息

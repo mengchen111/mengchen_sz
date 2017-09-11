@@ -81,8 +81,15 @@ class User extends Authenticatable
         return $this->email;
     }
 
+    //查询是否是给定的用户id的子代理商
     public function isChild($parentId)
     {
         return $parentId == $this->parent_id;
+    }
+
+    //是否存在子代理商
+    public function hasChild()
+    {
+        return User::where('parent_id', $this->id)->get()->count();
     }
 }
