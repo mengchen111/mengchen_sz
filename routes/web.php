@@ -38,6 +38,8 @@ Route::group([
 ], function () {
     Route::put('self/password', 'AdminController@updatePass');
 
+    //Route::get('statement/card/overview', 'StatementController@cardOverview'); 待完成，加在首页上
+
     Route::get('player', 'PlayerController@show');
 
     Route::get('notification/marquee', 'MarqueeNotificationController@show');
