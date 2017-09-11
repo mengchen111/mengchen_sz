@@ -18,6 +18,11 @@ class ViewController extends Controller
         return view('admin.home');
     }
 
+    public function StatementCard(Request $request)
+    {
+        return view('admin.statement.card');
+    }
+
     public function playerList(Request $request)
     {
         return view('admin.player.list');

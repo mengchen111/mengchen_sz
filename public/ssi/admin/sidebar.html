@@ -8,6 +8,14 @@
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
             <li :class="{ active: uri.home.isActive }"><a href="/admin/home"><i class="fa fa-home"></i> <span>首页</span></a></li>
+            <li class="treeview" :class="{ active: uri.statement.isActive }">
+                <a href="#"><i class="fa fa-pie-chart"></i> <span>数据报表</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li :class="{ active: uri.statement.card.isActive }"><a href="/admin/statement/card"><i class="fa fa-circle-o"></i>房卡统计</a></li>
+                </ul>
+            </li>
             <li class="treeview" :class="{ active: uri.player.isActive }">
                 <a href="#"><i class="fa fa-gamepad"></i> <span>玩家管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -77,6 +85,12 @@
                 home: {
                     isActive: false,
                 },
+                statement: {
+                    isActive: false,
+                    card: {
+                        isActive: false,
+                    }
+                },
                 player: {
                     isActive: false,
                     list: {
@@ -141,10 +155,10 @@
         },
         created: function () {
             var _self = this;
-            var uri = location.href.match(/http:\/\/[\w\.-]+\/admin\/([\w\/-]+)/)[1]
+            var accessedUri = location.href.match(/http:\/\/[\w\.-]+\/admin\/([\w\/-]+)/)[1]
                 .replace('-', '_')
                 .split('/');
-            uri.reduce(function (lastValue, currentValue) {
+            accessedUri.reduce(function (lastValue, currentValue) {
                 lastValue[currentValue].isActive = true;
                 return lastValue[currentValue];
             }, _self.uri);

@@ -76,6 +76,8 @@ Route::group([
 ], function () {
     Route::get('home', 'ViewController@home');
 
+    Route::get('statement/card', 'ViewController@statementCard');
+
     Route::get('player/list', 'ViewController@playerList');
 
     Route::get('notification/marquee', 'ViewController@notificationMarquee');
