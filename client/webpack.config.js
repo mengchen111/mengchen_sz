@@ -3,10 +3,10 @@ const webpack = require('webpack');
 const config = {
     target: 'web',      //can be omitted as default is 'web'
     devtool: '#source-map',
-    entry: './src/statement_hourly.js',
+    entry: './src/statement/hourly.js',
     output: {
         path: path.resolve(__dirname, '../public/dist/webpack'),
-        filename: 'statement_hourly.js'
+        filename: 'statement/hourly.js'
     },
     module: {
         rules: [
