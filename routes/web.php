@@ -39,6 +39,9 @@ Route::group([
     Route::put('self/password', 'AdminController@updatePass');
 
     //Route::get('statement/card/overview', 'StatementController@cardOverview'); 待完成，加在首页上
+    Route::get('statement/hourly', 'StatementController@hourly');
+    Route::get('statement/daily', 'StatementController@daily');
+    Route::get('statement/monthly', 'StatementController@monthly');
 
     Route::get('player', 'PlayerController@show');
 

@@ -173,9 +173,14 @@ class MarqueeNotificationController extends Controller
     {
         $this->validateEnabledState($marquee);
 
+        $marquee->delete();
+
         OperationLogs::add(Auth::id(), $request->path(), $request->method(),
             '删除跑马灯公告', $request->header('User-Agent'), $marquee->toJson());
-        return $marquee->delete() ? ['message' => '删除成功'] : ['error' => '删除失败'];
+
+        return [
+            'message' => '删除成功'
+        ];
     }
 
     protected function validateSyncState(GameNotificationMarquee $marquee)
