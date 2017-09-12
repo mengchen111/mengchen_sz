@@ -38,7 +38,6 @@ Route::group([
 ], function () {
     Route::put('self/password', 'AdminController@updatePass');
 
-    //Route::get('statement/card/overview', 'StatementController@cardOverview'); 待完成，加在首页上
     Route::get('statement/hourly', 'StatementController@hourly');
     Route::get('statement/daily', 'StatementController@daily');
     Route::get('statement/monthly', 'StatementController@monthly');
@@ -81,7 +80,8 @@ Route::group([
 ], function () {
     Route::get('home', 'ViewController@home');
 
-    Route::get('statement/card', 'ViewController@statementCard');
+    //Route::get('statement/card', 'ViewController@statementCard'); TODO 加在首页上
+    Route::get('statement/hourly', 'ViewController@statementHourly');
 
     Route::get('player/list', 'ViewController@playerList');
 

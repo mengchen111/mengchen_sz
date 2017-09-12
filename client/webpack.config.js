@@ -3,10 +3,10 @@ const webpack = require('webpack');
 const config = {
     target: 'web',      //can be omitted as default is 'web'
     devtool: 'source-map',
-    entry: './src/app.js',
+    entry: './src/statement_hourly.js',
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js'
+        path: path.resolve(__dirname, '../public/dist/webpack'),
+        filename: 'statement_hourly.js'
     },
     module: {
         rules: [
@@ -15,7 +15,7 @@ const config = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['es2015']
+                        presets: ['es2015', 'stage-0']
                     },
                 },
                 include: path.resolve(__dirname, 'src'),

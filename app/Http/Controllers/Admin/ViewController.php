@@ -18,9 +18,9 @@ class ViewController extends Controller
         return view('admin.home');
     }
 
-    public function StatementCard(Request $request)
+    public function statementHourly(Request $request)
     {
-        return view('admin.statement.card');
+        return view('admin.statement.hourly');
     }
 
     public function playerList(Request $request)
