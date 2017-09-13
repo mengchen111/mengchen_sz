@@ -22,8 +22,10 @@ class StatementController extends Controller
 {
     protected $cardTypeId = 1;
     protected $coinTypeId = 2;
-    protected $cardTotalKey = 'card_total';     //获取汇总数据时使用的key
-    protected $coinTotalKey = 'coin_total';
+    protected $cardPurchasedKey = 'card_purchased';     //获取汇总数据时使用的key(代理商购买的)
+    protected $coinPurchasedKey = 'coin_purchased';
+    protected $cardConsumedKey = 'card_consumed';       //给玩家充值消耗的
+    protected $coinConsumedKey = 'coin_consumed';
 
     protected $per_page = 15;   //每页数据
     protected $page = 1;        //当前页
@@ -38,51 +40,67 @@ class StatementController extends Controller
     {
         $dateFormat = 'Y-m-d H:00';
 
-        $cardData = $this->fetChData($this->cardTypeId, $this->cardTotalKey, $dateFormat);
-        $coinData = $this->fetchData($this->coinTypeId, $this->coinTotalKey, $dateFormat);
-
-        $data = $this->prepareData($cardData, $coinData);
-        $paginatedData = $this->paginateData($data);
+        $result = $this->prepareData($dateFormat);
 
         OperationLogs::add(Auth::id(), $request->path(), $request->method(),
             '查看每小时流水报表', $request->header('User-Agent'));
 
-        return $paginatedData;
+        return $result;
     }
 
     public function daily(AdminRequest $request)
     {
         $dateFormat = 'Y-m-d';
 
-        $cardData = $this->fetChData($this->cardTypeId, $this->cardTotalKey, $dateFormat);
-        $coinData = $this->fetchData($this->coinTypeId, $this->coinTotalKey, $dateFormat);
-
-        $data = $this->prepareData($cardData, $coinData);
-        $paginatedData = $this->paginateData($data);
+        $result = $this->prepareData($dateFormat);
 
         OperationLogs::add(Auth::id(), $request->path(), $request->method(),
             '查看每日流水报表', $request->header('User-Agent'));
 
-        return $paginatedData;
+        return $result;
     }
 
     public function monthly(AdminRequest $request)
     {
         $dateFormat = 'Y-m';
 
-        $cardData = $this->fetChData($this->cardTypeId, $this->cardTotalKey, $dateFormat);
-        $coinData = $this->fetchData($this->coinTypeId, $this->coinTotalKey, $dateFormat);
-
-        $data = $this->prepareData($cardData, $coinData);
-        $paginatedData = $this->paginateData($data);
+        $result = $this->prepareData($dateFormat);
 
         OperationLogs::add(Auth::id(), $request->path(), $request->method(),
             '查看每月流水报表', $request->header('User-Agent'));
 
-        return $paginatedData;
+        return $result;
     }
 
-    protected function fetchData($itemType, $keyName, $dateFormat)
+    protected function prepareData($dateFormat)
+    {
+
+        $agentPurchasedData = $this->fetchAgentPurchasedData($dateFormat);  //获取总的道具购买量
+        $playerConsumedData = $this->fetchPlayerConsumedData($dateFormat);  //获取给玩家充值的消耗量
+
+        $mergedData = $this->mergeData($agentPurchasedData, $playerConsumedData);   //数据合并
+        $result = $this->sortData($mergedData);     //数据排序，以时间倒序
+        return $this->paginateData($result);        //数据分页
+    }
+
+    protected function fetchAgentPurchasedData($dateFormat)
+    {
+        $cardData = $this->fetChData('App\Models\TopUpAdmin', $this->cardTypeId, $this->cardPurchasedKey, $dateFormat);
+        $coinData = $this->fetchData('App\Models\TopUpAdmin', $this->coinTypeId, $this->coinPurchasedKey, $dateFormat);
+
+        return $this->mergeData($cardData, $coinData);
+    }
+
+    protected function fetchPlayerConsumedData($dateFormat)
+    {
+        $cardData = $this->fetChData('App\Models\TopUpPlayer', $this->cardTypeId, $this->cardConsumedKey, $dateFormat);
+        $coinData = $this->fetchData('App\Models\TopUpPlayer', $this->coinTypeId, $this->coinConsumedKey, $dateFormat);
+
+        return $this->mergeData($cardData, $coinData);
+    }
+
+    //从数据库拿数据，以时间为key，以数组返回
+    protected function fetchData($db, $itemType, $keyName, $dateFormat)
     {
         /* sql查询的形式
         //select SUM(amount) as total, DATE_FORMAT(created_at, "%Y-%m-%d %H:00") as create_date
@@ -96,7 +114,7 @@ class StatementController extends Controller
         */
 
         //集合查询的形式，由php来做计算，降低mysql压力
-        return TopUpAdmin::get()
+        return $db::get()
             ->where('type', $itemType)
             ->groupBy(function($date) use ($dateFormat) {
                 return Carbon::parse($date->created_at)->format($dateFormat);
@@ -109,21 +127,28 @@ class StatementController extends Controller
             })->toArray();
     }
 
-    protected function prepareData($cardData, $coinData)
+    //把两个数组的数据做合并
+    protected function mergeData($firstData, $lastData)
     {
-        $cardDataCopy = $cardData;  //需要有个中间变量，不然闭包里面直接更改cardData数组的元素会出问题
-        array_walk($cardData, function ($value, $key) use (&$coinData, &$cardDataCopy) {
-            if (array_key_exists($key, $coinData)) {
-                $coinData[$key] = array_merge($coinData[$key], $value);
-                unset($cardDataCopy[$key]);
+        $firstDataCopy = $firstData;  //需要有个中间变量，不然闭包里面直接更改原数组的元素会出问题
+        array_walk($firstData, function ($value, $key) use (&$lastData, &$firstDataCopy) {
+            if (array_key_exists($key, $lastData)) {
+                $lastData[$key] = array_merge($lastData[$key], $value);
+                unset($firstDataCopy[$key]);
             }
         });
 
-        $result =  array_merge($coinData, $cardDataCopy);
-        krsort($result);                //按照时间倒序排序
-        return array_values($result);   //返回索引数组
+        $result =  array_merge($lastData, $firstDataCopy);
+        return $result;
     }
 
+    protected function sortData($data)
+    {
+        krsort($data);                  //按照时间倒序排序
+        return array_values($data);     //返回索引数组
+    }
+
+    //准备分页数据
     protected function paginateData($data)
     {
         $offset = $this->per_page * ($this->page - 1);
