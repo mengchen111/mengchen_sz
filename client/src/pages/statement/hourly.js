@@ -3,7 +3,7 @@
  */
 
 import Vue from 'vue'
-import MyVuetable from '../components/statement/MyVuetable.vue'
+import MyVuetable from '../../components/statement/MyVuetable.vue'
 
 new Vue({
     el: '#app',
