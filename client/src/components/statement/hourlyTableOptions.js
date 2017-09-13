@@ -11,19 +11,27 @@ let options = {
             title: '日期',
         },
         {
-            name: 'card_total',
+            name: 'card_purchased',
             title: '房卡购买量',
         },
         {
-            name: 'coin_total',
+            name: 'coin_purchased',
             title: '金币购买量'
+        },
+        {
+            name: 'card_consumed',
+            title: '房卡消耗量'
+        },
+        {
+            name: 'coin_consumed',
+            title: '金币消耗量'
         },
     ],
 
     sortOrder: [    //默认的排序
         {
-            field: 'id',
-            sortField: 'id',
+            field: 'date',
+            sortField: 'date',
             direction: 'desc',
         }
     ],

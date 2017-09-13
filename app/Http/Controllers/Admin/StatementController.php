@@ -79,8 +79,9 @@ class StatementController extends Controller
         $playerConsumedData = $this->fetchPlayerConsumedData($dateFormat);  //获取给玩家充值的消耗量
 
         $mergedData = $this->mergeData($agentPurchasedData, $playerConsumedData);   //数据合并
-        $result = $this->sortData($mergedData);     //数据排序，以时间倒序
-        return $this->paginateData($result);        //数据分页
+        $sortedData = $this->sortData($mergedData);     //数据排序，以时间倒序
+        $result = $this->fillData($sortedData);         //填充数据，将需要的key补满，数据补0
+        return $this->paginateData($result);            //数据分页
     }
 
     protected function fetchAgentPurchasedData($dateFormat)
@@ -146,6 +147,26 @@ class StatementController extends Controller
     {
         krsort($data);                  //按照时间倒序排序
         return array_values($data);     //返回索引数组
+    }
+
+    protected function fillData($data)
+    {
+        $requiredKeys = [                    //每个单元数据中必须的key名
+            $this->cardPurchasedKey,
+            $this->coinPurchasedKey,
+            $this->cardConsumedKey,
+            $this->coinConsumedKey,
+            'date',
+        ];
+
+        return array_map(function ($item) use ($requiredKeys) {
+            $existKeys = array_keys($item);                          //此单元中已经存在的key
+            $shouldFilledKeys = array_diff($requiredKeys, $existKeys);    //待填充0的key名
+            array_walk($shouldFilledKeys, function ($shouldFilledKey) use (&$item) {
+                $item[$shouldFilledKey] = 0;
+            });
+            return $item;
+        }, $data);
     }
 
     //准备分页数据

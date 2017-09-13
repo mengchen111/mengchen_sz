@@ -24,7 +24,7 @@
 
 <script>
     import { Vuetable, VuetablePagination, VuetablePaginationInfo}  from 'vuetable-2'
-    import Options from './hourly_table_options'
+    import Options from './hourlyTableOptions'
 
     export default {
         components: {
