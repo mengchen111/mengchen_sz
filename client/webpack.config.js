@@ -52,7 +52,7 @@ const config = {
 
     plugins: [
         new UglifyJSPlugin({
-            compress: {
+            uglifyOptions: {
                 warnings: false,
             }
         }),
