@@ -24,7 +24,6 @@
 
 <script>
     import { Vuetable, VuetablePagination, VuetablePaginationInfo}  from 'vuetable-2'
-    import Options from './hourlyTableOptions'
 
     export default {
         components: {
@@ -35,9 +34,38 @@
 
         data: function () {
             return {
-                vuetableUrl: Options.vuetableUrl,
-                tableFields: Options.tableFields,
-                sortOrder: Options.sortOrder,
+                vuetableUrl: '/admin/api/statement/monthly',
+
+                tableFields: [
+                    {
+                        name: 'date',
+                        title: '日期',
+                    },
+                    {
+                        name: 'card_purchased',
+                        title: '房卡购买量',
+                    },
+                    {
+                        name: 'coin_purchased',
+                        title: '金币购买量'
+                    },
+                    {
+                        name: 'card_consumed',
+                        title: '房卡消耗量'
+                    },
+                    {
+                        name: 'coin_consumed',
+                        title: '金币消耗量'
+                    },
+                ],
+
+                sortOrder: [    //默认的排序
+                    {
+                        field: 'date',
+                        sortField: 'date',
+                        direction: 'desc',
+                    }
+                ],
 
                 css: {
                     table: {

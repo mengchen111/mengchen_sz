@@ -23,6 +23,16 @@ class ViewController extends Controller
         return view('admin.statement.hourly');
     }
 
+    public function statementDaily(Request $request)
+    {
+        return view('admin.statement.daily');
+    }
+
+    public function statementMonthly(Request $request)
+    {
+        return view('admin.statement.monthly');
+    }
+
     public function playerList(Request $request)
     {
         return view('admin.player.list');
