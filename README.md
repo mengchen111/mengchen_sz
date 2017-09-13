@@ -4,6 +4,7 @@
 - nginx打开ssi  
 - redis  
 - supervisor  
+
 ```
 supervisor配置文件模版：
 [program:laravel-queue-worker]
@@ -21,6 +22,7 @@ stdout_logfile_maxbytes=100MB
 stdout_logfile_backups=10
 ```
 - npm  
+
 ```
 安装node和npm环境：
 curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
