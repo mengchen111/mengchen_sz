@@ -20,3 +20,14 @@ stdout_logfile=/data/log/supervisor/%(program_name).log
 stdout_logfile_maxbytes=100MB
 stdout_logfile_backups=10
 ```
+- npm  
+```
+安装node和npm环境：
+curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
+yum -y install nodejs
+
+生产环境生成前端页面js代码：
+cd ${code_ducument_root}/client
+npm install     #安装npm包
+npm run build   #编译生成js文件
+```
