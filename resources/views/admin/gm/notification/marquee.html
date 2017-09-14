@@ -233,7 +233,7 @@
         },
         methods: {
             enableMarquee (data) {
-                var uri = `/admin/api/notification/marquee/enable/${data.id}`;
+                var uri = `/admin/api/game/notification/marquee/enable/${data.id}`;
                 axios.put(uri, {})
                     .then(function (response) {
                         if (response.data.error) {
@@ -247,7 +247,7 @@
                     })
             },
             disableMarquee (data) {
-                var uri = `/admin/api/notification/marquee/disable/${data.id}`;
+                var uri = `/admin/api/game/notification/marquee/disable/${data.id}`;
                 axios.put(uri, {})
                     .then(function (response) {
                         if (response.data.error) {
@@ -264,7 +264,7 @@
                 Hub.$emit('editMarqueeEvent', data);
             },
             deleteMarqueeAction (data) {
-                var uri = `/admin/api/notification/marquee/${data.id}`;
+                var uri = `/admin/api/game/notification/marquee/${data.id}`;
                 axios.delete(uri, {})
                     .then(function (response) {
                         if (response.data.error) {
@@ -318,7 +318,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            vuetableUrl: '/admin/api/notification/marquee',
+            vuetableUrl: '/admin/api/game/notification/marquee',
 
             activatedRow: {},       //待编辑的行
 
@@ -520,7 +520,7 @@
 
                 axios({
                     method: 'POST',
-                    url: '/admin/api/notification/marquee',
+                    url: '/admin/api/game/notification/marquee',
                     data: formData,
                     validateStatus: function (status) {
                         return status == 200 || status == 422;
@@ -574,7 +574,7 @@
                 formData.end_at = endTime.format('YYYY-MM-DD HH:mm:ss');
                 axios({
                     method: 'PUT',
-                    url: `/admin/api/notification/marquee/${_self.activatedRow.id}`,
+                    url: `/admin/api/game/notification/marquee/${_self.activatedRow.id}`,
                     data: formData,
                     validateStatus: function (status) {
                         return status == 200 || status == 422;

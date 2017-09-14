@@ -44,14 +44,16 @@ Route::group([
     Route::get('statement/daily', 'StatementController@daily');
     Route::get('statement/monthly', 'StatementController@monthly');
 
-    Route::get('player', 'Game\PlayerController@show');
+    Route::get('game/player', 'Game\PlayerController@show');
 
-    Route::get('notification/marquee', 'Game\MarqueeNotificationController@show');
-    Route::post('notification/marquee', 'Game\MarqueeNotificationController@create');
-    Route::put('notification/marquee/{marquee}', 'Game\MarqueeNotificationController@update')->where('marquee', '[0-9]+');
-    Route::delete('notification/marquee/{marquee}', 'Game\MarqueeNotificationController@destroy')->where('marquee', '[0-9]+');
-    Route::put('notification/marquee/enable/{marquee}', 'Game\MarqueeNotificationController@enable')->where('marquee', '[0-9]+');
-    Route::put('notification/marquee/disable/{marquee}', 'Game\MarqueeNotificationController@disable')->where('marquee', '[0-9]+');
+    Route::get('game/notification/marquee', 'Game\MarqueeNotificationController@show');
+    Route::post('game/notification/marquee', 'Game\MarqueeNotificationController@create');
+    Route::put('game/notification/marquee/{marquee}', 'Game\MarqueeNotificationController@update')->where('marquee', '[0-9]+');
+    Route::delete('game/notification/marquee/{marquee}', 'Game\MarqueeNotificationController@destroy')->where('marquee', '[0-9]+');
+    Route::put('game/notification/marquee/enable/{marquee}', 'Game\MarqueeNotificationController@enable')->where('marquee', '[0-9]+');
+    Route::put('game/notification/marquee/disable/{marquee}', 'Game\MarqueeNotificationController@disable')->where('marquee', '[0-9]+');
+
+    Route::get('game/room/friend', 'Game\FriendRoomController@show');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');

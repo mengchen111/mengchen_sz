@@ -33,17 +33,17 @@ class Player extends Model
 
     public function getCreateTimeAttribute($value)
     {
-        return Carbon::createFromTimestamp($value)->format('Y-m-d H:i:s');
+        return Carbon::createFromTimestamp($value)->format($this->dateFormat);
     }
 
     public function getLastLoginTimeAttribute($value)
     {
-        return Carbon::createFromTimestamp($value)->format('Y-m-d H:i:s');
+        return Carbon::createFromTimestamp($value)->format($this->dateFormat);
     }
 
     public function getLastOfflineTimeAttribute($value)
     {
-        return Carbon::createFromTimestamp($value)->format('Y-m-d H:i:s');
+        return Carbon::createFromTimestamp($value)->format($this->dateFormat);
     }
 
     //在关系之上再做约束，返回指定的模型
