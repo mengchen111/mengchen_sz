@@ -18,7 +18,7 @@ use GuzzleHttp;
 class FriendRoomController extends Controller
 {
     protected $per_page = 15;
-    protected $order = ['keyid', 'desc'];
+    protected $order = ['owner', 'desc'];
 
     protected $apiAddress = '';
 
@@ -42,7 +42,7 @@ class FriendRoomController extends Controller
     public function dismiss(AdminRequest $request, $ownerId)
     {
         $client = new GuzzleHttp\Client([
-            'timeout' => 6
+            'timeout' => 3
         ]);
 
         try {
