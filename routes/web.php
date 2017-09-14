@@ -82,7 +82,6 @@ Route::group([
 ], function () {
     Route::get('home', 'ViewController@home');
 
-    //Route::get('statement/card', 'ViewController@statementCard'); TODO 加在首页上
     Route::get('statement/hourly', 'ViewController@statementHourly');
     Route::get('statement/daily', 'ViewController@statementDaily');
     Route::get('statement/monthly', 'ViewController@statementMonthly');

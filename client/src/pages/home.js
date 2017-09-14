@@ -3,4 +3,27 @@
  */
 
 import Vue from 'vue'
-import Axios from 'axios'
+import axios from 'axios'
+
+let app = new Vue({
+    el: '#app',
+    data: {
+        loading: true,
+        summaryDataApi: '/admin/api/home/summary',
+        summaryData: {},
+    },
+
+    created: function () {
+        let _self = this;
+
+        axios.get(this.summaryDataApi)
+            .then(function (response) {
+                _self.summaryData = response.data;
+                _self.loading = false;
+            })
+            .catch(function (err) {
+                alert(err);
+                console.log(err);
+            })
+    }
+});
