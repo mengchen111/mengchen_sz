@@ -38,6 +38,8 @@ Route::group([
 ], function () {
     Route::put('self/password', 'AdminController@updatePass');
 
+    Route::get('home/summary', 'HomeController@summaryReport');
+
     Route::get('statement/hourly', 'StatementController@hourly');
     Route::get('statement/daily', 'StatementController@daily');
     Route::get('statement/monthly', 'StatementController@monthly');
