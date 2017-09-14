@@ -44,14 +44,14 @@ Route::group([
     Route::get('statement/daily', 'StatementController@daily');
     Route::get('statement/monthly', 'StatementController@monthly');
 
-    Route::get('player', 'PlayerController@show');
+    Route::get('player', 'Game\PlayerController@show');
 
-    Route::get('notification/marquee', 'MarqueeNotificationController@show');
-    Route::post('notification/marquee', 'MarqueeNotificationController@create');
-    Route::put('notification/marquee/{marquee}', 'MarqueeNotificationController@update')->where('marquee', '[0-9]+');
-    Route::delete('notification/marquee/{marquee}', 'MarqueeNotificationController@destroy')->where('marquee', '[0-9]+');
-    Route::put('notification/marquee/enable/{marquee}', 'MarqueeNotificationController@enable')->where('marquee', '[0-9]+');
-    Route::put('notification/marquee/disable/{marquee}', 'MarqueeNotificationController@disable')->where('marquee', '[0-9]+');
+    Route::get('notification/marquee', 'Game\MarqueeNotificationController@show');
+    Route::post('notification/marquee', 'Game\MarqueeNotificationController@create');
+    Route::put('notification/marquee/{marquee}', 'Game\MarqueeNotificationController@update')->where('marquee', '[0-9]+');
+    Route::delete('notification/marquee/{marquee}', 'Game\MarqueeNotificationController@destroy')->where('marquee', '[0-9]+');
+    Route::put('notification/marquee/enable/{marquee}', 'Game\MarqueeNotificationController@enable')->where('marquee', '[0-9]+');
+    Route::put('notification/marquee/disable/{marquee}', 'Game\MarqueeNotificationController@disable')->where('marquee', '[0-9]+');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');
@@ -88,8 +88,9 @@ Route::group([
 
     Route::get('player/list', 'ViewController@playerList');
 
-    Route::get('notification/marquee', 'ViewController@notificationMarquee');
+    Route::get('gm/notification/marquee', 'ViewController@gmNotificationMarquee');
     //Route::get('notification/login', 'ViewController@notificationLogin');
+    Route::get('gm/room/friend', 'ViewController@gmRoomFriend');
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-list', 'ViewController@stockApplyList');

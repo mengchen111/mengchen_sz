@@ -38,14 +38,14 @@ class ViewController extends Controller
         return view('admin.player.list');
     }
 
-    public function notificationMarquee(Request $request)
+    public function gmNotificationMarquee(Request $request)
     {
-        return view('admin.notification.marquee');
+        return view('admin.gm.notification.marquee');
     }
 
-    public function notificationLogin(Request $request)
+    public function gmRoomFriend(Request $request)
     {
-        return view('admin.notification.login');
+        return view('admin.gm.room.friend');
     }
 
     public function stockApplyRequest(Request $request)

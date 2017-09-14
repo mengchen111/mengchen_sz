@@ -6,7 +6,7 @@
  * Time: 09:09
  */
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Game;
 
 
 use App\Http\Controllers\Controller;

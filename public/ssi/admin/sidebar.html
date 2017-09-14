@@ -27,13 +27,25 @@
                     <!--<li :class="{ active: uri.player.top_up.isActive }"><a href="/admin/player/top-up"><i class="fa fa-circle-o"></i>玩家充值</a></li>-->
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri.notification.isActive }">
-                <a href="#"><i class="fa fa-bell"></i> <span>公告管理</span>
+            <li class="treeview" :class="{ active: uri.gm.isActive }">
+                <a href="#"><i class="fa fa-wrench"></i> <span>GM功能</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.notification.marquee.isActive }"><a href="/admin/notification/marquee"><i class="fa fa-circle-o"></i>跑马灯公告</a></li>
-                    <!--<li :class="{ active: uri.notification.login.isActive }"><a href="#"><i class="fa fa-circle-o"></i>登录公告</a></li>-->
+                    <li :class="{ active: uri.gm.notification.isActive }"><a href="#"><i class="fa fa-bell"></i>公告管理
+                            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li :class="{ active: uri.gm.notification.marquee.isActive }"><a href="/admin/gm/notification/marquee"><i class="fa fa-circle-o"></i>跑马灯公告</a></li>
+                        </ul>
+                    </li>
+                    <li :class="{ active: uri.gm.room.isActive }"><a href="#"><i class="fa fa-home"></i>房间管理
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li :class="{ active: uri.gm.room.friend.isActive }"><a href="/admin/gm/room/friend"><i class="fa fa-circle-o"></i>解散好友房</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.stock.isActive }">
@@ -108,13 +120,22 @@
                         isActive: false,
                     }
                 },
-                notification: {
+                gm: {
                     isActive: false,
-                    marquee: {
+                    notification: {
                         isActive: false,
+                        marquee: {
+                            isActive: false,
+                        },
+                        login: {
+                            isActive: false,
+                        }
                     },
-                    login: {
+                    room: {
                         isActive: false,
+                        friend: {
+                            isActive: false,
+                        }
                     }
                 },
                 stock: {
