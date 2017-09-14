@@ -30,9 +30,9 @@ class HomeController extends Controller
                                             ->get()
                                             ->groupBy(function ($item, $key) {
                                                 if ($item['type'] == $this->cardTypeId) {
-                                                    return '房卡';
+                                                    return 'card';
                                                 } else if ($item['type'] == $this->coinTypeId) {
-                                                    return '金币';
+                                                    return 'coin';
                                                 }
                                             });
 
@@ -42,9 +42,9 @@ class HomeController extends Controller
                                             ->get()
                                             ->groupBy(function ($item, $key) {
                                                 if ($item['type'] == $this->cardTypeId) {
-                                                    return '房卡';
+                                                    return 'card';
                                                 } else if ($item['type'] == $this->coinTypeId) {
-                                                    return '金币';
+                                                    return 'coin';
                                                 }
                                             });
 
@@ -54,9 +54,9 @@ class HomeController extends Controller
                                     ->get()
                                     ->groupBy(function ($item, $key) {
                                         if ($item['type'] == $this->cardTypeId) {
-                                            return '房卡';
+                                            return 'card';
                                         } else if ($item['type'] == $this->coinTypeId) {
-                                            return '金币';
+                                            return 'coin';
                                         }
                                     });
 
