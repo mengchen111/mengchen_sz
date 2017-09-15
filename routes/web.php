@@ -92,7 +92,7 @@ Route::group([
     Route::get('player/list', 'ViewController@playerList');
 
     Route::get('gm/notification/marquee', 'ViewController@gmNotificationMarquee');
-    //Route::get('notification/login', 'ViewController@notificationLogin');
+    Route::get('gm/notification/login', 'ViewController@gmNotificationLogin');
     Route::get('gm/room/friend', 'ViewController@gmRoomFriend');
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');

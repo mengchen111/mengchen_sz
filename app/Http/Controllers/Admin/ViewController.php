@@ -43,6 +43,11 @@ class ViewController extends Controller
         return view('admin.gm.notification.marquee');
     }
 
+    public function gmNotificationLogin(Request $request)
+    {
+        return view('admin.gm.notification.login');
+    }
+
     public function gmRoomFriend(Request $request)
     {
         return view('admin.gm.room.friend');
