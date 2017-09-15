@@ -2,7 +2,7 @@
     <date-picker
             :config='datePickerConf'
             :value="value"
-            v-on:input="updateDate($event)"
+            @input="updateDate($event)"
             :placeholder="placeholder">
     </date-picker>
 </template>
@@ -20,7 +20,7 @@
     export default {
         props: {
             value: {
-                default: moment().format(),
+                default: null,
             },
             placeholder: {
                 default: '',
