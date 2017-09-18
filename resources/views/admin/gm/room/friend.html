@@ -35,7 +35,11 @@
                         </div>
 
                         <div class="box-body">
-                            <my-vuetable></my-vuetable>
+                            <filter-bar placeholder="查找房间ID"></filter-bar>
+                            <my-vuetable
+                                :table-url="tableUrl"
+                                :table-fields="tableFields"
+                                :table-sort-order="tableSortOrder"></my-vuetable>
                         </div>
                     </div>
                 </div>
