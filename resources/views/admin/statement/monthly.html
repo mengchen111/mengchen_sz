@@ -34,7 +34,11 @@
                         </div>
 
                         <div class="box-body">
-                            <my-vuetable></my-vuetable>
+                            <my-vuetable
+                                    :table-url="tableUrl"
+                                    :table-fields="tableFields"
+                                    :table-sort-order="tableSortOrder">
+                            </my-vuetable>
                         </div>
                     </div>
                 </div>
