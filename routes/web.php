@@ -55,6 +55,8 @@ Route::group([
 
     Route::get('game/room/friend', 'Game\FriendRoomController@show');
     Route::delete('game/room/friend/{ownerId}', 'Game\FriendRoomController@dismiss')->where('ownerId', '[0-9]+');
+    Route::get('game/room/coin', 'Game\CoinRoomController@show');
+    Route::delete('game/room/coin/{roomId}', 'Game\CoinRoomController@dismiss')->where('roomId', '[0-9]+');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');

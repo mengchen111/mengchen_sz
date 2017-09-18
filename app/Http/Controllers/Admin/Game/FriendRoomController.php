@@ -46,15 +46,15 @@ class FriendRoomController extends Controller
         ]);
 
         try {
-            $response = $client->request('GET', "{$this->apiAddress}&id={$ownerId}")
+            $res = $client->request('GET', "{$this->apiAddress}&id={$ownerId}")
                             ->getBody()
                             ->getContents();
         } catch (\Exception $e) {
             throw new CustomException('调用游戏服接口失败：' . $e->getMessage());
         }
 
-        if (empty(json_decode($response)->result)) {
-            throw new CustomException('调用接口成功，但是游戏服返回的结果错误：' . json_encode($response));
+        if (empty(json_decode($res)->result)) {
+            throw new CustomException('调用接口成功，但是游戏服返回的结果错误：' . $res);
         }
 
         return [

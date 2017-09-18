@@ -8,7 +8,7 @@ import axios from 'axios'
 
 let tableTemplate = `
     <div>
-        <filter-bar :placeholderText="filterPlaceholderText"></filter-bar>
+        <filter-bar placeholder="查找房间ID"></filter-bar>
         <vuetable ref="vuetable"
                   :api-url="vuetableUrl"
                   :fields="tableFields"
@@ -83,7 +83,6 @@ let app = new Vue({
             template: tableTemplate,
             data: function () {
                 return {
-                    filterPlaceholderText: '查找房间ID',    //filterbar组件的placeholder文字
                     vuetableUrl: '/admin/api/game/room/friend',
 
                     tableFields: [

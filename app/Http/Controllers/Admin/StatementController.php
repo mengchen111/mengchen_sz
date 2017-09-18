@@ -14,11 +14,11 @@ use App\Models\Group;
 use App\Models\OperationLogs;
 use App\Models\TopUpAdmin;
 use App\Models\User;
+use App\Services\Paginator;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class StatementController extends Controller
 {
@@ -182,9 +182,7 @@ class StatementController extends Controller
     //准备分页数据
     protected function paginateData($data)
     {
-        $offset = $this->per_page * ($this->page - 1);
-        $currentPageData = array_slice($data, $offset, $this->per_page);
-        $paginatedData = new LengthAwarePaginator($currentPageData, count($data), $this->per_page, $this->page);
-        return $paginatedData;
+        $paginator = new Paginator($this->per_page, $this->page);
+        return $paginator->paginate($data);
     }
 }
