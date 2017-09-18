@@ -41,8 +41,13 @@
                                     新建登录公告
                                 </button>
                             </div>
-
-                            <!--<my-vuetable></my-vuetable>-->
+                            <filter-bar placeholder="aaa"></filter-bar>
+                            <my-vuetable
+                                :table-url="tableUrl"
+                                :table-fields="tableFields"
+                                :table-sort-order="tableSortOrder"
+                            >
+                            </my-vuetable>
                         </div>
                     </div>
                 </div>

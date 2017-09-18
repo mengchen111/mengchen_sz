@@ -1,0 +1,125 @@
+<template>
+    <div>
+        <vuetable ref="vuetable"
+                  :api-url="tableUrl"
+                  :fields="tableFields"
+                  :sort-order="tableSortOrder"
+                  :css="css.table"
+                  pagination-path=""
+                  :per-page="15"
+                  :append-params="moreParams"
+                  :detail-row-component="detailRowComponent"
+                  :track-by="tableTrackBy"
+                  @vuetable:cell-clicked="onCellClicked"
+                  @vuetable:pagination-data="onPaginationData"
+        ></vuetable>
+
+        <div class="pagination pull-left">
+            <vuetable-pagination-info ref="paginationInfo"
+            ></vuetable-pagination-info>
+        </div>
+        <vuetable-pagination ref="pagination"
+                             :css="css.pagination"
+                             @vuetable-pagination:change-page="onChangePage"
+        ></vuetable-pagination>
+    </div>
+</template>
+
+<script>
+    import { Vuetable, VuetablePagination, VuetablePaginationInfo}  from 'vuetable-2'
+
+    export default {
+        components: {
+            Vuetable,
+            VuetablePagination,
+            VuetablePaginationInfo,
+        },
+
+        props: {
+            tableUrl: {
+                required: true,
+            },
+            tableFields: {
+                type: Array,
+                required: true,
+            },
+            tableSortOrder: {
+                type: Array,
+                default: function () {
+                    return [
+                        {
+                            field: 'id',
+                            sortField: 'id',
+                            direction: 'desc',
+                        }
+                    ]
+                }
+            },
+            detailRowComponent: {
+                type: String,
+                default: null,
+            },
+            tableTrackBy: {
+                default: 'id'
+            },
+            tableFilterParams: {
+                default: function () {
+                    return {}
+                },
+            }
+        },
+
+        data: function () {
+            return {
+                css: {
+                    table: {
+                        tableClass: 'table table-striped table-bordered',
+                        ascendingIcon: 'glyphicon glyphicon-chevron-up',
+                        descendingIcon: 'glyphicon glyphicon-chevron-down',
+                        handleIcon: 'glyphicon glyphicon-menu-hamburger',
+                        renderIcon: function(classes, options) {
+                            return `<span class="${classes.join(' ')}"></span>`
+                        }
+                    },
+                    pagination: {
+                        wrapperClass: "pagination pull-right",
+                        activeClass: "btn-primary",
+                        disabledClass: "disabled",
+                        pageClass: "btn btn-border",
+                        linkClass: "btn btn-border",
+                        icons: {
+                            first: "",
+                            prev: "",
+                            next: "",
+                            last: ""
+                        }
+                    }
+                },
+                moreParams: {},
+            }
+        },
+
+        methods: {
+            onPaginationData (paginationData) {
+                this.$refs['pagination'].setPaginationData(paginationData)
+                this.$refs.paginationInfo.setPaginationData(paginationData)
+            },
+            onChangePage (page) {
+                this.$refs.vuetable.changePage(page);
+            },
+            onCellClicked (data, field, event) {
+                this.$refs.vuetable.toggleDetailRow(data[this.tableTrackBy])
+            },
+            onFilterSet (filterText) {
+                this.moreParams = {
+                    'filter': filterText
+                }
+                Vue.nextTick( () => this.$refs.vuetable.refresh())
+            }
+        },
+
+        mounted: function () {
+            this.$root.eventHub.$on('filterEvent', (eventData) => this.onFilterSet(eventData))
+        }
+    }
+</script>
