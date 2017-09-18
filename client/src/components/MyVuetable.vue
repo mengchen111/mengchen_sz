@@ -108,7 +108,9 @@
                 this.$refs.vuetable.changePage(page);
             },
             onCellClicked (data, field, event) {
-                this.$refs.vuetable.toggleDetailRow(data[this.tableTrackBy])
+                if (this.detailRowComponent) {  //只有当传入了detailRow组件才展示detailRow
+                    this.$refs.vuetable.toggleDetailRow(data[this.tableTrackBy])
+                }
             },
             onFilterSet (filterText) {
                 this.moreParams = {

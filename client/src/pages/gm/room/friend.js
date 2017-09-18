@@ -55,10 +55,12 @@ let app = new Vue({
             {
                 name: 'id',
                 title: '房间ID',
+                sortField: 'id'
             },
             {
                 name: 'owner',
                 title: '房主ID',
+                sortField: 'owner'
             },
             {
                 name: 'open_id',
@@ -72,7 +74,7 @@ let app = new Vue({
                 name: '__component:custom-actions',
                 title: '操作',
                 titleClass: 'text-center',
-                dataClass: 'text-center',
+                dataClass: 'text-center'
             },
         ],
         tableSortOrder: [    //默认的排序
