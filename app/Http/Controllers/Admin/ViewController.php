@@ -53,6 +53,11 @@ class ViewController extends Controller
         return view('admin.gm.room.friend');
     }
 
+    public function gmRoomCoin(Request $request)
+    {
+        return view('admin.gm.room.coin');
+    }
+
     public function stockApplyRequest(Request $request)
     {
         return view('admin.stock.apply-request');
