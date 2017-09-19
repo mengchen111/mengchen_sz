@@ -56,7 +56,7 @@
         </section>
         <!-- /.content -->
 
-        <!-- 新建登录公告模态框 -->
+        <!-- 新建公告模态框 -->
         <div id="new-login-modal" class="modal fade" tabindex="-1">
             <div class="modal-dialog" style="width: 380px;">
                 <div class="modal-content">
@@ -110,6 +110,60 @@
             </div>
         </div>
 
+        <!-- 编辑公告模态框 -->
+        <div id="edit-notification-modal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog" style="width: 380px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal">x</button>
+                        <h3 class="text-center">编辑登录公告</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" class="form-group" method="POST" action="#" @submit.prevent="editNotification">
+                            <div class="form-group has-feedback">
+                                <label>开始时间</label>
+                                <date-picker required v-model="activatedRow.start_at" placeholder="开始时间"></date-picker>
+                                <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>结束时间</label>
+                                <date-picker required v-model="activatedRow.end_at" placeholder="结束时间"></date-picker>
+                                <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>序号</label>
+                                <input type="number" min="1" required class="form-control"
+                                       v-model.trim="activatedRow.order"
+                                       placeholder="序号顺序决定显示顺序，序号越小，位置越靠上，最小为1">
+                                <span class="glyphicon glyphicon-triangle-top form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>标题</label>
+                                <input type="text" required class="form-control"
+                                       v-model.trim="activatedRow.title" placeholder="标题">
+                                <span class="glyphicon glyphicon-header form-control-feedback"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>公告内容</label>
+                                <textarea type="text" class="form-control" row="3" required placeholder="公告内容"
+                                          v-model.trim="activatedRow.content"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label v-for="(value, index) in popFrequency">
+                                    &nbsp;&nbsp;&nbsp;{{ value }}
+                                    <input type="radio" class="minimal" :value="index"
+                                           v-model="activatedRow.pop_frequency">
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
     <!-- /.content-wrapper -->
@@ -120,6 +174,6 @@
 </div>
 <!-- ./wrapper -->
 
-<script src="http://localhost:8080/dist/webpack/gm/notification/login.js"></script>
+<script src="/dist/webpack/gm/notification/login.js"></script>
 </body>
 </html>

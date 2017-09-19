@@ -56,7 +56,7 @@ class SendGameNotification implements ShouldQueue
                 $this->notificationModel->failed_description = '';
                 $this->notificationModel->save();
 
-                OperationLogs::add(1, $this->apiAddress, 'POST', '后台队列同步跑马灯公告成功',
+                OperationLogs::add(1, $this->apiAddress, 'POST', '后台队列同步公告成功',
                     'Guzzle', json_encode($this->formData));
 
                 //Log::info("后台队列同步跑马灯公告到游戏服成功 同步数据：" . json_encode($this->formData));

@@ -2,7 +2,7 @@
 ## 环境依赖
 - php >= 5.6  
 - nginx打开ssi  
-- redis  
+- redis >= 2.8
 - supervisor  
 
 ```

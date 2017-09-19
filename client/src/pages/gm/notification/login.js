@@ -8,8 +8,8 @@ import MyVuetable from '../../../components/MyVuetable.vue'
 import TableActions from '../../../components/gm/notification/TableActions.vue'
 import DetailRow from '../../../components/gm/notification/DetailRow.vue'
 
-Vue.component('table-actions', TableActions);
-Vue.component('detail-row', DetailRow);
+Vue.component('table-actions', TableActions)
+Vue.component('detail-row', DetailRow)
 
 let app = new Vue({
     el: '#app',
@@ -19,6 +19,7 @@ let app = new Vue({
     },
     data: {
         eventHub: new Vue(),
+        activatedRow: {},
         formData: {
             order: null,
             title: null,
@@ -29,9 +30,11 @@ let app = new Vue({
         },
         popFrequency: {         //登录公告弹出频率
             1: '每日首次登录',
-            2: '每次登录'
+            2: '每次登录',
         },
-        createApi: '/admin/api/game/notification/login',
+        backendApi: '/admin/api/game/notification/login',
+        enableApi: '/admin/api/game/notification/login/enable',
+        disableApi: '/admin/api/game/notification/login/disable',
 
         //vuetable props
         tableUrl: '/admin/api/game/notification/login',
@@ -48,7 +51,7 @@ let app = new Vue({
             },
             {
                 name: 'title',
-                title: '标题'
+                title: '标题',
             },
             {
                 name: 'content',
@@ -57,7 +60,7 @@ let app = new Vue({
             {
                 name: 'pop_frequency',
                 title: '弹出频率',
-                callback: 'transPopFrequency'
+                callback: 'transPopFrequency',
             },
             {
                 name: 'start_at',
@@ -73,13 +76,13 @@ let app = new Vue({
                 name: 'switch',
                 title: '开启状态',
                 sortField: 'switch',
-                callback: 'transSwitch'
+                callback: 'transSwitch',
             },
             {
                 name: 'sync_state',
                 title: '同步状态',
                 sortField: 'sync_state',
-                callback: 'transSyncState'
+                callback: 'transSyncState',
             },
             {
                 name: '__component:table-actions',
@@ -92,9 +95,9 @@ let app = new Vue({
             transSwitch (value) {
                 let switchType = {           //公告开启状态
                     1: '开启',
-                    2: '关闭'
+                    2: '关闭',
                 };
-                return switchType[value];
+                return switchType[value]
             },
             transSyncState (value) {
                 let syncState = {            //公告同步状态
@@ -103,40 +106,75 @@ let app = new Vue({
                         3: '同步成功',
                         4: '同步失败',
                 };
-                let state = syncState[value];
+                let state = syncState[value]
 
                 switch (value)
                 {
                     case 1:
-                        return `<span><b>${state}</b></span>`;
+                        return `<span><b>${state}</b></span>`
                     case 2:
-                        return `<span style="color: #00c0ef;"><b>${state}</b></span>`;
+                        return `<span style="color: #00c0ef;"><b>${state}</b></span>`
                     case 3:
-                        return `<span style="color: #00a65a;"><b>${state}</b></span>`;
+                        return `<span style="color: #00a65a;"><b>${state}</b></span>`
                     case 4:
-                        return `<span style="color: #dd4b39;"><b>${state}</b></span>`;
+                        return `<span style="color: #dd4b39;"><b>${state}</b></span>`
                     default:
-                        return true;
+                        return true
                 }
             },
             transPopFrequency (value) {
                 let popFrequency = {         //登录公告弹出频率
                     1: '每日首次登录',
-                    2: '每日登录'
+                    2: '每日登录',
                 };
-                return popFrequency[value];
+                return popFrequency[value]
             }
         }
     },
 
     methods: {
         createNotification () {
-            let _self = this;
+            let _self = this
 
             axios({
                 method: 'POST',
-                url: this.createApi,
+                url: this.backendApi,
                 data: this.formData,
+                validateStatus: function (status) {
+                    return status == 200 || status == 422
+                }
+            })
+                .then(function (response) {
+                    if (response.status === 422) {
+                        return alert(JSON.stringify(response.data))
+                    } else {
+                        if (response.data.error) {
+                            return alert(response.data.error)
+                        }
+
+                        alert(response.data.message)
+
+                        //清空表单数据
+                        for (var index of Object.keys(_self.formData)) {
+                            _self.formData[index] = null
+                        }
+
+                        //添加成功，刷新表格
+                        return _self.$root.eventHub.$emit('vuetableRefresh')
+                    }
+                })
+                .catch(function (err) {
+                    alert(err)
+                });
+        },
+
+        editNotification () {
+            let _self = this
+
+            axios({
+                method: 'PUT',
+                url: `${this.backendApi}/${this.activatedRow.id}`,
+                data: this.activatedRow,
                 validateStatus: function (status) {
                     return status == 200 || status == 422;
                 }
@@ -149,27 +187,62 @@ let app = new Vue({
                             return alert(response.data.error)
                         }
 
-                        alert(response.data.message);
+                        alert(response.data.message)
 
                         //清空表单数据
-                        for (var index of Object.keys(_self.formData)) {
-                            _self.formData[index] = null;
+                        for (var index of Object.keys(_self.activatedRow)) {
+                            _self.activatedRow[index] = null
                         }
 
-                        //添加成功，刷新表格
-                        _self.$root.eventHub.$emit('vuetableRefresh');
-
-                        return true;
+                        //编辑成功，刷新表格
+                        return _self.$root.eventHub.$emit('vuetableRefresh')
                     }
                 })
                 .catch(function (err) {
-                    alert(err);
-                    console.log(err);
-                });
+                    alert(err)
+                })
         }
     },
 
     mounted: function () {
+        let _self = this
 
+        this.$root.eventHub.$on('editNotificationEvent', function (data) {
+            _self.activatedRow = data
+        });
+        this.$root.eventHub.$on('deleteNotificationEvent', function (data) {
+            let uri = `${_self.backendApi}/${data.id}`
+            axios.delete(uri, {})
+                .then(function (response) {
+                    _self.$root.eventHub.$emit('vuetableRefresh')
+                    return response.data.error ? alert(response.data.error) : alert(response.data.message)
+                })
+                .catch(function (err) {
+                    alert(err)
+                })
+        })
+        this.$root.eventHub.$on('enableNotificationEvent', function (data) {
+            let uri = `${_self.enableApi}/${data.id}`
+
+            axios.put(uri, {})
+                .then(function (response) {
+                    _self.$root.eventHub.$emit('vuetableRefresh')
+                    return response.data.error ? alert(response.data.error) : alert(response.data.message)
+                })
+                .catch(function (err) {
+                    alert(err)
+                })
+        });
+        this.$root.eventHub.$on('disableNotificationEvent', function (data) {
+            let uri = `${_self.disableApi}/${data.id}`;
+            axios.put(uri, {})
+                .then(function (response) {
+                    _self.$root.eventHub.$emit('vuetableRefresh')
+                    return response.data.error ? alert(response.data.error) : alert(response.data.message)
+                })
+                .catch(function (err) {
+                    alert(err)
+                })
+        });
     }
 })

@@ -28,7 +28,7 @@ class LoginNotificationController extends Controller
     protected $apiAddress = '';             //游戏服开放的接口的url地址
     protected $formData = [                 //游戏服接口必须要填充的数据，不然报错
         'level' => '',
-        'diff_time' => '',
+        'diff_time' => '0',                 //一定要有值，不然接口调用失败
         'img' => '',
         'content_url' => '',
     ];
