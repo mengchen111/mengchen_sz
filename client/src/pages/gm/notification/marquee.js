@@ -3,7 +3,7 @@
  */
 
 import Vue from 'vue'
-import DatePicker from '../../../components/MyDatePicker.vue'
+import MyDatePicker from '../../../components/MyDatePicker.vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import TableActions from '../../../components/gm/notification/TableActions.vue'
 import DetailRow from '../../../components/gm/notification/DetailRow.vue'
@@ -14,30 +14,29 @@ Vue.component('detail-row', DetailRow)
 let app = new Vue({
     el: '#app',
     components: {
-        DatePicker,
+        MyDatePicker,
         MyVuetable,
     },
     data: {
         eventHub: new Vue(),
         activatedRow: {},
         formData: {
-            order: null,
-            title: null,
-            content: null,
-            pop_frequency: 1,
+            priority: 1,
+            interval: null,
             start_at: null,
             end_at: null,
+            content: null,
         },
-        popFrequency: {         //登录公告弹出频率
-            1: '每日首次登录',
-            2: '每次登录',
+        priorityType: {         //跑马灯公告优先级
+            1: '高',
+            2: '低'
         },
-        backendApi: '/admin/api/game/notification/login',
-        enableApi: '/admin/api/game/notification/login/enable',
-        disableApi: '/admin/api/game/notification/login/disable',
+        backendApi: '/admin/api/game/notification/marquee',
+        enableApi: '/admin/api/game/notification/marquee/enable',
+        disableApi: '/admin/api/game/notification/marquee/disable',
 
         //vuetable props
-        tableUrl: '/admin/api/game/notification/login',
+        tableUrl: '/admin/api/game/notification/marquee',
         detailRowComponent: 'detail-row',
         tableFields: [
             {
@@ -46,21 +45,13 @@ let app = new Vue({
                 sortField: 'id',
             },
             {
-                name: 'order',
-                title: '序号',
-            },
-            {
-                name: 'title',
-                title: '标题',
+                name: 'priority',
+                title: '优先级',
+                callback: 'transPriority',
             },
             {
                 name: 'content',
                 title: '公告内容',
-            },
-            {
-                name: 'pop_frequency',
-                title: '弹出频率',
-                callback: 'transPopFrequency',
             },
             {
                 name: 'start_at',
@@ -76,13 +67,13 @@ let app = new Vue({
                 name: 'switch',
                 title: '开启状态',
                 sortField: 'switch',
-                callback: 'transSwitch',
+                callback: 'transSwitch'
             },
             {
                 name: 'sync_state',
                 title: '同步状态',
                 sortField: 'sync_state',
-                callback: 'transSyncState',
+                callback: 'transSyncState'
             },
             {
                 name: '__component:table-actions',
@@ -122,13 +113,13 @@ let app = new Vue({
                         return true
                 }
             },
-            transPopFrequency (value) {
-                let popFrequency = {         //登录公告弹出频率
-                    1: '每日首次登录',
-                    2: '每日登录',
-                };
-                return popFrequency[value]
-            }
+            transPriority (value) {
+                let priorityType = {
+                    1: '高',
+                    2: '低'
+                }
+                return priorityType[value];
+            },
         }
     },
 

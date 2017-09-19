@@ -63,15 +63,11 @@
                 default: 'id'
             },
             tableFilterParams: {
-                default: function () {
-                    return {}
-                }
+                default: () => ({})
             },
             callbacks: {
                 type: Object,
-                default: function () {
-                    return {}
-                }
+                default: () => ({})
             }
         },
 
@@ -111,7 +107,7 @@
                 this.$refs.paginationInfo.setPaginationData(paginationData)
             },
             onChangePage (page) {
-                this.$refs.vuetable.changePage(page);
+                this.$refs.vuetable.changePage(page)
             },
             onCellClicked (data, field, event) {
                 if (this.detailRowComponent) {  //只有当传入了detailRow组件才展示detailRow
@@ -132,7 +128,7 @@
         mounted: function () {
             //将传过来的回调函数绑定到组件实例上
             for (let [key, value] of Object.entries(this.callbacks)) {
-                this[key] = value;
+                this[key] = value
             }
 
             this.$root.eventHub.$on('vuetableRefresh', this.onTableRefresh);

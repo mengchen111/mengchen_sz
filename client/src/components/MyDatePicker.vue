@@ -30,7 +30,7 @@
         data () {
             return {
                 datePickerConf: {       //datePicker配置项
-                    locale: moment().local('zh_cn'),
+                    locale: 'zh_cn',
                     format: 'YYYY-MM-DD HH:mm:ss',
                 },
             }
