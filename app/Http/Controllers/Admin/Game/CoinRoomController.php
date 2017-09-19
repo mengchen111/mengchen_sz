@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
 use GuzzleHttp;
 use App\Services\Paginator;
+use Illuminate\Support\Facades\Auth;
+use App\Models\OperationLogs;
 
 class CoinRoomController extends Controller
 {
@@ -37,7 +39,10 @@ class CoinRoomController extends Controller
     public function show(AdminRequest $request)
     {
         $data = $this->getCoinRoomList($this->coinRoomListApi);
-        
+
+        OperationLogs::add(Auth::id(), $request->path(), $request->method(), '查看金币房',
+            $request->header('User-Agent'));
+
         return $this->paginateData($data);
     }
 
@@ -68,6 +73,9 @@ class CoinRoomController extends Controller
         ];
 
         $msg = $this->sendDismissRequest($this->coinRoomDismissApi, $params);
+
+        OperationLogs::add(Auth::id(), $request->path(), $request->method(), '解散金币房',
+            $request->header('User-Agent'), $roomId);
 
         return [
             'message' => $msg

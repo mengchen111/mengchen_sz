@@ -9,7 +9,7 @@ const config = {
 
     output: {
         path: dirConfig.distDir,
-        publicPath: '/',
+        publicPath: '/dist/webpack',
         filename: '[name]'
     },
 

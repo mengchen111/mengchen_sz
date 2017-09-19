@@ -3,8 +3,6 @@
  */
 
 import Vue from 'vue'
-import axios from 'axios'
-import moment from 'moment'
 import DatePicker from '../../../components/DatePicker.vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import FilterBar from '../../../components/FilterBar.vue'
@@ -17,6 +15,7 @@ let app = new Vue({
         FilterBar,
     },
     data: {
+        eventHub: new Vue(),
         createFormData: {
             priority: 1,
             interval: null,
@@ -28,7 +27,6 @@ let app = new Vue({
             1: '高',
             2: '低'
         },
-        eventHub: new Vue(),
 
         //vuetable props
         tableUrl: '/admin/api/game/player',
@@ -80,5 +78,5 @@ let app = new Vue({
             console.log(value);
         }
 
-    }
+    },
 })

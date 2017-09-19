@@ -14,6 +14,8 @@ use App\Models\Game\FriendRoom;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
 use GuzzleHttp;
+use App\Models\OperationLogs;
+use Illuminate\Support\Facades\Auth;
 
 class FriendRoomController extends Controller
 {
@@ -32,6 +34,9 @@ class FriendRoomController extends Controller
     //查看好友房列表
     public function show(AdminRequest $request)
     {
+        OperationLogs::add(Auth::id(), $request->path(), $request->method(), '查看好友房',
+            $request->header('User-Agent'));
+
         //只搜索房间ID
         return FriendRoom::where('id', 'like', "%{$request->filter}%")
             ->orderBy($this->order[0], $this->order[1])
@@ -56,6 +61,9 @@ class FriendRoomController extends Controller
         if (empty(json_decode($res)->result)) {
             throw new CustomException('调用接口成功，但是游戏服返回的结果错误：' . $res);
         }
+
+        OperationLogs::add(Auth::id(), $request->path(), $request->method(), '解散好友房',
+            $request->header('User-Agent'), $ownerId);
 
         return [
             'message' => '解散好友房成功'
