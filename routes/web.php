@@ -14,15 +14,16 @@
 Route::get('/', function () {
     return redirect('/login');
 });
-Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
+// Authentication Routes...
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 //开发调试功能接口
 Route::prefix('dev')->group(function () {
     Route::get('list-session', 'DevToolsController@listSession');
     Route::get('hashed-pass/{pass}', 'DevToolsController@hashedPass');
-
 });
 
 //公共接口
