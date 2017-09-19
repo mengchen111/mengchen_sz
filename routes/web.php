@@ -52,6 +52,13 @@ Route::group([
     Route::delete('game/notification/marquee/{marquee}', 'Game\MarqueeNotificationController@destroy')->where('marquee', '[0-9]+');
     Route::put('game/notification/marquee/enable/{marquee}', 'Game\MarqueeNotificationController@enable')->where('marquee', '[0-9]+');
     Route::put('game/notification/marquee/disable/{marquee}', 'Game\MarqueeNotificationController@disable')->where('marquee', '[0-9]+');
+    Route::get('game/notification/login', 'Game\LoginNotificationController@show');
+    Route::post('game/notification/login', 'Game\LoginNotificationController@create');
+    Route::put('game/notification/login/{login}', 'Game\LoginNotificationController@update')->where('login', '[0-9]+');
+    Route::delete('game/notification/login/{login}', 'Game\LoginNotificationController@destroy')->where('login', '[0-9]+');
+    Route::put('game/notification/login/enable/{login}', 'Game\LoginNotificationController@enable')->where('login', '[0-9]+');
+    Route::put('game/notification/login/disable/{login}', 'Game\LoginNotificationController@disable')->where('login', '[0-9]+');
+
 
     Route::get('game/room/friend', 'Game\FriendRoomController@show');
     Route::delete('game/room/friend/{ownerId}', 'Game\FriendRoomController@dismiss')->where('ownerId', '[0-9]+');

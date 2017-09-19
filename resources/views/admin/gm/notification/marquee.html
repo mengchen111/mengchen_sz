@@ -233,49 +233,16 @@
         },
         methods: {
             enableMarquee (data) {
-                var uri = `/admin/api/game/notification/marquee/enable/${data.id}`;
-                axios.put(uri, {})
-                    .then(function (response) {
-                        if (response.data.error) {
-                            return alert(response.data.error);
-                        }
-                        alert(response.data.message);
-                        return Hub.$emit('enableMarqueeEvent', data);     //发送开启公告事件，刷新表格
-                    })
-                    .catch(function (err) {
-                        console.log(err);
-                    })
+                return Hub.$emit('enableMarqueeEvent', data);
             },
             disableMarquee (data) {
-                var uri = `/admin/api/game/notification/marquee/disable/${data.id}`;
-                axios.put(uri, {})
-                    .then(function (response) {
-                        if (response.data.error) {
-                            return alert(response.data.error);
-                        }
-                        alert(response.data.message);
-                        return Hub.$emit('disableMarqueeEvent', data);     //发送停用公告事件，刷新表格
-                    })
-                    .catch(function (err) {
-                        console.log(err);
-                    })
+                return Hub.$emit('disableMarqueeEvent', data);
             },
             editMarqueeAction (data) {
-                Hub.$emit('editMarqueeEvent', data);
+                return Hub.$emit('editMarqueeEvent', data);
             },
             deleteMarqueeAction (data) {
-                var uri = `/admin/api/game/notification/marquee/${data.id}`;
-                axios.delete(uri, {})
-                    .then(function (response) {
-                        if (response.data.error) {
-                            return alert(response.data.error);
-                        }
-                        alert(response.data.message);
-                        return Hub.$emit('deleteMarqueeEvent', data);     //发送删除事件，刷新表格
-                    })
-                    .catch(function (err) {
-                        console.log(err);
-                    })
+                return Hub.$emit('deleteMarqueeEvent', data);
             }
         }
     }
@@ -364,6 +331,10 @@
                     callback: 'transPriority',
                 },
                 {
+                    name: 'content',
+                    title: '公告内容',
+                },
+                {
                     name: 'start_at',
                     title: '开始时间',
                     sortField: 'start_at',
@@ -374,10 +345,6 @@
                     title: '结束时间',
                     sortField: 'end_at',
                     callback: 'transEndTime'
-                },
-                {
-                    name: 'content',
-                    title: '公告内容',
                 },
                 {
                     name: 'switch',
@@ -391,11 +358,6 @@
                     sortField: 'sync_state',
                     callback: 'transSyncState'
                 },
-                /*{
-                    name: 'failed_description',
-                    title: '同步失败原因',
-                    callback: 'transDescription',
-                },*/
                 {
                     name: '__component:table-actions',
                     title: '操作',
@@ -620,18 +582,55 @@
                 _self.activatedRow = data;
             });
             Hub.$on('deleteMarqueeEvent', function (data) {
+                var uri = `/admin/api/game/notification/marquee/${data.id}`;
+                axios.delete(uri, {})
+                    .then(function (response) {
+                        if (response.data.error) {
+                            return alert(response.data.error);
+                        }
+                        alert(response.data.message);
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+
                 //删除成功，刷新表格
                 Vue.nextTick(function (){
                     _self.$refs.vuetable.refresh();
                 })
             })
             Hub.$on('enableMarqueeEvent', function (data) {
+                var uri = `/admin/api/game/notification/marquee/enable/${data.id}`;
+
+                axios.put(uri, {})
+                    .then(function (response) {
+                        if (response.data.error) {
+                            return alert(response.data.error);
+                        }
+                        alert(response.data.message);
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+
                 //启用成功，刷新表格
                 Vue.nextTick(function (){
                     _self.$refs.vuetable.refresh();
                 })
             });
             Hub.$on('disableMarqueeEvent', function (data) {
+                var uri = `/admin/api/game/notification/marquee/disable/${data.id}`;
+                axios.put(uri, {})
+                    .then(function (response) {
+                        if (response.data.error) {
+                            return alert(response.data.error);
+                        }
+                        alert(response.data.message);
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+
                 //停用成功，刷新表格
                 Vue.nextTick(function (){
                     _self.$refs.vuetable.refresh();

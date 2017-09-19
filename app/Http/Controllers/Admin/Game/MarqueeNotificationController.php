@@ -156,7 +156,7 @@ class MarqueeNotificationController extends Controller
         $this->validateSyncState($marquee);
 
         $data = $this->intersect($request);
-        
+
         $data = array_merge($data, [
             'switch' => 2,              //公告状态改为关闭
             'sync_state' => 1,          //同步状态改为未同步

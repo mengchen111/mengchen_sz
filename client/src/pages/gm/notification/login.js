@@ -5,78 +5,171 @@
 import Vue from 'vue'
 import DatePicker from '../../../components/DatePicker.vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
-import FilterBar from '../../../components/FilterBar.vue'
+import TableActions from '../../../components/gm/notification/TableActions.vue'
+import DetailRow from '../../../components/gm/notification/DetailRow.vue'
+
+Vue.component('table-actions', TableActions);
+Vue.component('detail-row', DetailRow);
 
 let app = new Vue({
     el: '#app',
     components: {
         DatePicker,
         MyVuetable,
-        FilterBar,
     },
     data: {
         eventHub: new Vue(),
-        createFormData: {
-            priority: 1,
-            interval: null,
+        formData: {
+            order: null,
+            title: null,
+            content: null,
+            pop_frequency: 1,
             start_at: null,
             end_at: null,
-            content: null,
         },
-        priorityType: {         //跑马灯公告优先级
-            1: '高',
-            2: '低'
+        popFrequency: {         //登录公告弹出频率
+            1: '每日首次登录',
+            2: '每次登录'
         },
+        createApi: '/admin/api/game/notification/login',
 
         //vuetable props
-        tableUrl: '/admin/api/game/player',
+        tableUrl: '/admin/api/game/notification/login',
+        detailRowComponent: 'detail-row',
         tableFields: [
             {
-                name: 'rid',
-                title: '玩家ID',
-                sortField: 'rid',
+                name: 'id',
+                title: '公告ID',
+                sortField: 'id',
             },
             {
-                name: 'nick',
-                title: '玩家昵称',
+                name: 'order',
+                title: '序号',
             },
             {
-                name: 'card.count',
-                title: '房卡数量'
+                name: 'title',
+                title: '标题'
             },
             {
-                name: 'gold',
-                title: '金币数量',
-                sortField: 'gold',
+                name: 'content',
+                title: '公告内容',
             },
             {
-                name: 'last_login_time',
-                title: '最后登录时间',
+                name: 'pop_frequency',
+                title: '弹出频率',
+                callback: 'transPopFrequency'
             },
             {
-                name: 'last_offline_time',
-                title: '最后离线时间'
+                name: 'start_at',
+                title: '开始时间',
+                sortField: 'start_at',
+            },
+            {
+                name: 'end_at',
+                title: '结束时间',
+                sortField: 'end_at',
+            },
+            {
+                name: 'switch',
+                title: '开启状态',
+                sortField: 'switch',
+                callback: 'transSwitch'
+            },
+            {
+                name: 'sync_state',
+                title: '同步状态',
+                sortField: 'sync_state',
+                callback: 'transSyncState'
+            },
+            {
+                name: '__component:table-actions',
+                title: '操作',
+                titleClass: 'text-center',
+                dataClass: 'text-center',
             },
         ],
-        tableSortOrder: [    //默认的排序
-            {
-                field: 'rid',
-                sortField: 'rid',
-                direction: 'desc',
+        callbacks: {
+            transSwitch (value) {
+                let switchType = {           //公告开启状态
+                    1: '开启',
+                    2: '关闭'
+                };
+                return switchType[value];
+            },
+            transSyncState (value) {
+                let syncState = {            //公告同步状态
+                    1: '未同步',
+                        2: '同步中',
+                        3: '同步成功',
+                        4: '同步失败',
+                };
+                let state = syncState[value];
+
+                switch (value)
+                {
+                    case 1:
+                        return `<span><b>${state}</b></span>`;
+                    case 2:
+                        return `<span style="color: #00c0ef;"><b>${state}</b></span>`;
+                    case 3:
+                        return `<span style="color: #00a65a;"><b>${state}</b></span>`;
+                    case 4:
+                        return `<span style="color: #dd4b39;"><b>${state}</b></span>`;
+                    default:
+                        return true;
+                }
+            },
+            transPopFrequency (value) {
+                let popFrequency = {         //登录公告弹出频率
+                    1: '每日首次登录',
+                    2: '每日登录'
+                };
+                return popFrequency[value];
             }
-        ],
-        tableTrackBy: 'rid',
-        detailRowComponent: 'detail-row'
+        }
     },
 
     methods: {
-        sendCreatePost () {
-            console.log(this.createFormData)
-        },
+        createNotification () {
+            let _self = this;
 
-        test (value) {
-            console.log(value);
+            axios({
+                method: 'POST',
+                url: this.createApi,
+                data: this.formData,
+                validateStatus: function (status) {
+                    return status == 200 || status == 422;
+                }
+            })
+                .then(function (response) {
+                    if (response.status === 422) {
+                        return alert(JSON.stringify(response.data))
+                    } else {
+                        if (response.data.error) {
+                            return alert(response.data.error)
+                        }
+
+                        alert(response.data.message);
+
+                        //清空表单数据
+                        for (var index of Object.keys(_self.formData)) {
+                            _self.formData[index] = null;
+                        }
+
+                        //添加成功，刷新表格
+                        _self.$root.eventHub.$emit('vuetableRefresh');
+
+                        return true;
+                    }
+                })
+                .catch(function (err) {
+                    alert(err);
+                    console.log(err);
+                });
         }
-
     },
+
+    mounted: function () {
+
+    }
 })

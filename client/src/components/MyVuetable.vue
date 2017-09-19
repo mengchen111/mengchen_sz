@@ -32,16 +32,16 @@
         components: {
             Vuetable,
             VuetablePagination,
-            VuetablePaginationInfo,
+            VuetablePaginationInfo
         },
 
         props: {
             tableUrl: {
-                required: true,
+                required: true
             },
             tableFields: {
                 type: Array,
-                required: true,
+                required: true
             },
             tableSortOrder: {
                 type: Array,
@@ -65,7 +65,13 @@
             tableFilterParams: {
                 default: function () {
                     return {}
-                },
+                }
+            },
+            callbacks: {
+                type: Object,
+                default: function () {
+                    return {}
+                }
             }
         },
 
@@ -95,7 +101,7 @@
                         }
                     }
                 },
-                moreParams: {},
+                moreParams: {}
             }
         },
 
@@ -117,10 +123,19 @@
                     'filter': filterText
                 }
                 Vue.nextTick( () => this.$refs.vuetable.refresh())
+            },
+            onTableRefresh () {
+                Vue.nextTick( () => this.$refs.vuetable.refresh())
             }
         },
 
         mounted: function () {
+            //将传过来的回调函数绑定到组件实例上
+            for (let [key, value] of Object.entries(this.callbacks)) {
+                this[key] = value;
+            }
+
+            this.$root.eventHub.$on('vuetableRefresh', this.onTableRefresh);
             this.$root.eventHub.$on('filterEvent', (eventData) => this.onFilterSet(eventData))
         }
     }
