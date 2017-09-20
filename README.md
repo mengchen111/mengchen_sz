@@ -33,3 +33,72 @@ cd ${code_ducument_root}/client
 npm install     #安装npm包
 npm run build   #编译生成js文件
 ```
+
+## 后端接口列表
+### 管理员接口
+> **前缀/admin/api/**
+
+| URI   | Method  | Description |     
+| ----  | :-----: | ----------: |
+| self/password | PUT | 更新密码 |
+| home/summary | GET | 首页数据总览 |
+| statement/hourly | GET | 每小时报表数据 |
+| statement/daily | GET | 每天报表数据 |
+| statement/monthly | GET | 每月报表数据 |
+| game/player | GET | 玩家列表 |
+| game/notification/marquee | GET | 跑马灯公告列表 |
+| game/notification/marquee | POST | 新建跑马灯公告 |
+| game/notification/marquee/{id} | PUT | 编辑更新跑马灯公告 |
+| game/notification/marquee/{id} | DELETE | 删除跑马灯公告 |
+| game/notification/marquee/enable/{id} | PUT | 启用跑马灯公告 |
+| game/notification/marquee/disable/{id} | PUT | 禁用跑马灯公告 |
+| game/notification/login | GET | 登录公告列表 |
+| game/notification/login | POST | 新建登录公告 |
+| game/notification/login/{id} | PUT | 编辑更新登录公告 |
+| game/notification/login/{id} | DELETE | 删除登录公告 |
+| game/notification/login/enable/{id} | PUT | 启用登录公告 |
+| game/notification/login/disable/{id} | PUT | 禁用登录公告 |
+| game/room/friend | GET | 好友房列表 |
+| game/room/friend/{ownerId} | DELETE | 解散好友房 |
+| game/room/coin | GET | 金币房列表 |
+| game/room/coin/{roomId} | DELETE | 解散金币房 |
+| stock | POST | 申请库存 |
+| stock/list | GET | 库存申请列表 |
+| stock/history | GET | 库存审批记录 |
+| stock/approval/{id} | POST | 审批通过 |
+| stock/decline/{id} | POST | 审批拒绝 |
+| agent | GET | 代理商列表 |
+| agent | POST | 新建代理商 |
+| agent/{id} | DELETE | 删除代理商 |
+| agent/{id} | PUT | 更新代理商信息 |
+| agent/pass/{id} | PUT | 更新代理商密码 |
+| top-up/top-agent | GET | 管理员给代理商充值记录 |
+| top-up/agent | GET | 代理商给下级代理商充值记录 |
+| top-up/player | GET | 给玩家的充值记录 |
+| top-up/agent/{receiver}/{type}/{amount} | POST | 给代理商充值 |
+| top-up/player/{player}/{type}/{amount} | POST | 给玩家充值 |
+| system/log | GET | 系统操作日志记录 |  
+
+### 代理商接口
+> **前缀/agent/api/**  
+
+| URI   | Method  | Description |     
+| ----  | :-----: | ----------: |
+| self/info | PUT | 更新个人信息 |
+| self/password | PUT | 更新个人密码 |
+| self/agent-type | GET | 获取代理商代理级别 |
+| stock | POST | 申请库存 |
+| stock/history | GET | 库存申请记录 |
+| subagent | GET | 子代理商列表 |
+| subagent | POST | 创建子代理商 |
+| subagent/{id} | DELETE | 删除子代理商 |
+| subagent/{id} | PUT | 更新子代理商信息(包括密码) |
+| top-up/child/{receiver}/{type}/{amount} | POST | 给子代理商充值 |
+| top-up/player/{player}/{type}/{amount} | POST | 给玩家充值 |
+| top-up/child | GET | 给自代理商的充值记录 |
+| top-up/player | GET | 给玩家的充值记录 |
+
+### 公共接口
+| URI   | Method  | Description |     
+| ----  | :-----: | ----------: |
+| /api/info | GET | 获取用户个人信息 |
