@@ -31,7 +31,7 @@ class SystemController extends Controller
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '查看系统操作日志', $request->header('User-Agent'));
 
-        //搜索provider
+        //搜索用户账号
         if ($request->has('filter')) {
             $users = array_column(User::where('account', 'like', "%{$request->filter}%")->get()->toArray(), 'id');
             if (empty($users)) {
