@@ -4,6 +4,7 @@
 
 import Vue from 'vue'
 import MyChart from '../components/LineChart.vue'
+import _ from 'lodash'
 
 let app = new Vue({
     el: '#app',
@@ -38,6 +39,34 @@ let app = new Vue({
         },
     },
 
+    methods: {
+        prepareChartOptions (data) {
+            let chartSeriesData = {}
+
+            //生成legend数据，series data的空数组
+            for (let [key, value] of Object.entries(this.keyMap)) {
+                chartSeriesData[key] = []
+                this.chartOptions.legend.data.push(value)
+            }
+
+            //生成x轴的数据，填充series每个数据列的数据
+            this.chartOptions.xAxis.data = Object.keys(data)
+            for (let key in chartSeriesData) {
+                chartSeriesData[key] = _.map(Object.values(data), key)
+            }
+
+            //格式化series选项
+            for (let key in this.keyMap) {
+                this.chartOptions.series.push({
+                    name: this.keyMap[key],
+                    type: 'line',
+                    smooth: true,
+                    data: chartSeriesData[key]
+                })
+            }
+        }
+    },
+
     created: function () {
         let _self = this;
 
@@ -46,9 +75,6 @@ let app = new Vue({
             .then(function (response) {
                 _self.summaryData = response.data
                 _self.loading = false
-            })
-            .catch(function (err) {
-                alert(err)
             })
     },
 
@@ -59,33 +85,13 @@ let app = new Vue({
         axios.get(this.chartDataApi)
             .then(function (response) {
                 let data = response.data
-                let chartSeriesData = {}
 
-                for (let [key, value] of Object.entries(_self.keyMap)) {
-                    chartSeriesData[key] = []
-                    _self.chartOptions.legend.data.push(value)
-                }
+                _self.prepareChartOptions(data)
 
-                for (let date in data) {
-                    _self.chartOptions.xAxis.data.push(date)
-                    for (let key in chartSeriesData) {
-                        chartSeriesData[key].push(data[date][key])
-                    }
-                }
-
-                for (let key in _self.keyMap) {
-                    _self.chartOptions.series.push({
-                        name: _self.keyMap[key],
-                        type: 'line',
-                        smooth: true,
-                        data: chartSeriesData[key]
-                    })
-                }
-
-                //_self.$root.eventHub.$emit('EChartMergeOptions', _self.chartOptions)
-            })
-            .catch(function (err) {
-                alert(err)
+                //触发事件，更新图表数据
+                window.setTimeout(() => {
+                    _self.$root.eventHub.$emit('EChartMergeOptions', _self.chartOptions)
+                }, 1000)
             })
     }
 });
