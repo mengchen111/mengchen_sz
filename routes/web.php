@@ -44,6 +44,7 @@ Route::group([
     Route::get('statement/hourly', 'StatementController@hourly');
     Route::get('statement/daily', 'StatementController@daily');
     Route::get('statement/monthly', 'StatementController@monthly');
+    Route::get('statement/hourly-chart', 'StatementController@hourlyChart');
 
     Route::get('game/player', 'Game\PlayerController@show');
 

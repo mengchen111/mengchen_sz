@@ -48,7 +48,7 @@ class StatementController extends Controller
         OperationLogs::add(Auth::id(), $request->path(), $request->method(),
             '查看每小时流水报表', $request->header('User-Agent'));
 
-        return $result;
+        return $this->paginateData($result);
     }
 
     public function daily(AdminRequest $request)
@@ -60,7 +60,7 @@ class StatementController extends Controller
         OperationLogs::add(Auth::id(), $request->path(), $request->method(),
             '查看每日流水报表', $request->header('User-Agent'));
 
-        return $result;
+        return $this->paginateData($result);
     }
 
     public function monthly(AdminRequest $request)
@@ -72,7 +72,7 @@ class StatementController extends Controller
         OperationLogs::add(Auth::id(), $request->path(), $request->method(),
             '查看每月流水报表', $request->header('User-Agent'));
 
-        return $result;
+        return $this->paginateData($result);
     }
 
     protected function prepareData($dateFormat)
@@ -83,8 +83,7 @@ class StatementController extends Controller
 
         $mergedData = $this->mergeData($agentPurchasedData, $playerConsumedData);   //数据合并
         $sortedData = $this->sortData($mergedData);     //数据排序，以时间倒序
-        $result = $this->fillData($sortedData);         //填充数据，将需要的key补满，数据补0
-        return $this->paginateData($result);            //数据分页
+        return $this->fillData($sortedData);         //填充数据，将需要的key补满，数据补0
     }
 
     protected function fetchAgentPurchasedData($dateFormat)
@@ -184,5 +183,16 @@ class StatementController extends Controller
     {
         $paginator = new Paginator($this->per_page, $this->page);
         return $paginator->paginate($data);
+    }
+
+    //每小时流水的图表数据
+    public function hourlyChart(AdminRequest $request)
+    {
+        $dateFormat = 'Y-m-d H:00';
+
+        $result = $this->prepareData($dateFormat);
+        $result = array_combine(array_column($result, 'date'), $result);
+        ksort($result);
+        return $result;
     }
 }

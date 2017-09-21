@@ -45,6 +45,7 @@ npm run build   #编译生成js文件
 | statement/hourly | GET | 每小时报表数据 |
 | statement/daily | GET | 每天报表数据 |
 | statement/monthly | GET | 每月报表数据 |
+| statement/hourly-chart | GET | 每小时流水图表数据 |
 | game/player | GET | 玩家列表 |
 | game/notification/marquee | GET | 跑马灯公告列表 |
 | game/notification/marquee | POST | 新建跑马灯公告 |
