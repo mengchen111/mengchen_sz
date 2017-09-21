@@ -193,6 +193,10 @@ class StatementController extends Controller
         $result = $this->prepareData($dateFormat);
         $result = array_combine(array_column($result, 'date'), $result);
         ksort($result);
+
+        OperationLogs::add(Auth::id(), $request->path(), $request->method(),
+            '查看每小时流水图表', $request->header('User-Agent'));
+
         return $result;
     }
 }
