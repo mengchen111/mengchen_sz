@@ -3,13 +3,12 @@
 <!--#include virtual="/ssi/header.html"-->
 
 <body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper" id="app">
+<div class="wrapper">
     <!-- Main Header -->
-    <main-header></main-header>
-    <change-pass></change-pass>
+    <!--#include virtual="/ssi/main-header.html"-->
 
     <!-- Main sidebar -->
-    <side-bar></side-bar>
+    <!--#include virtual="/ssi/admin/sidebar.html"-->
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -24,7 +23,7 @@
         </section>
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content" id="app">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-primary">
@@ -120,7 +119,7 @@
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <main-footer></main-footer>
+    <!--#include virtual="/ssi/main-footer.html"-->
 
 </div>
 <!-- ./wrapper -->

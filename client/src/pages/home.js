@@ -4,21 +4,13 @@
 
 import Vue from 'vue'
 import _ from 'lodash'
-import MainHeader from '../components/MainHeader.vue'
-import ChangePass from '../components/ChangePass.vue'
-import SideBar from '../components/SideBar.vue'
 import MyChart from '../components/LineChart.vue'
-import MainFooter from '../components/MainFooter.vue'
 import axios from 'axios'
 
 new Vue({
   el: '#app',
   components: {
-    MainHeader,
-    ChangePass,
-    SideBar,
     MyChart,
-    MainFooter,
   },
   data: {
     eventHub: new Vue(),
