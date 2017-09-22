@@ -27,7 +27,7 @@
       },
     },
     methods: {
-      onClick (event) {
+      onClick () {
         //console.log('detail-row: on-click', event.target)
       }
     },

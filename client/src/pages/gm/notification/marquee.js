@@ -7,11 +7,12 @@ import MyDatePicker from '../../../components/MyDatePicker.vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import TableActions from '../../../components/gm/notification/TableActions.vue'
 import DetailRow from '../../../components/gm/notification/DetailRow.vue'
+import axios from 'axios'
 
 Vue.component('table-actions', TableActions)
 Vue.component('detail-row', DetailRow)
 
-let app = new Vue({
+new Vue({
   el: '#app',
   components: {
     MyDatePicker,
@@ -87,7 +88,7 @@ let app = new Vue({
         let switchType = {           //公告开启状态
           1: '开启',
           2: '关闭',
-        };
+        }
         return switchType[value]
       },
       transSyncState (value) {
@@ -96,7 +97,7 @@ let app = new Vue({
           2: '同步中',
           3: '同步成功',
           4: '同步失败',
-        };
+        }
         let state = syncState[value]
 
         switch (value) {
@@ -145,7 +146,7 @@ let app = new Vue({
             alert(response.data.message)
 
             //清空表单数据
-            for (var index of Object.keys(_self.formData)) {
+            for (let index of Object.keys(_self.formData)) {
               _self.formData[index] = null
             }
 
@@ -155,7 +156,7 @@ let app = new Vue({
         })
         .catch(function (err) {
           alert(err)
-        });
+        })
     },
 
     editNotification () {
@@ -166,7 +167,7 @@ let app = new Vue({
         url: `${this.backendApi}/${this.activatedRow.id}`,
         data: this.activatedRow,
         validateStatus: function (status) {
-          return status == 200 || status == 422;
+          return status == 200 || status == 422
         }
       })
         .then(function (response) {
@@ -180,7 +181,7 @@ let app = new Vue({
             alert(response.data.message)
 
             //清空表单数据
-            for (var index of Object.keys(_self.activatedRow)) {
+            for (let index of Object.keys(_self.activatedRow)) {
               _self.activatedRow[index] = null
             }
 
@@ -199,7 +200,7 @@ let app = new Vue({
 
     this.$root.eventHub.$on('editNotificationEvent', function (data) {
       _self.activatedRow = data
-    });
+    })
     this.$root.eventHub.$on('deleteNotificationEvent', function (data) {
       let uri = `${_self.backendApi}/${data.id}`
       axios.delete(uri, {})
@@ -222,9 +223,9 @@ let app = new Vue({
         .catch(function (err) {
           alert(err)
         })
-    });
+    })
     this.$root.eventHub.$on('disableNotificationEvent', function (data) {
-      let uri = `${_self.disableApi}/${data.id}`;
+      let uri = `${_self.disableApi}/${data.id}`
       axios.put(uri, {})
         .then(function (response) {
           _self.$root.eventHub.$emit('vuetableRefresh')
@@ -233,6 +234,6 @@ let app = new Vue({
         .catch(function (err) {
           alert(err)
         })
-    });
+    })
   }
 })

@@ -14,9 +14,6 @@
   // Import date picker css
   import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css'
 
-  import moment from 'moment'
-  import 'moment/locale/zh-cn'    //引入本地语言
-
   export default {
     props: {
       value: {

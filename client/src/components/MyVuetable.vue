@@ -26,6 +26,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import {Vuetable, VuetablePagination, VuetablePaginationInfo}  from 'vuetable-2'
 
   export default {
@@ -79,7 +80,7 @@
             ascendingIcon: 'glyphicon glyphicon-chevron-up',
             descendingIcon: 'glyphicon glyphicon-chevron-down',
             handleIcon: 'glyphicon glyphicon-menu-hamburger',
-            renderIcon: function (classes, options) {
+            renderIcon: function (classes) {
               return `<span class="${classes.join(' ')}"></span>`
             }
           },
@@ -109,7 +110,7 @@
       onChangePage (page) {
         this.$refs.vuetable.changePage(page)
       },
-      onCellClicked (data, field, event) {
+      onCellClicked (data) {
         if (this.detailRowComponent) {  //只有当传入了detailRow组件才展示detailRow
           this.$refs.vuetable.toggleDetailRow(data[this.tableTrackBy])
         }
@@ -131,7 +132,7 @@
         this[key] = value
       }
 
-      this.$root.eventHub.$on('vuetableRefresh', this.onTableRefresh);
+      this.$root.eventHub.$on('vuetableRefresh', this.onTableRefresh)
       this.$root.eventHub.$on('filterEvent', (eventData) => this.onFilterSet(eventData))
     }
   }

@@ -17,26 +17,44 @@ const config = {
     rules: [
       {
         test: /\.js$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['es2015', 'stage-0']
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['es2015', 'stage-0']
+            },
           },
-        },
+          {
+            loader: 'eslint-loader',
+            options: {
+              configFile: `${dirConfig.rootDir}/eslint.config.js`
+            }
+          }
+        ],
         exclude: /node_modules/
       },
       {
         test: /\.vue$/,
-        use: {
-          loader: 'vue-loader'
-        }
+        use: [
+          {
+            loader: 'vue-loader'
+          },
+          {
+            loader: 'eslint-loader',
+            options: {
+              configFile: `${dirConfig.rootDir}/eslint.config.js`
+            }
+          }
+        ],
+        exclude: /node_modules/
       },
       {
         test: /\.css$/,
         use: [
           {
             loader: "style-loader"
-          }, {
+          },
+          {
             loader: "css-loader",
             options: {
               modules: true
@@ -65,7 +83,7 @@ const config = {
           warnings: false
         },
       }
-    }),
+    })
   ]
 };
 

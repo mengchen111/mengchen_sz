@@ -28,13 +28,13 @@ Vue.component('detail-row', {
     }
   },
   methods: {
-    onClick (event) {
+    onClick () {
       //console.log('my-detail-row: on-click', event.target)
     }
   },
 })
 
-let app = new Vue({
+new Vue({
   el: '#app',
   components: {
     MyVuetable,

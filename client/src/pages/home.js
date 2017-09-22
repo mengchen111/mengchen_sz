@@ -9,8 +9,9 @@ import ChangePass from '../components/ChangePass.vue'
 import SideBar from '../components/SideBar.vue'
 import MyChart from '../components/LineChart.vue'
 import MainFooter from '../components/MainFooter.vue'
+import axios from 'axios'
 
-let app = new Vue({
+new Vue({
   el: '#app',
   components: {
     MainHeader,
@@ -76,7 +77,7 @@ let app = new Vue({
   },
 
   created: function () {
-    let _self = this;
+    let _self = this
 
     //获取汇总数据
     axios.get(this.summaryDataApi)
@@ -102,4 +103,4 @@ let app = new Vue({
         }, 1000)
       })
   }
-});
+})

@@ -5,6 +5,7 @@
 import Vue from 'vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import FilterBar from '../../../components/FilterBar.vue'
+import axios from 'axios'
 
 Vue.component('custom-actions', {
   template: `
@@ -31,18 +32,18 @@ Vue.component('custom-actions', {
   },
   methods: {
     dismissRoom (rowData) {
-      let _self = this;
-      this.loading = true;
+      let _self = this
+      this.loading = true
       axios.delete(`${_self.api}/${rowData.owner}`)
         .then(function (response) {
-          _self.loading = false;
+          _self.loading = false
           return response.data.error ? alert(response.data.error) : alert(response.data.message)
         })
     }
   }
 })
 
-let app = new Vue({
+new Vue({
   el: '#app',
   components: {
     MyVuetable,

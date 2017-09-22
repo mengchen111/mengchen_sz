@@ -23,7 +23,7 @@ class Paginator
     }
 
     //给数组分页
-    public function paginate($data)
+    public function paginate(Array $data)
     {
         $offset = $this->per_page * ($this->page - 1);
         $currentPageData = array_slice($data, $offset, $this->per_page);

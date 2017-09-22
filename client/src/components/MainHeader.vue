@@ -57,6 +57,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     data: function () {
       return {
@@ -74,21 +76,21 @@
       logoutAction () {
         axios.post('/logout')
           .then(function (response) {
-            console.log(response);
+            console.log(response)
             window.location.href = '/'
-          });
+          })
       }
     },
 
     created: function () {
-      let _self = this;
+      let _self = this
 
       axios.get(this.infoApi)
         .then(function (response) {
           _self.adminInfo = response.data
 
           if (_self.adminInfo.inventorys.length > 0) {
-            for (var inventory of _self.adminInfo.inventorys) {
+            for (let inventory of _self.adminInfo.inventorys) {
               switch (inventory.item.name) {
                 case '房卡':
                   _self.inventoryAmount.cards = inventory.stock

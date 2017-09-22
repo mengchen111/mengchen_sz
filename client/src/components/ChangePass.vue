@@ -37,6 +37,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     data: function () {
       return {
@@ -50,8 +52,8 @@
 
     methods: {
       changePasswordAction () {
-        let _self = this;
-        let role = location.href.match(/http:\/\/[\w\.-]+\/([\w-]+\/)/)[1]    //管理员还是代理商
+        let _self = this
+        let role = location.href.match(/http:\/\/[\w.-]+\/([\w-]+\/)/)[1]    //管理员还是代理商
 
         axios({
           method: 'PUT',
@@ -59,7 +61,7 @@
           data: _self.formData,
           validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
             return status == 200 || status == 422
-          }
+          },
         })
           .then(function (response) {
             if (response.status === 422) {
