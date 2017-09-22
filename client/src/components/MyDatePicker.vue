@@ -8,43 +8,43 @@
 </template>
 
 <script>
-    // Import this component
-    import datePicker from 'vue-bootstrap-datetimepicker'
+  // Import this component
+  import datePicker from 'vue-bootstrap-datetimepicker'
 
-    // Import date picker css
-    import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css'
+  // Import date picker css
+  import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css'
 
-    import moment from 'moment'
-    import 'moment/locale/zh-cn'    //引入本地语言
+  import moment from 'moment'
+  import 'moment/locale/zh-cn'    //引入本地语言
 
-    export default {
-        props: {
-            value: {
-                default: null,
-            },
-            placeholder: {
-                default: '',
-            }
+  export default {
+    props: {
+      value: {
+        default: null,
+      },
+      placeholder: {
+        default: '',
+      }
+    },
+
+    data () {
+      return {
+        datePickerConf: {       //datePicker配置项
+          locale: 'zh_cn',
+          format: 'YYYY-MM-DD HH:mm:ss',
         },
+      }
+    },
 
-        data () {
-            return {
-                datePickerConf: {       //datePicker配置项
-                    locale: 'zh_cn',
-                    format: 'YYYY-MM-DD HH:mm:ss',
-                },
-            }
-        },
+    components: {
+      datePicker
+    },
 
-        components: {
-            datePicker
-        },
-
-        methods: {
-            updateDate: function (value) {
-                //如果value为空的话不触发事件，不然value.format报错
-                return value ? this.$emit('input', value.format('YYYY-MM-DD HH:mm:ss')) : null;
-            }
-        }
+    methods: {
+      updateDate: function (value) {
+        //如果value为空的话不触发事件，不然value.format报错
+        return value ? this.$emit('input', value.format('YYYY-MM-DD HH:mm:ss')) : null
+      }
     }
+  }
 </script>

@@ -61,7 +61,9 @@ const config = {
     }),
     new UglifyJSPlugin({
       uglifyOptions: {
-        warnings: false
+        compress: {
+          warnings: false
+        },
       }
     }),
   ]

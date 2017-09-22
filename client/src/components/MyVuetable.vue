@@ -26,113 +26,113 @@
 </template>
 
 <script>
-    import { Vuetable, VuetablePagination, VuetablePaginationInfo}  from 'vuetable-2'
+  import {Vuetable, VuetablePagination, VuetablePaginationInfo}  from 'vuetable-2'
 
-    export default {
-        components: {
-            Vuetable,
-            VuetablePagination,
-            VuetablePaginationInfo
-        },
+  export default {
+    components: {
+      Vuetable,
+      VuetablePagination,
+      VuetablePaginationInfo
+    },
 
-        props: {
-            tableUrl: {
-                required: true
-            },
-            tableFields: {
-                type: Array,
-                required: true
-            },
-            tableSortOrder: {
-                type: Array,
-                default: function () {
-                    return [
-                        {
-                            field: 'id',
-                            sortField: 'id',
-                            direction: 'desc',
-                        }
-                    ]
-                }
-            },
-            detailRowComponent: {
-                type: String,
-                default: null,
-            },
-            tableTrackBy: {
-                default: 'id'
-            },
-            tableFilterParams: {
-                default: () => ({})
-            },
-            callbacks: {
-                type: Object,
-                default: () => ({})
+    props: {
+      tableUrl: {
+        required: true
+      },
+      tableFields: {
+        type: Array,
+        required: true
+      },
+      tableSortOrder: {
+        type: Array,
+        default: function () {
+          return [
+            {
+              field: 'id',
+              sortField: 'id',
+              direction: 'desc',
             }
-        },
-
-        data: function () {
-            return {
-                css: {
-                    table: {
-                        tableClass: 'table table-striped table-bordered',
-                        ascendingIcon: 'glyphicon glyphicon-chevron-up',
-                        descendingIcon: 'glyphicon glyphicon-chevron-down',
-                        handleIcon: 'glyphicon glyphicon-menu-hamburger',
-                        renderIcon: function(classes, options) {
-                            return `<span class="${classes.join(' ')}"></span>`
-                        }
-                    },
-                    pagination: {
-                        wrapperClass: "pagination pull-right",
-                        activeClass: "btn-primary",
-                        disabledClass: "disabled",
-                        pageClass: "btn btn-border",
-                        linkClass: "btn btn-border",
-                        icons: {
-                            first: "",
-                            prev: "",
-                            next: "",
-                            last: ""
-                        }
-                    }
-                },
-                moreParams: {}
-            }
-        },
-
-        methods: {
-            onPaginationData (paginationData) {
-                this.$refs['pagination'].setPaginationData(paginationData)
-                this.$refs.paginationInfo.setPaginationData(paginationData)
-            },
-            onChangePage (page) {
-                this.$refs.vuetable.changePage(page)
-            },
-            onCellClicked (data, field, event) {
-                if (this.detailRowComponent) {  //只有当传入了detailRow组件才展示detailRow
-                    this.$refs.vuetable.toggleDetailRow(data[this.tableTrackBy])
-                }
-            },
-            onFilterSet (filterText) {
-                this.moreParams = {
-                    'filter': filterText
-                }
-                Vue.nextTick( () => this.$refs.vuetable.refresh())
-            },
-            onTableRefresh () {
-                Vue.nextTick( () => this.$refs.vuetable.refresh())
-            }
-        },
-
-        mounted: function () {
-            //将传过来的回调函数绑定到组件实例上
-            for (let [key, value] of Object.entries(this.callbacks)) {
-                this[key] = value
-            }
-
-            this.$root.eventHub.$on('vuetableRefresh', this.onTableRefresh);
-            this.$root.eventHub.$on('filterEvent', (eventData) => this.onFilterSet(eventData))
+          ]
         }
+      },
+      detailRowComponent: {
+        type: String,
+        default: null,
+      },
+      tableTrackBy: {
+        default: 'id'
+      },
+      tableFilterParams: {
+        default: () => ({})
+      },
+      callbacks: {
+        type: Object,
+        default: () => ({})
+      }
+    },
+
+    data: function () {
+      return {
+        css: {
+          table: {
+            tableClass: 'table table-striped table-bordered',
+            ascendingIcon: 'glyphicon glyphicon-chevron-up',
+            descendingIcon: 'glyphicon glyphicon-chevron-down',
+            handleIcon: 'glyphicon glyphicon-menu-hamburger',
+            renderIcon: function (classes, options) {
+              return `<span class="${classes.join(' ')}"></span>`
+            }
+          },
+          pagination: {
+            wrapperClass: "pagination pull-right",
+            activeClass: "btn-primary",
+            disabledClass: "disabled",
+            pageClass: "btn btn-border",
+            linkClass: "btn btn-border",
+            icons: {
+              first: "",
+              prev: "",
+              next: "",
+              last: ""
+            }
+          }
+        },
+        moreParams: {}
+      }
+    },
+
+    methods: {
+      onPaginationData (paginationData) {
+        this.$refs['pagination'].setPaginationData(paginationData)
+        this.$refs.paginationInfo.setPaginationData(paginationData)
+      },
+      onChangePage (page) {
+        this.$refs.vuetable.changePage(page)
+      },
+      onCellClicked (data, field, event) {
+        if (this.detailRowComponent) {  //只有当传入了detailRow组件才展示detailRow
+          this.$refs.vuetable.toggleDetailRow(data[this.tableTrackBy])
+        }
+      },
+      onFilterSet (filterText) {
+        this.moreParams = {
+          'filter': filterText
+        }
+        Vue.nextTick(() => this.$refs.vuetable.refresh())
+      },
+      onTableRefresh () {
+        Vue.nextTick(() => this.$refs.vuetable.refresh())
+      }
+    },
+
+    mounted: function () {
+      //将传过来的回调函数绑定到组件实例上
+      for (let [key, value] of Object.entries(this.callbacks)) {
+        this[key] = value
+      }
+
+      this.$root.eventHub.$on('vuetableRefresh', this.onTableRefresh);
+      this.$root.eventHub.$on('filterEvent', (eventData) => this.onFilterSet(eventData))
     }
+  }
 </script>

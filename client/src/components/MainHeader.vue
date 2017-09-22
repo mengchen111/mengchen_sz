@@ -42,7 +42,8 @@
                                     </button>
                                 </div>
                                 <div class="pull-right">
-                                    <form id="logout-form" action="/logout" method="POST" @submit.prevent="logoutAction">
+                                    <form id="logout-form" action="/logout" method="POST"
+                                          @submit.prevent="logoutAction">
                                         <button type="submit" class="btn btn-default btn-flat">退出登录</button>
                                     </form>
                                 </div>
@@ -56,51 +57,51 @@
 </template>
 
 <script>
-    export default {
-        data: function () {
-            return {
-                adminInfo: {            //当前登录的管理员信息
-                    account: 'admin',
-                },
-                infoApi: '/api/info',
-                inventoryAmount: {
-                    cards: 0,
-                    coins: 0,
-                }
+  export default {
+    data: function () {
+      return {
+        adminInfo: {            //当前登录的管理员信息
+          account: 'admin',
+        },
+        infoApi: '/api/info',
+        inventoryAmount: {
+          cards: 0,
+          coins: 0,
+        }
+      }
+    },
+    methods: {
+      logoutAction () {
+        axios.post('/logout')
+          .then(function (response) {
+            console.log(response);
+            window.location.href = '/'
+          });
+      }
+    },
+
+    created: function () {
+      let _self = this;
+
+      axios.get(this.infoApi)
+        .then(function (response) {
+          _self.adminInfo = response.data
+
+          if (_self.adminInfo.inventorys.length > 0) {
+            for (var inventory of _self.adminInfo.inventorys) {
+              switch (inventory.item.name) {
+                case '房卡':
+                  _self.inventoryAmount.cards = inventory.stock
+                  break
+                case '金币':
+                  _self.inventoryAmount.coins = inventory.stock
+                  break
+                default:
+                  break
+              }
             }
-        },
-        methods: {
-            logoutAction () {
-                axios.post('/logout')
-                    .then(function (response) {
-                        console.log(response);
-                        window.location.href = '/'
-                    });
-            }
-        },
-
-        created: function () {
-            let _self = this;
-
-            axios.get(this.infoApi)
-                .then(function (response) {
-                    _self.adminInfo = response.data
-
-                    if (_self.adminInfo.inventorys.length > 0) {
-                        for (var inventory of _self.adminInfo.inventorys) {
-                            switch(inventory.item.name) {
-                                case '房卡':
-                                    _self.inventoryAmount.cards = inventory.stock
-                                    break
-                                case '金币':
-                                    _self.inventoryAmount.coins = inventory.stock
-                                    break
-                                default:
-                                    break
-                            }
-                        }
-                    }
-                })
-        },
-    }
+          }
+        })
+    },
+  }
 </script>

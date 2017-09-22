@@ -8,7 +8,8 @@
                     <h3 class="text-center">修改密码</h3>
                 </div>
                 <div class="modal-body">
-                    <form role="form" class="form-group" method="POST" action="#" @submit.prevent="changePasswordAction">
+                    <form role="form" class="form-group" method="POST" action="#"
+                          @submit.prevent="changePasswordAction">
                         <div class="form-group has-feedback">
                             <input name="password" type="password" class="form-control" required
                                    placeholder="旧密码" v-model.trim="formData.password">
@@ -36,44 +37,44 @@
 </template>
 
 <script>
-    export default {
-        data: function () {
-            return {
-                formData: {
-                    password: '',
-                    new_password: '',
-                    new_password_confirmation: '',
-                },
-            }
+  export default {
+    data: function () {
+      return {
+        formData: {
+          password: '',
+          new_password: '',
+          new_password_confirmation: '',
         },
+      }
+    },
 
-        methods: {
-            changePasswordAction () {
-                let _self = this;
-                let role = location.href.match(/http:\/\/[\w\.-]+\/([\w-]+\/)/)[1];   //管理员还是代理商
+    methods: {
+      changePasswordAction () {
+        let _self = this;
+        let role = location.href.match(/http:\/\/[\w\.-]+\/([\w-]+\/)/)[1]    //管理员还是代理商
 
-                axios({
-                    method: 'PUT',
-                    url: `/${role}api/self/password`,
-                    data: _self.formData,
-                    validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
-                        return status == 200 || status == 422;
-                    }
-                })
-                    .then(function (response) {
-                        if (response.status === 422) {
-                            return alert(JSON.stringify(response.data));
-                        }
-                        response.data.error ? alert(response.data.error) : alert(response.data.message);
-                        for (let index of Object.keys(_self.formData)) {
-                            _self.formData[index] = '';
-                        }
-                        return true;
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                    });
-            },
-        }
+        axios({
+          method: 'PUT',
+          url: `/${role}api/self/password`,
+          data: _self.formData,
+          validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
+            return status == 200 || status == 422
+          }
+        })
+          .then(function (response) {
+            if (response.status === 422) {
+              return alert(JSON.stringify(response.data))
+            }
+            response.data.error ? alert(response.data.error) : alert(response.data.message)
+            for (let index of Object.keys(_self.formData)) {
+              _self.formData[index] = ''
+            }
+            return true
+          })
+          .catch(function (err) {
+            alert(err)
+          })
+      },
     }
+  }
 </script>

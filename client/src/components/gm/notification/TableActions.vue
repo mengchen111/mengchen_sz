@@ -16,29 +16,29 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            rowData: {
-                type: Object,
-                required: true
-            },
-            rowIndex: {
-                type: Number
-            }
-        },
-        methods: {
-            enableNotificationAction (data) {
-                return this.$root.eventHub.$emit('enableNotificationEvent', data);
-            },
-            disableNotificationAction (data) {
-                return this.$root.eventHub.$emit('disableNotificationEvent', data);
-            },
-            editNotificationAction (data) {
-                return this.$root.eventHub.$emit('editNotificationEvent', data);
-            },
-            deleteNotificationAction (data) {
-                return this.$root.eventHub.$emit('deleteNotificationEvent', data);
-            }
-        }
+  export default {
+    props: {
+      rowData: {
+        type: Object,
+        required: true
+      },
+      rowIndex: {
+        type: Number
+      }
+    },
+    methods: {
+      enableNotificationAction (data) {
+        return this.$root.eventHub.$emit('enableNotificationEvent', data)
+      },
+      disableNotificationAction (data) {
+        return this.$root.eventHub.$emit('disableNotificationEvent', data)
+      },
+      editNotificationAction (data) {
+        return this.$root.eventHub.$emit('editNotificationEvent', data)
+      },
+      deleteNotificationAction (data) {
+        return this.$root.eventHub.$emit('deleteNotificationEvent', data)
+      }
     }
+  }
 </script>

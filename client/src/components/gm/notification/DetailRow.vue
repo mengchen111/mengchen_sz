@@ -16,20 +16,20 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            rowData: {
-                type: Object,
-                required: true
-            },
-            rowIndex: {
-                type: Number
-            },
-        },
-        methods: {
-            onClick (event) {
-                //console.log('detail-row: on-click', event.target)
-            }
-        },
-    }
+  export default {
+    props: {
+      rowData: {
+        type: Object,
+        required: true
+      },
+      rowIndex: {
+        type: Number
+      },
+    },
+    methods: {
+      onClick (event) {
+        //console.log('detail-row: on-click', event.target)
+      }
+    },
+  }
 </script>
