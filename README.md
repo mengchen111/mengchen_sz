@@ -20,6 +20,12 @@ redirect_stderr=true
 stdout_logfile=/data/log/supervisor/%(program_name).log
 stdout_logfile_maxbytes=100MB
 stdout_logfile_backups=10
+```  
+- composer  
+
+```
+cd ${code_ducument_root}
+composer install 
 ```
 - npm  
 
