@@ -29,7 +29,7 @@ class StockController extends Controller
     {
         $this->per_page = $request->per_page ?: $this->per_page;
         $this->order = $request->sort ? explode('|', $request->sort) : $this->order;
-        $this->canNotify = env('EMAIL_NOTIFICATION', false);
+        $this->canNotify = config('custom.email_notification');
     }
 
     /**

@@ -26,7 +26,7 @@ class FriendRoomController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->apiAddress = env('GAME_SERVER_API_ADDRESS') . '?action=FriendRoom.forceClearRoom';
+        $this->apiAddress = config('custom.game_server_api_address') . '?action=FriendRoom.forceClearRoom';
         $this->per_page = $request->per_page ?: $this->per_page;
         $this->order = $request->sort ? explode('|', $request->sort) : $this->order;
     }

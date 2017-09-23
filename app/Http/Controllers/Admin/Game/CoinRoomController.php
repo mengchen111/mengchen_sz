@@ -29,8 +29,8 @@ class CoinRoomController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->coinRoomListApi = env('GAME_SERVER_API_ADDRESS') . '?action=Room.getRooms';
-        $this->coinRoomDismissApi = env('GAME_SERVER_API_ADDRESS') . '?action=Room.dismissRoomById';
+        $this->coinRoomListApi = config('custom.game_server_api_address') . '?action=Room.getRooms';
+        $this->coinRoomDismissApi = config('custom.game_server_api_address') . '?action=Room.dismissRoomById';
         $this->per_page = $request->per_page ?: $this->per_page;
         $this->page = $request->page ?: $this->page;
     }
