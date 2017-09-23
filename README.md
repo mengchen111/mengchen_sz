@@ -109,3 +109,13 @@ npm run build   #编译生成js文件
 | URI   | Method  | Description |     
 | ----  | :-----: | ----------: |
 | /api/info | GET | 获取用户个人信息 |
+
+## 游戏服接口
+> **前缀: ?action={Action}**
+
+| Action | Method | Description |
+| ----  | :-----: | ----------: |
+| Room.getRooms | GET | 获取金币房列表 |
+| Room.dismissRoomById| POST | 解散金币房 |
+| FriendRoom.forceClearRoom | POST | 解散好友房 |
+| notice.systemSendNOticeToAll | POST | 同步登录和跑马灯公告 |
