@@ -8,12 +8,12 @@ import axios from 'axios'
 
 Vue.component('custom-actions', {
   template: `
-        <div class="row">
-            <button class="btn btn-small btn-danger btn-flat" @click="dismissRoom(rowData)">
-                解散房间
-            </button>
-            <div class="overlay" v-show="loading"><i class="fa fa-refresh fa-spin"></i></div>
-        </div>`,
+    <div class="row">
+        <button class="btn btn-small btn-danger btn-flat" @click="dismissRoom(rowData)">
+            解散房间
+        </button>
+        <div class="overlay" v-show="loading"><i class="fa fa-refresh fa-spin"></i></div>
+    </div>`,
   props: {
     rowData: {
       type: Object,
@@ -66,4 +66,8 @@ new Vue({
       },
     ],
   },
+
+  mounted: function () {
+    this.$root.eventHub.$on('vuetableDataError', (data) => alert(data.error))
+  }
 })

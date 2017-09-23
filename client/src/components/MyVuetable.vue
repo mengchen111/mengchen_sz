@@ -104,6 +104,9 @@
 
     methods: {
       onPaginationData (paginationData) {
+        if (paginationData.error) {     //如果后端接口返回了错误信息，则触发事件
+          this.$root.eventHub.$emit('vuetableDataError', paginationData)
+        }
         this.$refs['pagination'].setPaginationData(paginationData)
         this.$refs.paginationInfo.setPaginationData(paginationData)
       },
