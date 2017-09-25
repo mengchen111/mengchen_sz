@@ -25,7 +25,7 @@
             text: this.chartOptions.title.text,
           },
           tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
           },
           legend: {
             data: this.chartOptions.legend.data,
@@ -33,8 +33,8 @@
           toolbox: {
             show: true,
             feature: {
-              saveAsImage: {show: true}
-            }
+              saveAsImage: {show: true},
+            },
           },
           xAxis: {
             type: 'category',
@@ -42,22 +42,22 @@
             data: this.chartOptions.xAxis.data,
           },
           yAxis: {
-            type: 'value'
+            type: 'value',
           },
           series: this.chartOptions.series,
-        }
+        },
       }
     },
 
     methods: {
       onEChartMergeOptions (options) {
         this.$refs.echart.mergeOptions(options)
-      }
+      },
     },
 
     mounted: function () {
       this.$root.eventHub.$on('EChartMergeOptions', this.onEChartMergeOptions)
-    }
+    },
   }
 </script>
 

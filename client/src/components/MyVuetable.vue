@@ -33,16 +33,16 @@
     components: {
       Vuetable,
       VuetablePagination,
-      VuetablePaginationInfo
+      VuetablePaginationInfo,
     },
 
     props: {
       tableUrl: {
-        required: true
+        required: true,
       },
       tableFields: {
         type: Array,
-        required: true
+        required: true,
       },
       tableSortOrder: {
         type: Array,
@@ -52,24 +52,24 @@
               field: 'id',
               sortField: 'id',
               direction: 'desc',
-            }
+            },
           ]
-        }
+        },
       },
       detailRowComponent: {
         type: String,
         default: null,
       },
       tableTrackBy: {
-        default: 'id'
+        default: 'id',
       },
       tableFilterParams: {
-        default: () => ({})
+        default: () => ({}),
       },
       callbacks: {
         type: Object,
-        default: () => ({})
-      }
+        default: () => ({}),
+      },
     },
 
     data: function () {
@@ -82,7 +82,7 @@
             handleIcon: 'glyphicon glyphicon-menu-hamburger',
             renderIcon: function (classes) {
               return `<span class="${classes.join(' ')}"></span>`
-            }
+            },
           },
           pagination: {
             wrapperClass: "pagination pull-right",
@@ -94,11 +94,11 @@
               first: "",
               prev: "",
               next: "",
-              last: ""
-            }
-          }
+              last: "",
+            },
+          },
         },
-        moreParams: {}
+        moreParams: {},
       }
     },
 
@@ -120,13 +120,13 @@
       },
       onFilterSet (filterText) {
         this.moreParams = {
-          'filter': filterText
+          'filter': filterText,
         }
         Vue.nextTick(() => this.$refs.vuetable.refresh())
       },
       onTableRefresh () {
         Vue.nextTick(() => this.$refs.vuetable.refresh())
-      }
+      },
     },
 
     mounted: function () {
@@ -137,6 +137,6 @@
 
       this.$root.eventHub.$on('vuetableRefresh', this.onTableRefresh)
       this.$root.eventHub.$on('filterEvent', (eventData) => this.onFilterSet(eventData))
-    }
+    },
   }
 </script>

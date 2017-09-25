@@ -25,12 +25,12 @@ Vue.component('detail-row', {
     },
     rowIndex: {
       type: Number,
-    }
+    },
   },
   methods: {
     onClick () {
       //console.log('my-detail-row: on-click', event.target)
-    }
+    },
   },
 })
 
@@ -71,8 +71,8 @@ new Vue({
       {
         name: 'created_at',
         title: '时间',
-      }
+      },
     ],
     detailRowComponent: 'detail-row',
-  }
+  },
 })

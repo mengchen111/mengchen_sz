@@ -20,16 +20,16 @@
     props: {
       rowData: {
         type: Object,
-        required: true
+        required: true,
       },
       rowIndex: {
-        type: Number
+        type: Number,
       },
     },
     methods: {
       onClick () {
         //console.log('detail-row: on-click', event.target)
-      }
+      },
     },
   }
 </script>

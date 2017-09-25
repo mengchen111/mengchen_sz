@@ -24,15 +24,15 @@ new Vue({
       },
       {
         name: 'coin_purchased',
-        title: '金币购买量'
+        title: '金币购买量',
       },
       {
         name: 'card_consumed',
-        title: '房卡消耗量'
+        title: '房卡消耗量',
       },
       {
         name: 'coin_consumed',
-        title: '金币消耗量'
+        title: '金币消耗量',
       },
     ],
     tableSortOrder: [    //默认的排序
@@ -40,7 +40,7 @@ new Vue({
         field: 'date',
         sortField: 'date',
         direction: 'desc',
-      }
+      },
     ],
   },
 })

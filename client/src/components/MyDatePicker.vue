@@ -21,7 +21,7 @@
       },
       placeholder: {
         default: '',
-      }
+      },
     },
 
     data () {
@@ -34,14 +34,14 @@
     },
 
     components: {
-      datePicker
+      datePicker,
     },
 
     methods: {
       updateDate: function (value) {
         //如果value为空的话不触发事件，不然value.format报错
         return value ? this.$emit('input', value.format('YYYY-MM-DD HH:mm:ss')) : null
-      }
-    }
+      },
+    },
   }
 </script>

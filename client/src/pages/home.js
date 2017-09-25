@@ -62,10 +62,10 @@ new Vue({
           name: this.keyMap[key],
           type: 'line',
           smooth: true,
-          data: chartSeriesData[key]
+          data: chartSeriesData[key],
         })
       }
-    }
+    },
   },
 
   created: function () {
@@ -94,5 +94,5 @@ new Vue({
           _self.$root.eventHub.$emit('EChartMergeOptions', _self.chartOptions)
         }, 1000)
       })
-  }
+  },
 })

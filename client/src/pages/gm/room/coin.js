@@ -17,11 +17,11 @@ Vue.component('custom-actions', {
   props: {
     rowData: {
       type: Object,
-      required: true
+      required: true,
     },
     rowIndex: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   data: function () {
     return {
@@ -37,8 +37,8 @@ Vue.component('custom-actions', {
           _self.loading = false
           return response.data.error ? alert(response.data.error) : alert(response.data.message)
         })
-    }
-  }
+    },
+  },
 })
 
 new Vue({
@@ -69,5 +69,5 @@ new Vue({
 
   mounted: function () {
     this.$root.eventHub.$on('vuetableDataError', (data) => alert(data.error))
-  }
+  },
 })

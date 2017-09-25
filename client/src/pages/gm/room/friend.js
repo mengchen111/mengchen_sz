@@ -18,16 +18,16 @@ Vue.component('custom-actions', {
   props: {
     rowData: {
       type: Object,
-      required: true
+      required: true,
     },
     rowIndex: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   data: function () {
     return {
       loading: false,     //loading遮罩层
-      api: '/admin/api/game/room/friend'
+      api: '/admin/api/game/room/friend',
     }
   },
   methods: {
@@ -39,8 +39,8 @@ Vue.component('custom-actions', {
           _self.loading = false
           return response.data.error ? alert(response.data.error) : alert(response.data.message)
         })
-    }
-  }
+    },
+  },
 })
 
 new Vue({
@@ -56,26 +56,26 @@ new Vue({
       {
         name: 'id',
         title: '房间ID',
-        sortField: 'id'
+        sortField: 'id',
       },
       {
         name: 'owner',
         title: '房主ID',
-        sortField: 'owner'
+        sortField: 'owner',
       },
       {
         name: 'open_id',
-        title: '用户账号'
+        title: '用户账号',
       },
       {
         name: 'create_time',
-        title: '创建时间'
+        title: '创建时间',
       },
       {
         name: '__component:custom-actions',
         title: '操作',
         titleClass: 'text-center',
-        dataClass: 'text-center'
+        dataClass: 'text-center',
       },
     ],
     tableSortOrder: [    //默认的排序
@@ -83,7 +83,7 @@ new Vue({
         field: 'owner',
         sortField: 'owner',
         direction: 'desc',
-      }
+      },
     ],
   },
 })

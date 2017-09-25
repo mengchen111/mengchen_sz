@@ -128,8 +128,8 @@ new Vue({
           2: '每日登录',
         }
         return popFrequency[value]
-      }
-    }
+      },
+    },
   },
 
   methods: {
@@ -142,7 +142,7 @@ new Vue({
         data: this.formData,
         validateStatus: function (status) {
           return status == 200 || status == 422
-        }
+        },
       })
         .then(function (response) {
           if (response.status === 422) {
@@ -177,7 +177,7 @@ new Vue({
         data: this.activatedRow,
         validateStatus: function (status) {
           return status == 200 || status == 422
-        }
+        },
       })
         .then(function (response) {
           if (response.status === 422) {
@@ -201,7 +201,7 @@ new Vue({
         .catch(function (err) {
           alert(err)
         })
-    }
+    },
   },
 
   mounted: function () {
@@ -244,5 +244,5 @@ new Vue({
           alert(err)
         })
     })
-  }
+  },
 })

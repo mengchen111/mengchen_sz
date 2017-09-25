@@ -18,11 +18,11 @@
       placeholder: {
         type: String,
         default: '',
-      }
+      },
     },
     data: function () {
       return {
-        filterText: ''
+        filterText: '',
       }
     },
 
@@ -30,6 +30,6 @@
       doFilter () {
         this.$root.eventHub.$emit('filterEvent', this.filterText)
       },
-    }
+    },
   }
 </script>

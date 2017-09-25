@@ -30,7 +30,7 @@ new Vue({
     },
     priorityType: {         //跑马灯公告优先级
       1: '高',
-      2: '低'
+      2: '低',
     },
     backendApi: '/admin/api/game/notification/marquee',
     enableApi: '/admin/api/game/notification/marquee/enable',
@@ -68,13 +68,13 @@ new Vue({
         name: 'switch',
         title: '开启状态',
         sortField: 'switch',
-        callback: 'transSwitch'
+        callback: 'transSwitch',
       },
       {
         name: 'sync_state',
         title: '同步状态',
         sortField: 'sync_state',
-        callback: 'transSyncState'
+        callback: 'transSyncState',
       },
       {
         name: '__component:table-actions',
@@ -116,11 +116,11 @@ new Vue({
       transPriority (value) {
         let priorityType = {
           1: '高',
-          2: '低'
+          2: '低',
         }
         return priorityType[value]
       },
-    }
+    },
   },
 
   methods: {
@@ -133,7 +133,7 @@ new Vue({
         data: this.formData,
         validateStatus: function (status) {
           return status == 200 || status == 422
-        }
+        },
       })
         .then(function (response) {
           if (response.status === 422) {
@@ -168,7 +168,7 @@ new Vue({
         data: this.activatedRow,
         validateStatus: function (status) {
           return status == 200 || status == 422
-        }
+        },
       })
         .then(function (response) {
           if (response.status === 422) {
@@ -192,7 +192,7 @@ new Vue({
         .catch(function (err) {
           alert(err)
         })
-    }
+    },
   },
 
   mounted: function () {
@@ -235,5 +235,5 @@ new Vue({
           alert(err)
         })
     })
-  }
+  },
 })

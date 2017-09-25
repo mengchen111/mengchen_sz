@@ -20,11 +20,11 @@
     props: {
       rowData: {
         type: Object,
-        required: true
+        required: true,
       },
       rowIndex: {
-        type: Number
-      }
+        type: Number,
+      },
     },
     methods: {
       enableNotificationAction (data) {
@@ -38,7 +38,7 @@
       },
       deleteNotificationAction (data) {
         return this.$root.eventHub.$emit('deleteNotificationEvent', data)
-      }
-    }
+      },
+    },
   }
 </script>
