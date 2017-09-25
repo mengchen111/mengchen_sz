@@ -16,6 +16,7 @@ use GuzzleHttp;
 use App\Services\Paginator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\OperationLogs;
+use App\Services\GameServer;
 
 class CoinRoomController extends Controller
 {
@@ -29,6 +30,7 @@ class CoinRoomController extends Controller
 
     public function __construct(Request $request)
     {
+        //$this->coinRoomListApi = 'www.hardyliu.me';
         $this->coinRoomListApi = config('custom.game_server_api_address') . '?action=Room.getRooms';
         $this->coinRoomDismissApi = config('custom.game_server_api_address') . '?action=Room.dismissRoomById';
         $this->per_page = $request->per_page ?: $this->per_page;
@@ -48,21 +50,15 @@ class CoinRoomController extends Controller
 
     protected function getCoinRoomList($apiAddress)
     {
-        $client = new GuzzleHttp\Client($this->guzzleClientOptions);
+        $gameServer = new GameServer($apiAddress);
 
         try {
-            $res = $client->request('GET', $apiAddress)
-                ->getBody()
-                ->getContents();
-        } catch (\Exception $e) {
-            throw new CustomException('调用游戏服接口失败：' . $e->getMessage());
+            $data = $gameServer->request('GET');
+        } catch (\Exception $exception) {
+            throw new CustomException($exception->getMessage());
         }
 
-        if (empty(json_decode($res)->result)) {
-            throw new CustomException('调用接口成功，但是游戏服返回的结果错误：' . json_encode($res));
-        }
-
-        return json_decode($res, true)['data'];     //返回数组
+        return $data['data'];
     }
 
     //解散金币房
@@ -84,23 +80,15 @@ class CoinRoomController extends Controller
 
     protected function sendDismissRequest($apiAddress, $params)
     {
-        $client = new GuzzleHttp\Client($this->guzzleClientOptions);
+        $gameServer = new GameServer($apiAddress);
 
         try {
-            $res = $client->request('POST', $apiAddress, [
-                    'form_params' => $params,
-                ])
-                ->getBody()
-                ->getContents();
-        } catch (\Exception $e) {
-            throw new CustomException('调用游戏服接口失败：' . $e->getMessage());
+            $data = $gameServer->request('POST', $params);
+        } catch (\Exception $exception) {
+            throw new CustomException($exception->getMessage());
         }
 
-        if (empty(json_decode($res)->result)) {
-            throw new CustomException('调用接口成功，但是游戏服返回的结果错误：' . $res);
-        }
-
-        return json_decode($res)->resultMsg;
+        return $data['resultMsg'];
     }
 
     protected function paginateData($data)

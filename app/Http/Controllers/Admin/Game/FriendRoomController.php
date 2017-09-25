@@ -16,6 +16,7 @@ use App\Http\Requests\AdminRequest;
 use GuzzleHttp;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\Auth;
+use App\Services\GameServer;
 
 class FriendRoomController extends Controller
 {
@@ -46,20 +47,12 @@ class FriendRoomController extends Controller
     //解散好友房
     public function dismiss(AdminRequest $request, $ownerId)
     {
-        $client = new GuzzleHttp\Client([
-            'timeout' => 3
-        ]);
+        $gameServer = new GameServer("{$this->apiAddress}&id={$ownerId}");
 
         try {
-            $res = $client->request('GET', "{$this->apiAddress}&id={$ownerId}")
-                            ->getBody()
-                            ->getContents();
-        } catch (\Exception $e) {
-            throw new CustomException('调用游戏服接口失败：' . $e->getMessage());
-        }
-
-        if (empty(json_decode($res)->result)) {
-            throw new CustomException('调用接口成功，但是游戏服返回的结果错误：' . $res);
+            $data = $gameServer->request('GET');
+        } catch (\Exception $exception) {
+            throw new CustomException($exception->getMessage());
         }
 
         OperationLogs::add(Auth::id(), $request->path(), $request->method(), '解散好友房',
