@@ -36,6 +36,7 @@ yum -y install nodejs
 cd ${code_ducument_root}
 git pull                #获取最新代码
 composer install        #安装laravle依赖
+chmod +x vendor/phpunit/phpunit/phpunit #添加执行权限
 ./vendor/bin/phpunit    #代码测试
 
 cd client       #进入js开发目录
