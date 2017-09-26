@@ -3,6 +3,7 @@
 - php >= 5.6  
 - nginx打开ssi  
 - redis >= 2.8
+- composer  
 - supervisor  
 
 ```
@@ -21,23 +22,50 @@ stdout_logfile=/data/log/supervisor/%(program_name).log
 stdout_logfile_maxbytes=100MB
 stdout_logfile_backups=10
 ```  
-- composer  
-
-```
-cd ${code_ducument_root}
-composer install 
-```
-- npm  
+- node & npm
 
 ```
 安装node和npm环境：
 curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
 yum -y install nodejs
+```
 
-生产环境生成前端页面js代码：
-cd ${code_ducument_root}/client
+## 生产环境代码发布  
+
+```
+cd ${code_ducument_root}
+git pull                #获取最新代码
+composer install        #安装laravle依赖
+./vendor/bin/phpunit    #代码测试
+
+cd client       #进入js开发目录
 npm install     #安装npm包
-npm run build   #编译生成js文件
+npm run build   #编译js代码
+```  
+### 使用post-merge钩子脚本  
+```
+#!/bin/sh
+
+codeDir=$(cd $(dirname $0); pwd)'/../../'
+
+service supervisord restart     #重启队列
+
+cd $codeDir
+composer install
+./vendor/bin/phpunit
+
+cd client
+npm install
+npm run build
+```
+
+## 开发环境使用pre-push钩子
+```
+#!/bin/sh
+
+codeDir=$(cd $(dirname $0); pwd)'/../../'
+cd $codeDir
+./vendor/bin/phpunit
 ```
 
 ## 后端接口列表
