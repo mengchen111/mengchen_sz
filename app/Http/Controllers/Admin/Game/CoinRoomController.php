@@ -24,13 +24,9 @@ class CoinRoomController extends Controller
     protected $page = 1;
     protected $coinRoomListApi;
     protected $coinRoomDismissApi;
-    protected $guzzleClientOptions = [
-        'timeout' => 3,
-    ];
 
     public function __construct(Request $request)
     {
-        //$this->coinRoomListApi = 'www.hardyliu.me';
         $this->coinRoomListApi = config('custom.game_server_api_address') . '?action=Room.getRooms';
         $this->coinRoomDismissApi = config('custom.game_server_api_address') . '?action=Room.dismissRoomById';
         $this->per_page = $request->per_page ?: $this->per_page;

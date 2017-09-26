@@ -9,17 +9,19 @@
 namespace App\Services;
 
 use GuzzleHttp;
+use App\Exceptions\GameServerException;
 
 class GameServer
 {
     protected $apiAddress;
     protected $guzzle;      //guzzle client
 
-    public function __construct($apiAddress)
+    public function __construct($apiAddress, $guzzleHandler = null)
     {
         $this->apiAddress = $apiAddress;
         $this->guzzle = new GuzzleHttp\Client([
             'timeout' => 5,
+            'handler' => $guzzleHandler,
         ]);
     }
 
@@ -33,11 +35,11 @@ class GameServer
                 return $this->postData($params);
                 break;
             default:
-                throw new \Exception('method无效');
+                throw new GameServerException('method无效');
         }
     }
 
-    protected function getData($params)
+    protected function getData($params = null)
     {
         try {
             $res = $this->guzzle->request('GET', $this->apiAddress, [
@@ -45,8 +47,8 @@ class GameServer
             ])
                 ->getBody()
                 ->getContents();
-        } catch (\Exception $e) {
-            throw new \Exception('调用游戏服接口失败：' . $e->getMessage());
+        } catch (\Exception $exception) {
+            throw new GameServerException('调用游戏服接口失败：' . $exception->getMessage(), $exception);
         }
 
         $result = $this->decodeResponse($res);
@@ -56,7 +58,7 @@ class GameServer
         return $result;
     }
 
-    protected function postData($params)
+    protected function postData($params = null)
     {
         try {
             $res = $this->guzzle->request('POST', $this->apiAddress, [
@@ -64,8 +66,8 @@ class GameServer
             ])
                 ->getBody()
                 ->getContents();
-        } catch (\Exception $e) {
-            throw new \Exception('调用游戏服接口失败：' . $e->getMessage());
+        } catch (\Exception $exception) {
+            throw new GameServerException('调用游戏服接口失败：' . $exception->getMessage(), $exception);
         }
 
         $result = $this->decodeResponse($res);
@@ -78,7 +80,7 @@ class GameServer
     protected function checkResult($result)
     {
         if (empty($result['result'])) {
-            throw new \Exception('调用接口成功，但是游戏服返回的结果错误：' . json_encode($result));
+            throw new GameServerException('调用接口成功，但是游戏服返回的结果错误：' . json_encode($result));
         }
         return true;
     }

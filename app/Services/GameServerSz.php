@@ -8,9 +8,8 @@
 
 namespace App\Services;
 
-use App\Exceptions\CustomException;
 use GuzzleHttp;
-use Mockery\Exception;
+use App\Exceptions\GameServerException;
 
 class GameServerSz
 {
@@ -52,7 +51,7 @@ class GameServerSz
                 return $this->postData($uri, $params);
                 break;
             default:
-                throw new \Exception('method无效');
+                throw new GameServerException('[request] method无效');
         }
     }
 
@@ -64,8 +63,8 @@ class GameServerSz
             ])
                 ->getBody()
                 ->getContents();
-        } catch (\Exception $e) {
-            throw new \Exception('调用游戏服接口失败：' . $e->getMessage());
+        } catch (\Exception $exception) {
+            throw new GameServerException('[getData] 调用游戏服接口失败：' . $exception->getMessage(), $exception);
         }
 
         $result = $this->decodeResponse($res);
@@ -87,8 +86,8 @@ class GameServerSz
             ])
                 ->getBody()
                 ->getContents();
-        } catch (\Exception $e) {
-            throw new \Exception('调用游戏服接口失败：' . $e->getMessage());
+        } catch (\Exception $exception) {
+            throw new GameServerException('[postData] 调用游戏服接口失败：' . $exception->getMessage(), $exception);
         }
 
         $result = $this->decodeResponse($res);
@@ -106,7 +105,7 @@ class GameServerSz
     protected function checkResult($result)
     {
         if ($result['code'] < 0) {
-            throw new \Exception("调用接口成功，但是游戏服返回的结果错误：${result['info']}");
+            throw new GameServerException('[checkResult] 调用接口成功，但是游戏服返回的结果错误：' . json_encode($result));
         }
         return true;
     }
