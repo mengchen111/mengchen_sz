@@ -17,13 +17,14 @@ class GameServer
     protected $partnerId;
     protected $guzzle;      //guzzle client
 
-    public function __construct()
+    public function __construct($guzzleHandler = null)
     {
         $this->apiAddress = config('custom.game_server_api_address');
         $this->partnerId = config('custom.game_server_partner_id');
         $this->guzzle = new GuzzleHttp\Client([
             'base_uri' => $this->apiAddress,
             'timeout' => 8,
+            'handler' => $guzzleHandler,
         ]);
     }
 
@@ -41,7 +42,7 @@ class GameServer
         return $sign;
     }
 
-    public function request($method, $uri, Array $params = null)
+    public function request($method, $uri, Array $params = [])
     {
         switch ($method) {
             case 'GET':
@@ -55,7 +56,7 @@ class GameServer
         }
     }
 
-    protected function getData($uri, Array $params = null)
+    protected function getData($uri, Array $params = [])
     {
         try {
             $res = $this->guzzle->request('GET', $uri, [
@@ -74,7 +75,7 @@ class GameServer
         return $result;
     }
 
-    protected function postData($uri, Array $params = null)
+    protected function postData($uri, Array $params = [])
     {
         $params = array_merge($params, [
             'sign' => $this->buildSign($params)

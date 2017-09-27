@@ -16,15 +16,15 @@ class GameServerTest extends TestCase
 {
     public function testGetRightData()
     {
-        $body = file_get_contents(__DIR__ . '/GameServerTestGetResponse.json');
+        $body = base64_encode(file_get_contents(__DIR__ . '/GameServerTestGetResponse.json'));
         $mock = new MockHandler([
             new Response(200, [], $body),   //当游戏服正常返回数据
         ]);
         $handler = HandlerStack::create($mock);
-        $gameServer = new GameServer(null, $handler);
+        $gameServer = new GameServer($handler);
 
-        $res = $gameServer->request('GET');
-        $this->assertArrayHasKey('data', $res);
+        $res = $gameServer->request('GET', 'uri');
+        $this->assertArrayHasKey('accounts', $res);
     }
 
     /**
@@ -37,9 +37,9 @@ class GameServerTest extends TestCase
             new Response(200, [], ''),      //当游戏服正常，但是返回的数据为空
         ]);
         $handler = HandlerStack::create($mock);
-        $gameServer = new GameServer(null, $handler);
+        $gameServer = new GameServer($handler);
 
-        $gameServer->request('GET');
+        $gameServer->request('GET', 'uri');
     }
 
     /**
@@ -52,23 +52,23 @@ class GameServerTest extends TestCase
             new ConnectException('Connection timed out', new Request('GET', 'test')),   //连接超时时
         ]);
         $handler = HandlerStack::create($mock);
-        $gameServer = new GameServer(null, $handler);
+        $gameServer = new GameServer($handler);
 
-        $gameServer->request('GET');
+        $gameServer->request('GET', 'uri');
     }
 
     public function testPostDataSuccess()
     {
-        $body = file_get_contents(__DIR__ . '/GameServerTestPostResponse.json');
+        $body = base64_encode(file_get_contents(__DIR__ . '/GameServerTestPostResponse.json'));
         $mock = new MockHandler([
             new Response(200, [], $body),   //当游戏服正常返回数据
         ]);
         $handler = HandlerStack::create($mock);
-        $gameServer = new GameServer(null, $handler);
+        $gameServer = new GameServer($handler);
 
-        $res = $gameServer->request('POST');
-        $this->assertArrayHasKey('result', $res);
-        $this->assertEquals(1, $res['result']);
+        $res = $gameServer->request('POST', 'uri');
+        $this->assertArrayHasKey('code', $res);
+        $this->assertEquals(0, $res['code']);
     }
 
     /**
@@ -81,9 +81,9 @@ class GameServerTest extends TestCase
             new Response(200, [], ''),   //当游戏服正常返回数据
         ]);
         $handler = HandlerStack::create($mock);
-        $gameServer = new GameServer(null, $handler);
+        $gameServer = new GameServer($handler);
 
-        $gameServer->request('POST');
+        $gameServer->request('POST', 'uri');
     }
 
     /**
@@ -96,8 +96,8 @@ class GameServerTest extends TestCase
             new ConnectException('Connection timed out', new Request('GET', 'test')),   //连接超时时
         ]);
         $handler = HandlerStack::create($mock);
-        $gameServer = new GameServer(null, $handler);
+        $gameServer = new GameServer($handler);
 
-        $gameServer->request('POST');
+        $gameServer->request('POST', 'uri');
     }
 }

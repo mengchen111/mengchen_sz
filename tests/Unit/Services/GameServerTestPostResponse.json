@@ -1,3 +1,17 @@
 {
-  "result": "1"
+  "code": 0,
+  "account": {
+    "uid": 10001,
+    "unionid": "ope1JuJnlJaQGFe61zE8LTOCUxCM",
+    "nickname": "",
+    "headimg": "http://wx.qlogo.cn/mmopen/vi_32/EvO4yU43aoiaTBXLVT8PWvD7ML0j3a6PicD18micn4WxYjAHeq1ScFy5SgNtciaKPfia8mZB9wibuibXa6lUehjVrJm1Q/0",
+    "city": "",
+    "gender": 0,
+    "ycoins": 3,
+    "ypoints": 0,
+    "state": 0,
+    "permissions": 1,
+    "create_time": "2017-09-21 10:22:18",
+    "last_time": "2017-09-27 11:48:38"
+  }
 }
