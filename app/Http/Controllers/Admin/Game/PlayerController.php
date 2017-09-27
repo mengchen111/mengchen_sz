@@ -41,6 +41,7 @@ class PlayerController extends Controller
             $data = $this->getAllUsers($request)['accounts'];
         }
 
+        krsort($data);
         $result = $this->paginateData($data);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
