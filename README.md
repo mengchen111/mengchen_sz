@@ -76,28 +76,7 @@ cd $codeDir
 | URI   | Method  | Description |     
 | ----  | :-----: | ----------: |
 | self/password | PUT | 更新密码 |
-| home/summary | GET | 首页数据总览 |
-| statement/hourly | GET | 每小时报表数据 |
-| statement/daily | GET | 每天报表数据 |
-| statement/monthly | GET | 每月报表数据 |
-| statement/hourly-chart | GET | 每小时流水图表数据 |
 | game/player | GET | 玩家列表 |
-| game/notification/marquee | GET | 跑马灯公告列表 |
-| game/notification/marquee | POST | 新建跑马灯公告 |
-| game/notification/marquee/{id} | PUT | 编辑更新跑马灯公告 |
-| game/notification/marquee/{id} | DELETE | 删除跑马灯公告 |
-| game/notification/marquee/enable/{id} | PUT | 启用跑马灯公告 |
-| game/notification/marquee/disable/{id} | PUT | 禁用跑马灯公告 |
-| game/notification/login | GET | 登录公告列表 |
-| game/notification/login | POST | 新建登录公告 |
-| game/notification/login/{id} | PUT | 编辑更新登录公告 |
-| game/notification/login/{id} | DELETE | 删除登录公告 |
-| game/notification/login/enable/{id} | PUT | 启用登录公告 |
-| game/notification/login/disable/{id} | PUT | 禁用登录公告 |
-| game/room/friend | GET | 好友房列表 |
-| game/room/friend/{ownerId} | DELETE | 解散好友房 |
-| game/room/coin | GET | 金币房列表 |
-| game/room/coin/{roomId} | DELETE | 解散金币房 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |
@@ -140,11 +119,10 @@ cd $codeDir
 | /api/info | GET | 获取用户个人信息 |
 
 ## 游戏服接口
-> **前缀: ?action={Action}**
+> **https://down.yxx.max78.com/casino/back/htmls/agentx**
 
-| Action | Method | Description |
+| URI | Method | Description |
 | ----  | :-----: | ----------: |
-| Room.getRooms | GET | 获取金币房列表 |
-| Room.dismissRoomById| POST | 解散金币房 |
-| FriendRoom.forceClearRoom | POST | 解散好友房 |
-| notice.systemSendNOticeToAll | POST | 同步登录和跑马灯公告 |
+| users.php | GET | 获取玩家列表 |
+| user.php| POST | 获取指定玩家信息 |
+| recharge.php | POST | 给指定玩家充值 |

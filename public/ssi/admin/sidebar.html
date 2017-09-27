@@ -8,7 +8,7 @@
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
             <li :class="{ active: uri.home.isActive }"><a href="/admin/home"><i class="fa fa-home"></i> <span>首页</span></a></li>
-            <li class="treeview" :class="{ active: uri.statement.isActive }">
+<!--            <li class="treeview" :class="{ active: uri.statement.isActive }">
                 <a href="#"><i class="fa fa-pie-chart"></i> <span>数据报表</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
@@ -17,7 +17,7 @@
                     <li :class="{ active: uri.statement.daily.isActive }"><a href="/admin/statement/daily"><i class="fa fa-circle-o"></i>日报表</a></li>
                     <li :class="{ active: uri.statement.monthly.isActive }"><a href="/admin/statement/monthly"><i class="fa fa-circle-o"></i>月报表</a></li>
                 </ul>
-            </li>
+            </li>-->
             <li class="treeview" :class="{ active: uri.player.isActive }">
                 <a href="#"><i class="fa fa-gamepad"></i> <span>玩家管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
@@ -26,7 +26,7 @@
                     <li :class="{ active: uri.player.list.isActive }"><a href="/admin/player/list"><i class="fa fa-circle-o"></i>玩家列表</a></li>
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri.gm.isActive }">
+<!--            <li class="treeview" :class="{ active: uri.gm.isActive }">
                 <a href="#"><i class="fa fa-wrench"></i> <span>GM功能</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
@@ -36,7 +36,7 @@
                         </a>
                         <ul class="treeview-menu">
                             <li :class="{ active: uri.gm.notification.marquee.isActive }"><a href="/admin/gm/notification/marquee"><i class="fa fa-circle-o"></i>跑马灯公告</a></li>
-                            <!--<li :class="{ active: uri.gm.notification.login.isActive }"><a href="/admin/gm/notification/login"><i class="fa fa-circle-o"></i>登录公告</a></li>-->
+                            &lt;!&ndash;<li :class="{ active: uri.gm.notification.login.isActive }"><a href="/admin/gm/notification/login"><i class="fa fa-circle-o"></i>登录公告</a></li>&ndash;&gt;
                         </ul>
                     </li>
                     <li :class="{ active: uri.gm.room.isActive }"><a href="#"><i class="fa fa-home"></i>房间管理
@@ -48,7 +48,7 @@
                         </ul>
                     </li>
                 </ul>
-            </li>
+            </li>-->
             <li class="treeview" :class="{ active: uri.stock.isActive }">
                 <a href="#"><i class="fa fa-suitcase"></i> <span>库存管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>

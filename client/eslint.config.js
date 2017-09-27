@@ -27,7 +27,7 @@ module.exports = {
     'no-mixed-spaces-and-tabs': 'error',        //禁止混用tab和空格缩进
     'no-console': 'off',                        //禁用 console(关闭)
     'no-var': 'error',                          //要求使用 let 或 const 而不是 var
-    'no-unused-vars': 'error',                  //禁止出现未使用过的变量
+    'no-unused-vars': 'warn',                   //未使用过的变量提出警告
     'no-mixed-operators': 'error',              //封闭的复杂表达式使用括号括起来明确了开发者的意图，使代码更具可读性
   }
 }

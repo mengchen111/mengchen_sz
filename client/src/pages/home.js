@@ -69,18 +69,18 @@ new Vue({
   },
 
   created: function () {
-    let _self = this
+    /*let _self = this
 
     //获取汇总数据
     axios.get(this.summaryDataApi)
       .then(function (response) {
         _self.summaryData = response.data
         _self.loading = false
-      })
+      })*/
   },
 
   mounted: function () {
-    let _self = this
+    /*let _self = this
 
     //获取图表数据
     axios.get(this.chartDataApi)
@@ -93,6 +93,6 @@ new Vue({
         window.setTimeout(() => {
           _self.$root.eventHub.$emit('EChartMergeOptions', _self.chartOptions)
         }, 1000)
-      })
+      })*/
   },
 })
