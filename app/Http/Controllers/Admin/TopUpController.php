@@ -21,7 +21,6 @@ class TopUpController extends Controller
 {
     protected $per_page = 15;
     protected $order = ['id', 'desc'];
-    protected $cardItemId = 1030005;    //房卡在游戏库中的id号
 
     public function __construct(Request $request)
     {

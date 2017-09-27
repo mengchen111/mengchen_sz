@@ -74,10 +74,11 @@ new Vue({
   methods: {
     topUpPlayer () {
       let _self = this
+      let apiUrl = `/admin/api/top-up/player/${_self.activatedRow.uid}/${_self.topUpData.typeId}/${_self.topUpData.amount}`
 
       axios({
         method: 'POST',
-        url: `/admin/api/top-up/player/${_self.activatedRow.uid}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
+        url: apiUrl,
         validateStatus: function (status) {
           return status === 200 || status === 422
         },
