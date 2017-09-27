@@ -10,12 +10,12 @@ use App\Models\User;
 use App\Models\TopUpAdmin;
 use App\Models\TopUpAgent;
 use App\Models\TopUpPlayer;
-use App\Models\Game\Player;
-use App\Models\ItemType;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Services\GameServer;
 
 class TopUpController extends Controller
 {
@@ -180,7 +180,7 @@ class TopUpController extends Controller
     public function topUp2Player(AdminRequest $request, $player, $type, $amount)
     {
         Validator::make($request->route()->parameters,[
-            'player' => 'required|string|exists:mysql-game.role,rid',
+            'player' => 'required|integer',
             'type' => 'required|integer|exists:item_type,id',
             'amount' => 'required|integer|not_in:0',
         ])->validate();
@@ -188,23 +188,12 @@ class TopUpController extends Controller
         $provider = User::with(['inventory' => function ($query) use ($type) {
             $query->where('item_id', $type);
         }])->find($request->user()->id);
-        $playerModel = Player::with(['card'])->where('rid', $player)->firstOrFail();
-        $itemType = ItemType::find($type);
 
         if (! $this->checkStock($provider, $amount)) {
             throw new CustomException('库存不足，无法充值');
         }
 
-        switch ($itemType->name) {
-            case '房卡':
-                $this->topUpCard4Player($request, $provider, $playerModel, $type, $amount);
-                break;
-            case '金币':
-                $this->topUpGold4Player($request, $provider, $playerModel, $type, $amount);
-                break;
-            default:
-                throw new CustomException('只能充值房卡和金币');
-        }
+        $this->topUp4Player($request, $provider, $player, $type, $amount);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员给玩家充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
@@ -214,27 +203,23 @@ class TopUpController extends Controller
         ];
     }
 
-    /**
-     * @param $provider 管理员模型
-     * @param $player   玩家模型
-     * @param $type     道具id
-     * @param $amount   道具数量
-     */
-    protected function topUpGold4Player($request, $provider, $player, $type, $amount)
+    protected function topUp4Player($request, $provider, $player, $type, $amount)
     {
         return DB::transaction(function () use ($request, $provider, $player, $type, $amount){
             //记录充值流水
             TopUpPlayer::create([
                 'provider_id' => $request->user()->id,
-                'player' => $player->rid,
+                'player' => $player,
                 'type' => $type,
                 'amount' => $amount,
             ]);
 
-            //更新库存
-            $totalStock = $amount + $player->gold;
-            $player->update([
-                'gold' => $totalStock,
+            //调用接口充值
+            $this->sendTopUpRequest([
+                'uid' => $player,
+                'ctype' => $type,
+                'amount' => $amount,
+                'timestamp' => Carbon::now()->timestamp
             ]);
 
             //减管理员的库存
@@ -245,39 +230,14 @@ class TopUpController extends Controller
         });
     }
 
-    protected function topUpCard4Player($request, $provider, $player, $type, $amount)
+    protected function sendTopUpRequest($params)
     {
-        return DB::transaction(function () use ($request, $provider, $player, $type, $amount){
-            //记录充值流水
-            TopUpPlayer::create([
-                'provider_id' => $request->user()->id,
-                'player' => $player->rid,
-                'type' => $type,
-                'amount' => $amount,
-            ]);
+        $gameServer = new GameServer();
 
-            //更新库存
-            if (empty($player->card)) {
-                $player->card()->create([
-                    'rid' => $player->rid,
-                    'item_id' => $this->cardItemId,
-                    'expire' => 0,
-                    'count' => $amount,
-                    'sort' => 1,
-                    'state' => 1,
-                ]);
-            } else {
-                $totalStock = $amount + $player->card->count;
-                $player->card->update([
-                    'count' => $totalStock,
-                ]);
-            }
-
-            //减管理员的库存
-            $leftStock = $provider->inventory->stock - $amount;
-            $provider->inventory->update([
-                'stock' => $leftStock,
-            ]);
-        });
+        try {
+            return $gameServer->request('POST', 'recharge.php', $params);
+        } catch (\Exception $e) {
+            throw new CustomException($e->getMessage());
+        }
     }
 }

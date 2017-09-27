@@ -29,11 +29,11 @@ new Vue({
       },
       {
         name: 'ycoins',
-        title: '壹币数量',
+        title: '房卡数量',
       },
       {
         name: 'ypoints',
-        title: '壹点数量',
+        title: '金币数量',
       },
       {
         name: 'state',
@@ -61,5 +61,9 @@ new Vue({
         direction: 'desc',
       },
     ],
+  },
+
+  mounted: function () {
+    this.$root.eventHub.$on('vuetableDataError', (data) => alert(data.error))
   },
 })
