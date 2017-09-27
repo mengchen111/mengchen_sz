@@ -11,6 +11,7 @@ use App\Models\TopUpAdmin;
 use App\Models\TopUpAgent;
 use App\Models\TopUpPlayer;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\DB;
@@ -193,6 +194,8 @@ class TopUpController extends Controller
         }
 
         $this->topUp4Player($request, $provider, $player, $type, $amount);
+        //清空玩家列表缓存
+        Cache::pull('player:accounts');
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员给玩家充值', $request->header('User-Agent'), json_encode($request->route()->parameters));

@@ -16,6 +16,7 @@ use App\Services\Paginator;
 use App\Services\GameServer;
 use App\Exceptions\CustomException;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class PlayerController extends Controller
 {
@@ -38,7 +39,10 @@ class PlayerController extends Controller
         if ($request->has('filter')) {
             $data[] = $this->getOneUser($request->filter)['account'];
         } else {
-            $data = $this->getAllUsers($request)['accounts'];
+            //玩家列表缓存三分钟
+            $data = Cache::remember('player:accounts', 3, function () {
+                return $this->getAllUsers()['accounts'];
+            });
             krsort($data);
         }
 
