@@ -36,12 +36,12 @@ class PlayerController extends Controller
     public function show(AdminRequest $request)
     {
         if ($request->has('filter')) {
-            $data = $this->getOneUser($request->filter)['account'];
+            $data[] = $this->getOneUser($request->filter)['account'];
         } else {
             $data = $this->getAllUsers($request)['accounts'];
+            krsort($data);
         }
 
-        krsort($data);
         $result = $this->paginateData($data);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),

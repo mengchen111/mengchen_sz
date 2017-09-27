@@ -15,6 +15,14 @@ new Vue({
   data: {
     eventHub: new Vue(),
     activatedRow: {},
+    topUpData: {
+      type: {
+        1: '房卡',
+        2: '金币',
+      },
+      typeId: 1,
+      amount: null,
+    },
 
     tableUrl: '/admin/api/game/player',
     tableTrackBy: 'uid',
@@ -63,7 +71,38 @@ new Vue({
     ],
   },
 
+  methods: {
+    topUpPlayer () {
+      let _self = this
+
+      axios({
+        method: 'POST',
+        url: `/admin/api/top-up/player/${_self.activatedRow.uid}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
+        validateStatus: function (status) {
+          return status === 200 || status === 422
+        },
+      })
+        .then(function (response) {
+          if (response.status === 422) {
+            alert(JSON.stringify(response.data))
+          } else {
+            response.data.error ? alert(response.data.error) : alert(response.data.message)
+            _self.topUpData.amount = null
+            //_self.$root.eventHub.$emit('vuetableRefresh')  //重新刷新表格
+          }
+        })
+        .catch(function (err) {
+          alert(err)
+        })
+    },
+  },
+
   mounted: function () {
+    let _self = this
+
+    this.$root.eventHub.$on('topUpPlayerEvent', function (data) {
+      _self.activatedRow = data
+    })
     this.$root.eventHub.$on('vuetableDataError', (data) => alert(data.error))
   },
 })
