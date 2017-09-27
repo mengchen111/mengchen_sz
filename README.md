@@ -119,7 +119,7 @@ cd $codeDir
 | /api/info | GET | 获取用户个人信息 |
 
 ## 游戏服接口
-> **https://down.yxx.max78.com/casino/back/htmls/agentx**
+> **https://down.yxx.max78.com/casino/back/htmls/agentx/**
 
 | URI | Method | Description |
 | ----  | :-----: | ----------: |

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: liudian
  * Date: 9/25/17
- * Time: 18:12
+ * Time: 16:40
  */
 
 namespace App\Services;
@@ -14,35 +14,51 @@ use App\Exceptions\GameServerException;
 class GameServer
 {
     protected $apiAddress;
+    protected $partnerId;
     protected $guzzle;      //guzzle client
 
-    public function __construct($apiAddress, $guzzleHandler = null)
+    public function __construct()
     {
-        $this->apiAddress = $apiAddress;
+        $this->apiAddress = config('custom.game_server_api_address');
+        $this->partnerId = config('custom.game_server_partner_id');
         $this->guzzle = new GuzzleHttp\Client([
-            'timeout' => 5,
-            'handler' => $guzzleHandler,
+            'base_uri' => $this->apiAddress,
+            'timeout' => 8,
         ]);
     }
 
-    public function request($method, Array $params = null)
+    protected function buildSign(Array $params)
+    {
+        ksort($params);
+
+        $sign = '';
+        array_walk($params, function ($v, $k) use (&$sign) {
+            $sign .= "{$k}={$v}&";
+        });
+        $sign .= "key={$this->partnerId}";
+        $sign = strtoupper(md5($sign));
+
+        return $sign;
+    }
+
+    public function request($method, $uri, Array $params = null)
     {
         switch ($method) {
             case 'GET':
-                return $this->getData($params);
+                return $this->getData($uri, $params);
                 break;
             case 'POST':
-                return $this->postData($params);
+                return $this->postData($uri, $params);
                 break;
             default:
                 throw new GameServerException('method无效');
         }
     }
 
-    protected function getData($params = null)
+    protected function getData($uri, Array $params = null)
     {
         try {
-            $res = $this->guzzle->request('GET', $this->apiAddress, [
+            $res = $this->guzzle->request('GET', $uri, [
                 'query' => $params,
             ])
                 ->getBody()
@@ -58,10 +74,14 @@ class GameServer
         return $result;
     }
 
-    protected function postData($params = null)
+    protected function postData($uri, Array $params = null)
     {
+        $params = array_merge($params, [
+            'sign' => $this->buildSign($params)
+        ]);
+
         try {
-            $res = $this->guzzle->request('POST', $this->apiAddress, [
+            $res = $this->guzzle->request('POST', $uri, [
                 'form_params' => $params,
             ])
                 ->getBody()
@@ -77,16 +97,16 @@ class GameServer
         return $result;
     }
 
+    protected function decodeResponse($res)
+    {
+        return json_decode(base64_decode($res), true);
+    }
+
     protected function checkResult($result)
     {
-        if (empty($result['result'])) {
+        if (empty($result) or $result['code'] < 0) {
             throw new GameServerException('调用接口成功，但是游戏服返回的结果错误：' . json_encode($result));
         }
         return true;
-    }
-
-    protected function decodeResponse($res)
-    {
-        return json_decode($res, true);
     }
 }

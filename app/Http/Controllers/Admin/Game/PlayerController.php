@@ -9,41 +9,74 @@
 namespace App\Http\Controllers\Admin\Game;
 
 use App\Http\Controllers\Controller;
-use App\Models\Game\Player;
 use App\Models\OperationLogs;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
+use App\Services\Paginator;
+use App\Services\GameServer;
+use App\Exceptions\CustomException;
+use Carbon\Carbon;
 
 class PlayerController extends Controller
 {
     protected $per_page = 15;
-    protected $order = ['rid', 'desc'];
+    protected $page = 1;
+    protected $order = ['uid', 'desc'];
+    protected $userListUri = 'users.php';
+    protected $userSearchUri = 'user.php';
 
     public function __construct(Request $request)
     {
         $this->per_page = $request->per_page ?: $this->per_page;
         $this->order = $request->sort ? explode('|', $request->sort) : $this->order;
+        $this->page = $request->page ?: $this->page;
     }
 
     //查看玩家列表
     public function show(AdminRequest $request)
     {
+        if ($request->has('filter')) {
+            $data = $this->getOneUser($request->filter)['account'];
+        } else {
+            $data = $this->getAllUsers($request)['accounts'];
+        }
+
+        $result = $this->paginateData($data);
+
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看玩家列表', $request->header('User-Agent'), json_encode($request->all()));
 
-        //搜索玩家
-        if ($request->has('filter')) {
-            $players = array_column(Player::where('rid', 'like', "%{$request->filter}%")->get()->toArray(), 'rid');
-            if (empty($players)) {
-                return null;
-            }
-            return  Player::with(['card', 'items'])
-                ->whereIn('rid', $players)
-                ->orderBy($this->order[0], $this->order[1])
-                ->paginate($this->per_page);
-        }
+        return $result;
+    }
 
-        return Player::with(['card', 'items'])->orderBy($this->order[0], $this->order[1])
-            ->paginate($this->per_page);
+    protected function getAllUsers()
+    {
+        $gameServer = new GameServer();
+
+        try {
+            return $gameServer->request('GET', 'users.php');
+        } catch (\Exception $e) {
+            throw new CustomException($e->getMessage());
+        }
+    }
+
+    protected function getOneUser($uid)
+    {
+        $gameServer = new GameServer();
+
+        try {
+            return $gameServer->request('POST', 'user.php', [
+                'uid' => $uid,
+                'timestamp' => Carbon::now()->timestamp
+            ]);
+        } catch (\Exception $e) {
+            throw new CustomException($e->getMessage());
+        }
+    }
+
+    protected function paginateData($data)
+    {
+        $paginator = new Paginator($this->per_page, $this->page);
+        return $paginator->paginate($data);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
-use App\Services\GameServerSz as GameServer;
+use App\Services\GameServer as GameServer;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Mockery\Exception;
