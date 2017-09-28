@@ -10,7 +10,7 @@ class TopUpAgent extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'provider_id', 'receiver_id', 'type', 'amount'
+        'provider_id', 'receiver_id', 'type', 'amount', 'created_at'
     ];
 
     public function provider()

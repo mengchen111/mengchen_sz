@@ -23,7 +23,7 @@ class GameServer
         $this->partnerId = config('custom.game_server_partner_id');
         $this->guzzle = new GuzzleHttp\Client([
             'base_uri' => $this->apiAddress,
-            'timeout' => 8,
+            'connect_timeout' => 8,
             'handler' => $guzzleHandler,
         ]);
     }
