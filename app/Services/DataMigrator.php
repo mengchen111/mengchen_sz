@@ -14,6 +14,8 @@ use App\Models\TopUpAdmin;
 use App\Models\TopUpPlayer;
 use App\Models\User;
 use GuzzleHttp\Client;
+use App\Services\GameServer;
+use App\Exceptions\CustomException;
 
 class DataMigrator
 {
@@ -198,6 +200,7 @@ class DataMigrator
     public function migrateTopUp2PlayerHistory()
     {
         $data = $this->getTopUp2PlayerHistory();
+        $data = $this->transPlayerId($data);
         $data = array_reverse($data);
 
         foreach ($data as $entry) {
@@ -214,5 +217,28 @@ class DataMigrator
 
             echo "create player top up record for {$entry['from_user']} done." . PHP_EOL;
         }
+    }
+
+    //将老平台的充值的玩家id转换成新平台的id，通过nickname关联
+    protected function transPlayerId($data)
+    {
+        $gameServer = new GameServer();
+
+        try {
+            $newPlatformUserList = $gameServer->request('GET', 'users.php')['accounts'];
+        } catch (\Exception $e) {
+            throw new CustomException($e->getMessage());
+        }
+
+        $result = $data;
+        foreach ($data as $k => $entry) {
+            array_walk($newPlatformUserList, function ($value, $key) use ($k, $entry, &$result) {
+                if ($entry['nickname'] === base64_decode($value['nickname'])) {
+                    $result[$k]['to_user'] = $value['uid'];
+                }
+            });
+        }
+
+        return $result;
     }
 }

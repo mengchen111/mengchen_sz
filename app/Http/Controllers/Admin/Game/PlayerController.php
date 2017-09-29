@@ -37,11 +37,11 @@ class PlayerController extends Controller
     public function show(AdminRequest $request)
     {
         if ($request->has('filter')) {
-            $data[] = $this->getOneUser($request->filter)['account'];
+            $data[] = $this->getOneUser($request->filter);
         } else {
             //玩家列表缓存三分钟
             $data = Cache::remember('player:accounts', 3, function () {
-                return $this->getAllUsers()['accounts'];
+                return $this->getAllUsers();
             });
             krsort($data);
         }
@@ -59,7 +59,8 @@ class PlayerController extends Controller
         $gameServer = new GameServer();
 
         try {
-            return $gameServer->request('GET', 'users.php');
+            $result = $gameServer->request('GET', 'users.php');
+            return $this->decodeNickname($result['accounts']);
         } catch (\Exception $e) {
             throw new CustomException($e->getMessage());
         }
@@ -70,13 +71,31 @@ class PlayerController extends Controller
         $gameServer = new GameServer();
 
         try {
-            return $gameServer->request('POST', 'user.php', [
+            $result =  $gameServer->request('POST', 'user.php', [
                 'uid' => $uid,
                 'timestamp' => Carbon::now()->timestamp
             ]);
+
+            return $this->decodeNickname($result['account']);
         } catch (\Exception $e) {
             throw new CustomException($e->getMessage());
         }
+    }
+
+    protected function decodeNickname($data)
+    {
+        //获取一个用户时
+        if (isset($data['nickname'])) {
+            $data['nickname'] = mb_convert_encoding(base64_decode($data['nickname']), 'UTF-8');;
+        } else {
+            //获取所有用户时
+            foreach ($data as &$user) {
+                //必须要将base64解码之后的字符串转码成utf8格式，不然无法序列化成json字符串
+                $user['nickname'] = mb_convert_encoding(base64_decode($user['nickname']), 'UTF-8');
+            }
+        }
+
+        return $data;
     }
 
     protected function paginateData($data)
