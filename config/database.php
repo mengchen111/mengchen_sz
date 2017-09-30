@@ -56,11 +56,11 @@ return [
 
         'mysql-game' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
+            'host' => env('DB_HOST_GAME', '127.0.0.1'),
+            'port' => env('DB_PORT_GAME', '3306'),
             'database' => env('DB_DATABASE_GAME', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'username' => env('DB_USERNAME_GAME', 'forge'),
+            'password' => env('DB_PASSWORD_GAME', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
