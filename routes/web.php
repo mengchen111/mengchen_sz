@@ -77,9 +77,9 @@ Route::group([
     Route::put('agent/{user}', 'AgentController@update')->where('user', '[0-9]+');
     Route::put('agent/pass/{user}', 'AgentController@updatePass')->where('user', '[0-9]+');
 
-    Route::get('top-up/top-agent', 'TopUpController@topUp2TopAgentHistory');
-    Route::get('top-up/agent', 'TopUpController@Agent2AgentHistory');
-    Route::get('top-up/player', 'TopUpController@Agent2PlayerHistory');
+    Route::get('top-up/admin', 'TopUpController@admin2AgentHistory');
+    Route::get('top-up/agent', 'TopUpController@agent2AgentHistory');
+    Route::get('top-up/player', 'TopUpController@agent2PlayerHistory');
     Route::post('top-up/agent/{receiver}/{type}/{amount}', 'TopUpController@topUp2Agent')->where('amount', '[0-9]+');
     Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '[0-9]+');
 

@@ -87,7 +87,7 @@ cd $codeDir
 | agent/{id} | DELETE | 删除代理商 |
 | agent/{id} | PUT | 更新代理商信息 |
 | agent/pass/{id} | PUT | 更新代理商密码 |
-| top-up/top-agent | GET | 管理员给代理商充值记录 |
+| top-up/admin | GET | 管理员给代理商充值记录 |
 | top-up/agent | GET | 代理商给下级代理商充值记录 |
 | top-up/player | GET | 给玩家的充值记录 |
 | top-up/agent/{receiver}/{type}/{amount} | POST | 给代理商充值 |

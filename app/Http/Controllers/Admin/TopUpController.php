@@ -101,8 +101,8 @@ class TopUpController extends Controller
         });
     }
 
-    //管理员给总代的充值记录
-    public function topUp2TopAgentHistory(AdminRequest $request)
+    //管理员给代理商的充值记录
+    public function admin2AgentHistory(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看其充值记录', $request->header('User-Agent'), json_encode($request->all()));
@@ -125,7 +125,7 @@ class TopUpController extends Controller
     }
 
     //上级代理商给下级的充值记录
-    public function Agent2AgentHistory(AdminRequest $request)
+    public function agent2AgentHistory(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
@@ -149,7 +149,7 @@ class TopUpController extends Controller
     }
 
     //代理商给玩家的充值记录
-    public function Agent2PlayerHistory(AdminRequest $request)
+    public function agent2PlayerHistory(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员查看代理商给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
