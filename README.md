@@ -64,7 +64,6 @@ service supervisord restart     #重启队列
 
 cd $codeDir
 composer install
-./vendor/bin/phpunit
 
 cd client
 npm install
