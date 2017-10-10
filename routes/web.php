@@ -94,16 +94,16 @@ Route::group([
 ], function () {
     Route::get('home', 'ViewController@home');
 
-    Route::get('statement/hourly', 'ViewController@statementHourly');
-    Route::get('statement/daily', 'ViewController@statementDaily');
-    Route::get('statement/monthly', 'ViewController@statementMonthly');
+//    Route::get('statement/hourly', 'ViewController@statementHourly');
+//    Route::get('statement/daily', 'ViewController@statementDaily');
+//    Route::get('statement/monthly', 'ViewController@statementMonthly');
 
     Route::get('player/list', 'ViewController@playerList');
 
-    Route::get('gm/notification/marquee', 'ViewController@gmNotificationMarquee');
-    Route::get('gm/notification/login', 'ViewController@gmNotificationLogin');
-    Route::get('gm/room/friend', 'ViewController@gmRoomFriend');
-    Route::get('gm/room/coin', 'ViewController@gmRoomCoin');
+//    Route::get('gm/notification/marquee', 'ViewController@gmNotificationMarquee');
+//    Route::get('gm/notification/login', 'ViewController@gmNotificationLogin');
+//    Route::get('gm/room/friend', 'ViewController@gmRoomFriend');
+//    Route::get('gm/room/coin', 'ViewController@gmRoomCoin');
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-list', 'ViewController@stockApplyList');
