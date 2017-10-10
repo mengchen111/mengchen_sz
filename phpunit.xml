@@ -17,6 +17,11 @@
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
     </testsuites>
+    <groups>
+        <exclude>
+            <group>groupInHereWillNotBeTested</group>
+        </exclude>
+    </groups>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
@@ -27,5 +32,6 @@
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
+        <env name="DB_DATABASE" value="test"/>
     </php>
 </phpunit>

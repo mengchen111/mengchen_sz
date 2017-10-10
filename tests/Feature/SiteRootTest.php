@@ -13,6 +13,6 @@ class SiteRootTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertStatus(301);
+        $response->assertRedirect('/login');
     }
 }
