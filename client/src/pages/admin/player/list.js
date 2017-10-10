@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import MyVuetable from '../../components/MyVuetable.vue'
-import TableActions from '../../components/player/TableActions.vue'
-import FilterBar from '../../components/FilterBar.vue'
 import axios from 'axios'
+import MyVuetable from '../../../components/MyVuetable.vue'
+import FilterBar from '../../../components/FilterBar.vue'
+import TableActions from './components/TableActions.vue'
 
 Vue.component('table-actions', TableActions)
 
