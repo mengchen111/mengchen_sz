@@ -30,6 +30,17 @@ curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
 yum -y install nodejs
 ```
 
+## 单元测试与代码覆盖率
+测试并生成代码覆盖率报表：  
+```
+cd ${code_ducument_root}
+./vendor/bin/phpunit --coverage-html public/test/
+```
+查看代码覆盖率：
+```
+URI: /test/index.html
+```
+
 ## 生产环境代码发布  
 
 ```
@@ -60,7 +71,8 @@ npm install
 npm run build
 ```
 
-## 开发环境使用pre-push钩子
+## 开发环境规范
+### 开发环境使用pre-push钩子
 ```
 #!/bin/sh
 
