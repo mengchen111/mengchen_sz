@@ -26,52 +26,27 @@
 
         <!-- Main content -->
         <section class="content">
-
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">查看审核历史</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <template>
-                        <filter-bar></filter-bar>
-
-                        <!--<div class="pagination pull-left">
-                            <vuetable-pagination-info ref="paginationInfoTop"
-                            ></vuetable-pagination-info>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">查看审核历史</h3>
                         </div>
-                        <vuetable-pagination ref="paginationTop"
-                                             :css="css.pagination"
-                                             @vuetable-pagination:change-page="onChangePage"
-                        ></vuetable-pagination>-->
+                        <!-- /.box-header -->
 
-                        <vuetable ref="vuetable"
-                                  :api-url="vuetableUrl"
-                                  :fields="fields"
-                                  :sort-order="sortOrder"
-                                  :css="css.table"
-                                  pagination-path=""
-                                  :per-page="15"
-                                  :append-params="moreParams"
-                                  @vuetable:pagination-data="onPaginationData"
-                                  detail-row-component="detail-row"
-                                  @vuetable:cell-clicked="onCellClicked"
-                        ></vuetable>
-
-                        <div class="pagination pull-left">
-                            <vuetable-pagination-info ref="paginationInfo"
-                            ></vuetable-pagination-info>
+                        <div class="box-body">
+                            <filter-bar placeholder="查找代理商账号..."></filter-bar>
+                            <my-vuetable
+                                    :table-url="tableUrl"
+                                    :table-fields="tableFields"
+                                    :table-sort-order="tableSortOrder"
+                                    :callbacks="callbacks">
+                            </my-vuetable>
                         </div>
-                        <vuetable-pagination ref="pagination"
-                                             :css="css.pagination"
-                                             @vuetable-pagination:change-page="onChangePage"
-                        ></vuetable-pagination>
-                    </template>
-
+                        <!-- /.box-body -->
+                    </div>
                 </div>
-                <!-- /.box-body -->
             </div>
-
         </section>
         <!-- /.content -->
 
@@ -84,166 +59,6 @@
 </div>
 <!-- ./wrapper -->
 
-<script>
-    Vue.use(Vuetable);      //注册vuetable-2插件
-    var Hub = new Vue();    //event hub，事件中心，用于非父子组件中的事件传递
-
-    //注册搜索条组件
-    var filterBar = {
-        template: `
-            <div class="row" style="margin-right: 50px;margin-bottom: 8px;">
-                <div class="input-group col-xs-4 pull-right">
-                      <input type="text" v-model.trim="filterText" class="form-control" @keyup.enter="doFilter" placeholder="查找代理商账号...">
-                      <span class="input-group-btn">
-                        <button class="btn btn-flat" @click="doFilter">
-                            <i class="glyphicon glyphicon-search"></i>
-                        </button>
-                      </span>
-                </div>
-            </div>`,
-        data: function () {
-            return {
-                filterText: '',
-            }
-        },
-        methods: {
-            doFilter () {
-                Hub.$emit('filterEvent', this.filterText);
-            },
-        }
-    };
-    Vue.component('filter-bar', filterBar);
-
-    var app = new Vue({
-        el: '#app',
-        data: {
-            vuetableUrl: '/admin/api/stock/history',
-
-            activatedRow: {},       //选中的行
-
-            stateType: {
-                2: '通过',
-                3: '拒绝',
-            },
-
-            fields: [
-                {
-                    name: 'created_at',
-                    title: '申请时间',
-                    sortField: 'id',
-                },
-                {
-                    name: 'applicant.account',
-                    title: '申请人',
-                },
-                {
-                    name: 'item.name',
-                    title: '道具类型',
-                    sortField: 'item_id',
-                },
-                {
-                    name: 'amount',
-                    title: '数量',
-                    sortField: 'amount'
-                },
-                {
-                    name: 'remark',
-                    title: '备注',
-                },
-                {
-                    name: 'approver.account',
-                    title: '审批人',
-                },
-                {
-                    name: 'updated_at',
-                    title: '审批时间',
-                    sortField: 'updated_at',
-                },
-                {
-                    name: 'state',
-                    title: '审核状态',
-                    //dataClass: 'btn btn-block btn-success',
-                    callback: 'transState',
-                    sortField: 'state',
-                }
-            ],
-
-            sortOrder: [
-                {
-                    field: 'id',
-                    sortField: 'id',
-                    direction: 'desc',
-                }
-            ],
-
-            css: {
-                table: {
-                    tableClass: 'table table-striped table-bordered',
-                    ascendingIcon: 'glyphicon glyphicon-chevron-up',
-                    descendingIcon: 'glyphicon glyphicon-chevron-down',
-                    handleIcon: 'glyphicon glyphicon-menu-hamburger',
-                    renderIcon: function(classes, options) {
-                        return `<span class="${classes.join(' ')}"></span>`
-                    }
-                },
-                pagination: {
-                    wrapperClass: "pagination pull-right",
-                    activeClass: "btn-primary",
-                    disabledClass: "disabled",
-                    pageClass: "btn btn-border",
-                    linkClass: "btn btn-border",
-                    icons: {
-                        first: "",
-                        prev: "",
-                        next: "",
-                        last: ""
-                    }
-                }
-            },
-
-            moreParams: {},
-        },
-
-        methods: {
-            onPaginationData (paginationData) {
-                //this.$refs.paginationTop.setPaginationData(paginationData)
-                //this.$refs.paginationInfoTop.setPaginationData(paginationData)
-
-                this.$refs.pagination.setPaginationData(paginationData);
-                this.$refs.paginationInfo.setPaginationData(paginationData);
-            },
-            onChangePage (page) {
-                this.$refs.vuetable.changePage(page);
-            },
-            onCellClicked (data, field, event) {
-                //console.log('cellClicked: ', field.name, data.email)
-                //this.$refs.vuetable.toggleDetailRow(data.id);
-            },
-
-            transState (value) {
-                switch(value)
-                {
-                    case 2:
-                        return '<button class="btn btn-block btn-success btn-flat">通过</button>';
-                    case 3:
-                        return '<button class="btn btn-block btn-danger btn-flat">拒绝</button>';
-                }
-            }
-        },
-
-        mounted: function () {
-            var _self = this;
-
-            Hub.$on('filterEvent', function (filterText) {
-                _self.moreParams = {
-                    'filter': filterText,
-                };
-                Vue.nextTick(function (){
-                    _self.$refs.vuetable.refresh();
-                })
-            });
-        },
-    });
-</script>
+<script src="/dist/webpack/admin/stock/apply-history.js"></script>
 </body>
 </html>
