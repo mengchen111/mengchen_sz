@@ -26,57 +26,171 @@
 
         <!-- Main content -->
         <section class="content">
-
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">代理商列表</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <template>
-                        <filter-bar></filter-bar>
-
-                        <!--<div class="pagination pull-left">
-                            <vuetable-pagination-info ref="paginationInfoTop"
-                            ></vuetable-pagination-info>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">代理商列表</h3>
                         </div>
-                        <vuetable-pagination ref="paginationTop"
-                                             :css="css.pagination"
-                                             @vuetable-pagination:change-page="onChangePage"
-                        ></vuetable-pagination>-->
-
-                        <vuetable ref="vuetable"
-                                  :api-url="vuetableUrl"
-                                  :fields="tableFields"
-                                  :sort-order="sortOrder"
-                                  :css="css.table"
-                                  pagination-path=""
-                                  :per-page="15"
-                                  :append-params="moreParams"
-                                  @vuetable:pagination-data="onPaginationData"
-                                  detail-row-component="detail-row"
-                                  @vuetable:cell-clicked="onCellClicked"
-                        ></vuetable>
-
-                        <div class="pagination pull-left">
-                            <vuetable-pagination-info ref="paginationInfo"
-                            ></vuetable-pagination-info>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <filter-bar placeholder="查找代理商账号..."></filter-bar>
+                            <my-vuetable
+                                    :table-url="tableUrl"
+                                    :table-fields="tableFields"
+                                    :callbacks="callbacks"
+                                    detail-row-component="detail-row"
+                            >
+                            </my-vuetable>
                         </div>
-                        <vuetable-pagination ref="pagination"
-                                             :css="css.pagination"
-                                             @vuetable-pagination:change-page="onChangePage"
-                        ></vuetable-pagination>
-                    </template>
-
+                        <!-- /.box-body -->
+                    </div>
                 </div>
-                <!-- /.box-body -->
             </div>
 
         </section>
         <!-- /.content -->
 
-        <!-- User Table Actions -->
-        <!--#include virtual="/ssi/admin/agent-table-actions.html"-->
+        <!-- 给代理商充值 -->
+        <div id="top-up-modal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog" style="width: 380px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal">x</button>
+                        <h3 class="text-center">代理商充值</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" class="form-group" method="POST" action="#" @submit.prevent="topUpAgent">
+                            <div class="form-group has-feedback">
+                                <label>代理级别</label>
+                                <input name="group_name" type="text" class="form-control"
+                                       v-model.trim="activatedRow.group.name" disabled>
+                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>充值类型</label>
+                                <select class="form-control" v-model.trim="topUpData.typeId">
+                                    <option v-for="(value, index) in topUpData.type" :value="index"
+                                            v-if="index == topUpData.typeId" selected>
+                                        {{ value }}
+                                    </option>
+                                    <option v-else :value="index">
+                                        {{ value }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>充值数量</label>
+                                <input name="amount" type="number" required min="1" class="form-control"
+                                       v-model.trim="topUpData.amount">
+                                <span class="glyphicon glyphicon-yen form-control-feedback"></span>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 更改用户信息 -->
+        <div id="agent-info-modal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog" style="width: 380px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal">x</button>
+                        <h3 class="text-center">修改代理商信息</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" class="form-group" method="POST" action="#" @submit.prevent="editAgentInfo">
+                            <div class="form-group has-feedback">
+                                <label>昵称</label>
+                                <input name="name" type="text" class="form-control" required
+                                       v-model.trim="activatedRow.name" placeholder="昵称">
+                                <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>账号</label>
+                                <input name="account" type="text" class="form-control" required
+                                       v-model.trim="activatedRow.account" placeholder="账号">
+                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            </div>
+                            <!--                    <div class="form-group">
+                                                    <label>代理类型</label>
+                                                    <select class="form-control" v-model="activatedRow.group_id">
+                                                        <option v-for="(agent, index) in agentType" :value="index"
+                                                                v-if="agent == agentType[activatedRow.group_id]" selected>
+                                                            {{ agent }}
+                                                        </option>
+                                                        <option v-else :value="index">
+                                                            {{ agent }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label>上级代理</label>
+                                                    <input name="parent_account" type="parent_account" class="form-control" v-validate="'required|min: 6'"
+                                                           v-model.trim="activatedRow.parent.name" placeholder="上级代理账号名">
+                                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                                    <span v-show="errors.has('parent_account')" class="text-danger">{{ errors.first('parent_account') }}</span>
+                                                </div>-->
+
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 更新代理商密码 -->
+        <div id="agent-password-modal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog" style="width: 380px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal">x</button>
+                        <h3 class="text-center">修改代理商密码</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" class="form-group" method="POST" action="#" @submit.prevent="updateAgentPassword">
+                            <div class="form-group has-feedback">
+                                <input name="password" type="password" class="form-control" required
+                                       placeholder="代理商密码" v-model.trim="changePassword.password">
+                                <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 删除代理商 -->
+        <div id="delete-agent-modal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog" style="width: 360px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal">x</button>
+                        <h3 class="text-center text-danger">确定删除此代理商？</h3>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-flat btn-danger btn-lg pull-left" @click="deleteAgent">
+                            删除
+                        </button>
+                        <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
+                            取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
     <!-- /.content-wrapper -->
 
@@ -86,391 +200,6 @@
 </div>
 <!-- ./wrapper -->
 
-<script>
-    Vue.use(Vuetable);      //注册vuetable-2插件
-    var Hub = new Vue();    //event hub，事件中心，用于非父子组件中的事件传递
-
-    //注册处理每行数据的组件
-    var tableActions = {
-        template: `
-                <div class="table-actions">
-                    <button class="btn btn-default" data-toggle="modal" data-target="#top-up-modal"
-                        @click="topUpAgentAction(rowData)" title="充卡"><i class="glyphicon glyphicon-credit-card"></i>
-                    </button>
-                    <button class="btn btn-default" data-toggle="modal" data-target="#agent-info-modal"
-                        @click="editInfoAction(rowData)" title="更新代理商信息"><i class="glyphicon glyphicon-edit"></i>
-                    </button>
-                    <button class="btn btn-default" data-toggle="modal" data-target="#agent-password-modal"
-                        @click="changePasswordAction(rowData)" title="更改密码"><i class="glyphicon glyphicon-pencil"></i>
-                    </button>
-                    <button class="btn btn-default" data-toggle="modal" data-target="#delete-agent-modal"
-                        @click="deleteAgentAction(rowData)" title="删除代理商"><i class="glyphicon glyphicon-trash"></i>
-                    </button>
-                </div>`,
-        props: {
-            rowData: {
-                type: Object,
-                required: true
-            },
-            rowIndex: {
-                type: Number
-            }
-        },
-        methods: {
-            topUpAgentAction (data) {
-                Hub.$emit('topUpAgentEvent', data);
-            },
-            editInfoAction (data) {
-                Hub.$emit('editInfoEvent', data);
-            },
-            changePasswordAction (data) {
-                Hub.$emit('changeAgentPasswordEvent', data);
-            },
-            deleteAgentAction (data) {
-                Hub.$emit('deleteAgentEvent', data);
-            },
-        }
-    }
-    Vue.component('table-actions', tableActions);
-
-    //注册Detail Row，达到点击每行显示更多信息的效果
-    var detailRow = {
-        template: `
-            <div @click="onClick">
-              <div class="">
-                <label>创建时间:&nbsp;&nbsp;</label>
-                <span>{{rowData.created_at}}</span>
-              </div>
-              <div class="">
-                <label>最后登录时间:&nbsp;&nbsp;</label>
-                <span>{{rowData.updated_at}}</span>
-              </div>
-            </div>`,
-        props: {
-            rowData: {
-                type: Object,
-                required: true
-            },
-            rowIndex: {
-                type: Number
-            }
-        },
-        data: function () {
-            return {
-                coins: null,
-            }
-        },
-        methods: {
-            onClick (event) {
-                //console.log('my-detail-row: on-click', event.target)
-            }
-        },
-    }
-    Vue.component('detail-row', detailRow);
-
-    //注册搜索条组件
-    var filterBar = {
-        template: `
-            <div class="row" style="margin-right: 50px;margin-bottom: 8px;">
-                <div class="input-group col-xs-4 pull-right">
-                      <input type="text" v-model.trim="filterText" class="form-control" @keyup.enter="doFilter" placeholder="查找...">
-                      <span class="input-group-btn">
-                        <button class="btn btn-flat" @click="doFilter">
-                            <i class="glyphicon glyphicon-search"></i>
-                        </button>
-                      </span>
-                </div>
-            </div>`,
-        data: function () {
-            return {
-                filterText: '',
-            }
-        },
-        methods: {
-            doFilter () {
-                Hub.$emit('filterEvent', this.filterText);
-            },
-        }
-    };
-    Vue.component('filter-bar', filterBar);
-
-    var app = new Vue({
-        el: '#app',
-        data: {
-            vuetableUrl: '/admin/api/agent',
-
-            agentType: {
-                2: '总代理',
-                3: '钻石代理',
-                4: '金牌代理'
-            },
-
-            topUpData: {
-                type: {
-                    1: '房卡',
-                    2: '金币'
-                },
-                typeId: 1,
-                amount: null,
-            },
-
-            activatedRow: {
-                group: '',
-                parent: '',
-                topUpType: 1,
-            },       //待编辑的行
-
-            changePassword: {       //修改用户密码
-                password: '',
-            },
-
-            deleteAgentResponse: {   //删除用户
-                message: '',
-                ifSuccess: false,
-            },
-
-            tableFields: [
-                {
-                    name: 'id',
-                    title: 'ID',
-                    sortField: 'id',
-                },
-                {
-                    name: 'name',
-                    title: '昵称',
-                },
-                {
-                    name: 'account',
-                    title: '登录账号',
-                    sortField: 'account',
-                },
-                {
-                    name: 'group.name',
-                    title: '代理级别',
-                    sortField: 'group_id'
-                },
-                {
-                    name: 'parent.account',
-                    title: '上级代理',
-                },
-                {
-                    name: 'inventorys',
-                    title: '房卡数量',
-                    callback: 'getCardsCount'
-                },
-                {
-                    name: 'inventorys',
-                    title: '金币数量',
-                    callback: 'getCoinsCount'
-                },
-                {
-                    name: '__component:table-actions',
-                    title: '操作',
-                    titleClass: 'text-center',
-                    dataClass: 'text-center',
-                },
-            ],
-
-            sortOrder: [
-                {
-                    field: 'id',
-                    sortField: 'id',
-                    direction: 'desc',
-                }
-            ],
-
-            css: {
-                table: {
-                    tableClass: 'table table-striped table-bordered',
-                    ascendingIcon: 'glyphicon glyphicon-chevron-up',
-                    descendingIcon: 'glyphicon glyphicon-chevron-down',
-                    handleIcon: 'glyphicon glyphicon-menu-hamburger',
-                    renderIcon: function(classes, options) {
-                        return `<span class="${classes.join(' ')}"></span>`
-                    }
-                },
-                pagination: {
-                    wrapperClass: "pagination pull-right",
-                    activeClass: "btn-primary",
-                    disabledClass: "disabled",
-                    pageClass: "btn btn-border",
-                    linkClass: "btn btn-border",
-                    icons: {
-                        first: "",
-                        prev: "",
-                        next: "",
-                        last: ""
-                    }
-                }
-            },
-
-            moreParams: {},
-        },
-
-        methods: {
-            onPaginationData (paginationData) {
-                //this.$refs.paginationTop.setPaginationData(paginationData)
-                //this.$refs.paginationInfoTop.setPaginationData(paginationData)
-
-                this.$refs.pagination.setPaginationData(paginationData);
-                this.$refs.paginationInfo.setPaginationData(paginationData);
-            },
-            onChangePage (page) {
-                this.$refs.vuetable.changePage(page);
-            },
-            onCellClicked (data, field, event) {
-                //console.log('cellClicked: ', field.name, data.email)
-                this.$refs.vuetable.toggleDetailRow(data.id);
-            },
-
-            getCardsCount (inventorys) {
-                if (0 === inventorys.length) {
-                    return null;
-                }
-                for (var inventory of inventorys) {
-                    if (inventory.item.name === '房卡') {
-                        return inventory.stock;
-                    }
-                }
-            },
-            getCoinsCount (inventorys) {
-                if (0 === inventorys.length) {
-                    return null;
-                }
-                for (var inventory of inventorys) {
-                    if (inventory.item.name === '金币') {
-                        return inventory.stock;
-                    }
-                }
-            },
-            topUpAgent () {
-                var _self = this;
-
-                axios({
-                    method: 'POST',
-                    url: `/admin/api/top-up/agent/${_self.activatedRow.account}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
-                    validateStatus: function (status) {
-                        return status == 200 || status == 422;
-                    }
-                })
-                    .then(function (response) {
-                        if (response.status === 422) {
-                            alert(JSON.stringify(response.data))
-                        } else {
-                            response.data.error ? alert(response.data.error) : alert(response.data.message);
-                            _self.topUpData.amount = null;
-                        }
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
-            },
-            editAgentInfo () {
-                var _self = this;
-
-                axios({
-                    method: 'PUT',
-                    url: '/admin/api/agent/' + _self.activatedRow.id,
-                    data: _self.activatedRow,
-                    timeout: 5000,                          //超时时间
-                    xsrfCookieName: 'XSRF-TOKEN',
-                    xsrfHeaderName: 'X-XSRF-TOKEN',
-                    validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
-                        return status >= 200 && status < 500 && status != 404;
-                    }
-                })
-                    .then(function (response) {
-                        if (response.status === 422) {
-                            return alert(JSON.stringify(response.data));
-                        }
-                        return alert(response.data.message);
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
-            },
-            updateAgentPassword () {
-                var _self = this;
-
-                axios({
-                    method: 'PUT',
-                    url: '/admin/api/agent/pass/' + _self.activatedRow.id,
-                    data: _self.changePassword,
-                    timeout: 5000,                          //超时时间
-                    xsrfCookieName: 'XSRF-TOKEN',
-                    xsrfHeaderName: 'X-XSRF-TOKEN',
-                    validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
-                        return status >= 200 && status < 500 && status != 404;
-                    }
-                })
-                    .then(function (response) {
-                        if (response.status === 422) {
-                            return alert(JSON.stringify(response.data));
-                        }
-                        return alert(response.data.message);
-                    })
-                    .catch(function (err) {
-                        console.log(err);
-                        alert(err);
-                    });
-            },
-            deleteAgent () {
-                var _self = this;
-
-                axios({
-                    method: 'DELETE',
-                    url: '/admin/api/agent/' + _self.activatedRow.id,
-                    timeout: 5000,                          //超时时间
-                    xsrfCookieName: 'XSRF-TOKEN',
-                    xsrfHeaderName: 'X-XSRF-TOKEN',
-                })
-                    .then(function (response) {
-                        _self.deleteAgentResponse.ifSuccess = true;
-
-                        if (response.data.error) {
-                            return alert(response.data.error);
-                        }
-                        _self.deleteAgentResponse.message = response.data.message;
-
-                        //删除完成用户之后重新刷新表格数据，避免被删除用户继续留存在表格中
-                        Vue.nextTick(function (){
-                            _self.$refs.vuetable.refresh();
-                        })
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
-            },
-        },
-
-        mounted: function () {
-            var _self = this;
-
-            Hub.$on('topUpAgentEvent', function (data) {
-                _self.activatedRow = data;
-            });
-            Hub.$on('editInfoEvent', function (data) {
-                _self.activatedRow = data;
-            });
-            Hub.$on('changeAgentPasswordEvent', function (data) {
-                _self.activatedRow = data;
-            });
-            Hub.$on('deleteAgentEvent', function (data) {
-                _self.activatedRow = data;
-            });
-            Hub.$on('filterEvent', function (filterText) {
-                _self.moreParams = {
-                    'filter': filterText,
-                };
-                Vue.nextTick(function (){
-                    _self.$refs.vuetable.refresh();
-                })
-            });
-        },
-    });
-</script>
+<script src="/dist/webpack/admin/agent/list.js"></script>
 </body>
 </html>
