@@ -27,7 +27,7 @@
         <section class="content">
 
             <div class="box" style="background-color: #ecf0f5;">
-                <div class="box-header">
+                <div class="box-header with-border">
                     <h3 class="box-title">个人信息</h3>
                 </div>
                 <!-- /.box-header -->
@@ -135,59 +135,6 @@
 </div>
 <!-- ./wrapper -->
 
-<script>
-    var app = new Vue({
-        el: '#app',
-        data: {
-            formData: {},
-            currentAgentInfo: {
-                parent: {},     //需要提前定义好，不然当访问页面时，未加载ajax之前获取不到属性名报错
-                group: {},
-            },
-        },
-        methods: {
-            editInfo () {
-                var _self = this;
-                
-                axios({
-                    method: 'PUT',
-                    url: '/agent/api/self/info',
-                    data: _self.currentAgentInfo,
-                    validateStatus: function (status) {
-                        return status == 200 || status == 422;
-                    }
-                })
-                    .then(function (response) {
-                        if (response.status === 422) {
-                            alert(JSON.stringify(response.data))
-                        } else {
-                            response.data.error ? alert(response.data.error) : alert('信息更新成功');
-
-                            //清空表单数据
-                            for (var index of Object.keys(_self.formData)) {
-                                _self.formData[index] = '';
-                            }
-                        }
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
-            }
-        },
-        created: function () {
-            var _self = this;
-
-            axios({
-                method: 'GET',
-                url: '/api/info/',
-            })
-                .then(function (response) {
-                    _self.currentAgentInfo = response.data;
-
-                })
-        }
-    })
-</script>
+<script src="/dist/webpack/agent/info.js"></script>
 </body>
 </html>
