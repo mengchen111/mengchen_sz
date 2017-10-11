@@ -26,47 +26,45 @@
 
         <!-- Main content -->
         <section class="content">
-
-    <div class="box box-primary col-xs-12">
-        <div class="box-header with-border">
-            <h3 class="box-title">申请库存</h3>
-        </div>
-        <!-- /.box-header -->
-        <form role="form" id="stock-apply-form" class="form-group col-xs-6" method="POST"
-              action="#" @submit.prevent="stockApply">
-            <div class="box-body">
-                <div class="form-group">
-                    <label>道具类型</label>
-                    <select class="form-control" v-model.trim="stockApplyData.item_id">
-                        <option v-for="(value, index) in stockApplyData.type" :value="index"
-                                v-if="index == stockApplyData.item_id" selected>
-                            {{ value }}
-                        </option>
-                        <option v-else :value="index">
-                            {{ value }}
-                        </option>
-                    </select>
+            <div class="box box-primary col-xs-12">
+                <div class="box-header with-border">
+                    <h3 class="box-title">申请库存</h3>
                 </div>
-                <div class="form-group has-feedback">
-                    <label>申请数量</label>
-                    <input name="amount" type="number" min="1" required class="form-control" placeholder="申请数量"
-                           v-model.trim="stockApplyData.amount">
-                    <span class="glyphicon glyphicon-yen form-control-feedback"></span>
-                </div>
-                <div class="form-group has-feedback">
-                    <label>备注</label>
-                    <input name="remark" type="text" class="form-control" placeholder="备注"
-                           v-model.trim="stockApplyData.remark">
-                    <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
-                </div>
+                <!-- /.box-header -->
+                <form role="form" class="form-group col-xs-6" method="POST"
+                      action="#" @submit.prevent="stockApply">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>道具类型</label>
+                            <select class="form-control" v-model.trim="stockApplyData.item_id">
+                                <option v-for="(value, index) in stockApplyData.type" :value="index"
+                                        v-if="index == stockApplyData.item_id" selected>
+                                    {{ value }}
+                                </option>
+                                <option v-else :value="index">
+                                    {{ value }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label>申请数量</label>
+                            <input name="amount" type="number" min="1" required class="form-control" placeholder="申请数量"
+                                   v-model.trim="stockApplyData.amount">
+                            <span class="glyphicon glyphicon-yen form-control-feedback"></span>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label>备注</label>
+                            <input name="remark" type="text" class="form-control" placeholder="备注"
+                                   v-model.trim="stockApplyData.remark">
+                            <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- /.box-body -->
             </div>
-        </form>
-        <!-- /.box-body -->
-    </div>
-
 
         </section>
         <!-- /.content -->
@@ -79,48 +77,6 @@
 </div>
 <!-- ./wrapper -->
 
-<script>
-    var playerTopUpApp = new Vue({
-        el: '#stock-apply-form',
-        data: {
-            stockApplyData: {
-                type: {
-                    1: '房卡',
-                    2: '金币'
-                },
-                item_id: 1,
-                amount: null,
-                remark: null,
-            },
-        },
-        methods: {
-            stockApply () {
-                var _self = this;
-
-                axios({
-                    method: 'POST',
-                    url: '/agent/api/stock',
-                    data: _self.stockApplyData,
-                    validateStatus: function (status) {
-                        return status == 200 || status == 422;
-                    }
-                })
-                    .then(function (response) {
-                        if (response.status === 422) {
-                            alert(JSON.stringify(response.data))
-                        } else {
-                            response.data.error ? alert(response.data.error) : alert(response.data.message);
-                            _self.stockApplyData.amount = null;
-                            _self.stockApplyData.remark = null;
-                        }
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
-            }
-        }
-    });
-</script>
+<script src="/dist/webpack/agent/stock/apply-request.js"></script>
 </body>
 </html>

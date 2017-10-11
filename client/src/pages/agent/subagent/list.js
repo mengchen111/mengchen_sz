@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import axios from 'axios'
-import FilterBar from '../../../components/FilterBar.vue'
+import _ from 'lodash'
 import MyVuetable from '../../../components/MyVuetable.vue'
+import FilterBar from '../../../components/FilterBar.vue'
 import TableActions from './components/TableActions.vue'
 import DetailRow from './components/DetailRow.vue'
 
@@ -16,11 +17,6 @@ new Vue({
   },
   data: {
     eventHub: new Vue(),
-    activatedRow: {
-      group: '',
-      parent: '',
-      topUpType: 1,
-    },       //待编辑的行
     agentType: {
       2: '总代理',
       3: '钻石代理',
@@ -34,15 +30,17 @@ new Vue({
       typeId: 1,
       amount: null,
     },
-    changePassword: {       //修改用户密码
-      password: '',
-    },
-    topUpApiPrefix: '/admin/api/top-up/agent',
-    editApiPrefix: '/admin/api/agent',
-    updatePassApiPrefix: '/admin/api/agent/pass',
-    deleteApiPrefix: '/admin/api/agent',
+    activatedRow: {
+      group: '',
+      parent: '',
+      topUpType: 1,
+      password: false,
+    },                 //待编辑的行
+    topUpApiPrefix: '/agent/api/top-up/child',
+    editInfoApiPrefix: '/agent/api/subagent',
+    deleteApiPrefix: '/agent/api/subagent',
 
-    tableUrl: '/admin/api/agent',
+    tableUrl: '/agent/api/subagent',
     tableFields: [
       {
         name: 'id',
@@ -85,7 +83,7 @@ new Vue({
       },
     ],
     callbacks: {
-      getCardsCount(inventorys) {
+      getCardsCount (inventorys) {
         if (0 === inventorys.length) {
           return null
         }
@@ -95,7 +93,7 @@ new Vue({
           }
         }
       },
-      getCoinsCount(inventorys) {
+      getCoinsCount (inventorys) {
         if (0 === inventorys.length) {
           return null
         }
@@ -109,8 +107,9 @@ new Vue({
   },
 
   methods: {
-    topUpAgent() {
+    topUpChild () {
       let _self = this
+
       axios({
         method: 'POST',
         url: `${_self.topUpApiPrefix}/${_self.activatedRow.account}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
@@ -128,50 +127,42 @@ new Vue({
         })
     },
 
-    editAgentInfo() {
+    editChildInfo () {
       let _self = this
+
+      let data = _self.activatedRow.password ? _self.activatedRow
+        : _.omit(_self.activatedRow, 'password')
+
       axios({
         method: 'PUT',
-        url: `${_self.editApiPrefix}/${_self.activatedRow.id}`,
-        data: _self.activatedRow,
+        url: `${_self.editInfoApiPrefix}/${_self.activatedRow.id}`,
+        data: data,
         validateStatus: function (status) {
           return status === 200 || status === 422
         },
       })
         .then(function (response) {
           if (response.status === 422) {
+            _self.activatedRow.password = false
             return alert(JSON.stringify(response.data))
           }
-          return alert(response.data.message)
+          _self.activatedRow.password = false
+          return alert(JSON.stringify(response.data.message))
         })
     },
 
-    updateAgentPassword() {
+    deleteAgent () {
       let _self = this
-      axios({
-        method: 'PUT',
-        url: `${_self.updatePassApiPrefix}/${_self.activatedRow.id}`,
-        data: _self.changePassword,
-        validateStatus: function (status) {
-          return status === 200 || status === 422
-        },
-      })
-        .then(function (response) {
-          if (response.status === 422) {
-            return alert(JSON.stringify(response.data))
-          }
-          return alert(response.data.message)
-        })
-    },
 
-    deleteAgent() {
-      let _self = this
       axios({
         method: 'DELETE',
         url: `${_self.deleteApiPrefix}/${_self.activatedRow.id}`,
       })
         .then(function (response) {
-          response.data.error ? alert(response.data.error) : alert(response.data.message)
+          if (response.data.error) {
+            return alert(response.data.error)
+          }
+          alert(response.data.message)
 
           //删除完成用户之后重新刷新表格数据，避免被删除用户继续留存在表格中
           _self.$root.eventHub.$emit('vuetableRefresh')
@@ -181,9 +172,8 @@ new Vue({
 
   mounted: function () {
     let _self = this
-    this.$root.eventHub.$on('topUpAgentEvent', (data) => _self.activatedRow = data)
+    this.$root.eventHub.$on('topUpChildEvent', (data) => _self.activatedRow = data)
     this.$root.eventHub.$on('editInfoEvent', (data) => _self.activatedRow = data)
-    this.$root.eventHub.$on('changeAgentPasswordEvent', (data) => _self.activatedRow = data)
     this.$root.eventHub.$on('deleteAgentEvent', (data) => _self.activatedRow = data)
   },
 })
