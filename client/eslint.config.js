@@ -33,4 +33,9 @@ module.exports = {
     'space-before-function-paren': 'warn',      //函数声明的参数左括号之前需要一个空格
     'func-call-spacing': ['error', 'never'],    //函数调用时，函数与参数的括号间不允许存在空格
   },
+  globals: {                //定义的变量不会触发no-undef报警
+    '_': false,
+    'Vue': false,
+    'axios': false,
+  }
 }
