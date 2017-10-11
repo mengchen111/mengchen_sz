@@ -10,15 +10,15 @@
 supervisor配置文件模版：
 [program:laravel-queue-worker]
 process_name=%(program_name)s_%(process_num)02d
-;directory=/data/www/mengchen_new   ;低版本不支持此指令
-command=/usr/bin/php /data/www/mengchen_new/artisan queue:work --delay=3 --sleep=1 --tries=3 --timeout=60
+directory=/data/www/mengchen_new_sz   ;低版本不支持此指令
+command=/usr/bin/php /data/www/mengchen_new_sz/artisan queue:work --delay=3 --sleep=1 --tries=3 --timeout=60
 autostart=true
 autorestart=true
 startretries=3
-user=www
-numprocs=8
+user=nginx
+numprocs=1
 redirect_stderr=true
-stdout_logfile=/data/log/supervisor/%(program_name).log
+stdout_logfile=/data/log/supervisor/%(program_name)s.log
 stdout_logfile_maxbytes=100MB
 stdout_logfile_backups=10
 ```  
@@ -47,6 +47,7 @@ URI: /test/index.html
 cd ${code_ducument_root}
 git pull                #获取最新代码
 composer install        #安装laravle依赖
+cp .env.example .env    #配置文件
 chmod +x vendor/phpunit/phpunit/phpunit #添加执行权限
 ./vendor/bin/phpunit    #代码测试
 
