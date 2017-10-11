@@ -79,7 +79,14 @@ const config = {
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin()    //热加载（Hot Module Replacement）插件
+    new webpack.HotModuleReplacementPlugin(),    //热加载（Hot Module Replacement）插件
+    new webpack.ProvidePlugin({
+      Vue: ['vue/dist/vue.esm.js', 'default'],
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      $: 'jquery',
+      moment: 'moment',
+    })
   ],
 }
 

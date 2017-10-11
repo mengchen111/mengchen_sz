@@ -12,7 +12,7 @@
   import datePicker from 'vue-bootstrap-datetimepicker'
 
   // Import date picker css
-  import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css'
+  import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'
 
   export default {
     props: {
