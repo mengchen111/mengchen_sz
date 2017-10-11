@@ -5,9 +5,9 @@
   "auther": "liudian",
   "private": true,
   "scripts": {
-    "dev": "webpack --progress --colors --config ./webpack.dev.config.js",
-    "build": "webpack --progress --colors --bail",
-    "server": "webpack-dev-server --config ./webpack.dev.config.js"
+    "dev": "webpack --progress --colors --profile --config ./webpack.dev.config.js",
+    "build": "webpack --progress --colors --bail --profile",
+    "server": "webpack-dev-server --watch --progress --colors --config ./webpack.dev.config.js"
   },
   "dependencies": {
     "lodash": "^4.17.4",
