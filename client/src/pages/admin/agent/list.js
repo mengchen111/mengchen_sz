@@ -85,7 +85,7 @@ new Vue({
       },
     ],
     callbacks: {
-      getCardsCount(inventorys) {
+      getCardsCount (inventorys) {
         if (0 === inventorys.length) {
           return null
         }
@@ -95,7 +95,7 @@ new Vue({
           }
         }
       },
-      getCoinsCount(inventorys) {
+      getCoinsCount (inventorys) {
         if (0 === inventorys.length) {
           return null
         }
@@ -109,7 +109,7 @@ new Vue({
   },
 
   methods: {
-    topUpAgent() {
+    topUpAgent () {
       let _self = this
       axios({
         method: 'POST',
@@ -128,7 +128,7 @@ new Vue({
         })
     },
 
-    editAgentInfo() {
+    editAgentInfo () {
       let _self = this
       axios({
         method: 'PUT',
@@ -146,7 +146,7 @@ new Vue({
         })
     },
 
-    updateAgentPassword() {
+    updateAgentPassword () {
       let _self = this
       axios({
         method: 'PUT',
@@ -164,7 +164,7 @@ new Vue({
         })
     },
 
-    deleteAgent() {
+    deleteAgent () {
       let _self = this
       axios({
         method: 'DELETE',

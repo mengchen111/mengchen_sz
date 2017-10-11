@@ -17,10 +17,10 @@
       },
     },
     methods: {
-      applyApproveAction(data) {
+      applyApproveAction (data) {
         this.$root.eventHub.$emit('applyApproveEvent', data)
       },
-      applyDeclineAction(data) {
+      applyDeclineAction (data) {
         this.$root.eventHub.$emit('applyDeclineEvent', data)
       },
     },

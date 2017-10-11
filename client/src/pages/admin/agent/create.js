@@ -10,7 +10,7 @@ new Vue({
     agentCreateApi: '/admin/api/agent',
   },
   methods: {
-    createAgent() {
+    createAgent () {
       let _self = this
 
       axios({

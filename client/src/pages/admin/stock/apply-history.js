@@ -61,7 +61,7 @@ new Vue({
       },
     ],
     callbacks: {
-      transState(value) {
+      transState (value) {
         switch (value) {
           case 2:
             return '<button class="btn btn-block btn-success btn-flat">通过</button>'

@@ -27,16 +27,16 @@
       },
     },
     methods: {
-      topUpAgentAction(data) {
+      topUpAgentAction (data) {
         this.$root.eventHub.$emit('topUpAgentEvent', data)
       },
-      editInfoAction(data) {
+      editInfoAction (data) {
         this.$root.eventHub.$emit('editInfoEvent', data)
       },
-      changePasswordAction(data) {
+      changePasswordAction (data) {
         this.$root.eventHub.$emit('changeAgentPasswordEvent', data)
       },
-      deleteAgentAction(data) {
+      deleteAgentAction (data) {
         this.$root.eventHub.$emit('deleteAgentEvent', data)
       },
     },

@@ -19,7 +19,7 @@
       },
     },
     methods: {
-      topUpPlayerAction(data) {
+      topUpPlayerAction (data) {
         this.$root.eventHub.$emit('topUpPlayerEvent', data)
       },
     },

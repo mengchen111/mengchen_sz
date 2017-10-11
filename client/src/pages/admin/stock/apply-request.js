@@ -16,7 +16,7 @@ new Vue({
     },
   },
   methods: {
-    stockApply() {
+    stockApply () {
       let _self = this
 
       axios({
