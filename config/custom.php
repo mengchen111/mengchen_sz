@@ -23,5 +23,6 @@ return [
     'game_server_api_topUp' => 'recharge.php',      //玩家充值
 
     //游戏服数据缓存时的key
+    'game_server_cache_duration' => 3,              //数据缓存时间，3min
     'game_server_cache_players' => 'game:players'   //所有玩家
 ];

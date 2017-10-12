@@ -42,6 +42,8 @@ Route::group([
 
     Route::get('game/player', 'Game\PlayerController@show');
 
+    Route::get('game/statement', 'Game\StatementController@getIncreasedTotalPlayers');  //TODO 临时
+
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');
     Route::get('stock/history', 'StockController@applyHistory');

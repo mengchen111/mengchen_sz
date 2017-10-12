@@ -225,7 +225,7 @@ class DataMigrator
         $gameServer = new GameServer();
 
         try {
-            $newPlatformUserList = $gameServer->request('GET', 'users.php')['accounts'];
+            $newPlatformUserList = $gameServer->request('GET', config('custom.game_server_api_users'))['accounts'];
         } catch (\Exception $e) {
             throw new CustomException($e->getMessage());
         }

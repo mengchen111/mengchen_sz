@@ -8,18 +8,33 @@
 
 namespace App\Http\Controllers\Admin\Game;
 
-use App\Services\Game\GameServer;
-use App\Http\Controllers\Admin\Game\PlayerController;
+use App\Services\Game\PlayerService;
+use Illuminate\Support\Facades\Cache;
 
 class StatementController
 {
-    public function getTotalUsers()
+    //累计玩家总数
+    public function getTotalPlayers()
     {
+        return count($this->getAllPlayers());
+    }
+
+    //当日新增玩家数
+    public function getIncreasedTotalPlayers()
+    {
+        return $players = $this->getAllPlayers();
 
     }
 
-    protected function getAllUsers()
+    protected function getAllPlayers()
     {
+        $cacheKey = config('custom.game_server_cache_players');
+        $cacheDuration = config('custom.game_server_cache_duration');
 
+        $players = Cache::remember($cacheKey, $cacheDuration, function () {
+            return PlayerService::getAllPlayers();
+        });
+
+        return $players;
     }
 }

@@ -39,8 +39,11 @@ class PlayerController extends Controller
             if ($request->has('filter')) {
                 $data[] = PlayerService::getOnePlayer($request->filter);
             } else {
+                $cacheKey = config('custom.game_server_cache_players');
+                $cacheDuration = config('custom.game_server_cache_duration');
+
                 //玩家列表缓存三分钟
-                $data = Cache::remember(config('custom.game_server_cache_players'), 3, function () {
+                $data = Cache::remember($cacheKey, $cacheDuration, function () {
                     return PlayerService::getAllPlayers();
                 });
                 krsort($data);
