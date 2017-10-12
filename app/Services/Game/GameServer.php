@@ -105,8 +105,11 @@ class GameServer
 
     protected function checkResult($result)
     {
-        if (empty($result) or $result['code'] < 0) {
+        if (empty($result)) {
             throw new GameServerException('调用接口成功，但是游戏服返回的结果错误：' . json_encode($result));
+        }
+        if ($result['code'] < 0) {
+            throw new GameServerException('调用接口成功，但是游戏服返回的结果：' . $result['info']);
         }
         return true;
     }

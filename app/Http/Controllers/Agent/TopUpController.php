@@ -14,6 +14,7 @@ use App\Models\OperationLogs;
 use Illuminate\Support\Facades\DB;
 use App\Services\Game\GameServer;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class TopUpController extends Controller
 {
@@ -160,6 +161,8 @@ class TopUpController extends Controller
         }
 
         $this->topUp4Player($request, $provider, $player, $type, $amount);
+        //清空玩家列表缓存
+        Cache::pull(config('custom.game_server_cache_players'));
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '代理商给玩家充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
