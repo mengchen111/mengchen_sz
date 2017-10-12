@@ -100,7 +100,6 @@ class PlayerController extends Controller
 
     protected function paginateData($data)
     {
-        $paginator = new Paginator($this->per_page, $this->page);
-        return $paginator->paginate($data);
+        return Paginator::paginate($data, $this->per_page, $this->page);
     }
 }

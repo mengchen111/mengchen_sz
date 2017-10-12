@@ -13,21 +13,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class Paginator
 {
-    protected $per_page = 15;   //每页数据
-    protected $page = 1;        //当前页
-
-    public function __construct($per_page = null, $page = null)
-    {
-        $this->per_page = $per_page ?: $this->per_page;
-        $this->page = $page ?: $this->page;
-    }
-
     //给数组分页
-    public function paginate(Array $data)
+    public static function paginate(Array $data, $per_page = 15, $page = 1)
     {
-        $offset = $this->per_page * ($this->page - 1);
-        $currentPageData = array_slice($data, $offset, $this->per_page);
-        $paginatedData = new LengthAwarePaginator($currentPageData, count($data), $this->per_page, $this->page);
+        $offset = $per_page * ($page - 1);
+        $currentPageData = array_slice($data, $offset, $per_page);
+        $paginatedData = new LengthAwarePaginator($currentPageData, count($data), $per_page, $page);
         return $paginatedData;
     }
 }
