@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import axios from 'axios'
+import '../common.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import FilterBar from '../../../components/FilterBar.vue'
 import TableActions from './components/TableActions.vue'

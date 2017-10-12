@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import axios from 'axios'
+import './common.js'
 
 new Vue({
   el: '#app',
