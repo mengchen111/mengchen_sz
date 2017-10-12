@@ -16,4 +16,9 @@ return [
     //游戏服接口地址
     'game_server_api_address' => env('GAME_SERVER_API_ADDRESS'),
     'game_server_partner_id' => env('GAME_SERVER_PARTNER_ID'),
+
+    //游戏服的接口uri
+    'game_server_api_users' => 'users.php',     //所有玩家列表
+    'game_server_api_user' => 'user.php',       //查询单个玩家信息
+    'game_server_api_topUp' => 'recharge.php'   //玩家充值
 ];

@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\Admin\Game;
 
-use App\Services\GameServer;
+use App\Services\Game\GameServer;
 use App\Http\Controllers\Admin\Game\PlayerController;
 
 class StatementController

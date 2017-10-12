@@ -6,7 +6,7 @@
  * Time: 16:40
  */
 
-namespace App\Services;
+namespace App\Services\Game;
 
 use GuzzleHttp;
 use App\Exceptions\GameServerException;

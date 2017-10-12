@@ -13,7 +13,7 @@ use App\Models\OperationLogs;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
 use App\Services\Paginator;
-use App\Services\GameServer;
+use App\Services\Game\GameServer;
 use App\Exceptions\CustomException;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -23,8 +23,6 @@ class PlayerController extends Controller
     protected $per_page = 15;
     protected $page = 1;
     protected $order = ['uid', 'desc'];
-    protected $userListUri = 'users.php';
-    protected $userSearchUri = 'user.php';
 
     public function __construct(Request $request)
     {
@@ -59,7 +57,7 @@ class PlayerController extends Controller
         $gameServer = new GameServer();
 
         try {
-            $result = $gameServer->request('GET', 'users.php');
+            $result = $gameServer->request('GET', config('custom.game_server_api_users'));
             return $this->decodeNickname($result['accounts']);
         } catch (\Exception $e) {
             throw new CustomException($e->getMessage());
@@ -71,7 +69,7 @@ class PlayerController extends Controller
         $gameServer = new GameServer();
 
         try {
-            $result =  $gameServer->request('POST', 'user.php', [
+            $result =  $gameServer->request('POST', config('custom.game_server_api_user'), [
                 'uid' => $uid,
                 'timestamp' => Carbon::now()->timestamp
             ]);

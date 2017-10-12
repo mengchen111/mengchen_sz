@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\DB;
-use App\Services\GameServer;
+use App\Services\Game\GameServer;
 use Carbon\Carbon;
 
 class TopUpController extends Controller
@@ -201,7 +201,7 @@ class TopUpController extends Controller
         $gameServer = new GameServer();
 
         try {
-            return $gameServer->request('POST', 'recharge.php', $params);
+            return $gameServer->request('POST', config('custom.game_server_api_topUp'), $params);
         } catch (\Exception $e) {
             throw new CustomException($e->getMessage());
         }
