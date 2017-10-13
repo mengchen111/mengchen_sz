@@ -22,6 +22,7 @@ class StatementController
         //return StatementDailyService::getTotalPlayers();
         $statementDailyService = new StatementDailyService();
         $date = '2017-09-22';
+        return $statementDailyService->getRemainedData($date, 1);
         //return $statementDailyService->getRemainedData($date, Carbon::parse($date)->subDay(1)->toDateString());
         //return $statementDailyService->getCardBoughtData($date);
         //return $statementDailyService->getCardBoughtSum();

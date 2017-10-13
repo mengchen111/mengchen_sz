@@ -48,8 +48,9 @@ class StatementDailyService
      * @param string $createDate
      * @return string '2|4|50.00 - 留存玩家数|创建日玩家数|百分比(保留两位小数)'
      */
-    public function getRemainedData($searchDate, $createDate)
+    public function getRemainedData($searchDate, $days)
     {
+        $createDate = Carbon::parse($searchDate)->subDay($days)->toDateString();
         $remainedPlayersAmount = count($this->getRemainedPlayers($searchDate, $createDate));
         $yesterdayIncrementalPlayersAmount = $this->getIncrementalPlayersAmount($createDate);
 
@@ -87,6 +88,11 @@ class StatementDailyService
         //当日有过购卡记录的玩家总数
         $cardBoughtPlayersAmount = $players->groupBy('player')->count();
 
+        if ($cardBoughtPlayersAmount === 0) {
+            return "${cardBoughtAmount}|${cardBoughtPlayersAmount}|"
+                . '无玩家购卡';
+        }
+
         return "${cardBoughtAmount}|${cardBoughtPlayersAmount}|"
             . ceil($cardBoughtAmount/$cardBoughtPlayersAmount); //向上取整
     }
@@ -120,6 +126,7 @@ class StatementDailyService
 
     /**
      * 根据日期获取留存玩家，比较在查询日(searchDate)登录过且用户注册时间等于(createDate)的玩家
+     * 获取非今日数据可能不准确，因为last_time只记录了最后一次登录，未记录登录历史
      *
      * @param string $searchDate
      * @param string $createDate
