@@ -13,9 +13,10 @@ use App\Services\Game\PlayerService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
-class StatementService
+class StatementDailyService
 {
     protected $allPlayers;
+    protected $cardType = 1;
 
     public function __construct()
     {
@@ -56,23 +57,65 @@ class StatementService
             return $remainedPlayersAmount . '|' . $yesterdayIncrementalPlayersAmount . '|'
                 . '无用户注册';
         }
-        return $remainedPlayersAmount . '|' . $yesterdayIncrementalPlayersAmount . '|'
-            . sprintf('%.2f', $remainedPlayersAmount / $yesterdayIncrementalPlayersAmount * 100);
+        return "${remainedPlayersAmount}|${yesterdayIncrementalPlayersAmount}|"
+            . sprintf('%.2f', $remainedPlayersAmount / $yesterdayIncrementalPlayersAmount * 100); //保留两位小数
     }
 
+    /**
+     * 根据日期获取当日耗卡数据
+     *
+     * @param string $date
+     * @return string '280|13|22 - 当日玩家耗卡总数|当日有过耗卡记录的玩家总数|平均耗卡数(向上取整的比值)
+     */
+    public function getCardConsumedData($date)
+    {
+        //TODO 待游戏端给出数据后完成
+    }
+
+    /**
+     * 根据日期获取当日购卡数据
+     *
+     * @param string $date
+     * @return string '280|13|22 - 当日玩家购卡总数|当日有过购卡记录的玩家总数|平均购卡数(向上取整的比值)
+     */
     public function getCardBoughtData($date)
     {
-//        //当日玩家购卡的总数
-//        $cardBoughtAmount = 12;
-//        //当日有过购卡记录的玩家总数
-//        $cardBoughtPlayersAmount =11;
+        $players = $this->getCardBoughtPlayers($date);
 
+        //当日玩家购卡的总数
+        $cardBoughtAmount = $players->sum('amount');
+        //当日有过购卡记录的玩家总数
+        $cardBoughtPlayersAmount = $players->groupBy('player')->count();
+
+        return "${cardBoughtAmount}|${cardBoughtPlayersAmount}|"
+            . ceil($cardBoughtAmount/$cardBoughtPlayersAmount); //向上取整
     }
 
-    //查询给定日期当天的玩家购卡数据(当日给玩家充值的流水记录)
+    //获取截止当前给玩家充卡的总数
+    public function getCardBoughtSum()
+    {
+        return TopUpPlayer::all()
+            ->where('type', $this->cardType)
+            ->sum('amount');
+    }
+
+    //获取截止当前玩家消耗卡的总数
+    public function getCardConsumedSum()
+    {
+        //TODO 待游戏端给出数据后完成
+    }
+
+    /**
+     * 查询给定日期当天的玩家购卡数据(当日给玩家充值的流水记录)
+     *
+     * @param string $date
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|static[]
+     */
     public function getCardBoughtPlayers($date)
     {
-        return TopUpPlayer::whereDate('created_at', $date)->get();
+        return TopUpPlayer::whereDate('created_at', $date)
+            ->where('type', $this->cardType)
+            ->get();
     }
 
     /**
