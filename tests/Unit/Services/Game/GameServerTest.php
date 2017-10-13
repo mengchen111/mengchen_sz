@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\Services\Game;
 
 use App\Services\Game\GameServer;
 use GuzzleHttp\Exception\ConnectException;

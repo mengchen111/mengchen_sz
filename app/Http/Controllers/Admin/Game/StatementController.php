@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Admin\Game;
 
+use App\Services\Game\PlayerService;
 use App\Services\Game\StatementDailyService;
 use App\Services\Game\StatementMonthlyService;
 use Carbon\Carbon;
@@ -25,7 +26,8 @@ class StatementController
         //return $statementDailyService->getCardBoughtData($date);
         //return $statementDailyService->getCardBoughtSum();
         //return StatementMonthlyService::getMonthlyCardBoughtSum('2017-09');
-        return StatementMonthlyService::getMonthlyCardBoughtPlayersSum('2017-09');
+        //return StatementMonthlyService::getMonthlyCardBoughtPlayersSum('2017-09');
+        return PlayerService::getAllPlayers();
 
     }
 }

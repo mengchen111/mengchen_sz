@@ -33,7 +33,7 @@ class PlayerService
         return self::decodeNickname($result['account']);
     }
 
-    public static function decodeNickname($data)
+    protected static function decodeNickname($data)
     {
         //获取一个用户时
         if (isset($data['nickname'])) {
