@@ -23,3 +23,13 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'parent_id' => 1,
     ];
 });
+
+$factory->define(App\Models\TopUpPlayer::class, function (Faker\Generator $faker) {
+    return [
+        'provider_id' => 1,
+        'player' => 10000,
+        'type' => 1,
+        'amount' => $faker->numberBetween(1, 100),
+        'created_at' => \Carbon\Carbon::now(),
+    ];
+});
