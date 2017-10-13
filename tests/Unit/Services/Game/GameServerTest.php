@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Services;
 
-use App\Services\GameServer;
+use App\Services\Game\GameServer;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
