@@ -8,33 +8,19 @@
 
 namespace App\Http\Controllers\Admin\Game;
 
-use App\Services\Game\PlayerService;
+use App\Services\Game\StatementService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 class StatementController
 {
-    //累计玩家总数
-    public function getTotalPlayers()
+    public function show()
     {
-        return count($this->getAllPlayers());
-    }
-
-    //当日新增玩家数
-    public function getIncreasedTotalPlayers()
-    {
-        return $players = $this->getAllPlayers();
-
-    }
-
-    protected function getAllPlayers()
-    {
-        $cacheKey = config('custom.game_server_cache_players');
-        $cacheDuration = config('custom.game_server_cache_duration');
-
-        $players = Cache::remember($cacheKey, $cacheDuration, function () {
-            return PlayerService::getAllPlayers();
-        });
-
-        return $players;
+        //return Carbon::now()->toDateString() . ' ' . Carbon::now()->addWeek(1)->toDateString();
+        //return StatementService::getTotalPlayers();
+        $statementService = new StatementService();
+        $date = '2017-09-26';
+        //return $statementService->getRemainedData($date, Carbon::parse($date)->subDay(1)->toDateString());
+        return $statementService->getCardBoughtPlayers($date);
     }
 }

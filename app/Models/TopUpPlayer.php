@@ -13,6 +13,10 @@ class TopUpPlayer extends Model
         'provider_id', 'player', 'type', 'amount', 'created_at'
     ];
 
+    protected $hidden = [
+        'updated_at',
+    ];
+
     public function provider()
     {
         return $this->hasOne('App\Models\User', 'id', 'provider_id');
