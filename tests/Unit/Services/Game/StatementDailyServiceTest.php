@@ -64,7 +64,7 @@ class StatementDailyServiceTest extends TestCase
         $res = $this->statementDailyService->getCardBoughtData($this->date);
         $this->assertRegExp("/0|0|/", $res);
 
-        $this->topUpCard4Player();
+        $this->topUpCard4PlayerToday();
 
         //给玩家充值之后数据变化
         $total = $this->amount * $this->count;
@@ -72,7 +72,7 @@ class StatementDailyServiceTest extends TestCase
         $this->assertRegExp("/${total}|1|${total}/", $res); //返回数据400|1|400
     }
 
-    public function topUpCard4Player()
+    public function topUpCard4PlayerToday()
     {
         //给玩家充值
         $this->today = Carbon::now();
@@ -91,15 +91,37 @@ class StatementDailyServiceTest extends TestCase
         ]);
     }
 
+    //给玩家充卡，时间为昨天
+    public function topUpCard4PlayerYesterday()
+    {
+        factory(TopUpPlayer::class, $this->count)->create([    //创建房卡充值记录(相同玩家)
+            'amount' => $this->amount,
+            'player' => $this->playerId,
+            'type' => $this->cardTypeId,
+            'created_at' => Carbon::yesterday()->toDateString(),
+        ]);
+        factory(TopUpPlayer::class, 1)->create([                //创建一个非房卡充值记录(相同玩家)
+            'amount' => $this->amount,
+            'player' => $this->playerId,
+            'type' => $this->cardTypeId + 1,
+            'created_at' => Carbon::yesterday()->toDateString(),
+        ]);
+    }
+
     public function testGetCardBoughtSum()
     {
         $resBeforeTopUp = $this->statementDailyService->getCardBoughtSum();
         $this->assertGreaterThanOrEqual(0, $resBeforeTopUp);
 
-        $this->topUpCard4Player();
+        $this->topUpCard4PlayerToday();
 
         //给玩家充值之后，总量变化
         $resAfterTopUp = $this->statementDailyService->getCardBoughtSum();
         $this->assertEquals($resBeforeTopUp + $this->amount * $this->count, $resAfterTopUp);
+
+        $this->topUpCard4PlayerYesterday();
+        //查询昨天的玩家充值记录
+        $resYesterday = $this->statementDailyService->getCardBoughtSum(Carbon::yesterday()->toDateString());
+        $this->assertEquals($resYesterday, $this->amount * $this->count);
     }
 }
