@@ -31,11 +31,13 @@ class StatementDailyService
 
     public function getOnlinePlayersAmount()
     {
+        return 0;
         //TODO
     }
 
     public function getPeakOnlinePlayersAmount()
     {
+        return 0;
         //TODO
     }
 
@@ -80,6 +82,7 @@ class StatementDailyService
      */
     public function getCardConsumedData($date)
     {
+        return '0|0|0';
         //TODO 待游戏端给出数据后完成
     }
 
@@ -107,18 +110,41 @@ class StatementDailyService
             . ceil($cardBoughtAmount/$cardBoughtPlayersAmount); //向上取整
     }
 
-    //获取截止当前给玩家充卡的总数
-    public function getCardBoughtSum()
+    //
+
+    /**
+     * 获取截止给定日期给玩家充卡的总数，如果不给定日期则查询截止当前给玩家充卡的总数
+     *
+     * @param string $date '2017-09-22'
+     * @return mixed|string
+     */
+    public function getCardBoughtSum($date = 'today')
     {
-        return TopUpPlayer::all()
+        if (Carbon::parse($date)->isToday()) {
+            return TopUpPlayer::all()
+                ->where('type', $this->cardType)
+                ->sum('amount');
+        }
+
+        return TopUpPlayer::whereDate('created_at', '<=', $date)
             ->where('type', $this->cardType)
             ->sum('amount');
     }
 
-    //获取截止当前玩家消耗卡的总数
-    public function getCardConsumedSum()
+    /**
+     * 获取截止给定日期玩家消耗卡的总数，如果不给定日期则查询截止当前玩家耗卡的总数
+     *
+     * @param string $date '2017-09-22'
+     * @return mixed|string
+     */
+    public function getCardConsumedSum($date = 'today')
     {
         //TODO 待游戏端给出数据后完成
+        if (Carbon::parse($date)->isToday()) {
+            //返回当前实时的耗卡总数
+            return 0;
+        }
+        return 0;
     }
 
     /**

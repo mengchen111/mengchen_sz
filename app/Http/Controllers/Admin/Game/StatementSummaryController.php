@@ -8,7 +8,10 @@
 
 namespace App\Http\Controllers\Admin\Game;
 
+use App\Exceptions\CustomException;
 use App\Http\Requests\AdminRequest;
+use App\Services\Game\StatementDailyService;
+use App\Services\Game\StatementMonthlyService;
 use Illuminate\Http\Request;
 
 class StatementSummaryController
@@ -35,6 +38,12 @@ class StatementSummaryController
 
     public function show(AdminRequest $request)
     {
+        $statementDailyService = new StatementDailyService();
 
+        try {
+            //TODO
+        } catch (\Exception $exception) {
+            throw new CustomException($exception->getMessage());
+        }
     }
 }
