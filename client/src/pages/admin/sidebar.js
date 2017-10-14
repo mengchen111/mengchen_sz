@@ -6,7 +6,10 @@ new Vue({
         isActive: false,
       },
       statement: {
-        summary: false,
+        isActive: false,
+        summary: {
+          isActive: false,
+        },
       },
       player: {
         isActive: false,

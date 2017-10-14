@@ -22,13 +22,16 @@
       placeholder: {
         default: '',
       },
+      dateFormat: {
+        default: 'YYYY-MM-DD HH:mm:ss',
+      },
     },
 
     data () {
       return {
         datePickerConf: {       //datePicker配置项
           locale: 'zh_cn',
-          format: 'YYYY-MM-DD HH:mm:ss',
+          format: this.dateFormat,
         },
       }
     },
@@ -40,7 +43,7 @@
     methods: {
       updateDate: function (value) {
         //如果value为空的话不触发事件，不然value.format报错
-        return value ? this.$emit('input', value.format('YYYY-MM-DD HH:mm:ss')) : null
+        return value ? this.$emit('input', value.format(this.dateFormat)) : null
       },
     },
   }
