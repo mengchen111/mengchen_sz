@@ -5,6 +5,9 @@ new Vue({
       home: {
         isActive: false,
       },
+      statement: {
+        summary: false,
+      },
       player: {
         isActive: false,
         list: {

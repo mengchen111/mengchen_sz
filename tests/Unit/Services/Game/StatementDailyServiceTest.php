@@ -29,9 +29,9 @@ class StatementDailyServiceTest extends TestCase
         }
     }
 
-    public function testGetTotalPlayers()
+    public function testGetTotalPlayersAmount()
     {
-        $res = $this->statementDailyService->getTotalPlayers();
+        $res = $this->statementDailyService->getTotalPlayersAmount();
         $this->assertGreaterThan(0, $res);
     }
 

@@ -24,9 +24,19 @@ class StatementDailyService
     }
 
     //玩家总数
-    public function getTotalPlayers()
+    public function getTotalPlayersAmount()
     {
         return count($this->allPlayers);
+    }
+
+    public function getOnlinePlayersAmount()
+    {
+        //TODO
+    }
+
+    public function getPeakOnlinePlayersAmount()
+    {
+        //TODO
     }
 
     //根据日期获取当日活跃玩家数(非今日数据不准确，数据库只保存了最近登录的时间)

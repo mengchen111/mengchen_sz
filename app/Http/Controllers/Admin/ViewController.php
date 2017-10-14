@@ -18,44 +18,14 @@ class ViewController extends Controller
         return view('admin.home');
     }
 
-    public function statementHourly(Request $request)
+    public function statementSummary(Request $request)
     {
-        return view('admin.statement.hourly');
-    }
-
-    public function statementDaily(Request $request)
-    {
-        return view('admin.statement.daily');
-    }
-
-    public function statementMonthly(Request $request)
-    {
-        return view('admin.statement.monthly');
+        return view('admin.statement.summary');
     }
 
     public function playerList(Request $request)
     {
         return view('admin.player.list');
-    }
-
-    public function gmNotificationMarquee(Request $request)
-    {
-        return view('admin.gm.notification.marquee');
-    }
-
-    public function gmNotificationLogin(Request $request)
-    {
-        return view('admin.gm.notification.login');
-    }
-
-    public function gmRoomFriend(Request $request)
-    {
-        return view('admin.gm.room.friend');
-    }
-
-    public function gmRoomCoin(Request $request)
-    {
-        return view('admin.gm.room.coin');
     }
 
     public function stockApplyRequest(Request $request)

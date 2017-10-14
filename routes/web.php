@@ -42,7 +42,7 @@ Route::group([
 
     Route::get('game/player', 'Game\PlayerController@show');
 
-    Route::get('game/statement', 'Game\StatementController@show');  //TODO 临时
+    Route::get('statement/summary', 'Game\StatementSummaryController@show');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');
@@ -74,6 +74,8 @@ Route::group([
     Route::get('home', 'ViewController@home');
 
     Route::get('player/list', 'ViewController@playerList');
+
+    Route::get('statement/summary', 'ViewController@statementSummary');
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-list', 'ViewController@stockApplyList');
