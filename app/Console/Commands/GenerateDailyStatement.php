@@ -81,33 +81,33 @@ class GenerateDailyStatement extends Command
      */
     protected function generateDailyStatement($date)
     {
-        $data = [];
+        $data = new \stdClass();
         $statementDailyService = new StatementDailyService();
-        $data['date'] = $date;
-        $data['peak_online_players'] = $statementDailyService->getPeakOnlinePlayersAmount();
-        $data['active_players'] = $statementDailyService->getActivePlayersAmount($date);
-        $data['incremental_players'] = $statementDailyService->getIncrementalPlayersAmount($date);
-        $data['one_day_remained'] = $statementDailyService->getRemainedData($date, 1);
-        $data['one_week_remained'] = $statementDailyService->getRemainedData($date, 7);
-        $data['two_weeks_remained'] = $statementDailyService->getRemainedData($date, 14);
-        $data['one_month_remained'] = $statementDailyService->getRemainedData($date, 30);
-        $data['card_consumed_data'] = $statementDailyService->getCardConsumedData($date);
-        $data['card_bought_data'] = $statementDailyService->getCardBoughtData($date);
-        $data['card_consumed_sum'] = $statementDailyService->getCardConsumedSum($date);
-        $data['card_bought_sum'] = $statementDailyService->getCardBoughtSum($date);
-        $data['players_data'] = json_encode(PlayerService::getAllPlayers());
+        $data->date = $date;
+        $data->peak_online_players = $statementDailyService->getPeakOnlinePlayersAmount();
+        $data->active_players = $statementDailyService->getActivePlayersAmount($date);
+        $data->incremental_players = $statementDailyService->getIncrementalPlayersAmount($date);
+        $data->one_day_remained = $statementDailyService->getRemainedData($date, 1);
+        $data->one_week_remained = $statementDailyService->getRemainedData($date, 7);
+        $data->two_weeks_remained = $statementDailyService->getRemainedData($date, 14);
+        $data->one_month_remained = $statementDailyService->getRemainedData($date, 30);
+        $data->card_consumed_data = $statementDailyService->getCardConsumedData($date);
+        $data->card_bought_data = $statementDailyService->getCardBoughtData($date);
+        $data->card_consumed_sum = $statementDailyService->getCardConsumedSum($date);
+        $data->card_bought_sum = $statementDailyService->getCardBoughtSum($date);
+        $data->players_data = json_encode(PlayerService::getAllPlayers());
 
         if ($this->ifRecordExist($date)) {
             if ($this->confirm("${date}: 此条记录已存在，是否覆盖？")) {
                 StatementDaily::whereDate('date', $date)->first()
-                    ->update($data);
+                    ->update(get_object_vars($data));
                 return $this->info("${date}: 数据报表覆盖完成");
             }
             $this->info("${date}: 记录未覆盖。");
             return false;
         }
 
-        StatementDaily::create($data);
+        StatementDaily::create(get_object_vars($data));
         return $this->info("${date}: 数据报表生成完成");
     }
 
