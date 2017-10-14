@@ -9,8 +9,7 @@ class StatementDaily extends Model
 {
     protected $table = 'statement_daily';
     protected $primaryKey = 'id';
-    public $timestamps = false;
-    protected $dateFormat = 'Y-m-d';
+    //protected $dateFormat = 'Y-m-d';
 
     protected $fillable = [
         'date', 'peak_online_players', 'active_players', 'incremental_players', 'one_day_remained',
@@ -20,6 +19,6 @@ class StatementDaily extends Model
 
     public function getDateAttribute($value)
     {
-        return Carbon::parse($value)->format($this->dateFormat);
+        return Carbon::parse($value)->format('Y-m-d');
     }
 }

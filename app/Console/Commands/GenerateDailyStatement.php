@@ -6,6 +6,7 @@ use App\Models\StatementDaily;
 use App\Services\Game\PlayerService;
 use App\Services\Game\StatementDailyService;
 use Carbon\Carbon;
+use function GuzzleHttp\Promise\is_rejected;
 use Illuminate\Console\Command;
 
 class GenerateDailyStatement extends Command
@@ -23,7 +24,7 @@ class GenerateDailyStatement extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '生成每日数据报表';
 
     /**
      * Create a new command instance.
@@ -50,7 +51,6 @@ class GenerateDailyStatement extends Command
         //每天凌晨运行，生成昨天的报表数据
         $yesterday = Carbon::yesterday()->toDateString();
         $this->generateDailyStatement($yesterday);
-        return $this->info($yesterday . ': 数据报表生成完成');
     }
 
     protected function initializeDailyStatement()
@@ -97,6 +97,22 @@ class GenerateDailyStatement extends Command
         $data['card_bought_sum'] = $statementDailyService->getCardBoughtSum($date);
         $data['players_data'] = json_encode(PlayerService::getAllPlayers());
 
-        return StatementDaily::create($data);
+        if ($this->ifRecordExist($date)) {
+            if ($this->confirm("${date}: 此条记录已存在，是否覆盖？")) {
+                StatementDaily::whereDate('date', $date)->first()
+                    ->update($data);
+                return $this->info("${date}: 数据报表覆盖完成");
+            }
+            $this->info("${date}: 记录未覆盖。");
+            return false;
+        }
+
+        StatementDaily::create($data);
+        return $this->info("${date}: 数据报表生成完成");
+    }
+
+    protected function ifRecordExist($date)
+    {
+        return StatementDaily::whereDate('date', $date)->get()->count();
     }
 }
