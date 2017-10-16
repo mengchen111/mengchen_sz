@@ -99,35 +99,32 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-3 col-xs-offset-3">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-light-blue"><i class="fa fa-line-chart"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">日高峰(待补充)</span>
-                                    <span class="info-box-number" v-cloak v-if="!loading">
+                            <div class="small-box">
+                                <div class="inner">
+                                    <h5>日高峰(待补充)</h5>
+                                    <h4 class="text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.peak_online_players ? summaryData.peak_online_players : 0 }}
-                                    </span>
+                                    </h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-light-blue"><i class="fa fa-users"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">活跃玩家</span>
-                                    <span class="info-box-number" v-cloak v-if="!loading">
+                            <div class="small-box">
+                                <div class="inner">
+                                    <h5>活跃玩家</h5>
+                                    <h4 class="text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.active_players ? summaryData.active_players : 0 }}
-                                    </span>
+                                    </h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-light-blue"><i class="fa fa-user-plus"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">新增玩家</span>
-                                    <span class="info-box-number" v-cloak v-if="!loading">
+                            <div class="small-box">
+                                <div class="inner">
+                                    <h5>新增玩家</h5>
+                                    <h4 class="text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.incremental_players ? summaryData.incremental_players : 0 }}
-                                    </span>
+                                    </h4>
                                 </div>
                             </div>
                         </div>
