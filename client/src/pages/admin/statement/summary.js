@@ -9,5 +9,9 @@ new Vue({
   data: {
     dateFormat: 'YYYY-MM-DD',
     date: '2017-10-11',
+
+    loading: false,
+    summaryDataApi: '/admin/api/statement/summary',
+    summaryData: {},
   },
 })

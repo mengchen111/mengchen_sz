@@ -20,8 +20,6 @@ use App\Models\OperationLogs;
 class StatementSummaryController
 {
     protected $data = [
-        'total_players_amount' => 0,        //累计用户
-        'online_players_amount' => 0,       //在线人数
         'peak_online_players' => 0,         //日高峰
         'active_players' => 0,              //当日活跃用户
         'incremental_players' => 0,         //新增玩家数
@@ -37,14 +35,16 @@ class StatementSummaryController
         'monthly_card_bought_sum' => 0,     //当月累计充卡总数
     ];
 
+    protected $realTimeData = [
+        'total_players_amount' => 0,        //累计用户
+        'online_players_amount' => 0,       //在线人数
+    ];
+
     public function show(AdminRequest $request)
     {
         $date = $request->date ?: 'today';
-
-        //实时数据
         $statementDailyService = new StatementDailyService();
-        $this->data['total_players_amount'] = $statementDailyService->getTotalPlayersAmount();
-        $this->data['online_players_amount'] = $statementDailyService->getOnlinePlayersAmount();
+
         //月数据
         $this->data['monthly_card_bought_players'] = StatementMonthlyService::getMonthlyCardBoughtPlayersSum($date);
         $this->data['monthly_card_bought_sum'] = StatementMonthlyService::getMonthlyCardBoughtSum($date);
@@ -73,8 +73,21 @@ class StatementSummaryController
         }
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '管理员查看报表数据', $request->header('User-Agent'), json_encode($request->all()));
+            '查看报表数据总览', $request->header('User-Agent'), json_encode($request->all()));
 
         return $this->data;
+    }
+
+    public function showRealTimeData(AdminRequest $request)
+    {
+        //实时数据
+        $statementDailyService = new StatementDailyService();
+        $this->realTimeData['total_players_amount'] = $statementDailyService->getTotalPlayersAmount();
+        $this->realTimeData['online_players_amount'] = $statementDailyService->getOnlinePlayersAmount();
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '查看实时报表数据', $request->header('User-Agent'), json_encode($request->all()));
+
+        return $this->realTimeData;
     }
 }

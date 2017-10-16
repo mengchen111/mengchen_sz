@@ -43,6 +43,7 @@ Route::group([
     Route::get('game/player', 'Game\PlayerController@show');
 
     Route::get('statement/summary', 'Game\StatementSummaryController@show');
+    Route::get('statement/real-time', 'Game\StatementSummaryController@showRealTimeData');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');

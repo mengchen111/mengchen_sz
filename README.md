@@ -89,7 +89,8 @@ cd $codeDir
 | ----  | :-----: | ----------: |
 | self/password | PUT | 更新密码 |
 | game/player | GET | 玩家列表 |
-| statement/summary | GET | 获取实时数据报表 |
+| statement/summary | GET | 获取数据报表总览 |
+| statement/real-time | GET | 获取实时报表数据 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |
