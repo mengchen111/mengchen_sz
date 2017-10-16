@@ -9,7 +9,7 @@ new Vue({
   data: {
     dateFormat: 'YYYY-MM-DD',
     formData: {
-      date: moment(),
+      date: moment().format('YYYY-MM-DD'),
     },
 
     loading: true,
