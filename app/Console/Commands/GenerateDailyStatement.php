@@ -45,7 +45,7 @@ class GenerateDailyStatement extends Command
     {
         if ($this->option('init')) {
             $this->initializeDailyStatement();
-            return $this->info('初始化每日数据报表数据完成');
+            return $this->info('[' . Carbon::now()->toDateTimeString() . '] 初始化每日数据报表数据完成');
         }
 
         //每天凌晨运行，生成昨天的报表数据
@@ -98,17 +98,17 @@ class GenerateDailyStatement extends Command
         $data->players_data = json_encode(PlayerService::getAllPlayers());
 
         if ($this->ifRecordExist($date)) {
-            if ($this->confirm("${date}: 此条记录已存在，是否覆盖？")) {
+            if ($this->confirm('[' . Carbon::now()->toDateTimeString() . "] ${date}: 此条记录已存在，是否覆盖？")) {
                 StatementDaily::whereDate('date', $date)->first()
                     ->update(get_object_vars($data));
-                return $this->info("${date}: 数据报表覆盖完成");
+                return $this->info('[' . Carbon::now()->toDateTimeString() . "] ${date}: 数据报表覆盖完成");
             }
-            $this->info("${date}: 记录未覆盖。");
+            $this->info('[' . Carbon::now()->toDateTimeString() . "] ${date}: 记录未覆盖。");
             return false;
         }
 
         StatementDaily::create(get_object_vars($data));
-        return $this->info("${date}: 数据报表生成完成");
+        return $this->info('[' . Carbon::now()->toDateTimeString() . "] ${date}: 数据报表生成完成");
     }
 
     protected function ifRecordExist($date)
