@@ -37,5 +37,6 @@ module.exports = {
     '_': false,
     'Vue': false,
     'axios': false,
+    'moment': false,
   }
 }

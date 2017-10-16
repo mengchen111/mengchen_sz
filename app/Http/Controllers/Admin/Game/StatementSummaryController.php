@@ -23,10 +23,10 @@ class StatementSummaryController
         'peak_online_players' => 0,         //日高峰
         'active_players' => 0,              //当日活跃用户
         'incremental_players' => 0,         //新增玩家数
-        'one_day_remained' => 0,            //次日留存
-        'one_week_remained' => 0,           //7日留存
-        'two_weeks_remained' => 0,          //14日留存
-        'one_month_remained' => 0,          //30日留存
+        'one_day_remained' => '0|0|0.00',   //次日留存, 留存玩家数|创建日新增玩家数|百分比(保留两位小数)
+        'one_week_remained' => '0|0|0.00',  //7日留存
+        'two_weeks_remained' => '0|0|0.00', //14日留存
+        'one_month_remained' => '0|0|0.00', //30日留存
         'card_consumed_data' => '0|0|0',    //当日耗卡数|当日有过耗卡记录的玩家总数|平均耗卡数(向上取整的比值)
         'card_bought_data' => '0|0|0',      //当日玩家购卡总数|当日有过购卡记录的玩家总数|平均购卡数(向上取整的比值)
         'card_consumed_sum' => 0,           //截止当日耗卡总数

@@ -58,7 +58,7 @@ class StatementDailyService
      *
      * @param string $searchDate
      * @param string $createDate
-     * @return string '2|4|50.00 - 留存玩家数|创建日玩家数|百分比(保留两位小数)'
+     * @return string '2|4|50.00 - 留存玩家数|创建日新增玩家数|百分比(保留两位小数)'
      */
     public function getRemainedData($searchDate, $days)
     {
@@ -68,7 +68,7 @@ class StatementDailyService
 
         if ($yesterdayIncrementalPlayersAmount === 0 ) {
             return $remainedPlayersAmount . '|' . $yesterdayIncrementalPlayersAmount . '|'
-                . '无用户注册';
+                . '0.00';
         }
         return "${remainedPlayersAmount}|${yesterdayIncrementalPlayersAmount}|"
             . sprintf('%.2f', $remainedPlayersAmount / $yesterdayIncrementalPlayersAmount * 100); //保留两位小数
@@ -103,7 +103,7 @@ class StatementDailyService
 
         if ($cardBoughtPlayersAmount === 0) {
             return "${cardBoughtAmount}|${cardBoughtPlayersAmount}|"
-                . '无玩家购卡';
+                . '0';
         }
 
         return "${cardBoughtAmount}|${cardBoughtPlayersAmount}|"
