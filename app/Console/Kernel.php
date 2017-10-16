@@ -29,7 +29,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('admin:generate-daily-statement')
             ->dailyAt('00:00')
             ->withoutOverlapping()
-            ->evenInMaintenanceMode();
+            ->evenInMaintenanceMode()
+            ->appendOutputTo(config('custom.cron_task_log'));
     }
 
     /**

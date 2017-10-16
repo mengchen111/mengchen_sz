@@ -13,6 +13,9 @@ return [
     //是否开启邮件通知(新的库存申请，通知管理员)
     'email_notification' => env('EMAIL_NOTIFICATION', false),
 
+    //计划任务日志
+    'cron_task_log' => env('CRON_TASK_LOG', '/tmp/artisan.log'),
+
     //游戏服接口地址
     'game_server_api_address' => env('GAME_SERVER_API_ADDRESS'),
     'game_server_partner_id' => env('GAME_SERVER_PARTNER_ID'),
