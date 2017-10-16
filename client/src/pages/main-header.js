@@ -10,6 +10,7 @@ new Vue({
     },
     logoutApi: '/logout',
     infoApi: '/api/info',
+    loading: true,
   },
 
   methods: {
@@ -19,7 +20,7 @@ new Vue({
     },
   },
 
-  created: function () {
+  mounted: function () {
     let _self = this
     axios.get(this.infoApi)
       .then(function (response) {
@@ -39,6 +40,8 @@ new Vue({
             }
           }
         }
+
+        _self.loading = false
       })
   },
 })
