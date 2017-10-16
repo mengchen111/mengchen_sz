@@ -55,6 +55,21 @@ cd client       #进入js开发目录
 npm install     #安装npm包
 npm run build   #编译js代码
 ```  
+
+### cron计划任务
+```
+crontab -e
+* * * * * php /data/www/{code_ducument_root}/artisan schedule:run >> /dev/null 2>&1  
+
+#注意：.env里面正确配置好日志输出文件"CRON_TASK_LOG"
+```  
+
+**任务列表**  
+
+| 任务名   | 运行时间  | 描述 |     
+| ----  | :-----: | ----------: |
+| admin:generate-daily-statement | 每日00:00 | 统计上一天的数据报表并入库 |
+
 ### 使用post-merge钩子脚本  
 ```
 #!/bin/sh
