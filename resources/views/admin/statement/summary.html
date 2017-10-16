@@ -26,7 +26,7 @@
 
         <!-- Main content -->
         <section class="content" id="app">
-            <div class="box box-primary">
+            <div class="box box-primary" style="background-color: #ecf0f5">
                 <div class="box-header with-border">
                     <h3 class="box-title">数据总览</h3>
                 </div>
@@ -75,54 +75,59 @@
 
                     <div class="row">
                         <div class="col-xs-6">
-                            <div class="small-box bg-green">
-                                <div class="inner">
-                                    <h4>累计用户</h4>
-                                    <h4 v-cloak v-if="!loading">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">累计玩家</span>
+                                    <span class="info-box-number" v-cloak v-if="!loading">
                                         {{ realTimeData.total_players_amount ? realTimeData.total_players_amount : 0 }}
-                                    </h4>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-6">
-                            <div class="small-box bg-green">
-                                <div class="inner">
-                                    <h4>在线人数(待补充数据)</h4>
-                                    <h4 v-cloak v-if="!loading">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-person-outline"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">在线人数(待补充数据)</span>
+                                    <span class="info-box-number" v-cloak v-if="!loading">
                                         {{ realTimeData.online_players_amount ? realTimeData.online_players_amount : 0 }}
-                                    </h4>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-3 col-xs-offset-3">
-                            <div class="small-box bg-green">
-                                <div class="inner">
-                                    <h4>日高峰(待补充)</h4>
-                                    <h4 v-cloak v-if="!loading">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-light-blue"><i class="fa fa-line-chart"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">日高峰(待补充)</span>
+                                    <span class="info-box-number" v-cloak v-if="!loading">
                                         {{ summaryData.peak_online_players ? summaryData.peak_online_players : 0 }}
-                                    </h4>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
-                                <div class="inner">
-                                    <h4>活跃玩家</h4>
-                                    <h4 v-cloak v-if="!loading">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-light-blue"><i class="fa fa-users"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">活跃玩家</span>
+                                    <span class="info-box-number" v-cloak v-if="!loading">
                                         {{ summaryData.active_players ? summaryData.active_players : 0 }}
-                                    </h4>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
-                                <div class="inner">
-                                    <h4>新增玩家</h4>
-                                    <h4 v-cloak v-if="!loading">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-light-blue"><i class="fa fa-user-plus"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">新增玩家</span>
+                                    <span class="info-box-number" v-cloak v-if="!loading">
                                         {{ summaryData.incremental_players ? summaryData.incremental_players : 0 }}
-                                    </h4>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -130,61 +135,64 @@
 
                     <div class="row">
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
-                                    <h4>次日留存</h4>
-                                    <h4 v-cloak v-if="!loading">
-                                        {{ summaryData.one_day_remained
+                                    <h4 class="text-black">次日留存</h4>
+                                    <h4 class="text-black text-bold" v-cloak v-if="!loading" v-html="
+                                        summaryData.one_day_remained
                                         ? summaryData.one_day_remained.split('|')[2]
-                                            + '% ('
+                                            + '<small><b>%</b></small> ('
                                             + summaryData.one_day_remained.split('|')[0] + '/' + summaryData.one_day_remained.split('|')[1]
                                             +')'
-                                        : '0%' }}
+                                        : '0%' ">
                                     </h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
-                                    <h4>7日留存</h4>
-                                    <h4 v-cloak v-if="!loading">
-                                        {{ summaryData.one_week_remained
+                                    <h4 class="text-black">7日留存</h4>
+                                    <h4 class="text-black text-bold" v-cloak v-if="!loading" v-html="
+                                        summaryData.one_week_remained
                                         ? summaryData.one_week_remained.split('|')[2]
-                                        + '% ('
+                                        + '<small><b>%</b></small> ('
                                         + summaryData.one_week_remained.split('|')[0] + '/' + summaryData.one_week_remained.split('|')[1]
                                         +')'
-                                        : '0%' }}
+                                        : '0%'
+                                        ">
                                     </h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
-                                    <h4>14日留存</h4>
-                                    <h4 v-cloak v-if="!loading">
-                                        {{ summaryData.two_weeks_remained
+                                    <h4 class="text-black">14日留存</h4>
+                                    <h4 class="text-black text-bold" v-cloak v-if="!loading" v-html="
+                                        summaryData.two_weeks_remained
                                         ? summaryData.two_weeks_remained.split('|')[2]
-                                        + '% ('
+                                        + '<small><b>%</b></small> ('
                                         + summaryData.two_weeks_remained.split('|')[0] + '/' + summaryData.two_weeks_remained.split('|')[1]
                                         +')'
-                                        : '0%' }}
+                                        : '0%'
+                                        ">
                                     </h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
-                                    <h4>30日留存</h4>
-                                    <h4 v-cloak v-if="!loading">
-                                        {{ summaryData.one_month_remained
+                                    <h4 class="text-black">30日留存</h4>
+                                    <h4 class="text-black text-bold" v-cloak v-if="!loading" v-html="
+                                        summaryData.one_month_remained
                                         ? summaryData.one_month_remained.split('|')[2]
-                                        + '% ('
+                                        + '<small><b>%</b></small> ('
                                         + summaryData.one_month_remained.split('|')[0] + '/' + summaryData.one_month_remained.split('|')[1]
                                         +')'
-                                        : '0%' }}
+                                        : '0%'
+                                        ">
                                     </h4>
                                 </div>
                             </div>
@@ -193,10 +201,10 @@
 
                     <div class="row">
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
-                                    <h4>日消耗卡(待补充)</h4>
-                                    <h4 v-cloak v-if="!loading">
+                                    <h4 class="text-black">日消耗卡(待补充)</h4>
+                                    <h4 class="text-black text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.card_consumed_data
                                         ? summaryData.card_consumed_data.split('|')[0]
                                         : 0 }}
@@ -205,10 +213,10 @@
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
-                                    <h4>平均耗卡(待补充)</h4>
-                                    <h4 v-cloak v-if="!loading">
+                                    <h4 class="text-black">平均耗卡(待补充)</h4>
+                                    <h4 class="text-black text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.card_consumed_data
                                         ? summaryData.card_consumed_data.split('|')[2]
                                         : 0 }}
@@ -217,10 +225,10 @@
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
-                                    <h4>日购卡</h4>
-                                    <h4 v-cloak v-if="!loading">
+                                    <h4 class="text-black">日购卡</h4>
+                                    <h4 class="text-black text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.card_bought_data
                                         ? summaryData.card_bought_data.split('|')[0]
                                         : 0 }}
@@ -229,10 +237,10 @@
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
-                                    <h4>平均购卡</h4>
-                                    <h4 v-cloak v-if="!loading">
+                                    <h4 class="text-black">平均购卡</h4>
+                                    <h4 class="text-black text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.card_bought_data
                                         ? summaryData.card_bought_data.split('|')[2]
                                         : 0 }}
@@ -244,40 +252,40 @@
 
                     <div class="row">
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
                                     <h4>充卡总数</h4>
-                                    <h4 v-cloak v-if="!loading">
+                                    <h4 class="text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.card_bought_sum ? summaryData.card_bought_sum : 0 }}
                                     </h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
                                     <h4>耗卡总数</h4>
-                                    <h4 v-cloak v-if="!loading">
+                                    <h4 class="text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.card_consumed_sum ? summaryData.card_consumed_sum : 0 }}
                                     </h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
                                     <h4>当月充卡累计人数</h4>
-                                    <h4 v-cloak v-if="!loading">
+                                    <h4 class="text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.monthly_card_bought_players ? summaryData.monthly_card_bought_players : 0 }}
                                     </h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <div class="small-box bg-green">
+                            <div class="small-box">
                                 <div class="inner">
                                     <h4>当月充卡总数</h4>
-                                    <h4 v-cloak v-if="!loading">
+                                    <h4 class="text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.monthly_card_bought_sum ? summaryData.monthly_card_bought_sum : 0 }}
                                     </h4>
                                 </div>
@@ -300,6 +308,7 @@
 </div>
 <!-- ./wrapper -->
 
+<link rel="stylesheet" type="text/css" href="/css/admin/statement/summary.css" />
 <script src="/dist/webpack/admin/statement/summary.js"></script>
 </body>
 </html>
