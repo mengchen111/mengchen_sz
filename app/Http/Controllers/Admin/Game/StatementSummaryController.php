@@ -43,7 +43,6 @@ class StatementSummaryController
     public function show(AdminRequest $request)
     {
         $date = $request->date ?: 'today';
-        $statementDailyService = new StatementDailyService();
 
         //月数据
         $this->data['monthly_card_bought_players'] = StatementMonthlyService::getMonthlyCardBoughtPlayersSum($date);
@@ -51,6 +50,8 @@ class StatementSummaryController
 
         //如果时间为今天，查询实时数据
         if (Carbon::parse($date)->isToday()) {
+            $statementDailyService = new StatementDailyService();
+
             $this->data['peak_online_players'] = $statementDailyService->getPeakOnlinePlayersAmount();
             $this->data['active_players'] = $statementDailyService->getActivePlayersAmount($date);
             $this->data['incremental_players'] = $statementDailyService->getIncrementalPlayersAmount($date);
