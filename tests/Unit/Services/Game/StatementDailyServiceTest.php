@@ -50,7 +50,7 @@ class StatementDailyServiceTest extends TestCase
     public function testGetRemainedData()
     {
         $res = $this->statementDailyService->getRemainedData($this->date, 1);
-        $this->assertRegExp('/\d\|\d\|/', $res);  //返回数据格式 2|4|50.00
+        $this->assertRegExp('/\d|\d|/', $res);  //返回数据格式 2|4|50.00
     }
 
     public function testGetCardConsumedData()
