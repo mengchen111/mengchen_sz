@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
+    public $timestamps = false;
     protected $table = 'groups';
     protected $primaryKey = 'id';
 
@@ -21,6 +22,6 @@ class Group extends Model
 
     public function users()
     {
-        return $this->hasMany('App\Models\User', 'user_id', 'id');
+        return $this->hasMany('App\Models\User', 'group_id', 'id');
     }
 }
