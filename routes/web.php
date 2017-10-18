@@ -41,7 +41,7 @@ Route::group([
 //    Route::get('home/summary', 'HomeController@summaryReport');
 
     Route::get('game/players', 'Game\PlayerController@show');
-    Route::get('game/records', 'Game\RecordController@show');    //TODO 完善战绩查询接口
+    Route::get('game/records', 'Game\RecordController@search');    //TODO 完善战绩查询接口
 
     Route::get('statement/summary', 'Game\StatementSummaryController@show');
     Route::get('statement/real-time', 'Game\StatementSummaryController@showRealTimeData');
