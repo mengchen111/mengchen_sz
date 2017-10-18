@@ -14,6 +14,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li :class="{ active: uri.statement.summary.isActive }"><a href="/admin/statement/summary"><i class="fa fa-circle-o"></i>数据总览</a></li>
+                    <li :class="{ active: uri.statement.record.isActive }"><a href="/admin/statement/record"><i class="fa fa-circle-o"></i>战绩查询</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.player.isActive }">

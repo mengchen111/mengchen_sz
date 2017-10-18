@@ -10,6 +10,9 @@ new Vue({
         summary: {
           isActive: false,
         },
+        record: {
+          isActive: false,
+        },
       },
       player: {
         isActive: false,

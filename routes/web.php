@@ -78,6 +78,7 @@ Route::group([
     Route::get('player/list', 'ViewController@playerList');
 
     Route::get('statement/summary', 'ViewController@statementSummary');
+    Route::get('statement/record', 'ViewController@statementRecord');
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-list', 'ViewController@stockApplyList');
