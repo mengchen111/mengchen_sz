@@ -10,4 +10,5 @@ return [
     //exception code
     'CustomException' => 1000,
     'GameServerException' => 1001,
+    'GameApiServiceException' => 2000,
 ];

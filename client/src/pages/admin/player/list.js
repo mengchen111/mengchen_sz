@@ -23,7 +23,7 @@ new Vue({
       amount: null,
     },
 
-    tableUrl: '/admin/api/game/player',
+    tableUrl: '/admin/api/game/players',
     tableTrackBy: 'uid',
     tableFields: [
       {
