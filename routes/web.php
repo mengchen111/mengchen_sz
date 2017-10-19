@@ -45,6 +45,7 @@ Route::group([
     Route::get('statement/summary', 'Game\StatementSummaryController@show');
     Route::get('statement/real-time', 'Game\StatementSummaryController@showRealTimeData');
     Route::get('statement/records', 'Game\RecordController@search');
+    Route::get('statement/record-info/{recId}', 'Game\RecordController@getRecordInfo')->where('recId', '[0-9]+');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');

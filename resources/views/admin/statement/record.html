@@ -53,27 +53,50 @@
                     </my-vuetable>
                 </div>
             </div>
-        </section>
-        <!-- /.content -->
 
-        <!--jQuery('#detail-record-modal').modal('show') 报错 变通方法-->
-        <button style="display: none" class="btn btn-default btn-flat" data-toggle="modal"
-                data-target="#detail-record-modal" id="detail-record-modal-button"></button>
-        <!--战绩流水模态框-->
-        <div id="detail-record-modal" class="modal fade" tabindex="-1">
-            <div class="modal-dialog" style="width: 380px;">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close" type="button" data-dismiss="modal">x</button>
-                        <h3 class="text-center">战绩流水</h3>
-                    </div>
-                    <div class="modal-body">
-                        战绩流水
+            <!--jQuery('#detail-record-modal').modal('show') 报错 变通方法-->
+            <button style="display: none" class="btn btn-default btn-flat" data-toggle="modal"
+                    data-target="#detail-record-modal" id="detail-record-modal-button"></button>
+            <!--战绩流水模态框-->
+            <div id="detail-record-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h4 class="text-center">房间号：{{ '待填充' }}  惠州庄  {{ '时间2017-11-11 11:11' }}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="nav-tabs-custom">
+                                <!-- Tabs within a box -->
+                                <ul class="nav nav-tabs pull-right">
+                                    <li><a href="#game-type" data-toggle="tab">房间玩法</a></li>
+                                    <li><a href="#game-ranking" data-toggle="tab">总分排行</a></li>
+                                    <li class="active"><a href="#game-rounds" data-toggle="tab">战绩流水</a></li>
+                                    <li class="pull-left header"><i class="fa fa-trophy"></i> 战绩详情</li>
+                                </ul>
+                                <div class="tab-content no-padding">
+                                    <div class="chart tab-pane active" id="game-type" style="position: relative; height: 300px;">
+                                        <my-vuetable
+                                                :table-url="tableUrl"
+                                                :table-fields="tableFields"
+                                        >
+                                        </my-vuetable>
+                                    </div>
+                                    <div class="chart tab-pane" id="game-ranking" style="position: relative; height: 300px;">
+                                        总分排行
+                                    </div>
+                                    <div class="chart tab-pane" id="game-rounds" style="position: relative; height: 300px;">
+                                        战绩流水
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        </section>
+        <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 

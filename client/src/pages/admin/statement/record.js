@@ -12,19 +12,27 @@ new Vue({
     uid: null,
 
     recordApi: '/admin/api/statement/records',
-    tableUrl: '/admin/api/statement/records?uid=10008',  //初始数据
+    tableUrl: '/admin/api/statement/records?uid=0',  //初始数据
     tableFields: [
-      {
-        name: 'id',
-        title: 'id',
-      },
-      {
-        name: 'uid',
-        title: '玩家id',
-      },
       {
         name: 'rec_id',
         title: '战绩id',
+      },
+      {
+        name: 'room_id',
+        title: '房间号',
+      },
+      {
+        name: 'owner_id',
+        title: '房主id',
+      },
+      {
+        name: 'game_type',
+        title: '游戏类型',
+      },
+      {
+        name: 'time',
+        title: '时间',
       },
     ],
   },

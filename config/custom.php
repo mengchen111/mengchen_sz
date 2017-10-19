@@ -36,6 +36,7 @@ return [
 
     //游戏后端接口
     'game_api_records' => 'records',                //战绩列表和查询
+    'game_api_record_info' => 'record-info',        //查询指定的战绩id的数据
     'game_api_players' => 'players',                //玩家列表和查询
     'game_api_top-up' => 'top-up',                  //玩家充值
 ];
