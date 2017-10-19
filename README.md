@@ -106,6 +106,7 @@ cd $codeDir
 | game/player | GET | 玩家列表 |
 | statement/summary | GET | 获取数据报表总览 |
 | statement/real-time | GET | 获取实时报表数据 |
+| statement/records | GET | 战绩查询 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |

@@ -18,7 +18,7 @@ module.exports = {
     }],                                         //缩进，两个空格
     'brace-style': ['error', '1tbs'],           //强制 one true brace style
     'block-spacing': ['warn', 'always'],        //在单行块内要求使用一个或多个空格
-    'comma-dangle': ['error', 'always-multiline'],  //元素与属性与闭括号在不同行时允许使用拖尾逗号，同一行时禁止
+    'comma-dangle': ['warn', 'always-multiline'],  //元素与属性与闭括号在不同行时强制使用拖尾逗号，同一行时禁止
     'comma-spacing': ['error', {
       'before': false,
       'after': true,
@@ -38,5 +38,8 @@ module.exports = {
     'Vue': false,
     'axios': false,
     'moment': false,
+    '$': false,
+    'jQuery': false,
+    'window.jQuery': false,
   }
 }

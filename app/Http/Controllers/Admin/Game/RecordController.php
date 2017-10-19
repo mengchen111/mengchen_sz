@@ -25,6 +25,7 @@ class RecordController extends Controller
         try {
             $api = config('custom.game_api_records');
             $records = GameApiService::request('GET', $api);
+            krsort($records);
             return Paginator::paginate($records, $this->per_page, $this->page);
         } catch (\Exception $exception) {
             throw new CustomException($exception->getMessage());
@@ -37,9 +38,11 @@ class RecordController extends Controller
 
         try {
             $api = config('custom.game_api_records');
-            return GameApiService::request('POST', $api, [
+            $records = GameApiService::request('POST', $api, [
                 'uid' => $searchUid,
             ]);
+            krsort($records);
+            return Paginator::paginate($records, $this->per_page, $this->page);
         } catch (\Exception $exception) {
             throw new CustomException($exception->getMessage());
         }

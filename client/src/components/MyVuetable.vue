@@ -116,6 +116,9 @@
       onCellClicked (data) {
         if (this.detailRowComponent) {  //只有当传入了detailRow组件才展示detailRow
           this.$refs.vuetable.toggleDetailRow(data[this.tableTrackBy])
+        } else {
+          //没有注册detailRow组件时触发点击事件
+          this.$root.eventHub.$emit('vuetableCellClicked', data)
         }
       },
       onFilterSet (filterText) {
