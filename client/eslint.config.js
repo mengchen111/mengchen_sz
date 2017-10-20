@@ -25,7 +25,7 @@ module.exports = {
     }],                                         //禁止逗号前面使用空格，要求逗号后使用空格
     'comma-style': ['error', 'last'],           //要求逗号放在数组元素、对象属性或变量声明之后，且在同一行
     'no-mixed-spaces-and-tabs': 'error',        //禁止混用tab和空格缩进
-    'no-console': 'off',                        //禁用 console(关闭)
+    'no-console': 'warn',                       //禁用console(有console时warn)
     'no-var': 'error',                          //要求使用 let 或 const 而不是 var
     'no-unused-vars': 'warn',                   //未使用过的变量提出警告
     'no-useless-escape': 'warn',                //多余的转义符提出警告(从错误改为警告，防止正则上多余的转义符编译失败)

@@ -16,7 +16,7 @@ new Vue({
 
     recordApi: '/admin/api/statement/records',
     recordInfoApiPrefix: '/admin/api/statement/record-info',
-    tableUrl: '/admin/api/statement/records?uid=10008',  //初始数据
+    tableUrl: '/admin/api/statement/records?uid=0',  //初始数据
     tableFields: [
       {
         name: 'rec_id',
@@ -57,8 +57,6 @@ new Vue({
           _self.rankingData = res.data.ranking
 
           jQuery('#detail-record-modal-button').click() //弹出战绩流水框
-
-          console.log(_self.rankingData)
         })
 
 
