@@ -13,6 +13,11 @@ new Vue({
     roundData: {},      //战绩流水
     rankingData: {},    //总分排行
     roomRules: {},      //房间玩法
+    rulesMap: {         //房间玩法显示信息
+      'wanfa': '玩法',
+      'gui_pai': '鬼牌',
+      'ma_pai': '马牌',
+    },
 
     recordApi: '/admin/api/statement/records',
     recordInfoApiPrefix: '/admin/api/statement/record-info',
@@ -55,11 +60,10 @@ new Vue({
         .then(function (res) {
           _self.roundData = res.data.rounds
           _self.rankingData = res.data.ranking
+          _self.roomRules = _.mapValues(res.data.rules, (value) => _.trim(value, ','))
 
           jQuery('#detail-record-modal-button').click() //弹出战绩流水框
         })
-
-
     },
   },
 

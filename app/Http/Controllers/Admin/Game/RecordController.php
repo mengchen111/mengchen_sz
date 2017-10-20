@@ -103,7 +103,7 @@ class RecordController extends Controller
     {
         ksort($options);
         $rules = [
-            'type' => '',       //玩法
+            'wanfa' => '',       //玩法
             'gui_pai' => '',    //鬼牌
             'ma_pai' => '',     //马牌
         ];
@@ -116,9 +116,9 @@ class RecordController extends Controller
                             $rules[$category] .= "{$categoryOptions[$k]['name']}-{$categoryOptions[$k]['options'][$v]},";
                         } else {
                             if ($category === 'ma_pai') {
-                                $rules[$category] .= "{$categoryOptions[$k]}: $v";      //买了多少马
+                                $rules[$category] .= "{$categoryOptions[$k]}: $v,";      //买了多少马
                             } elseif ($k === 26) {
-                                $rules[$category] .= "{$categoryOptions[$k]}: $v";      //底分多少
+                                $rules[$category] .= "{$categoryOptions[$k]}: $v,";      //底分多少
                             } else {
                                 $rules[$category] .= "{$categoryOptions[$k]},";
                             }
