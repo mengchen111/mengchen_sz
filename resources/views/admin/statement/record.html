@@ -63,30 +63,67 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button class="close" type="button" data-dismiss="modal">x</button>
-                            <h4 class="text-center">房间号：{{ '待填充' }}  惠州庄  {{ '时间2017-11-11 11:11' }}</h4>
+                            <h4 class="text-center" v-html="
+                                '房间号：' + activatedRow.room_id + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                                + activatedRow.game_type + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + activatedRow.time
+                            ">
+                            </h4>
                         </div>
                         <div class="modal-body">
                             <div class="nav-tabs-custom">
                                 <!-- Tabs within a box -->
                                 <ul class="nav nav-tabs pull-right">
-                                    <li><a href="#game-type" data-toggle="tab">房间玩法</a></li>
+                                    <li><a href="#game-features" data-toggle="tab">房间玩法</a></li>
                                     <li><a href="#game-ranking" data-toggle="tab">总分排行</a></li>
                                     <li class="active"><a href="#game-rounds" data-toggle="tab">战绩流水</a></li>
                                     <li class="pull-left header"><i class="fa fa-trophy"></i> 战绩详情</li>
                                 </ul>
                                 <div class="tab-content no-padding">
-                                    <div class="chart tab-pane active" id="game-type" style="position: relative; height: 300px;">
-                                        <my-vuetable
-                                                :table-url="tableUrl"
-                                                :table-fields="tableFields"
-                                        >
-                                        </my-vuetable>
+                                    <div class="tab-pane pre-scrollable" id="game-features" style="position: relative;">
+                                        房间玩法
                                     </div>
-                                    <div class="chart tab-pane" id="game-ranking" style="position: relative; height: 300px;">
-                                        总分排行
+                                    <div class="tab-pane pre-scrollable" id="game-ranking" style="position: relative;">
+                                        <div class="box box-default box-body" v-for="player in rankingData">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                                    <div class="info-box">
+                                                        <div class="info-box-icon">
+                                                            <img :src="player.headimg"/>
+                                                        </div>
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text" :title="player.nickname">{{ player.nickname }}</span>
+                                                            <span class="info-box-number" :title="player.uid">{{ player.uid }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1 col-sm-2 col-xs-2">
+                                                    <span class="fa fa-home" v-if="player.is_root_owner"></span>
+                                                </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                    <span>局数：<b>{{ player.rounds_count }}</b></span>
+                                                </div>
+                                                <div class="col-md-3 col-sm-2 col-xs-2">
+                                                    <span>总分：<b class="text-red">{{ player.score }}</b></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="chart tab-pane" id="game-rounds" style="position: relative; height: 300px;">
-                                        战绩流水
+                                    <div class="tab-pane pre-scrollable active" id="game-rounds" style="position: relative;">
+                                        <div class="box box-default box-body" v-for="(round, key) in roundData">
+                                            <div class="row">
+                                                <div class="col-md-3 col-sm-6 col-xs-6" v-for="(player, position) in round">
+                                                    <div class="info-box">
+                                                        <div class="info-box-icon">
+                                                            <img :src="player.headimg"/>
+                                                        </div>
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text" :title="player.nickname">{{ player.nickname }}</span>
+                                                            <span class="info-box-number text-red">{{ player.score }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -106,6 +143,7 @@
 </div>
 <!-- ./wrapper -->
 
+<link rel="stylesheet" type="text/css" href="/css/admin/statement/record.css" />
 <script src="http://localhost:8080/dist/webpack/admin/statement/record.js"></script>
 </body>
 </html>

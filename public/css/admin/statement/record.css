@@ -1,0 +1,43 @@
+.info-box {
+    min-height: 50px;
+    margin-bottom: 2px;
+}
+
+.info-box-icon {
+    height: 50px;
+    width: 50px;
+    font-size: 14px;
+    line-height: 50px;
+}
+
+.info-box-content {
+    padding: 2px 4px;
+    margin-left: 50px;
+}
+
+.info-box-text {
+    font-size: 12px;
+}
+
+.info-box-number {
+    font-size: 15px;
+}
+
+.box {
+    margin-bottom: 1px;
+}
+
+.row {
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.col-md-3 .col-sm-6 .col-xs-12 {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+span b {
+    font-size: 15px;
+}
+

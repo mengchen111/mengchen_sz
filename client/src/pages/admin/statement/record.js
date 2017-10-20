@@ -10,9 +10,13 @@ new Vue({
     eventHub: new Vue(),
     activatedRow: {},
     uid: null,
+    roundData: {},      //战绩流水
+    rankingData: {},    //总分排行
+    gameFeatures: {},
 
     recordApi: '/admin/api/statement/records',
-    tableUrl: '/admin/api/statement/records?uid=0',  //初始数据
+    recordInfoApiPrefix: '/admin/api/statement/record-info',
+    tableUrl: '/admin/api/statement/records?uid=10008',  //初始数据
     tableFields: [
       {
         name: 'rec_id',
@@ -45,7 +49,19 @@ new Vue({
 
     onCellClicked (data) {
       this.activatedRow = data
-      jQuery('#detail-record-modal-button').click() //弹出战绩流水框
+      let _self = this
+
+      axios.get(`${this.recordInfoApiPrefix}/${this.activatedRow.rec_id}`)
+        .then(function (res) {
+          _self.roundData = res.data.rounds
+          _self.rankingData = res.data.ranking
+
+          jQuery('#detail-record-modal-button').click() //弹出战绩流水框
+
+          console.log(_self.rankingData)
+        })
+
+
     },
   },
 

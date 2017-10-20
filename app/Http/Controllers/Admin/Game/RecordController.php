@@ -20,6 +20,9 @@ class RecordController extends Controller
         3 => 'west',
         4 => 'north',
     ];          //牌桌方位的映射关系
+    protected $gameTypeMap = [
+        4 => '惠州麻将',
+    ];
 
     public function __construct(Request $request)
     {
@@ -56,7 +59,7 @@ class RecordController extends Controller
             krsort($records);
 
             foreach ($records as &$record) {
-                $record['game_type'] = $record['infos']['kind'];
+                $record['game_type'] = $this->gameTypeMap[$record['infos']['kind']];
                 $record['time'] = $record['infos']['ins_time'];
 
                 $recordDetail = json_decode($record['infos']['rec_jstr'], true);
@@ -101,6 +104,8 @@ class RecordController extends Controller
             $player['is_root_owner'] = $player['uid'] === $roomOwnerId ?: false;
             $player['rounds_count'] = $roundsCount;
         }
+        //根据总分排倒序
+        $ranking = collect($ranking)->sortByDesc('score')->values()->all();
         return $ranking;
     }
 
