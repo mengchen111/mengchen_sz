@@ -115,9 +115,13 @@ class RecordController extends Controller
                         if (is_array($categoryOptions[$k])) {
                             $rules[$category] .= "{$categoryOptions[$k]['name']}-{$categoryOptions[$k]['options'][$v]},";
                         } else {
-                            $rules[$category] .= $category === 'ma_pai'
-                                ? "{$categoryOptions[$k]}: $v"      //买了多少马
-                                : "{$categoryOptions[$k]},";
+                            if ($category === 'ma_pai') {
+                                $rules[$category] .= "{$categoryOptions[$k]}: $v";      //买了多少马
+                            } elseif ($k === 26) {
+                                $rules[$category] .= "{$categoryOptions[$k]}: $v";      //底分多少
+                            } else {
+                                $rules[$category] .= "{$categoryOptions[$k]},";
+                            }
                         }
                     }
                 }
