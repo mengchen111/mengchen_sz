@@ -6,12 +6,16 @@ use App\Exceptions\CustomException;
 use App\Exceptions\GameApiServiceException;
 use App\Http\Requests\AdminRequest;
 use App\Services\Game\GameApiService;
+use App\Services\Game\GameOptionsMap;
 use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class RecordController extends Controller
 {
+    //载入游戏规则配置关系
+    use GameOptionsMap;
+
     protected $per_page = 15;
     protected $page = 1;
     protected $positionMap = [
@@ -85,13 +89,42 @@ class RecordController extends Controller
             ]);
             $recordDetail = json_decode($record['rec_jstr'], true);
 
-            $result['rounds'] = $this->getRounds($recordDetail);    //战绩流水
-            $result['ranking'] = $this->getRanking($recordDetail);  //总分排行
+            $result['rounds'] = $this->getRounds($recordDetail);                    //战绩流水
+            $result['ranking'] = $this->getRanking($recordDetail);                  //总分排行
+            $result['rules'] = $this->getRules($recordDetail['room']['options']);   //房间玩法
 
             return $result;
         } catch (GameApiServiceException $exception) {
             throw new CustomException($exception->getMessage());
         }
+    }
+
+    protected function getRules($options)
+    {
+        ksort($options);
+        $rules = [
+            'type' => '',       //玩法
+            'gui_pai' => '',    //鬼牌
+            'ma_pai' => '',     //马牌
+        ];
+
+        array_walk($options, function ($v, $k) use (&$rules) {
+            foreach ($this->gameOptionsMap as $category => $categoryOptions) {
+                if (array_key_exists($k, $categoryOptions)) {
+                    if (! empty($v)) {
+                        if (is_array($categoryOptions[$k])) {
+                            $rules[$category] .= "{$categoryOptions[$k]['name']}-{$categoryOptions[$k]['options'][$v]},";
+                        } else {
+                            $rules[$category] .= $category === 'ma_pai'
+                                ? "{$categoryOptions[$k]}: $v"      //买了多少马
+                                : "{$categoryOptions[$k]},";
+                        }
+                    }
+                }
+            }
+        });
+
+        return $rules;
     }
 
     //获取总分排行数据

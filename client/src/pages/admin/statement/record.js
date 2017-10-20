@@ -12,7 +12,7 @@ new Vue({
     uid: null,
     roundData: {},      //战绩流水
     rankingData: {},    //总分排行
-    gameFeatures: {},
+    roomRules: {},      //房间玩法
 
     recordApi: '/admin/api/statement/records',
     recordInfoApiPrefix: '/admin/api/statement/record-info',
