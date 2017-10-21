@@ -37,23 +37,18 @@ class PlayerController extends Controller
     //查看玩家列表
     public function show(AdminRequest $request)
     {
-        $this->validateUid($request);
+        if ($request->has('filter')) {
+            $this->validateUid($request);
+            $data = PlayerService::searchPlayers($request->filter);
+        } else {
+            $cacheKey = config('custom.game_server_cache_players');
+            $cacheDuration = config('custom.game_server_cache_duration');
 
-        try {
-            if ($request->has('filter')) {
-                $data = PlayerService::searchPlayers($request->filter);
-            } else {
-                $cacheKey = config('custom.game_server_cache_players');
-                $cacheDuration = config('custom.game_server_cache_duration');
-
-                //玩家列表缓存三分钟
-                $data = Cache::remember($cacheKey, $cacheDuration, function () {
-                    return PlayerService::getAllPlayers();
-                });
-                krsort($data);
-            }
-        } catch (GameApiServiceException $e) {
-            throw new CustomException($e->getMessage());
+            //玩家列表缓存三分钟
+            $data = Cache::remember($cacheKey, $cacheDuration, function () {
+                return PlayerService::getAllPlayers();
+            });
+            krsort($data);
         }
 
         $result = $this->paginateData($data);

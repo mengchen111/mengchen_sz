@@ -36,14 +36,10 @@ class RecordController extends Controller
 
     public function show(AdminRequest $request)
     {
-        try {
-            $api = config('custom.game_api_records');
-            $records = GameApiService::request('GET', $api);
-            krsort($records);
-            return Paginator::paginate($records, $this->per_page, $this->page);
-        } catch (GameApiServiceException $exception) {
-            throw new CustomException($exception->getMessage());
-        }
+        $api = config('custom.game_api_records');
+        $records = GameApiService::request('GET', $api);
+        krsort($records);
+        return Paginator::paginate($records, $this->per_page, $this->page);
     }
 
     //战绩信息
@@ -55,48 +51,40 @@ class RecordController extends Controller
             return Paginator::paginate([]);
         }
 
-        try {
-            $api = config('custom.game_api_records');
-            $records = GameApiService::request('POST', $api, [
-                'uid' => $searchUid,
-            ]);
-            krsort($records);
+        $api = config('custom.game_api_records');
+        $records = GameApiService::request('POST', $api, [
+            'uid' => $searchUid,
+        ]);
+        krsort($records);
 
-            foreach ($records as &$record) {
-                $record['game_type'] = $this->gameTypeMap[$record['infos']['kind']];
-                $record['time'] = $record['infos']['ins_time'];
+        foreach ($records as &$record) {
+            $record['game_type'] = $this->gameTypeMap[$record['infos']['kind']];
+            $record['time'] = $record['infos']['ins_time'];
 
-                $recordDetail = json_decode($record['infos']['rec_jstr'], true);
-                $record['room_id'] = $recordDetail['room']['room_id'];
-                $record['owner_id'] = $recordDetail['room']['owner_uid'];
+            $recordDetail = json_decode($record['infos']['rec_jstr'], true);
+            $record['room_id'] = $recordDetail['room']['room_id'];
+            $record['owner_id'] = $recordDetail['room']['owner_uid'];
 
-                unset($record['infos']);
-            }
-
-            return Paginator::paginate($records, $this->per_page, $this->page);
-        } catch (GameApiServiceException $exception) {
-            throw new CustomException($exception->getMessage());
+            unset($record['infos']);
         }
+
+        return Paginator::paginate($records, $this->per_page, $this->page);
     }
 
     //查询指定战绩id的战绩流水
     public function getRecordInfo(AdminRequest $request, $recId)
     {
-        try {
-            $api = config('custom.game_api_record_info');
-            $record = GameApiService::request('POST', $api, [
-                'rec_id' => $recId,
-            ]);
-            $recordDetail = json_decode($record['rec_jstr'], true);
+        $api = config('custom.game_api_record_info');
+        $record = GameApiService::request('POST', $api, [
+            'rec_id' => $recId,
+        ]);
+        $recordDetail = json_decode($record['rec_jstr'], true);
 
-            $result['rounds'] = $this->getRounds($recordDetail);                    //战绩流水
-            $result['ranking'] = $this->getRanking($recordDetail);                  //总分排行
-            $result['rules'] = $this->getRules($recordDetail['room']['options']);   //房间玩法
+        $result['rounds'] = $this->getRounds($recordDetail);                    //战绩流水
+        $result['ranking'] = $this->getRanking($recordDetail);                  //总分排行
+        $result['rules'] = $this->getRules($recordDetail['room']['options']);   //房间玩法
 
-            return $result;
-        } catch (GameApiServiceException $exception) {
-            throw new CustomException($exception->getMessage());
-        }
+        return $result;
     }
 
     protected function getRules($options)

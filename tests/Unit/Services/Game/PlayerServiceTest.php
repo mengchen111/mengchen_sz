@@ -23,7 +23,7 @@ class PlayerServiceTest extends TestCase
         $res = PlayerService::searchPlayers($this->testPlayerId);
         $this->assertEquals($res[0]['id'], $this->testPlayerId, 'user id not equal');
     }
-    
+
     public function testGetOnePlayerNotFound()
     {
         $res = PlayerService::searchPlayers(Faker::create()->randomNumber(9));

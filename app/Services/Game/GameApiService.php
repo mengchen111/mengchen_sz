@@ -127,8 +127,9 @@ class GameApiService
     protected static function checkResult($res)
     {
         if (! $res['result']) {
-            $msg = is_array($res['errorMsg']) ? json_encode($res['errorMsg'], JSON_UNESCAPED_UNICODE) : $res['errorMsg'];
-            throw new GameApiServiceException('调用游戏后端接口成功，但是数据返回格式错误: ' . $msg
+            $msg = 'code: ' . $res['code'] . ', errorMsg: ';
+            $msg .= is_array($res['errorMsg']) ? json_encode($res['errorMsg'], JSON_UNESCAPED_UNICODE) : $res['errorMsg'];
+            throw new GameApiServiceException('调用游戏后端接口成功，但是返回数据格式错误: ' . $msg
                 , config('exceptions.GameApiServiceException'));
         }
         return true;
