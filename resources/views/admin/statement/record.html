@@ -118,18 +118,26 @@
                                     <div class="tab-pane pre-scrollable active" id="game-rounds" style="position: relative;">
                                         <div class="box box-primary box-body" v-for="(round, key) in roundData">
                                             <div class="row">
-                                                <div class="col-md-3 col-sm-6 col-xs-6" v-for="(player, position) in round">
-                                                    <div class="info-box">
-                                                        <div class="info-box-icon">
-                                                            <img :src="player.headimg"/>
-                                                        </div>
-                                                        <div class="info-box-content">
-                                                            <span class="info-box-text" :title="player.nickname">{{ player.nickname }}</span>
-                                                            <span class="info-box-number text-red">{{ player.score }}</span>
+                                                <div class="col-md-2 text-center">
+                                                    {{ key.replace(/round/, '') }}
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-sm-6 col-xs-6" v-for="(player, position) in round">
+                                                            <div class="info-box">
+                                                                <div class="info-box-icon">
+                                                                    <img :src="player.headimg"/>
+                                                                </div>
+                                                                <div class="info-box-content">
+                                                                    <span class="info-box-text" :title="player.nickname">{{ player.nickname }}</span>
+                                                                    <span class="info-box-number text-red">{{ player.score }}</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>

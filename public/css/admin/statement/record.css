@@ -37,3 +37,11 @@
     padding-left: 10px;
 }
 
+.col-md-2 {
+    width: 10%;
+}
+
+.col-md-10 {
+    padding-right: 1px;
+    padding-left: 1px;
+}
