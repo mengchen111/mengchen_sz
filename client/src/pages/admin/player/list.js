@@ -27,7 +27,7 @@ new Vue({
     tableTrackBy: 'uid',
     tableFields: [
       {
-        name: 'uid',
+        name: 'id',
         title: '玩家ID',
       },
       {
@@ -63,8 +63,8 @@ new Vue({
     ],
     tableSortOrder: [      //默认的排序
       {
-        field: 'uid',
-        sortField: 'uid',
+        field: 'id',
+        sortField: 'id',
         direction: 'desc',
       },
     ],

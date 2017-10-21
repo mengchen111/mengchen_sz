@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Admin\Game;
 
+use App\Exceptions\GameApiServiceException;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class PlayerController extends Controller
 {
     protected $per_page = 15;
     protected $page = 1;
-    protected $order = ['uid', 'desc'];
+    protected $order = ['id', 'desc'];
 
     public function __construct(Request $request)
     {
@@ -48,7 +49,7 @@ class PlayerController extends Controller
                 });
                 krsort($data);
             }
-        } catch (\Exception $e) {
+        } catch (GameApiServiceException $e) {
             throw new CustomException($e->getMessage());
         }
 
