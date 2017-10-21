@@ -148,12 +148,3 @@ cd $codeDir
 | URI   | Method  | Description |     
 | ----  | :-----: | ----------: |
 | /api/info | GET | 获取用户个人信息 |
-
-## 游戏服接口
-> **https://down.yxx.max78.com/casino/back/htmls/agentx/**
-
-| URI | Method | Description |
-| ----  | :-----: | ----------: |
-| users.php | GET | 获取玩家列表 |
-| user.php| POST | 获取指定玩家信息 |
-| recharge.php | POST | 给指定玩家充值 |

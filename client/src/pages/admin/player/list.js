@@ -24,7 +24,7 @@ new Vue({
     },
 
     tableUrl: '/admin/api/game/players',
-    tableTrackBy: 'uid',
+    tableTrackBy: 'id',
     tableFields: [
       {
         name: 'id',
@@ -73,7 +73,7 @@ new Vue({
   methods: {
     topUpPlayer () {
       let _self = this
-      let apiUrl = `/admin/api/top-up/player/${_self.activatedRow.uid}/${_self.topUpData.typeId}/${_self.topUpData.amount}`
+      let apiUrl = `/admin/api/top-up/player/${_self.activatedRow.id}/${_self.topUpData.typeId}/${_self.topUpData.amount}`
 
       axios({
         method: 'POST',
