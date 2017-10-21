@@ -32,82 +32,9 @@
                         </div>
 
                         <div class="box-body">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <div class="small-box bg-green">
-                                        <div class="inner">
-                                            <h3 v-cloak v-if="!loading">
-                                                {{ summaryData.agent_purchased_total['card'] ? summaryData.agent_purchased_total['card'][0].total : 0 }}
-                                            </h3>
-                                            <p>代理商房卡购买总量</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-4">
-                                    <div class="small-box bg-green">
-                                        <div class="inner">
-                                            <h3 v-cloak v-if="!loading">
-                                                {{ summaryData.player_consumed_total['card'] ? summaryData.player_consumed_total['card'][0].total : 0 }}
-                                            </h3>
-                                            <p>玩家房卡总消耗量</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-4">
-                                    <div class="small-box bg-green">
-                                        <div class="inner">
-                                            <h3 v-cloak v-if="!loading">
-                                                {{ summaryData.player_total['card'] ? summaryData.player_total['card'][0].total : 0}}
-                                            </h3>
-                                            <p>玩家充值房卡总人数</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <div class="small-box bg-green">
-                                        <div class="inner">
-                                            <h3 v-cloak v-if="!loading">
-                                                {{ summaryData.agent_purchased_total['coin'] ? summaryData.agent_purchased_total['coin'][0].total : 0 }}
-                                            </h3>
-                                            <p>代理商金币购买总量</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-4">
-                                    <div class="small-box bg-green">
-                                        <div class="inner">
-                                            <h3 v-cloak v-if="!loading">
-                                                {{ summaryData.player_consumed_total['coin'] ? summaryData.player_consumed_total['coin'][0].total : 0}}
-                                            </h3>
-                                            <p>玩家金币总消耗量</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-4">
-                                    <div class="small-box bg-green">
-                                        <div class="inner">
-                                            <h3 v-cloak v-if="!loading">
-                                                {{ summaryData.player_total['coin'] ? summaryData.player_total['coin'][0].total : 0}}
-                                            </h3>
-                                            <p>玩家充值金币总人数</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            首页
 
                         </div>
-                    </div>
-
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">数据图表</h3>
-                        </div>
-                        <my-chart
-                                :chart-options="chartOptions">
-                        </my-chart>
                     </div>
                 </div>
             </div>
