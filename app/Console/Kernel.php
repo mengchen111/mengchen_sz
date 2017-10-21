@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\DataMigrate::class,
+        //Commands\DataMigrate::class,
         Commands\GenerateDailyStatement::class,
     ];
 

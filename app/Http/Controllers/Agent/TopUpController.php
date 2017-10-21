@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\DB;
-use App\Services\Game\GameServer;
-use Carbon\Carbon;
+use App\Services\Game\GameApiService;
 use Illuminate\Support\Facades\Cache;
 
 class TopUpController extends Controller
@@ -186,9 +185,8 @@ class TopUpController extends Controller
             //调用接口充值
             $this->sendTopUpRequest([
                 'uid' => $player,
-                'ctype' => $type,
+                'item_type' => $type,
                 'amount' => $amount,
-                'timestamp' => Carbon::now()->timestamp
             ]);
 
             //减库存
@@ -201,12 +199,7 @@ class TopUpController extends Controller
 
     protected function sendTopUpRequest($params)
     {
-        $gameServer = new GameServer();
-
-        try {
-            return $gameServer->request('POST', config('custom.game_server_api_topUp'), $params);
-        } catch (\Exception $e) {
-            throw new CustomException($e->getMessage());
-        }
+        $playerTopUpApi = config('custom.game_api_top-up');
+        return GameApiService::request('POST', $playerTopUpApi, $params);
     }
 }
