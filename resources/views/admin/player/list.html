@@ -26,14 +26,25 @@
 
         <!-- Main content -->
         <section class="content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">玩家列表</h3>
-                        </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">玩家列表</h3>
+                </div>
 
-                        <div class="box-body">
+                <div class="box-body">
+                    <div class="row hidden-xs">
+                        <div class="col-md-12">
+                            <filter-bar placeholder="查找玩家ID"></filter-bar>
+                            <my-vuetable
+                                    :table-url="tableUrl"
+                                    :table-fields="tableFields"
+                                    :table-sort-order="tableSortOrder"
+                                    :table-track-by="tableTrackBy">
+                            </my-vuetable>
+                        </div>
+                    </div>
+                    <div class="row pre-scrollable visible-xs">
+                        <div class="col-xs-12">
                             <filter-bar placeholder="查找玩家ID"></filter-bar>
                             <my-vuetable
                                     :table-url="tableUrl"
