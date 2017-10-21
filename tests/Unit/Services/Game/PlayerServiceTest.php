@@ -15,20 +15,18 @@ class PlayerServiceTest extends TestCase
     public function testGetAllPlayers()
     {
         $res = PlayerService::getAllPlayers();
-        $this->assertArrayHasKey('uid', $res[0]);
+        $this->assertArrayHasKey('id', $res[0]);
     }
 
-    public function testGetOnePlayerFound()
+    public function testSearchPlayersFound()
     {
-        $res = PlayerService::getOnePlayer($this->testPlayerId);
-        $this->assertEquals($res['uid'], $this->testPlayerId, 'uid not equal');
+        $res = PlayerService::searchPlayers($this->testPlayerId);
+        $this->assertEquals($res[0]['id'], $this->testPlayerId, 'user id not equal');
     }
-
-    /**
-     * @expectedException   \App\Exceptions\GameServerException
-     */
+    
     public function testGetOnePlayerNotFound()
     {
-        $res = PlayerService::getOnePlayer(Faker::create()->name());
+        $res = PlayerService::searchPlayers(Faker::create()->randomNumber(9));
+        $this->assertTrue(empty($res));
     }
 }

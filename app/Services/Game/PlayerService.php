@@ -19,7 +19,7 @@ class PlayerService
         return GameApiService::request('GET', self::playersApi());
     }
 
-    public static function getOnePlayer($uid)
+    public static function searchPlayers($uid)
     {
         return GameApiService::request('POST', self::playersApi(), [
             'uid' => $uid,

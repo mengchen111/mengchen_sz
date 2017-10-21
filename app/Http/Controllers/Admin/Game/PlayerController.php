@@ -19,6 +19,7 @@ use App\Services\Game\PlayerService;
 use App\Exceptions\CustomException;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\ValidationException;
 
 class PlayerController extends Controller
 {
@@ -36,9 +37,11 @@ class PlayerController extends Controller
     //查看玩家列表
     public function show(AdminRequest $request)
     {
+        $this->validateUid($request);
+
         try {
             if ($request->has('filter')) {
-                $data[] = PlayerService::getOnePlayer($request->filter);
+                $data = PlayerService::searchPlayers($request->filter);
             } else {
                 $cacheKey = config('custom.game_server_cache_players');
                 $cacheDuration = config('custom.game_server_cache_duration');
@@ -64,5 +67,16 @@ class PlayerController extends Controller
     protected function paginateData($data)
     {
         return Paginator::paginate($data, $this->per_page, $this->page);
+    }
+
+    protected function validateUid($request)
+    {
+        try {
+            $this->validate($request, [
+                'filter' => 'required|numeric',
+            ]);
+        } catch (ValidationException $exception) {
+            throw new CustomException('待查询的玩家id必须为数字');
+        }
     }
 }
