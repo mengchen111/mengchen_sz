@@ -16,15 +16,6 @@ return [
     //计划任务日志
     'cron_task_log' => env('CRON_TASK_LOG', '/tmp/artisan.log'),
 
-    //TODO 待迁移到新接口上
-    //游戏服接口地址
-    'game_server_api_address' => env('GAME_SERVER_API_ADDRESS'),
-    'game_server_partner_id' => env('GAME_SERVER_PARTNER_ID'),
-    //游戏服的接口uri
-//    'game_server_api_users' => 'users.php',         //所有玩家列表
-//    'game_server_api_user' => 'user.php',           //查询单个玩家信息
-    'game_server_api_topUp' => 'recharge.php',      //玩家充值
-
     //游戏服数据缓存时的key
     'game_server_cache_duration' => 3,              //数据缓存时间，3min
     'game_server_cache_players' => 'game:players',  //所有玩家
