@@ -1,6 +1,7 @@
 import '../common.js'
 import FilterBar from '../../../components/FilterBar.vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
+import MyToastr from '../../../components/MyToastr.vue'
 import TableActions from './components/TableActions.vue'
 import DetailRow from './components/DetailRow.vue'
 
@@ -12,6 +13,7 @@ new Vue({
   components: {
     FilterBar,
     MyVuetable,
+    MyToastr,
   },
   data: {
     eventHub: new Vue(),
@@ -111,6 +113,8 @@ new Vue({
   methods: {
     topUpAgent () {
       let _self = this
+      let toastr = this.$refs.toastr
+
       axios({
         method: 'POST',
         url: `${_self.topUpApiPrefix}/${_self.activatedRow.account}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
@@ -120,9 +124,11 @@ new Vue({
       })
         .then(function (response) {
           if (response.status === 422) {
-            alert(JSON.stringify(response.data))
+            toastr.message(JSON.stringify(response.data), 'error')
           } else {
-            response.data.error ? alert(response.data.error) : alert(response.data.message)
+            response.data.error
+              ? toastr.message(response.data.error, 'error')
+              : toastr.message(response.data.message)
             _self.topUpData.amount = null
           }
         })
@@ -130,6 +136,8 @@ new Vue({
 
     editAgentInfo () {
       let _self = this
+      let toastr = this.$refs.toastr
+
       axios({
         method: 'PUT',
         url: `${_self.editApiPrefix}/${_self.activatedRow.id}`,
@@ -140,14 +148,16 @@ new Vue({
       })
         .then(function (response) {
           if (response.status === 422) {
-            return alert(JSON.stringify(response.data))
+            return toastr.message(JSON.stringify(response.data), 'error')
           }
-          return alert(response.data.message)
+          return toastr.message(response.data.message)
         })
     },
 
     updateAgentPassword () {
       let _self = this
+      let toastr = this.$refs.toastr
+
       axios({
         method: 'PUT',
         url: `${_self.updatePassApiPrefix}/${_self.activatedRow.id}`,
@@ -158,20 +168,24 @@ new Vue({
       })
         .then(function (response) {
           if (response.status === 422) {
-            return alert(JSON.stringify(response.data))
+            return toastr.message(JSON.stringify(response.data), 'error')
           }
-          return alert(response.data.message)
+          return toastr.message(response.data.message)
         })
     },
 
     deleteAgent () {
       let _self = this
+      let toastr = this.$refs.toastr
+
       axios({
         method: 'DELETE',
         url: `${_self.deleteApiPrefix}/${_self.activatedRow.id}`,
       })
         .then(function (response) {
-          response.data.error ? alert(response.data.error) : alert(response.data.message)
+          response.data.error
+            ? toastr.message(response.data.error, 'error')
+            : toastr.message(response.data.message)
 
           //删除完成用户之后重新刷新表格数据，避免被删除用户继续留存在表格中
           _self.$root.eventHub.$emit('vuetableRefresh')

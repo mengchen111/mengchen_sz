@@ -1,7 +1,11 @@
 import '../common.js'
+import MyToastr from '../../../components/MyToastr.vue'
 
 new Vue({
   el: '#app',
+  components: {
+    MyToastr,
+  },
   data: {
     formData: {
       group_id: 2,
@@ -11,6 +15,7 @@ new Vue({
   methods: {
     createAgent () {
       let _self = this
+      let toastr = this.$refs.toastr
 
       axios({
         method: 'POST',
@@ -22,9 +27,11 @@ new Vue({
       })
         .then(function (response) {
           if (response.status === 422) {
-            alert(JSON.stringify(response.data))
+            toastr.message(JSON.stringify(response.data), 'error')
           } else {
-            response.data.error ? alert(response.data.error) : alert('添加代理商成功')
+            response.data.error
+              ? toastr.message(response.data.error, 'error')
+              : toastr.message('添加代理商成功')
 
             //清空表单数据
             for (let index of Object.keys(_self.formData)) {
