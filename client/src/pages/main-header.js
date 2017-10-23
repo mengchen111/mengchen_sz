@@ -1,3 +1,5 @@
+import MyToastr from '../components/MyToastr.vue'
+
 new Vue({
   el: '.main-header',
   data: {
@@ -48,6 +50,9 @@ new Vue({
 
 new Vue({
   el: '#change-password-modal',
+  components: {
+    MyToastr,
+  },
   data: {
     formData: {
       password: '',
@@ -61,6 +66,7 @@ new Vue({
       let _self = this
       let role = location.href.match(/http:\/\/[\w.-]+\/([\w-]+\/)/)[1]   //管理员还是代理商
       let changePassApi = `/${role}api/self/password`
+      let toastr = this.$refs.toastr
 
       axios({
         method: 'PUT',
@@ -75,9 +81,11 @@ new Vue({
       })
         .then(function (response) {
           if (response.status === 422) {
-            return alert(JSON.stringify(response.data))
+            return toastr.message(JSON.stringify(response.data), 'error')
           }
-          response.data.error ? alert(response.data.error) : alert(response.data.message)
+          response.data.error
+            ? toastr.message(response.data.error, 'error')
+            : toastr.message(response.data.message)
           for (let index of Object.keys(_self.formData)) {
             _self.formData[index] = ''
           }
