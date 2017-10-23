@@ -40,6 +40,7 @@ new Vue({
     editApiPrefix: '/admin/api/agent',
     updatePassApiPrefix: '/admin/api/agent/pass',
     deleteApiPrefix: '/admin/api/agent',
+    tableClass: 'row',
 
     tableUrl: '/admin/api/agent',
     tableFields: [
@@ -180,6 +181,13 @@ new Vue({
 
   mounted: function () {
     let _self = this
+
+    //判断屏幕大小，更新div的class，使table在手机浏览器下带上滚动条
+    let windowWidth = document.body.clientWidth
+    if (windowWidth < 768) {
+      this.tableClass = 'row pre-scrollable'
+    }
+
     this.$root.eventHub.$on('topUpAgentEvent', (data) => _self.activatedRow = data)
     this.$root.eventHub.$on('editInfoEvent', (data) => _self.activatedRow = data)
     this.$root.eventHub.$on('changeAgentPasswordEvent', (data) => _self.activatedRow = data)

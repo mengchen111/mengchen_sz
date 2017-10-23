@@ -32,19 +32,8 @@
                 </div>
 
                 <div class="box-body">
-                    <div class="row hidden-xs">
+                    <div :class="tableClass">
                         <div class="col-md-12">
-                            <filter-bar placeholder="查找玩家ID"></filter-bar>
-                            <my-vuetable
-                                    :table-url="tableUrl"
-                                    :table-fields="tableFields"
-                                    :table-sort-order="tableSortOrder"
-                                    :table-track-by="tableTrackBy">
-                            </my-vuetable>
-                        </div>
-                    </div>
-                    <div class="row pre-scrollable visible-xs">
-                        <div class="col-xs-12">
                             <filter-bar placeholder="查找玩家ID"></filter-bar>
                             <my-vuetable
                                     :table-url="tableUrl"

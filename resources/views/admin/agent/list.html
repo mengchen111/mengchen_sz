@@ -33,20 +33,8 @@
                 <!-- /.box-header -->
 
                 <div class="box-body">
-                    <div class="row hidden-xs">
+                    <div :class="tableClass">
                         <div class="col-md-12 ">
-                            <filter-bar placeholder="查找代理商账号..."></filter-bar>
-                            <my-vuetable
-                                    :table-url="tableUrl"
-                                    :table-fields="tableFields"
-                                    :callbacks="callbacks"
-                                    detail-row-component="detail-row"
-                            >
-                            </my-vuetable>
-                        </div>
-                    </div>
-                    <div class="row pre-scrollable visible-xs">
-                        <div class="col-xs-12 ">
                             <filter-bar placeholder="查找代理商账号..."></filter-bar>
                             <my-vuetable
                                     :table-url="tableUrl"
