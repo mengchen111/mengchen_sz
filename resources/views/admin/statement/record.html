@@ -110,7 +110,12 @@
                                                     <span>局数：<b style="font-size: 15px">{{ player.rounds_count }}</b></span>
                                                 </div>
                                                 <div class="col-md-3 col-sm-2 col-xs-2">
-                                                    <span>总分：<b class="text-red" style="font-size: 15px">{{ player.score }}</b></span>
+                                                    <span v-if="player.score >= 0">
+                                                        总分：<b class="text-green" style="font-size: 15px">{{ player.score }}</b>
+                                                    </span>
+                                                    <span v-else>
+                                                        总分：<b class="text-red" style="font-size: 15px">{{ player.score }}</b>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,7 +135,8 @@
                                                                 </div>
                                                                 <div class="info-box-content">
                                                                     <span class="info-box-text" :title="player.nickname">{{ player.nickname }}</span>
-                                                                    <span class="info-box-number text-red">{{ player.score }}</span>
+                                                                    <span v-if="player.score >= 0" class="info-box-number text-green">{{ player.score }}</span>
+                                                                    <span v-else class="info-box-number text-red">{{ player.score }}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
