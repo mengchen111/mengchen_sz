@@ -1,6 +1,7 @@
 import '../common.js'
 import FilterBar from '../../../components/FilterBar.vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
+import MyToastr from '../../../components/MyToastr.vue'
 import TableActions from './components/TableActions.vue'
 
 Vue.component('table-actions', TableActions)
@@ -10,6 +11,7 @@ new Vue({
   components: {
     FilterBar,
     MyVuetable,
+    MyToastr,
   },
   data: {
     eventHub: new Vue(),
@@ -55,18 +57,26 @@ new Vue({
     doApplyApprove (data) {
       let _self = this
       let url = `${_self.approvalApiPrefix}/${data.id}`
+      let toastr = this.$refs.toastr
+
       axios.post(url)
         .then(function (response) {
-          response.data.error ? alert(response.data.error) : alert(response.data.message)
+          response.data.error
+            ? toastr.message(response.data.error, 'error')
+            : toastr.message(response.data.message)
           _self.$root.eventHub.$emit('vuetableRefresh')
         })
     },
     doApplyDecline (data) {
       let _self = this
       let url = `${_self.declineApiPrefix}/${data.id}`
+      let toastr = this.$refs.toastr
+
       axios.post(url)
         .then(function (response) {
-          response.data.error ? alert(response.data.error) : alert(response.data.message)
+          response.data.error
+            ? toastr.message(response.data.error, 'error')
+            : toastr.message(response.data.message, 'info')
           _self.$root.eventHub.$emit('vuetableRefresh')
         })
     },

@@ -1,7 +1,11 @@
 import '../common.js'
+import MyToastr from '../../../components/MyToastr.vue'
 
 new Vue({
   el: '#app',
+  components: {
+    MyToastr,
+  },
   data: {
     stockApplyApi: '/admin/api/stock',
     stockApplyData: {
@@ -17,6 +21,7 @@ new Vue({
   methods: {
     stockApply () {
       let _self = this
+      let toastr = this.$refs.toastr
 
       axios({
         method: 'POST',
@@ -28,9 +33,11 @@ new Vue({
       })
         .then(function (response) {
           if (response.status === 422) {
-            alert(JSON.stringify(response.data))
+            toastr.message(JSON.stringify(response.data), 'error')
           } else {
-            response.data.error ? alert(response.data.error) : alert(response.data.message)
+            response.data.error
+              ? toastr.message(response.data.error, 'error')
+              : toastr.message(response.data.message)
             _self.stockApplyData.amount = null
             _self.stockApplyData.remark = null
           }
