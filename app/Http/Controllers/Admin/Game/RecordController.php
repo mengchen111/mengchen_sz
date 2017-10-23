@@ -79,6 +79,7 @@ class RecordController extends Controller
             'rec_id' => $recId,
         ]);
         $recordDetail = json_decode($record['rec_jstr'], true);
+        $recordDetail['players'] = $this->decodeNickName($recordDetail['players']);
 
         $result['rounds'] = $this->getRounds($recordDetail);                    //战绩流水
         $result['ranking'] = $this->getRanking($recordDetail);                  //总分排行
@@ -165,5 +166,21 @@ class RecordController extends Controller
             'uid' => 'required|numeric',
         ]);
         return $request->uid;
+    }
+
+    protected function decodeNickName($players)
+    {
+        //一个用户时
+        if (isset($players['nickname'])) {
+            $players['nickname'] = mb_convert_encoding(base64_decode($players['nickname']), 'UTF-8');;
+        } else {
+            //多个用户时
+            foreach ($players as &$player) {
+                //必须要将base64解码之后的字符串转码成utf8格式，不然无法序列化成json字符串
+                $player['nickname'] = mb_convert_encoding(base64_decode($player['nickname']), 'UTF-8');
+            }
+        }
+
+        return $players;
     }
 }
