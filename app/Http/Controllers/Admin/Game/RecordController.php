@@ -79,7 +79,7 @@ class RecordController extends Controller
             'rec_id' => $recId,
         ]);
         $recordDetail = json_decode($record['rec_jstr'], true);
-        $recordDetail['players'] = $this->decodeNickName($recordDetail['players']);
+        $recordDetail['players'] = $this->decodeNickname($recordDetail['players']);
 
         $result['rounds'] = $this->getRounds($recordDetail);                    //战绩流水
         $result['ranking'] = $this->getRanking($recordDetail);                  //总分排行
@@ -168,7 +168,7 @@ class RecordController extends Controller
         return $request->uid;
     }
 
-    protected function decodeNickName($players)
+    protected function decodeNickname($players)
     {
         //一个用户时
         if (isset($players['nickname'])) {
