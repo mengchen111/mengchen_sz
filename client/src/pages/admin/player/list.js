@@ -1,6 +1,7 @@
 import '../common.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import FilterBar from '../../../components/FilterBar.vue'
+import MyToastr from '../../../components/MyToastr.vue'
 import TableActions from './components/TableActions.vue'
 
 Vue.component('table-actions', TableActions)
@@ -10,6 +11,7 @@ new Vue({
   components: {
     MyVuetable,
     FilterBar,
+    MyToastr,
   },
   data: {
     eventHub: new Vue(),
@@ -75,6 +77,7 @@ new Vue({
     topUpPlayer () {
       let _self = this
       let apiUrl = `/admin/api/top-up/player/${_self.activatedRow.id}/${_self.topUpData.typeId}/${_self.topUpData.amount}`
+      let toastr = this.$refs.toastr
 
       axios({
         method: 'POST',
@@ -85,9 +88,11 @@ new Vue({
       })
         .then(function (response) {
           if (response.status === 422) {
-            alert(JSON.stringify(response.data))
+            toastr.message(JSON.stringify(response.data), 'error')
           } else {
-            response.data.error ? alert(response.data.error) : alert(response.data.message)
+            response.data.error
+              ? toastr.message(response.data.error, 'error')
+              : toastr.message(response.data.message)
             _self.topUpData.amount = null
             //_self.$root.eventHub.$emit('vuetableRefresh')  //重新刷新表格
           }
