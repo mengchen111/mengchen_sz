@@ -1,10 +1,12 @@
 import '../common.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
+import MyToastr from '../../../components/MyToastr.vue'
 
 new Vue({
   el: '#app',
   components: {
     MyVuetable,
+    MyToastr,
   },
   data: {
     eventHub: new Vue(),
@@ -69,6 +71,7 @@ new Vue({
 
   mounted: function () {
     let _self = this
+    let toastr = this.$refs.toastr
 
     this.$root.eventHub.$on('detailRecordActionEvent', function (data) {
       _self.activatedRow = data
@@ -77,9 +80,9 @@ new Vue({
     this.$root.eventHub.$on('vuetableDataError', function (data) {
       let err = data.error
       if (err.includes('玩家不存在')) {
-        return alert('玩家不存在')
+        return toastr.message('玩家不存在', 'error')
       }
-      return alert(err)
+      return toastr.message(err, 'error')
     })
   },
 })
