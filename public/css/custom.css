@@ -1,3 +1,10 @@
 [v-cloak] {
     display:none;
 }
+
+@media (max-width: 768px) {
+    .phone-scrollable {
+        max-height: 340px;
+        overflow-y: scroll;
+    }
+}
