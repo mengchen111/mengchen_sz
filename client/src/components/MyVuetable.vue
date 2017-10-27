@@ -12,6 +12,8 @@
                   :track-by="tableTrackBy"
                   @vuetable:cell-clicked="onCellClicked"
                   @vuetable:pagination-data="onPaginationData"
+                  @vuetable:checkbox-toggled="onCheckboxToggled"
+                  @vuetable:checkbox-toggled-all="onCheckboxToggledAll"
         ></vuetable>
 
         <div class="pagination pull-left">
@@ -121,6 +123,12 @@
           this.$root.eventHub.$emit('vuetableCellClicked', data)
         }
       },
+      onCheckboxToggled (isChecked, data) {
+        this.$root.eventHub.$emit('vuetableCheckboxToggled', isChecked, data)
+      },
+      onCheckboxToggledAll (isChecked) {
+        this.$root.eventHub.$emit('vuetableCheckboxToggledAll', isChecked, this.$refs.vuetable.selectedTo)
+      },
       onFilterSet (filterText) {
         this.moreParams = {
           'filter': filterText,
@@ -129,6 +137,10 @@
       },
       onTableRefresh () {
         Vue.nextTick(() => this.$refs.vuetable.refresh())
+      },
+      //清空checkbox选中框
+      onFlushSelectedTo () {
+        this.$refs.vuetable.selectedTo = []
       },
     },
 
@@ -139,7 +151,8 @@
       }
 
       this.$root.eventHub.$on('vuetableRefresh', this.onTableRefresh)
-      this.$root.eventHub.$on('filterEvent', (eventData) => this.onFilterSet(eventData))
+      this.$root.eventHub.$on('filterEvent', this.onFilterSet)
+      this.$root.eventHub.$on('vuetableFlushSelectedTo', this.onFlushSelectedTo)
     },
   }
 </script>
