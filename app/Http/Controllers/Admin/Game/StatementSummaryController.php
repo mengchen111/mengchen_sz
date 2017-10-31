@@ -42,7 +42,7 @@ class StatementSummaryController
 
     public function show(AdminRequest $request)
     {
-        $date = $request->date ?: 'today';
+        $date = $request->date ?: Carbon::parse($request->date)->toDateString();
 
         //月数据
         $this->data['monthly_card_bought_players'] = StatementMonthlyService::getMonthlyCardBoughtPlayersSum($date);
@@ -52,7 +52,7 @@ class StatementSummaryController
         if (Carbon::parse($date)->isToday()) {
             $statementDailyService = new StatementDailyService();
 
-            $this->data['peak_online_players'] = $statementDailyService->getPeakOnlinePlayersAmount();
+            $this->data['peak_online_players'] = $statementDailyService->getPeakOnlinePlayersAmount($date);
             $this->data['active_players'] = $statementDailyService->getActivePlayersAmount($date);
             $this->data['incremental_players'] = $statementDailyService->getIncrementalPlayersAmount($date);
             $this->data['one_day_remained'] = $statementDailyService->getRemainedData($date, 1);

@@ -26,6 +26,18 @@ class PlayerService
         ]);
     }
 
+    public static function getOnlinePlayersAmount()
+    {
+        return GameApiService::request('GET', self::playersOnlineAmountApi());
+    }
+
+    public static function getOnlinePlayersPeak($date)
+    {
+        return GameApiService::request('GET', self::playersOnlinePeakApi(), [
+            'date' => $date,
+        ]);
+    }
+
     //老接口传回来的昵称是base64编码的
 //    protected static function decodeNickname($data)
 //    {
@@ -48,6 +60,12 @@ class PlayerService
         switch ($name) {
             case 'playersApi':
                 return config('custom.game_api_players');
+                break;
+            case 'playersOnlineAmountApi':
+                return config('custom.game_api_players_online_amount');
+                break;
+            case 'playersOnlinePeakApi':
+                return config('custom.game_api_players_online_peak');
                 break;
             default:
                 throw new BadMethodCallException('Call to undefined method ' . self::class . "::${name}()");

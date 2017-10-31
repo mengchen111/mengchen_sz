@@ -1,10 +1,12 @@
 import '../common.js'
 import MyDatePicker from '../../../components/MyDatePicker.vue'
+import MyToastr from '../../../components/MyToastr.vue'
 
 new Vue({
   el: '#app',
   components: {
     MyDatePicker,
+    MyToastr,
   },
   data: {
     dateFormat: 'YYYY-MM-DD',
@@ -48,10 +50,14 @@ new Vue({
 
   mounted: function () {
     let _self = this
+    let toastr = this.$refs.toastr
 
     //获取总览数据
     axios.get(this.summaryDataApi)
       .then(function (res) {
+        if (res.data.error) {
+          toastr.message(res.data.error, 'error')
+        }
         _self.summaryData = res.data
         _self.loading = false
       })

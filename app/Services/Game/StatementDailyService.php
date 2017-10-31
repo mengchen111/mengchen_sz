@@ -29,16 +29,16 @@ class StatementDailyService
         return count($this->allPlayers);
     }
 
+    //实时在线人数
     public function getOnlinePlayersAmount()
     {
-        return 0;
-        //TODO
+        return PlayerService::getOnlinePlayersAmount();
     }
 
-    public function getPeakOnlinePlayersAmount()
+    //日高峰在线
+    public function getPeakOnlinePlayersAmount($date)
     {
-        return 0;
-        //TODO
+        return PlayerService::getOnlinePlayersPeak($date);
     }
 
     //根据日期获取当日活跃玩家数(非今日数据不准确，数据库只保存了最近登录的时间)

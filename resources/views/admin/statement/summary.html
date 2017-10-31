@@ -89,7 +89,7 @@
                             <div class="info-box">
                                 <span class="info-box-icon bg-aqua"><i class="fa fa-line-chart"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">在线人数(待补充数据)</span>
+                                    <span class="info-box-text">在线人数</span>
                                     <span class="info-box-number" v-cloak v-if="!loading">
                                         {{ realTimeData.online_players_amount ? realTimeData.online_players_amount : 0 }}
                                     </span>
@@ -101,7 +101,7 @@
                         <div class="col-xs-3 col-xs-offset-3">
                             <div class="small-box">
                                 <div class="inner">
-                                    <h5>日高峰(待补充)</h5>
+                                    <h5>日高峰</h5>
                                     <h4 class="text-bold" v-cloak v-if="!loading">
                                         {{ summaryData.peak_online_players ? summaryData.peak_online_players : 0 }}
                                     </h4>
@@ -293,6 +293,7 @@
                 </div>
             </div>
 
+            <my-toastr ref="toastr"></my-toastr>
         </section>
         <!-- /.content -->
 
