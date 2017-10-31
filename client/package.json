@@ -32,6 +32,7 @@
     "vue-bootstrap-datetimepicker": "^3.0.0",
     "vue-echarts": "^2.4.1",
     "vue-loader": "^13.0.4",
+    "vue-select": "^2.3.0",
     "vue-template-compiler": "^2.4.2",
     "vue-toastr": "^2.0.9",
     "vuetable-2": "^1.6.5",
