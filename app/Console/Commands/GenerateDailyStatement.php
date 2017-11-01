@@ -84,7 +84,7 @@ class GenerateDailyStatement extends Command
         $data = new \stdClass();
         $statementDailyService = new StatementDailyService();
         $data->date = $date;
-        $data->peak_online_players = $statementDailyService->getPeakOnlinePlayersAmount();
+        $data->peak_online_players = $statementDailyService->getPeakOnlinePlayersAmount($date);
         $data->active_players = $statementDailyService->getActivePlayersAmount($date);
         $data->incremental_players = $statementDailyService->getIncrementalPlayersAmount($date);
         $data->one_day_remained = $statementDailyService->getRemainedData($date, 1);
