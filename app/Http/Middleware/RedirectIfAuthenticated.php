@@ -23,6 +23,9 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
+            if ($request->user()->account === '大赛客服') {
+                return redirect('/admin/temp-home');
+            }
             return $request->user()->is_admin ? redirect($this->adminHomePath) : redirect($this->agentHomePath);
         }
 

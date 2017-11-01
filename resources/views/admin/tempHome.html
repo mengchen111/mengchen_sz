@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--#include virtual="/ssi/header.html"-->
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- Main Header -->
+    <!--#include virtual="/ssi/main-header.html"-->
+
+    <!-- Main sidebar -->
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar" id="sidebar">
+
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar Menu -->
+            <ul class="sidebar-menu">
+                <li class="header">HEADER</li>
+                <!-- Optionally, you can add icons to the links -->
+            </ul>
+            <!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                梦晨
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content" id="app">
+            <div class="box box-primary" style="background-color: #ecf0f5">
+                <div class="box-header with-border">
+                    <h3 class="box-title">战绩查询</h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="container">
+                        <form role="form" class="form-group" method="POST" action="#" @submit.prevent="getRecord">
+                            <div class="row">
+                                <div class="col-xs-4 col-xs-offset-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" v-model.trim="uid" placeholder="查找用户id...">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-primary btn-flat" type="submit">提交</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <my-vuetable
+                            :table-url="tableUrl"
+                            :table-fields="tableFields"
+                    >
+                    </my-vuetable>
+                </div>
+            </div>
+
+            <!--jQuery('#detail-record-modal').modal('show') 报错 变通方法-->
+            <button style="display: none" class="btn btn-default btn-flat" data-toggle="modal"
+                    data-target="#detail-record-modal" id="detail-record-modal-button"></button>
+            <!--战绩流水模态框-->
+            <div id="detail-record-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h4 class="text-center">
+                                房间号:&nbsp;<b>{{ activatedRow.room_id }}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {{ activatedRow.game_type }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ activatedRow.time }}
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="nav-tabs-custom">
+                                <!-- Tabs within a box -->
+                                <ul class="nav nav-tabs pull-right">
+                                    <li><a href="#game-rules" data-toggle="tab">房间玩法</a></li>
+                                    <li><a href="#game-ranking" data-toggle="tab">总分排行</a></li>
+                                    <li class="active"><a href="#game-rounds" data-toggle="tab">战绩流水</a></li>
+                                    <li class="pull-left header"><i class="fa fa-trophy"></i> 战绩详情</li>
+                                </ul>
+                                <div class="tab-content no-padding">
+                                    <div class="tab-pane pre-scrollable" id="game-rules" style="position: relative;">
+                                        <div class="box box-primary box-body" v-for="(roomRule, key) in roomRules">
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                    <span>{{ rulesMap[key] }}</span>: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <b>{{ roomRule }}</b>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane pre-scrollable" id="game-ranking" style="position: relative;">
+                                        <div class="box box-primary box-body" v-for="player in rankingData">
+                                            <div class="row">
+                                                <div class="col-md-5 col-sm-6 col-xs-6">
+                                                    <div class="info-box">
+                                                        <div class="info-box-icon">
+                                                            <img :src="player.headimg"/>
+                                                        </div>
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text" :title="player.nickname">{{ player.nickname }}</span>
+                                                            <span class="info-box-number" :title="player.uid">{{ player.uid }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1 col-sm-1 col-xs-1">
+                                                    <span class="fa fa-home" v-if="player.is_root_owner"></span>
+                                                </div>
+                                                <div class="col-md-3 col-sm-2 col-xs-2">
+                                                    <span>局数：<b style="font-size: 15px">{{ player.rounds_count }}</b></span>
+                                                </div>
+                                                <div class="col-md-3 col-sm-2 col-xs-2">
+                                                    <span v-if="player.score >= 0">
+                                                        总分：<b class="text-green" style="font-size: 15px">{{ player.score }}</b>
+                                                    </span>
+                                                    <span v-else>
+                                                        总分：<b class="text-red" style="font-size: 15px">{{ player.score }}</b>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane pre-scrollable active" id="game-rounds" style="position: relative;">
+                                        <div class="box box-primary box-body" v-for="(round, key) in roundData">
+                                            <div class="row">
+                                                <div class="col-md-2 text-center">
+                                                    {{ key.replace(/round/, '') }}
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-sm-6 col-xs-6" v-for="(player, position) in round">
+                                                            <div class="info-box">
+                                                                <div class="info-box-icon">
+                                                                    <img :src="player.headimg"/>
+                                                                </div>
+                                                                <div class="info-box-content">
+                                                                    <span class="info-box-text" :title="player.nickname">{{ player.nickname }}</span>
+                                                                    <span v-if="player.score >= 0" class="info-box-number text-green">{{ player.score }}</span>
+                                                                    <span v-else class="info-box-number text-red">{{ player.score }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <my-toastr ref="toastr"></my-toastr>
+        </section>
+        <!-- /.content -->
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    <!--#include virtual="/ssi/main-footer.html"-->
+
+</div>
+<!-- ./wrapper -->
+
+<link rel="stylesheet" type="text/css" href="/css/admin/statement/record.css" />
+<script src="/dist/webpack/admin/statement/record.js"></script>
+</body>
+</html>

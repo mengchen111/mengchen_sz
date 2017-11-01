@@ -77,4 +77,9 @@ class ViewController extends Controller
     {
         return view('admin.system.log');
     }
+
+    public function tempHome(Request $request)
+    {
+        return view('admin.tempHome');
+    }
 }
