@@ -23,9 +23,9 @@ class ViewController extends Controller
         return view('admin.statement.summary');
     }
 
-    public function statementRecord(Request $request)
+    public function gmRecord(Request $request)
     {
-        return view('admin.statement.record');
+        return view('admin.gm.record');
     }
 
     public function playerList(Request $request)

@@ -108,8 +108,8 @@ cd $codeDir
 | game/player | GET | 玩家列表 |
 | statement/summary | GET | 获取数据报表总览 |
 | statement/real-time | GET | 获取实时报表数据 |
-| statement/records | GET | 根据玩家id战绩其查询 |
-| statement/record-info/{recId} | GET | 根据战绩id查询战绩详情 |
+| gm/records | GET | 根据玩家id战绩其查询 |
+| gm/record-info/{recId} | GET | 根据战绩id查询战绩详情 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |

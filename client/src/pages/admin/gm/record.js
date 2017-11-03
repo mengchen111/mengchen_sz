@@ -21,9 +21,9 @@ new Vue({
       'ma_pai': '马牌',
     },
 
-    recordApi: '/admin/api/statement/records',
-    recordInfoApiPrefix: '/admin/api/statement/record-info',
-    tableUrl: '/admin/api/statement/records?uid=0',  //初始数据
+    recordApi: '/admin/api/gm/records',
+    recordInfoApiPrefix: '/admin/api/gm/record-info',
+    tableUrl: '/admin/api/gm/records?uid=0',  //初始数据
     tableFields: [
       {
         name: 'rec_id',

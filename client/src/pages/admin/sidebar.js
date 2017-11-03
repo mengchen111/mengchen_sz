@@ -10,6 +10,9 @@ new Vue({
         summary: {
           isActive: false,
         },
+      },
+      gm: {
+        isActive: false,
         record: {
           isActive: false,
         },

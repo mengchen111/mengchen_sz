@@ -92,7 +92,7 @@
                                     <div class="tab-pane pre-scrollable" id="game-ranking" style="position: relative;">
                                         <div class="box box-primary box-body" v-for="player in rankingData">
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <div class="col-md-5 col-sm-5 col-xs-5">
                                                     <div class="info-box">
                                                         <div class="info-box-icon">
                                                             <img :src="player.headimg"/>
@@ -103,10 +103,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-1 col-sm-2 col-xs-2">
+                                                <div class="col-md-1 col-sm-1 col-xs-1">
                                                     <span class="fa fa-home" v-if="player.is_root_owner"></span>
                                                 </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                <div class="col-md-3 col-sm-3 col-xs-3">
                                                     <span>局数：<b style="font-size: 15px">{{ player.rounds_count }}</b></span>
                                                 </div>
                                                 <div class="col-md-3 col-sm-2 col-xs-2">
@@ -165,7 +165,7 @@
 </div>
 <!-- ./wrapper -->
 
-<link rel="stylesheet" type="text/css" href="/css/admin/statement/record.css" />
-<script src="/dist/webpack/admin/statement/record.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/admin/gm/record.css" />
+<script src="/dist/webpack/admin/gm/record.js"></script>
 </body>
 </html>

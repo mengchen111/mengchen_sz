@@ -44,8 +44,9 @@ Route::group([
 
     Route::get('statement/summary', 'Game\StatementSummaryController@show');
     Route::get('statement/real-time', 'Game\StatementSummaryController@showRealTimeData');
-    Route::get('statement/records', 'Game\RecordController@search');
-    Route::get('statement/record-info/{recId}', 'Game\RecordController@getRecordInfo')->where('recId', '[0-9]+');
+
+    Route::get('gm/records', 'Game\RecordController@search');
+    Route::get('gm/record-info/{recId}', 'Game\RecordController@getRecordInfo')->where('recId', '[0-9]+');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');
@@ -79,7 +80,8 @@ Route::group([
     Route::get('player/list', 'ViewController@playerList');
 
     Route::get('statement/summary', 'ViewController@statementSummary');
-    Route::get('statement/record', 'ViewController@statementRecord');
+
+    Route::get('gm/record', 'ViewController@gmRecord');
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-list', 'ViewController@stockApplyList');
