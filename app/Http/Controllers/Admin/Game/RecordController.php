@@ -107,9 +107,9 @@ class RecordController extends Controller
         array_walk($options, function ($v, $k) use (&$rules) {
             foreach ($this->maJiangOptionsMap as $category => $categoryOptions) {
                 if (array_key_exists($k, $categoryOptions)) {
-                    if (! empty($v)) {
+                    if ((! empty($v)) or $k == 16) {    //无鬼补花类型值可能为0
                         if (is_array($categoryOptions[$k])) {
-                            $rules[$category] .= "{$categoryOptions[$k]['name']}-{$categoryOptions[$k]['options'][$v]},";
+                            $rules[$category] .= "{$categoryOptions[$k]['name']}: {$categoryOptions[$k]['options'][$v]},";
                         } else {
                             if ($category === 'ma_pai') {
                                 $rules[$category] .= "{$categoryOptions[$k]}: $v,";      //买了多少马
