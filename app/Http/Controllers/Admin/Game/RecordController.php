@@ -6,7 +6,8 @@ use App\Exceptions\CustomException;
 use App\Exceptions\GameApiServiceException;
 use App\Http\Requests\AdminRequest;
 use App\Services\Game\GameApiService;
-use App\Services\Game\GameOptionsMap;
+use App\Services\Game\MaJiangOptionsMap;
+use App\Services\Game\MajiangTypeMap;
 use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,7 +16,8 @@ use App\Models\OperationLogs;
 class RecordController extends Controller
 {
     //载入游戏规则配置关系
-    use GameOptionsMap;
+    use MaJiangOptionsMap;
+    use MajiangTypeMap;
 
     protected $per_page = 15;
     protected $page = 1;
@@ -25,9 +27,6 @@ class RecordController extends Controller
         3 => 'west',
         4 => 'north',
     ];          //牌桌方位的映射关系
-    protected $gameTypeMap = [
-        4 => '惠州麻将',
-    ];
 
     public function __construct(Request $request)
     {
@@ -60,7 +59,7 @@ class RecordController extends Controller
         krsort($records);
 
         foreach ($records as &$record) {
-            $record['game_type'] = $this->gameTypeMap[$record['infos']['kind']];
+            $record['game_type'] = $this->maJiangType[$record['infos']['kind']];
             $record['time'] = $record['infos']['ins_time'];
 
             $recordDetail = json_decode($record['infos']['rec_jstr'], true);
@@ -106,7 +105,7 @@ class RecordController extends Controller
         ];
 
         array_walk($options, function ($v, $k) use (&$rules) {
-            foreach ($this->gameOptionsMap as $category => $categoryOptions) {
+            foreach ($this->maJiangOptionsMap as $category => $categoryOptions) {
                 if (array_key_exists($k, $categoryOptions)) {
                     if (! empty($v)) {
                         if (is_array($categoryOptions[$k])) {

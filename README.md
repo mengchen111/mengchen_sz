@@ -110,6 +110,7 @@ cd $codeDir
 | statement/real-time | GET | 获取实时报表数据 |
 | gm/records | GET | 根据玩家id战绩其查询 |
 | gm/record-info/{recId} | GET | 根据战绩id查询战绩详情 |
+| gm/room | POST | 创建游戏房间 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |

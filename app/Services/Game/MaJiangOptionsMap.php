@@ -1,9 +1,9 @@
 <?php
 namespace App\Services\Game;
 
-trait GameOptionsMap
+trait MaJiangOptionsMap
 {
-    protected $gameOptionsMap = [
+    protected $maJiangOptionsMap = [
 //        1 => '房间类型',
 //        2 => '局数',
 //        3 => '人数',
