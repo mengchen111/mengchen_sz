@@ -82,6 +82,7 @@ Route::group([
     Route::get('statement/summary', 'ViewController@statementSummary');
 
     Route::get('gm/record', 'ViewController@gmRecord');
+    Route::get('gm/room', 'ViewController@gmRoom');
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-list', 'ViewController@stockApplyList');

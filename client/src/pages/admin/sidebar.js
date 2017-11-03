@@ -16,6 +16,9 @@ new Vue({
         record: {
           isActive: false,
         },
+        room: {
+          isActive: false,
+        },
       },
       player: {
         isActive: false,

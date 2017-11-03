@@ -21,6 +21,7 @@
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
+                    <li :class="{ active: uri.gm.room.isActive }"><a href="/admin/gm/room"><i class="fa fa-circle-o"></i>房间管理</a></li>
                     <li :class="{ active: uri.gm.record.isActive }"><a href="/admin/gm/record"><i class="fa fa-circle-o"></i>战绩查询</a></li>
                 </ul>
             </li>

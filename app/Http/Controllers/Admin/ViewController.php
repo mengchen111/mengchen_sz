@@ -28,6 +28,11 @@ class ViewController extends Controller
         return view('admin.gm.record');
     }
 
+    public function gmRoom(Request $request)
+    {
+        return view('admin.gm.room');
+    }
+
     public function playerList(Request $request)
     {
         return view('admin.player.list');
