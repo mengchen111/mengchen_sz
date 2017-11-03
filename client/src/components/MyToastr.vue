@@ -19,6 +19,7 @@
           defaultProgressBar: false,        //是否显示进度条
           defaultType: 'success',           //默认的消息类型
           defaultPosition: 'toast-top-right', //消息位置
+          defaultCloseOnHover: false,        //鼠标悬浮一直显示
         }),
       },
     },
