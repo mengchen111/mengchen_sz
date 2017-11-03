@@ -10,6 +10,7 @@ use App\Services\Game\GameOptionsMap;
 use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\OperationLogs;
 
 class RecordController extends Controller
 {
@@ -34,6 +35,7 @@ class RecordController extends Controller
         $this->page = $request->page ?: $this->page;
     }
 
+    //暂未使用
     public function show(AdminRequest $request)
     {
         $api = config('custom.game_api_records');
@@ -68,6 +70,9 @@ class RecordController extends Controller
             unset($record['infos']);
         }
 
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '战绩查询', $request->header('User-Agent'), json_encode($request->all()));
+
         return Paginator::paginate($records, $this->per_page, $this->page);
     }
 
@@ -84,6 +89,9 @@ class RecordController extends Controller
         $result['rounds'] = $this->getRounds($recordDetail);                    //战绩流水
         $result['ranking'] = $this->getRanking($recordDetail);                  //总分排行
         $result['rules'] = $this->getRules($recordDetail['room']['options']);   //房间玩法
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '战绩流水查询', $request->header('User-Agent'), json_encode($request->all()));
 
         return $result;
     }
