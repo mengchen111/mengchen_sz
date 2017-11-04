@@ -19,7 +19,7 @@ class RoomController extends Controller
           4, 6, 7,
     ];
 
-    public function create(Request $request)
+    public function create(AdminRequest $request)
     {
         $this->validateCreateForm($request);
         $formData = $this->buildCreateFormData($request);
