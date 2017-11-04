@@ -30,6 +30,7 @@
     "moment": "^2.18.1",
     "style-loader": "^0.18.2",
     "vue-bootstrap-datetimepicker": "^3.0.0",
+    "vue-checkbox-radio": "^0.5.3",
     "vue-echarts": "^2.4.1",
     "vue-loader": "^13.0.4",
     "vue-select": "^2.3.0",
