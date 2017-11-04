@@ -43,6 +43,11 @@
                                             创建房间
                                         </button>
                                     </div>
+                                    <div class="col-md-2 pull-right">
+                                        <button class="btn btn-primary btn-block btn-flat" @click="refreshClosedRoomTable">
+                                            刷新数据
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane active" id="open-room">
@@ -53,6 +58,11 @@
                                             创建房间
                                         </button>
                                     </div>
+                                    <div class="col-md-2 pull-right">
+                                        <button class="btn btn-primary btn-block btn-flat" @click="refreshOpenRoomTable">
+                                            刷新数据
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -60,6 +70,7 @@
                 </div>
             </div>
 
+            <!--创建房间模态框-->
             <div id="create-room-modal" class="modal fade" tabindex="-1">
                 <div class="modal-dialog" style="width: 45%;">
                     <div class="modal-content">
@@ -71,26 +82,27 @@
                         <div class="modal-body">
                             <div class="nav-tabs-custom">
                                 <ul class="nav nav-tabs pull-right" style="margin-bottom: 10px;">
-                                    <li class="active"><a href="#淡水庄" data-toggle="tab">淡水庄</a></li>
-                                    <li><a href="#惠州庄" data-toggle="tab">惠州庄</a></li>
-                                    <li class="pull-left header"><i class="fa fa-home"></i></li>
+                                    <li v-for="room of rooms" :class="{ active: room === activeRoomType}">
+                                        <a :href="'#' + room" data-toggle="tab">{{ room }}</a>
+                                    </li>
+                                    <li class="pull-left header"><i class="fa fa-home"></i>房间选项</li>
                                 </ul>
 
                                 <div class="tab-content no-padding">
-                                    <div class="tab-pane active" id="淡水庄">
-                                        <form class="form-horizontal" method="POST" action="#" @summit.prevent="createRoom">
+                                    <div v-for="room of rooms" class="tab-pane" :id="room" :class="{ active: room === activeRoomType}">
+                                        <form class="form-horizontal" @submit.prevent="createRoom(room)">
                                             <div class="form-group">
                                                 <label class="col-md-2 control-label">局数</label>
                                                 <div class="col-md-10">
                                                     <div class="row">
                                                         <div class="col-md-3">
-                                                            <radio name="rounds">&nbsp;&nbsp; 4局</radio>
+                                                            <radio value="4" checked v-model="createRoomFormData['rounds']">&nbsp;&nbsp; 4局</radio>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <radio name="rounds">&nbsp;&nbsp; 8局</radio>
+                                                            <radio value="8" v-model="createRoomFormData['rounds']">&nbsp;&nbsp; 8局</radio>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <radio name="rounds">&nbsp;&nbsp; 16局</radio>
+                                                            <radio value="16" v-model="createRoomFormData['rounds']">&nbsp;&nbsp; 16局</radio>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -98,19 +110,55 @@
                                             <div class="form-group">
                                                 <label class="col-md-2 control-label">玩法</label>
                                                 <div class="col-md-10">
-                                                    <input type="number" class="form-control">
+                                                    <div class="row" v-for="(options, room) of roomType[room]['wanfa']">
+                                                        <div class="col-md-3" v-for="option of options">
+                                                            <checkbox :value="option" v-model="createRoomFormData.wanfa">{{ option }}</checkbox>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" v-if="roomType[room]['gui_pai']['花牌类型']">
+                                                <label class="col-md-2 control-label">花牌</label>
+                                                <div class="col-md-10">
+                                                    <div class="row">
+                                                        <div class="col-md-3" v-for="(huaPaiOption, key) of roomType[room]['gui_pai']['花牌类型']">
+                                                            <radio :value="key" v-if="key == 0" v-model="guiPaiData['花牌类型']" checked>&nbsp;&nbsp; {{ huaPaiOption }}</radio>
+                                                            <radio :value="key" v-else v-model="guiPaiData['花牌类型']">&nbsp;&nbsp; {{ huaPaiOption }}</radio>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" v-if="roomType[room]['ma_pai'].hasOwnProperty('抓马数')">
+                                                <label class="col-md-2 control-label">马牌</label>
+                                                <div class="col-md-10">
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <radio value="0" checked v-model="createRoomFormData.ma_pai">无马</radio>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <radio value="2" v-model="createRoomFormData.ma_pai">2马</radio>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <radio value="4" v-model="createRoomFormData.ma_pai">4马</radio>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <radio value="6" v-model="createRoomFormData.ma_pai">6马</radio>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <radio value="8" v-model="createRoomFormData.ma_pai">8马</radio>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <radio value="10" v-model="createRoomFormData.ma_pai">10马</radio>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-md-2 control-label">马牌</label>
-                                                <div class="col-md-10">
-                                                    <input type="number" class="form-control">
+                                                <div class="col-md-12">
+                                                    <button class="btn btn-block btn-primary btn-flat" type="submit">提交</button>
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
-                                    <div class="tab-pane" id="惠州庄">
-                                        huizhouzhuang
                                     </div>
                                 </div>
                             </div>

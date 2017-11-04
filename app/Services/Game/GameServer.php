@@ -5,7 +5,7 @@
  * Date: 9/25/17
  * Time: 16:40
  *
- * 老的后端接口调用服务，已启用，改为新的GameApiService
+ * 老的后端接口调用服务，已弃用，改为新的GameApiService
  */
 
 namespace App\Services\Game;
