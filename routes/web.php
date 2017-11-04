@@ -47,7 +47,7 @@ Route::group([
 
     Route::get('gm/records', 'Game\RecordController@search');
     Route::get('gm/record-info/{recId}', 'Game\RecordController@getRecordInfo')->where('recId', '[0-9]+');
-    Route::post('gm/room/type', 'Game\RoomController@getRoomType');
+    Route::get('gm/room/type', 'Game\RoomController@getRoomType');
     Route::post('gm/room', 'Game\RoomController@create');
 
     Route::post('stock', 'StockController@apply');

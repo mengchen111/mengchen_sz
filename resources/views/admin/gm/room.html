@@ -26,14 +26,36 @@
 
         <!-- Main content -->
         <section class="content" id="app">
-            <div class="box box-primary" style="background-color: #ecf0f5">
-                <div class="box-header with-border">
-                    <h3 class="box-title">房间管理</h3>
-                </div>
-
+            <div class="box box-primary">
                 <div class="box-body">
-                    <div class="container">
-                        111
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs pull-right">
+                            <li class="pull-left header"><i class="fa fa-inbox"></i> 房间管理</li>
+                            <li><a href="#closed-room" data-toggle="tab" @click="displayOpenRoom">历史</a></li>
+                            <li class="active"><a href="#open-room" data-toggle="tab" @click="aiListButtonAction">正在玩</a></li>
+                        </ul>
+                        <div class="tab-content no-padding">
+                            <div class="tab-pane" id="closed-room">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <button class="btn btn-primary btn-flat" data-toggle="modal"
+                                                data-target="#create-room">
+                                            创建房间
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane active" id="open-room">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <button class="btn btn-primary btn-flat" data-toggle="modal"
+                                                data-target="#create-room">
+                                            创建房间
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,6 +72,7 @@
 </div>
 <!-- ./wrapper -->
 
+<link rel="stylesheet" type="text/css" href="/css/admin/gm/room.css" />
 <script src="/dist/webpack/admin/gm/room.js"></script>
 </body>
 </html>

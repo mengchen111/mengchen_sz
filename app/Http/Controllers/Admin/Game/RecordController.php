@@ -59,7 +59,7 @@ class RecordController extends Controller
         krsort($records);
 
         foreach ($records as &$record) {
-            $record['game_type'] = $this->maJiangType[$record['infos']['kind']];
+            $record['game_type'] = $this->maJiangTypes[$record['infos']['kind']];
             $record['time'] = $record['infos']['ins_time'];
 
             $recordDetail = json_decode($record['infos']['rec_jstr'], true);
