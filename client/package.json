@@ -12,7 +12,8 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "uglifyjs-webpack-plugin": "^1.0.0-beta.1",
-    "vue": "^2.4.2"
+    "vue": "^2.5.3",
+    "vue-template-compiler": "^2.5.3"
   },
   "devDependencies": {
     "axios": "^0.16.2",
@@ -34,9 +35,8 @@
     "vue-echarts": "^2.4.1",
     "vue-loader": "^13.0.4",
     "vue-select": "^2.3.0",
-    "vue-template-compiler": "^2.4.2",
     "vue-toastr": "^2.0.9",
-    "vuetable-2": "^1.6.5",
+    "vuetable-2": "^1.7.0",
     "webpack": "^3.5.4",
     "webpack-dev-server": "^2.7.1"
   },
