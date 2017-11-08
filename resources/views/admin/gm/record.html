@@ -123,8 +123,12 @@
                                     <div class="tab-pane pre-scrollable active" id="game-rounds" style="position: relative;">
                                         <div class="box box-primary box-body" v-for="(round, key) in roundData">
                                             <div class="row">
-                                                <div class="col-md-2 text-center">
-                                                    {{ key.replace(/round/, '') }}
+                                                <div class="col-md-2">
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-center" style="margin-top: 14px;">
+                                                            {{ key.replace(/round/, '') }}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-10">
                                                     <div class="row">
