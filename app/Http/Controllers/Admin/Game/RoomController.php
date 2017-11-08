@@ -15,7 +15,7 @@ class RoomController extends Controller
     use MajiangTypeMap;
     use MaJiangOptionsMap;
 
-    protected $availableRoomType = [
+    protected $availableRoomType = [    //目前可创建的几种房间类型
           4, 6, 7,
     ];
 
