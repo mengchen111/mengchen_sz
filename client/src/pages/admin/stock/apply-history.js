@@ -1,5 +1,5 @@
 import '../common.js'
-import FilterBar from '../../../components/FilterBar.vue'
+import FilterBar from '../../../components/MyFilterBar.vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
 
 new Vue({
