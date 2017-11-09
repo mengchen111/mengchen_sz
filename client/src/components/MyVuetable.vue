@@ -151,7 +151,7 @@
       }
 
       this.$root.eventHub.$on('vuetableRefresh', this.onTableRefresh)
-      this.$root.eventHub.$on('filterEvent', this.onFilterSet)
+      this.$root.eventHub.$on('MyFilterBar:filter', this.onFilterSet)
       this.$root.eventHub.$on('vuetableFlushSelectedTo', this.onFlushSelectedTo)
     },
   }

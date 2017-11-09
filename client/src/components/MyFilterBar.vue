@@ -22,13 +22,14 @@
     },
     data: function () {
       return {
+        eventPrefix: 'MyFilterBar',
         filterText: '',
       }
     },
 
     methods: {
       doFilter () {
-        this.$root.eventHub.$emit('filterEvent', this.filterText)
+        this.$root.eventHub.$emit(`${this.eventPrefix}:filter`, this.filterText)
       },
     },
   }
