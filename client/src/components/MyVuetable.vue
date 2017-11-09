@@ -76,6 +76,7 @@
 
     data: function () {
       return {
+        eventPrefix: 'MyVuetable',
         css: {
           table: {
             tableClass: 'table table-striped table-bordered',
@@ -107,7 +108,7 @@
     methods: {
       onPaginationData (paginationData) {
         if (paginationData.error) {     //如果后端接口返回了错误信息，则触发事件
-          this.$root.eventHub.$emit('vuetableDataError', paginationData)
+          this.$root.eventHub.$emit(`${this.eventPrefix}:error`, paginationData)
         }
         this.$refs['pagination'].setPaginationData(paginationData)
         this.$refs.paginationInfo.setPaginationData(paginationData)
@@ -120,14 +121,14 @@
           this.$refs.vuetable.toggleDetailRow(data[this.tableTrackBy])
         } else {
           //没有注册detailRow组件时触发点击事件
-          this.$root.eventHub.$emit('vuetableCellClicked', data)
+          this.$root.eventHub.$emit(`${this.eventPrefix}:cellClicked`, data)
         }
       },
       onCheckboxToggled (isChecked, data) {
-        this.$root.eventHub.$emit('vuetableCheckboxToggled', isChecked, data)
+        this.$root.eventHub.$emit(`${this.eventPrefix}:checkboxToggled`, isChecked, data)
       },
       onCheckboxToggledAll (isChecked) {
-        this.$root.eventHub.$emit('vuetableCheckboxToggledAll', isChecked, this.$refs.vuetable.selectedTo)
+        this.$root.eventHub.$emit(`${this.eventPrefix}:checkboxToggledAll`, isChecked, this.$refs.vuetable.selectedTo)
       },
       onFilterSet (filterText) {
         this.moreParams = {
@@ -150,9 +151,9 @@
         this[key] = value
       }
 
-      this.$root.eventHub.$on('vuetableRefresh', this.onTableRefresh)
+      this.$root.eventHub.$on(`${this.eventPrefix}:refresh`, this.onTableRefresh)
       this.$root.eventHub.$on('MyFilterBar:filter', this.onFilterSet)
-      this.$root.eventHub.$on('vuetableFlushSelectedTo', this.onFlushSelectedTo)
+      this.$root.eventHub.$on(`${this.eventPrefix}:flushSelectedTo`, this.onFlushSelectedTo)
     },
   }
 </script>

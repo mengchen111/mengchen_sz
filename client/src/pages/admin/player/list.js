@@ -93,7 +93,7 @@ new Vue({
               ? toastr.message(response.data.error, 'error')
               : toastr.message(response.data.message)
             _self.topUpData.amount = null
-            //_self.$root.eventHub.$emit('vuetableRefresh')  //重新刷新表格
+            //_self.$root.eventHub.$emit('MyVuetable:refresh')  //重新刷新表格
           }
         })
         .catch(function (err) {
@@ -106,6 +106,6 @@ new Vue({
     let _self = this
 
     this.$root.eventHub.$on('topUpPlayerEvent', (data) => _self.activatedRow = data)
-    this.$root.eventHub.$on('vuetableDataError', (data) => alert(data.error))
+    this.$root.eventHub.$on('MyVuetable:error', (data) => alert(data.error))
   },
 })

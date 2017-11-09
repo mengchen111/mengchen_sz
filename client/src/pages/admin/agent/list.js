@@ -187,7 +187,7 @@ new Vue({
             : toastr.message(response.data.message)
 
           //删除完成用户之后重新刷新表格数据，避免被删除用户继续留存在表格中
-          _self.$root.eventHub.$emit('vuetableRefresh')
+          _self.$root.eventHub.$emit('MyVuetable:refresh')
         })
     },
   },

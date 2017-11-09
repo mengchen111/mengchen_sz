@@ -64,7 +64,7 @@ new Vue({
           response.data.error
             ? toastr.message(response.data.error, 'error')
             : toastr.message(response.data.message)
-          _self.$root.eventHub.$emit('vuetableRefresh')
+          _self.$root.eventHub.$emit('MyVuetable:refresh')
         })
     },
     doApplyDecline (data) {
@@ -77,7 +77,7 @@ new Vue({
           response.data.error
             ? toastr.message(response.data.error, 'error')
             : toastr.message(response.data.message, 'info')
-          _self.$root.eventHub.$emit('vuetableRefresh')
+          _self.$root.eventHub.$emit('MyVuetable:refresh')
         })
     },
   },

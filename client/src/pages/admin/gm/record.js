@@ -76,8 +76,8 @@ new Vue({
     this.$root.eventHub.$on('detailRecordActionEvent', function (data) {
       _self.activatedRow = data
     })
-    this.$root.eventHub.$on('vuetableCellClicked', this.onCellClicked)
-    this.$root.eventHub.$on('vuetableDataError', function (data) {
+    this.$root.eventHub.$on('MyVuetable:cellClicked', this.onCellClicked)
+    this.$root.eventHub.$on('MyVuetable:error', function (data) {
       let err = data.error
       if (err.includes('玩家不存在')) {
         return toastr.message('玩家不存在', 'error')
