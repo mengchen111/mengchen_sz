@@ -1,5 +1,6 @@
 import '../common.js'
 import MyToastr from '../../../components/MyToastr.vue'
+import MyPagination from '../../../components/MyPagination.vue'
 import {Checkbox, Radio} from 'vue-checkbox-radio'
 
 new Vue({
@@ -8,6 +9,7 @@ new Vue({
     MyToastr,
     Checkbox,
     Radio,
+    MyPagination,
   },
   data: {
     eventHub: new Vue(),

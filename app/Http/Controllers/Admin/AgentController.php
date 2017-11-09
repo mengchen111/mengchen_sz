@@ -15,7 +15,7 @@ class AgentController extends Controller
     public function showAll(AdminRequest $request)
     {
         //给per_page设定默认值，比起参数默认值这样子可以兼容uri传参和变量名传参，变量名传递过来的参数优先
-        $per_page = $request->per_page ?: 10;
+        $per_page = $request->per_page ?: 15;
         $order = $request->sort ? explode('|', $request->sort) : ['id', 'desc'];
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
