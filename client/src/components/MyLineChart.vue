@@ -20,6 +20,7 @@
     },
     data: function () {
       return {
+        eventPrefix: 'MyLineChart',
         options: {
           title: {
             text: this.chartOptions.title.text,
@@ -56,7 +57,7 @@
     },
 
     mounted: function () {
-      this.$root.eventHub.$on('EChartMergeOptions', this.onEChartMergeOptions)
+      this.$root.eventHub.$on(`${this.eventPrefix}:mergeOptions`, this.onEChartMergeOptions)
     },
   }
 </script>
