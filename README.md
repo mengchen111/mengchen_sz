@@ -112,6 +112,8 @@ cd $codeDir
 | gm/record-info/{recId} | GET | 根据战绩id查询战绩详情 |
 | gm/room | GET | 获取可创建的房间类型 |
 | gm/room | POST | 创建游戏房间 |
+| gm/room/open | GET | 获取正在玩的房间 |
+| gm/room/history | GET | 获取房间历史 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |

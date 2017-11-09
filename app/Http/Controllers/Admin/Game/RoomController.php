@@ -2,22 +2,95 @@
 
 namespace App\Http\Controllers\Admin\Game;
 
+use App\Models\OperationLogs;
 use App\Services\Game\GameApiService;
 use App\Services\Game\MaJiangOptionsMap;
 use App\Services\Game\MajiangTypeMap;
+use App\Services\Game\PlayerService;
+use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class RoomController extends Controller
 {
     use MajiangTypeMap;
     use MaJiangOptionsMap;
 
+    protected $per_page = 15;
+    protected $page = 1;
+
     protected $availableRoomType = [    //目前可创建的几种房间类型
           4, 6, 7,
     ];
+
+    public function __construct(Request $request)
+    {
+        $this->per_page = $request->per_page ?: $this->per_page;
+        $this->page = $request->page ?: $this->page;
+    }
+
+    public function showOpenRoom(AdminRequest $request)
+    {
+        $api = config('custom.game_api_room_open');
+        $openRooms = GameApiService::request('GET', $api);
+        $result = $this->formatRoomData($openRooms);
+        krsort($result);    //最新的房间放最上
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '查看正在玩的房间', $request->header('User-Agent'), json_encode($request->all()));
+
+        return Paginator::paginate($result, $this->per_page, $this->page);
+    }
+
+    public function showRoomHistory(AdminRequest $request)
+    {
+        $api = config('custom.game_api_room_history');
+        $roomsHistory = GameApiService::request('GET', $api);
+        $result = $this->formatRoomData($roomsHistory);
+        krsort($result);    //最新的房间放最上
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '查看房间历史', $request->header('User-Agent'), json_encode($request->all()));
+
+        return Paginator::paginate($result, $this->per_page, $this->page);
+    }
+
+    //给玩家添加昵称和headimg
+    protected function formatRoomData($rooms)
+    {
+        foreach ($rooms as &$room) {
+            $room['total_round'] = $room['options_jstr'][2];
+            $room['players'] = [];
+            for ($i = 1; $i <= 4; $i++) {
+                $tmp = [];
+                if ($room['uid_' . $i] != 0) {   //为0表示此座位没人玩，不查询之
+                    $player = collect($this->allPlayers())
+                        ->where('id', $room['uid_' . $i])
+                        ->first();
+                    $tmp['nickname'] = $player['nickname'];
+                    $tmp['headimg'] = $player['headimg'];
+                }
+                $tmp['uid'] = $room['uid_' . $i];
+                $tmp['score'] = $room['score_' . $i];
+                array_push($room['players'], $tmp);
+            }
+        }
+
+        return $rooms;
+    }
+
+    protected function allPlayers()
+    {
+        $cacheKey = config('custom.game_server_cache_players');
+        $cacheDuration = config('custom.game_server_cache_duration');
+
+        return Cache::remember($cacheKey, $cacheDuration, function () {
+            return PlayerService::getAllPlayers();
+        });
+    }
 
     public function create(AdminRequest $request)
     {

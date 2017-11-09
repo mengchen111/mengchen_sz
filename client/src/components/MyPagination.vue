@@ -52,6 +52,15 @@
       }
     },
 
+    watch: {
+      paginationUrl: function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+          this.currentPage = 1
+          this.onChangePage(this.currentPage)
+        }
+      },
+    },
+
     methods: {
       setPagination (paginationData) {        //设置分页消息和分页数据
         this.$refs['pagination'].setPaginationData(paginationData)
@@ -72,7 +81,6 @@
           .catch(function (err) {
             _self.$root.eventHub.$emit(`${_self.eventPrefix}:error`, err)
           })
-
       },
       setPage (page) {
         switch (page) {
@@ -88,8 +96,14 @@
       },
     },
 
+    created: function () {
+      if (this.paginationUrl) {
+        this.onChangePage(this.currentPage)  //组件生成时获取第一页的数据
+      }
+    },
+
     mounted: function () {
-      this.onChangePage(this.currentPage)  //组件生成时获取第一页的数据
+      this.$root.eventHub.$on(`${this.eventPrefix}:changePage`, this.onChangePage)
     },
   }
 </script>

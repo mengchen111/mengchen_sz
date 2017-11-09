@@ -15,6 +15,7 @@ new Vue({
     eventHub: new Vue(),
     rooms: {},      //可创建的房间
     roomType: {},   //每种房间对应的可用选项
+    currentPageData: null,  //当前页面的数据
     activeRoomType: '惠州庄',
     createRoomFormData: {
       'room': null,
@@ -28,25 +29,27 @@ new Vue({
     },
 
     roomTypeApi: '/admin/api/gm/room/type',  //房间类型接口
-    roomCreateApi: '/admin/api/gm/room',       //房间创建接口
-
+    roomCreateApi: '/admin/api/gm/room',     //房间创建接口
+    getOpenRoomApi: '/admin/api/gm/room/open',
+    getRoomHistoryApi: '/admin/api/gm/room/history',
+    paginationUrl: null,
   },
 
   methods: {
     displayOpenRoom () {
-      console.log('display open room')
+      this.paginationUrl = this.getOpenRoomApi
     },
 
     displayRoomHistory () {
-      console.log('display room history')
+      this.paginationUrl = this.getRoomHistoryApi
     },
 
     refreshOpenRoomTable () {
-      console.log('刷新正在玩表格')
+      this.$root.eventHub.$emit('MyPagination:changePage', 1)
     },
 
     refreshClosedRoomTable () {
-      console.log('刷新房间历史表格')
+      this.$root.eventHub.$emit('MyPagination:changePage', 1)
     },
 
     createRoom (room) {
@@ -89,6 +92,10 @@ new Vue({
     },
   },
 
+  created () {
+    this.paginationUrl = this.getOpenRoomApi
+  },
+
   mounted () {
     let _self = this
     let toastr = this.$refs.toastr
@@ -102,5 +109,8 @@ new Vue({
       .catch(function (err) {
         toastr.message(err, 'error')
       })
+
+    this.$root.eventHub.$on('MyPagination:data', (data) => _self.currentPageData = data)
+    this.$root.eventHub.$on('MyPagination:error', (err) => toastr.message(err, 'error'))
   },
 })

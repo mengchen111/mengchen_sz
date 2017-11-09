@@ -33,4 +33,6 @@ return [
     'game_api_players_online_peak' => 'players/online/peak',     //获取指定日期的当日玩家最高在线数量
     'game_api_top-up' => 'top-up',                  //玩家充值
     'game_api_room_create' => 'room',               //创建游戏房间
+    'game_api_room_open' => 'room/open',            //查看正在玩的房间
+    'game_api_room_history' => 'room/history',      //查看已经结束的房间
 ];
