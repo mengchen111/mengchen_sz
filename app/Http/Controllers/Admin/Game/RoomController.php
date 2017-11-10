@@ -67,7 +67,7 @@ class RoomController extends Controller
             for ($i = 1; $i <= 4; $i++) {
                 $tmp = [];
                 if ($room['uid_' . $i] != 0) {   //为0表示此座位没人玩，不查询之
-                    $player = collect($this->allPlayers())
+                    $player = collect(PlayerService::getAllPlayers())
                         ->where('id', $room['uid_' . $i])
                         ->first();
                     $tmp['nickname'] = $player['nickname'];
@@ -80,16 +80,6 @@ class RoomController extends Controller
         }
 
         return $rooms;
-    }
-
-    protected function allPlayers()
-    {
-        $cacheKey = config('custom.game_server_cache_players');
-        $cacheDuration = config('custom.game_server_cache_duration');
-
-        return Cache::remember($cacheKey, $cacheDuration, function () {
-            return PlayerService::getAllPlayers();
-        });
     }
 
     public function create(AdminRequest $request)

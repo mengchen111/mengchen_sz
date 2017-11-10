@@ -11,12 +11,18 @@ namespace App\Services\Game;
 use App\Services\Game\GameApiService;
 use BadMethodCallException;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class PlayerService
 {
     public static function getAllPlayers()
     {
-        return GameApiService::request('GET', self::playersApi());
+        $cacheKey = config('custom.game_server_cache_players');
+        $cacheDuration = config('custom.game_server_cache_duration');
+
+        return Cache::remember($cacheKey, $cacheDuration, function () {
+            return GameApiService::request('GET', self::playersApi());
+        });
     }
 
     public static function searchPlayers($uid)

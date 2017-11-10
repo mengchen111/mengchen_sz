@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Services\Game\GameApiService;
+use App\Services\Game\PlayerService;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
 use App\Models\User;
@@ -105,14 +106,12 @@ class TopUpController extends Controller
     public function admin2AgentHistory(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '管理员查看其充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '查看管理员充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索代理商
         if ($request->has('filter')) {
             $receivers = array_column(User::where('account', 'like', "%{$request->filter}%")->get()->toArray(), 'id');
-            if (empty($receivers)) {
-                return null;
-            }
+
             return  TopUpAdmin::with(['provider', 'receiver', 'item'])
                 ->whereIn('receiver_id', $receivers)
                 ->orderBy($this->order[0], $this->order[1])
@@ -128,14 +127,12 @@ class TopUpController extends Controller
     public function agent2AgentHistory(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '管理员查看代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '查看代理商充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
         //搜索代理商，查找字符串包括发放者和接收者
         if ($request->has('filter')) {
             $accounts = array_column(User::where('account', 'like', "%{$request->filter}%")->get()->toArray(), 'id');
-            if (empty($accounts)) {
-                return null;
-            }
+
             return TopUpAgent::with(['provider', 'receiver', 'item'])
                 ->whereIn('provider_id', $accounts)
                 ->whereIn('receiver_id', $accounts, 'or')
@@ -152,16 +149,15 @@ class TopUpController extends Controller
     public function agent2PlayerHistory(AdminRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '管理员查看代理商给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
+            '查看玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
 
-        //搜索provider
+        //搜索provider或玩家
         if ($request->has('filter')) {
             $accounts = array_column(User::where('account', 'like', "%{$request->filter}%")->get()->toArray(), 'id');
-            if (empty($accounts)) {
-                return null;
-            }
+
             return TopUpPlayer::with(['provider', 'item'])
-                ->whereIn('provider_id', $accounts)
+                ->where('player', 'like', "%{$request->filter}%")
+                ->whereIn('provider_id', $accounts, 'or')
                 ->orderBy($this->order[0], $this->order[1])
                 ->paginate($this->per_page);
         }
