@@ -44,9 +44,10 @@ class TopUpController extends Controller
             $query->where('item_id', $type);
         }])->where('account', $receiver)->firstOrFail();
 
-        if (! $receiverModel->isChild(Auth::id())) {
-            throw new CustomException('只能给自己的下级代理商充值');
-        }
+        //允许管理员给非所有代理商充值房卡
+//        if (! $receiverModel->isChild(Auth::id())) {
+//            throw new CustomException('只能给您的下级代理商充值');
+//        }
 
         if (! $this->checkStock($provider, $amount)) {
             throw new CustomException('库存不足，无法充值');
