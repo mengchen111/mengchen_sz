@@ -29,10 +29,10 @@ class StatementSummaryController
         'one_month_remained' => '0|0|0.00', //30日留存
         'card_consumed_data' => '0|0|0',    //当日耗卡数|当日有过耗卡记录的玩家总数|平均耗卡数(向上取整的比值)
         'card_bought_data' => '0|0|0',      //当日玩家购卡总数|当日有过购卡记录的玩家总数|平均购卡数(向上取整的比值)
-        'card_consumed_sum' => 0,           //截止当日耗卡总数
-        'card_bought_sum' => 0,             //截止当日充卡总数
+        'card_consumed_sum' => 0,           //截止当日玩家耗卡总数
+        'card_bought_sum' => 0,             //截止当日给玩家充卡总数
         'monthly_card_bought_players' => 0, //当月累计充卡玩家数
-        'monthly_card_bought_sum' => 0,     //当月累计充卡总数
+        'monthly_card_bought_sum' => 0,     //当月累计给玩家充卡总数
     ];
 
     protected $realTimeData = [

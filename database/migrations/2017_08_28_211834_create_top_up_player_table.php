@@ -18,7 +18,7 @@ class CreateTopUpPlayerTable extends Migration
             $table->unsignedInteger('provider_id')->comment('发起充值的代理商id');
             $table->string('player')->comment('充值到账的玩家');
             $table->string('type')->default('1')->comment('道具类型');
-            $table->unsignedInteger('amount')->comment('充值数量');
+            $table->integer('amount')->comment('充值数量');
             $table->timestamps();
         });
     }

@@ -41,9 +41,14 @@ class TopUpController extends Controller
         $provider = User::with(['inventory' => function ($query) use ($type) {
             $query->where('item_id', $type);
         }])->find($request->user()->id);
-        $receiverModel = User::with(['inventory' => function ($query) use ($type) {
-            $query->where('item_id', $type);
-        }])->where('account', $receiver)->firstOrFail();
+        $receiverModel = User::with([
+            'inventory' => function ($query) use ($type) {
+                $query->where('item_id', $type);    //在道具类型上做约束
+            },
+            'parent.inventory' => function ($query) use ($type) {
+                $query->where('item_id', $type);
+            },
+        ])->where('account', $receiver)->firstOrFail();
 
         //允许管理员给非所有代理商充值房卡
 //        if (! $receiverModel->isChild(Auth::id())) {
@@ -54,11 +59,24 @@ class TopUpController extends Controller
             throw new CustomException('库存不足，无法充值');
         }
 
-        $this->topUp4Child($request, $provider, $receiverModel, $type, $amount);
-
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '管理员给代理商充值', $request->header('User-Agent'), json_encode($request->route()->parameters));
+            '管理员给代理商充值[减库存]', $request->header('User-Agent'), json_encode($request->route()->parameters));
 
+        if (preg_match('/-/', $amount)) {
+            //检查代理商是否存在足够的库存可以被减少
+            if (! $this->checkChildHasEnoughStock($receiverModel, $amount)) {
+                return [
+                    'error' => '此代理商没有足够的库存被减少',
+                ];
+            }
+            $this->cutStock4Child($request, $receiverModel, $type, $amount);
+            return [
+                'message' => '减库存成功',
+            ];
+        }
+
+        //加库存
+        $this->topUp4Child($request, $provider, $receiverModel, $type, $amount);
         return [
             'message' => '充值成功',
         ];
@@ -69,17 +87,54 @@ class TopUpController extends Controller
         return (! empty($provider->inventory)) and $provider->inventory->stock >= $amount;
     }
 
+    protected function checkChildHasEnoughStock($receiver, $amount)
+    {
+        $inventory = $receiver->inventory;
+        if (empty($inventory) or $inventory->stock < abs($amount)) {
+            return false;
+        }
+        return true;
+    }
+
+    //减库存，同时给receiver的上级增加库存
+    protected function cutStock4Child($request, $receiver, $type, $amount)
+    {
+        return DB::transaction(function () use ($request, $receiver, $type, $amount) {
+            //更新代理商的库存（减少）
+            $this->updateReceiverStock($receiver, $amount);
+
+            //增加receiver的上级代理商的库存
+            $receiver->parent->inventory->stock += abs($amount);
+            $receiver->parent->inventory->save();
+
+            //记录充值流水，如果parent是agent那就记录在agent表中，否则统计时会出现异常
+            if ($receiver->parent->is_admin) {
+                TopUpAdmin::create([
+                    'provider_id' => $receiver->parent->id,
+                    'receiver_id' => $receiver->id,
+                    'type' => $type,
+                    'amount' => $amount,
+                ]);
+            } else {
+                TopUpAgent::create([
+                    'provider_id' => $receiver->parent->id,
+                    'receiver_id' => $receiver->id,
+                    'type' => $type,
+                    'amount' => $amount,
+                ]);
+            }
+        });
+    }
+
+    protected function updateReceiverStock($receiver, $amount)
+    {
+        $receiver->inventory->stock += $amount;
+        return $receiver->inventory->save();
+    }
+
     protected function topUp4Child($request, $provider, $receiver, $type, $amount)
     {
         return DB::transaction(function () use ($request, $provider, $receiver, $type, $amount){
-            //记录充值流水
-            TopUpAdmin::create([
-                'provider_id' => $request->user()->id,
-                'receiver_id' => $receiver->id,
-                'type' => $type,
-                'amount' => $amount,
-            ]);
-
             //更新库存
             if (empty($receiver->inventory)) {
                 $receiver->inventory()->create([
@@ -88,16 +143,19 @@ class TopUpController extends Controller
                     'stock' => $amount,
                 ]);
             } else {
-                $totalStock = $amount + $receiver->inventory->stock;
-                $receiver->inventory->update([
-                    'stock' => $totalStock,
-                ]);
+                $this->updateReceiverStock($receiver, $amount);
             }
 
             //减管理员的库存
-            $leftStock = $provider->inventory->stock - $amount;
-            $provider->inventory->update([
-                'stock' => $leftStock,
+            $provider->inventory->stock -= $amount;
+            $provider->inventory->save();
+
+            //记录充值流水
+            TopUpAdmin::create([
+                'provider_id' => $request->user()->id,
+                'receiver_id' => $receiver->id,
+                'type' => $type,
+                'amount' => $amount,
             ]);
         });
     }
@@ -204,14 +262,6 @@ class TopUpController extends Controller
     protected function topUp4Player($request, $provider, $player, $type, $amount)
     {
         return DB::transaction(function () use ($request, $provider, $player, $type, $amount){
-            //记录充值流水
-            TopUpPlayer::create([
-                'provider_id' => $request->user()->id,
-                'player' => $player,
-                'type' => $type,
-                'amount' => $amount,
-            ]);
-
             //调用接口充值
             $this->sendTopUpRequest([
                 'uid' => $player,
@@ -220,9 +270,15 @@ class TopUpController extends Controller
             ]);
 
             //减管理员的库存
-            $leftStock = $provider->inventory->stock - $amount;
-            $provider->inventory->update([
-                'stock' => $leftStock,
+            $provider->inventory->stock -= $amount;
+            $provider->inventory->save();
+
+            //记录充值流水
+            TopUpPlayer::create([
+                'provider_id' => $request->user()->id,
+                'player' => $player,
+                'type' => $type,
+                'amount' => $amount,
             ]);
         });
     }

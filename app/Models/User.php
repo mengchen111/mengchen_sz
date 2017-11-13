@@ -49,6 +49,10 @@ class User extends Authenticatable
     //上级代理商
     public function parent()
     {
+        if ($this->parent_id == -1) {
+            //如果不存在上级则parent返回它自身
+            return $this->hasOne('App\Models\User', 'id', 'id');
+        }
         return $this->hasOne('App\Models\User', 'id', 'parent_id');
     }
 
