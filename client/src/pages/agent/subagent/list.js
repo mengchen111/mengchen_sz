@@ -1,6 +1,7 @@
 import '../common.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import FilterBar from '../../../components/MyFilterBar.vue'
+import MyToastr from '../../../components/MyToastr.vue'
 import TableActions from './components/TableActions.vue'
 import DetailRow from './components/DetailRow.vue'
 
@@ -12,6 +13,7 @@ new Vue({
   components: {
     FilterBar,
     MyVuetable,
+    MyToastr,
   },
   data: {
     eventHub: new Vue(),
@@ -27,12 +29,14 @@ new Vue({
       },
       typeId: 1,
       amount: null,
+      confirm: null,
     },
+    topUpConfirmation: false,
     activatedRow: {
       group: '',
       parent: '',
       topUpType: 1,
-      password: false,
+      password: null,
     },                 //待编辑的行
     topUpApiPrefix: '/agent/api/top-up/child',
     editInfoApiPrefix: '/agent/api/subagent',
@@ -107,6 +111,14 @@ new Vue({
   methods: {
     topUpChild () {
       let _self = this
+      let toastr = this.$refs.toastr
+
+      if (this.topUpData.confirm !== 'yes') {
+        toastr.message("输入'yes'才能提交", 'error')
+        this.topUpConfirmation = false
+        this.topUpData.confirm = null
+        return false
+      }
 
       axios({
         method: 'POST',
@@ -117,16 +129,21 @@ new Vue({
       })
         .then(function (response) {
           if (response.status === 422) {
-            alert(JSON.stringify(response.data))
+            toastr.message(JSON.stringify(response.data), 'error')
           } else {
-            response.data.error ? alert(response.data.error) : alert(response.data.message)
+            response.data.error
+              ? toastr.message(response.data.error, 'error')
+              : toastr.message(response.data.message)
             _self.topUpData.amount = null
+            _self.topUpData.confirm = null
+            _self.topUpConfirmation = false
           }
         })
     },
 
     editChildInfo () {
       let _self = this
+      let toastr = this.$refs.toastr
 
       let data = _self.activatedRow.password ? _self.activatedRow
         : _.omit(_self.activatedRow, 'password')
@@ -141,26 +158,25 @@ new Vue({
       })
         .then(function (response) {
           if (response.status === 422) {
-            _self.activatedRow.password = false
-            return alert(JSON.stringify(response.data))
+            return toastr.message(JSON.stringify(response.data), 'error')
           }
-          _self.activatedRow.password = false
-          return alert(JSON.stringify(response.data.message))
+          _self.activatedRow.password = null
+          return toastr.message(response.data.message)
         })
     },
 
     deleteAgent () {
       let _self = this
+      let toastr = this.$refs.toastr
 
       axios({
         method: 'DELETE',
         url: `${_self.deleteApiPrefix}/${_self.activatedRow.id}`,
       })
         .then(function (response) {
-          if (response.data.error) {
-            return alert(response.data.error)
-          }
-          alert(response.data.message)
+          response.data.error
+            ? toastr.message(response.data.error, 'error')
+            : toastr.message(response.data.message)
 
           //删除完成用户之后重新刷新表格数据，避免被删除用户继续留存在表格中
           _self.$root.eventHub.$emit('MyVuetable:refresh')

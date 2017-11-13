@@ -34,7 +34,9 @@ new Vue({
       },
       typeId: 1,
       amount: null,
+      confirm: null,
     },
+    topUpConfirmation: false,
     changePassword: {       //修改用户密码
       password: '',
     },
@@ -114,6 +116,13 @@ new Vue({
       let _self = this
       let toastr = this.$refs.toastr
 
+      if (this.topUpData.confirm !== 'yes') {
+        toastr.message("输入'yes'才能提交", 'error')
+        this.topUpConfirmation = false
+        this.topUpData.confirm = null
+        return false
+      }
+
       axios({
         method: 'POST',
         url: `${_self.topUpApiPrefix}/${_self.activatedRow.account}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
@@ -129,6 +138,8 @@ new Vue({
               ? toastr.message(response.data.error, 'error')
               : toastr.message(response.data.message)
             _self.topUpData.amount = null
+            _self.topUpData.confirm = null
+            _self.topUpConfirmation = false
           }
         })
     },

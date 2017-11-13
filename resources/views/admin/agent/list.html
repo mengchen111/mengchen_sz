@@ -61,7 +61,7 @@
                         <h3 class="text-center">代理商充值</h3>
                     </div>
                     <div class="modal-body">
-                        <form role="form" class="form-group" method="POST" action="#" @submit.prevent="topUpAgent">
+                        <div v-show="! topUpConfirmation">
                             <div class="form-group has-feedback">
                                 <label>代理级别</label>
                                 <input name="group_name" type="text" class="form-control"
@@ -87,9 +87,21 @@
                                 <span class="glyphicon glyphicon-yen form-control-feedback"></span>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                <button class="btn btn-primary btn-block btn-flat" @click="topUpConfirmation = true">提交</button>
                             </div>
-                        </form>
+                        </div>
+                        <div v-show="topUpConfirmation">
+                            <form role="form" name="topUpForm" class="form-group" method="POST" action="#" @submit.prevent="topUpAgent">
+                                <div class="form-group">
+                                    <label>输入"yes"确认充值</label>
+                                    <input type="text" required class="form-control" placeholder="输入: yes"
+                                           v-model.trim="topUpData.confirm">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">确认</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
