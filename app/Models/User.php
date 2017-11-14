@@ -14,6 +14,7 @@ class User extends Authenticatable
 
     protected $lowestAgentId = 4;
     protected $adminId = 1;
+    protected $agentIds = [2, 3, 4];
 
     /**
      * The attributes that are mass assignable.
@@ -77,6 +78,11 @@ class User extends Authenticatable
     public function getIsAdminAttribute()
     {
         return $this->attributes['group_id'] == $this->adminId;
+    }
+
+    public function getIsAgentAttribute()
+    {
+        return in_array($this->attributes['group_id'], $this->agentIds);
     }
 
     //指定mail通知channel的地址（默认就为email字段）

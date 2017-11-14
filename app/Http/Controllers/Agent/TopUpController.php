@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Agent;
 
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AgentRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\TopUpAgent;
@@ -27,7 +28,7 @@ class TopUpController extends Controller
     }
 
     //给当前代理商的下级代理商充房卡
-    public function topUp2Child(Request $request, $receiver, $type, $amount)
+    public function topUp2Child(AgentRequest $request, $receiver, $type, $amount)
     {
         Validator::make($request->route()->parameters,[
             'receiver' => 'required|string|exists:users,account',
@@ -99,7 +100,7 @@ class TopUpController extends Controller
     }
 
     //给下级代理商的充卡记录
-    public function topUp2ChildHistory(Request $request)
+    public function topUp2ChildHistory(AgentRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '代理商查看其给子代理充值记录', $request->header('User-Agent'), json_encode($request->all()));
@@ -123,7 +124,7 @@ class TopUpController extends Controller
             ->paginate($this->per_page);
     }
 
-    public function topUp2PlayerHistory(Request $request)
+    public function topUp2PlayerHistory(AgentRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '代理商查看其给玩家充值记录', $request->header('User-Agent'), json_encode($request->all()));
@@ -143,7 +144,7 @@ class TopUpController extends Controller
             ->paginate($this->per_page);
     }
 
-    public function topUp2Player(Request $request, $player, $type, $amount)
+    public function topUp2Player(AgentRequest $request, $player, $type, $amount)
     {
         Validator::make($request->route()->parameters,[
             'player' => 'required|integer',

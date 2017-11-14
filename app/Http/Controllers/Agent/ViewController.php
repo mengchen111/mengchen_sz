@@ -8,9 +8,8 @@
 
 namespace App\Http\Controllers\Agent;
 
-
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\AgentRequest as Request;
 
 class ViewController extends Controller
 {
@@ -19,42 +18,42 @@ class ViewController extends Controller
         return view('agent.home');
     }
 
-    public function playerTopUp()
+    public function playerTopUp(Request $request)
     {
         return view('agent.player.top-up');
     }
 
-    public function stockApplyRequest()
+    public function stockApplyRequest(Request $request)
     {
         return view('agent.stock.apply-request');
     }
 
-    public function stockApplyHistory()
+    public function stockApplyHistory(Request $request)
     {
         return view('agent.stock.apply-history');
     }
 
-    public function subagentList()
+    public function subagentList(Request $request)
     {
         return view('agent.subagent.list');
     }
 
-    public function subagentCreate()
+    public function subagentCreate(Request $request)
     {
         return view('agent.subagent.create');
     }
 
-    public function topUpChild()
+    public function topUpChild(Request $request)
     {
         return view('agent.top-up.child');
     }
 
-    public function topUpPlayer()
+    public function topUpPlayer(Request $request)
     {
         return view('agent.top-up.player');
     }
 
-    public function info()
+    public function info(Request $request)
     {
         return view('agent.info');
     }

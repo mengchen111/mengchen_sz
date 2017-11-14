@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Agent;
 
-
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -17,11 +16,12 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\AgentRequest;
 
 class AgentController extends Controller
 {
     //代理商更新自己密码
-    public function updatePass(Request $request)
+    public function updatePass(AgentRequest $request)
     {
         Validator::make($request->all(), [
             'password' => 'required|min:6',
@@ -46,7 +46,7 @@ class AgentController extends Controller
     }
 
     //代理商更改自己的个人信息
-    public function update(Request $request)
+    public function update(AgentRequest $request)
     {
         Validator::make($request->all(), [
             'name' => 'string|max:255',
@@ -69,7 +69,7 @@ class AgentController extends Controller
     }
 
     //获取个人的代理级别类型
-    public function agentType(Request $request)
+    public function agentType(AgentRequest $request)
     {
         return Auth::user()->group;
     }

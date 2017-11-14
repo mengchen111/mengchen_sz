@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Agent;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AgentRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\StockApply;
@@ -38,7 +39,7 @@ class StockController extends Controller
      * @param Request $request
      * @return array
      */
-    public function apply(Request $request)
+    public function apply(AgentRequest $request)
     {
         $data = $this->validateApply($request);
 
@@ -88,7 +89,7 @@ class StockController extends Controller
      * @param Request $request
      * @return null
      */
-    public function applyHistory(Request $request)
+    public function applyHistory(AgentRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '总代理查看申请记录', $request->header('User-Agent'));

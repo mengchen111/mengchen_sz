@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Agent;
 
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AgentRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\OperationLogs;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class SubAgentController extends Controller
 {
     //查看下级代理商列表
-    public function show(Request $request)
+    public function show(AgentRequest $request)
     {
         $per_page = $request->per_page ?: 10;
         $order = $request->sort ? explode('|', $request->sort) : ['id', 'desc'];
@@ -36,7 +37,7 @@ class SubAgentController extends Controller
     }
 
     //创建下级代理商
-    public function create(Request $request)
+    public function create(AgentRequest $request)
     {
         Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -68,7 +69,7 @@ class SubAgentController extends Controller
     }
 
     //删除下级代理商
-    public function destroy(Request $request, User $user)
+    public function destroy(AgentRequest $request, User $user)
     {
         if ($user->is_admin) {
             throw new CustomException('不能删除管理员');
@@ -94,7 +95,7 @@ class SubAgentController extends Controller
     }
 
     //代理商更新其子代理商的信息
-    public function updateChild(Request $request, User $child)
+    public function updateChild(AgentRequest $request, User $child)
     {
         //检查是否是其子代理商
         if (! $child->isChild(Auth::id())) {
