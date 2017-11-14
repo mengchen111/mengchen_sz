@@ -24,6 +24,7 @@ new Vue({
       typeId: 1,
       amount: null,
     },
+    topUpConfirmation: false,
 
     tableUrl: '/admin/api/game/players',
     tableTrackBy: 'id',
@@ -93,7 +94,8 @@ new Vue({
               ? toastr.message(response.data.error, 'error')
               : toastr.message(response.data.message)
             _self.topUpData.amount = null
-            //_self.$root.eventHub.$emit('MyVuetable:refresh')  //重新刷新表格
+            _self.topUpConfirmation = false
+            _self.$root.eventHub.$emit('MyVuetable:refresh')  //重新刷新表格
           }
         })
         .catch(function (err) {

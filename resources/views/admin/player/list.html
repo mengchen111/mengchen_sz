@@ -55,37 +55,54 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal">x</button>
-                        <h3 class="text-center">玩家充值</h3>
+                        <h3 class="text-center" v-show="! topUpConfirmation">玩家充值</h3>
+                        <h3 class="text-center" v-show="topUpConfirmation">
+                            是否给
+                            <span class="text-red">{{ activatedRow.id }}</span>
+                            充值
+                            <span class="text-red">{{ topUpData.amount }}</span>
+                            数量的
+                            <span class="text-red">{{ topUpData.type[topUpData.typeId] }}</span>
+                        </h3>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" v-show="! topUpConfirmation">
+                        <div class="form-group has-feedback">
+                            <label>玩家ID</label>
+                            <input name="player_id" type="text" class="form-control"
+                                   v-model="activatedRow.id" disabled>
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label>充值类型</label>
+                            <select class="form-control" v-model.trim="topUpData.typeId">
+                                <option v-for="(value, index) in topUpData.type" :value="index"
+                                        v-if="index == topUpData.typeId" selected>
+                                    {{ value }}
+                                </option>
+                                <option v-else :value="index">
+                                    {{ value }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label>充值数量</label>
+                            <input name="amount" type="number" required class="form-control" placeholder="减库存加上'-'号"
+                                   v-model.trim="topUpData.amount">
+                            <span class="glyphicon glyphicon-yen form-control-feedback"></span>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block btn-flat" @click="topUpConfirmation = true">提交</button>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" v-show="topUpConfirmation">
                         <form role="form" class="form-group" method="POST" action="#" @submit.prevent="topUpPlayer">
-                            <div class="form-group has-feedback">
-                                <label>玩家ID</label>
-                                <input name="player_id" type="text" class="form-control"
-                                       v-model="activatedRow.id" disabled>
-                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                            </div>
-                            <div class="form-group has-feedback">
-                                <label>充值类型</label>
-                                <select class="form-control" v-model.trim="topUpData.typeId">
-                                    <option v-for="(value, index) in topUpData.type" :value="index"
-                                            v-if="index == topUpData.typeId" selected>
-                                        {{ value }}
-                                    </option>
-                                    <option v-else :value="index">
-                                        {{ value }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group has-feedback">
-                                <label>充值数量</label>
-                                <input name="amount" type="number" required class="form-control"
-                                       v-model.trim="topUpData.amount">
-                                <span class="glyphicon glyphicon-yen form-control-feedback"></span>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
-                            </div>
+                            <button class="btn btn-flat btn-primary btn-lg pull-left" data-dismiss="modal" @click="topUpConfirmation = false">
+                                取消
+                            </button>
+                            <button class="btn btn-flat btn-primary btn-lg" type="submit">
+                                充值
+                            </button>
                         </form>
                     </div>
                 </div>
