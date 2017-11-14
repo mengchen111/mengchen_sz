@@ -25,13 +25,14 @@ new Vue({
   methods: {
     getStatementSummary () {
       let _self = this
+      let toastr = this.$refs.toastr
 
       axios.get(this.summaryDataApi, {
         params: this.formData,
       })
         .then(function (res) {
           if (res.data.error) {
-            alert(res.data.error)
+            toastr.message(res.data.error, 'error')
           }
           _self.summaryData = res.data
         })
