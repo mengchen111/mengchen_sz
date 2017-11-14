@@ -13,7 +13,7 @@
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.player.top_up.isActive }"><a href="/agent/player/top-up"><i class="fa fa-circle-o"></i>玩家充值</a></li>
+                    <li :class="{ active: uri.player['top-up'].isActive }"><a href="/agent/player/top-up"><i class="fa fa-circle-o"></i>玩家充值</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.stock.isActive }" v-cloak v-if="isTopAgent">
@@ -21,8 +21,8 @@
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.stock.apply_request.isActive }"><a href="/agent/stock/apply-request"><i class="fa fa-circle-o"></i>申请库存</a></li>
-                    <li :class="{ active: uri.stock.apply_history.isActive }"><a href="/agent/stock/apply-history"><i class="fa fa-circle-o"></i>申请记录</a></li>
+                    <li :class="{ active: uri.stock['apply-request'].isActive }"><a href="/agent/stock/apply-request"><i class="fa fa-circle-o"></i>申请库存</a></li>
+                    <li :class="{ active: uri.stock['apply-history'].isActive }"><a href="/agent/stock/apply-history"><i class="fa fa-circle-o"></i>申请记录</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.subagent.isActive }" v-cloak v-if="isGoldAgent ? false : true">
@@ -34,15 +34,15 @@
                     <li :class="{ active: uri.subagent.list.isActive }"><a href="/agent/subagent/list"><i class="fa fa-circle-o"></i>子代理商列表</a></li>
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri.top_up.isActive }">
+            <li class="treeview" :class="{ active: uri['top-up'].isActive }">
                 <a href="#"><i class="fa fa-credit-card"></i> <span>充值记录</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.top_up.child.isActive }" v-cloak v-if="isGoldAgent ? false : true">
+                    <li :class="{ active: uri['top-up'].child.isActive }" v-cloak v-if="isGoldAgent ? false : true">
                         <a href="/agent/top-up/child"><i class="fa fa-circle-o"></i>代理商充值记录</a>
                     </li>
-                    <li :class="{ active: uri.top_up.player.isActive }"><a href="/agent/top-up/player"><i class="fa fa-circle-o"></i>玩家充值记录</a></li>
+                    <li :class="{ active: uri['top-up'].player.isActive }"><a href="/agent/top-up/player"><i class="fa fa-circle-o"></i>玩家充值记录</a></li>
                 </ul>
             </li>
             <li :class="{ active: uri.info.isActive }"><a href="/agent/info"><i class="fa fa-user"></i>个人信息</a></li>

@@ -9,16 +9,16 @@ new Vue({
       },
       player: {
         isActive: false,
-        top_up: {
+        'top-up': {
           isActive: false,
         },
       },
       stock: {
         isActive: false,
-        apply_request: {
+        'apply-request': {
           isActive: false,
         },
-        apply_history: {
+        'apply-history': {
           isActive: false,
         },
       },
@@ -31,7 +31,7 @@ new Vue({
           isActive: false,
         },
       },
-      top_up: {
+      'top-up': {
         isActive: false,
         child: {
           isActive: false,
@@ -46,13 +46,10 @@ new Vue({
     },
   },
 
-  methods: {},
-
   created: function () {
     let _self = this
     let agentTypeApi = '/agent/api/self/agent-type'
     let accessedUri = location.href.match(/http:\/\/[\w.-]+\/agent\/([\w/-]+)/)[1]
-      .replace('-', '_')
       .split('/')
 
     //不同的代理商级别显示不同的菜单

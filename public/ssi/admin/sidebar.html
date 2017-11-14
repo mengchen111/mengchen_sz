@@ -38,9 +38,9 @@
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.stock.apply_request.isActive }"><a href="/admin/stock/apply-request"><i class="fa fa-circle-o"></i>申请库存</a></li>
-                    <li :class="{ active: uri.stock.apply_list.isActive }"><a href="/admin/stock/apply-list"><i class="fa fa-circle-o"></i>申请列表</a></li>
-                    <li :class="{ active: uri.stock.apply_history.isActive }"><a href="/admin/stock/apply-history"><i class="fa fa-circle-o"></i>审核记录</a></li>
+                    <li :class="{ active: uri.stock['apply-request'].isActive }"><a href="/admin/stock/apply-request"><i class="fa fa-circle-o"></i>申请库存</a></li>
+                    <li :class="{ active: uri.stock['apply-list'].isActive }"><a href="/admin/stock/apply-list"><i class="fa fa-circle-o"></i>申请列表</a></li>
+                    <li :class="{ active: uri.stock['apply-history'].isActive }"><a href="/admin/stock/apply-history"><i class="fa fa-circle-o"></i>审核记录</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.agent.isActive }">
@@ -52,14 +52,14 @@
                     <li :class="{ active: uri.agent.list.isActive }"><a href="/admin/agent/list"><i class="fa fa-circle-o"></i>代理商列表</a></li>
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri.top_up.isActive }">
+            <li class="treeview" :class="{ active: uri['top-up'].isActive }">
                 <a href="#"><i class="fa fa-credit-card"></i> <span>充值记录</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.top_up.admin.isActive }"><a href="/admin/top-up/admin"><i class="fa fa-circle-o"></i>管理员充值记录</a></li>
-                    <li :class="{ active: uri.top_up.agent.isActive }"><a href="/admin/top-up/agent"><i class="fa fa-circle-o"></i>代理商充值记录</a></li>
-                    <li :class="{ active: uri.top_up.player.isActive }"><a href="/admin/top-up/player"><i class="fa fa-circle-o"></i>玩家充值记录</a></li>
+                    <li :class="{ active: uri['top-up'].admin.isActive }"><a href="/admin/top-up/admin"><i class="fa fa-circle-o"></i>管理员充值记录</a></li>
+                    <li :class="{ active: uri['top-up'].agent.isActive }"><a href="/admin/top-up/agent"><i class="fa fa-circle-o"></i>代理商充值记录</a></li>
+                    <li :class="{ active: uri['top-up'].player.isActive }"><a href="/admin/top-up/player"><i class="fa fa-circle-o"></i>玩家充值记录</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.system.isActive }">
