@@ -68,7 +68,7 @@ Route::group([
     Route::get('top-up/agent', 'TopUpController@agent2AgentHistory');
     Route::get('top-up/player', 'TopUpController@agent2PlayerHistory');
     Route::post('top-up/agent/{receiver}/{type}/{amount}', 'TopUpController@topUp2Agent')->where('amount', '-?[0-9]+');
-    Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '[0-9]+');
+    Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '-?[0-9]+');
 
     Route::get('system/log', 'SystemController@showLog');
 });
