@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Game;
 
 use App\Models\OperationLogs;
+use App\Models\User;
 use App\Services\Game\GameApiService;
 use App\Services\Game\MaJiangOptionsMap;
 use App\Services\Game\MajiangTypeMap;
@@ -63,6 +64,9 @@ class RoomController extends Controller
     {
         foreach ($rooms as &$room) {
             $room['total_round'] = $room['options_jstr'][2];
+
+            $agent = User::find($room['agent_uid']);
+            $room['agent_account'] = !empty($agent) ? $agent->account : "Unknown[{$room['agent_uid']}]";
             $room['players'] = [];
             for ($i = 1; $i <= 4; $i++) {
                 $tmp = [];
