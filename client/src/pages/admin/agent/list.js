@@ -34,7 +34,6 @@ new Vue({
       },
       typeId: 1,
       amount: null,
-      confirm: null,
     },
     topUpConfirmation: false,
     changePassword: {       //修改用户密码
@@ -115,13 +114,6 @@ new Vue({
     topUpAgent () {
       let _self = this
       let toastr = this.$refs.toastr
-
-      if (this.topUpData.confirm !== 'yes') {
-        toastr.message("输入'yes'才能提交", 'error')
-        this.topUpConfirmation = false
-        this.topUpData.confirm = null
-        return false
-      }
 
       axios({
         method: 'POST',
