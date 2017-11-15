@@ -100,8 +100,6 @@ Route::group([
     Route::get('top-up/player', 'ViewController@topUpPlayer');
 
     Route::get('system/log', 'ViewController@systemLog');
-
-    Route::get('temp-home', 'ViewController@tempHome'); //TODO 临时加上，待删除
 });
 
 //代理商接口
