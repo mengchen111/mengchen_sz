@@ -12,6 +12,8 @@ use App\Models\OperationLogs;
 
 class AgentController extends Controller
 {
+    protected $agentGroups = [2, 3, 4];     //agent代理商的组id号
+
     public function showAll(AdminRequest $request)
     {
         //给per_page设定默认值，比起参数默认值这样子可以兼容uri传参和变量名传参，变量名传递过来的参数优先
@@ -26,12 +28,13 @@ class AgentController extends Controller
             $filterText = $request->filter;
             return User::with(['group', 'parent', 'inventorys.item'])
                 ->where('account', 'like', "%{$filterText}%")
-                ->where('group_id', '!=', 1)
+                ->whereIn('group_id', $this->agentGroups)
                 ->orderBy($order[0], $order[1])
                 ->paginate($per_page);
         }
         return User::with(['group', 'parent', 'inventorys.item'])
-            ->where('group_id', '!=', 1)->orderBy($order[0], $order[1])     //不允许查看管理员
+            ->whereIn('group_id', $this->agentGroups)
+            ->orderBy($order[0], $order[1])     //不允许查看管理员
             ->paginate($per_page);
     }
 

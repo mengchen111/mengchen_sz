@@ -3,36 +3,37 @@
 trait AuthorizationMap
 {
     protected $view = [
-        'home' => '',
+        'home' => null,
         'statement' => [
-            'summary' => '',
+            'summary' => null,
         ],
         'gm' => [
-            'record' => '',
-            'room' => '',
+            'record' => null,
+            'room' => null,
         ],
         'player' => [
-            'list' => '',
+            'list' => null,
         ],
         'stock' => [
-            'apply-request' => '',
-            'apply-list' => '',
-            'apply-history' => '',
+            'apply-request' => null,
+            'apply-list' => null,
+            'apply-history' => null,
         ],
         'agent' => [
-            'create' => '',
-            'list' => '',
+            'create' => null,
+            'list' => null,
         ],
         'top-up' => [
-            'admin' => '',
-            'agent' => '',
-            'player' => '',
+            'admin' => null,
+            'agent' => null,
+            'player' => null,
         ],
         'system' => [
-            'log' => '',
+            'log' => null,
         ],
     ];
 
     protected $api = [
+        //TODO 思考何种数据格式可以合理的对uri和方法做权限控制
     ];
 }
