@@ -26,7 +26,7 @@ class RedirectIfAuthenticated
             if ($request->user()->account === '大赛客服') {
                 return redirect('/admin/temp-home');
             }
-            return $request->user()->is_admin ? redirect($this->adminHomePath) : redirect($this->agentHomePath);
+            return $request->user()->is_agent ? redirect($this->agentHomePath) : redirect($this->adminHomePath);
         }
 
         return $next($request);
