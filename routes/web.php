@@ -71,6 +71,7 @@ Route::group([
     Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '-?[0-9]+');
 
     Route::get('system/log', 'SystemController@showLog');
+    Route::get('system/authorization/view', 'AuthorizationController@showViewAccess');
 });
 
 //管理员视图路由

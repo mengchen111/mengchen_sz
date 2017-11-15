@@ -13,7 +13,7 @@ class AdminRequest extends FormRequest
      */
     public function authorize()
     {
-        abort_unless($this->user()->is_admin, 403);
+        abort_if($this->user()->is_agent, 403);
         return true;
     }
 

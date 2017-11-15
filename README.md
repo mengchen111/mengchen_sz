@@ -129,7 +129,8 @@ cd $codeDir
 | top-up/player | GET | 给玩家的充值记录 |
 | top-up/agent/{receiver}/{type}/{amount} | POST | 给代理商充值 |
 | top-up/player/{player}/{type}/{amount} | POST | 给玩家充值 |
-| system/log | GET | 系统操作日志记录 |  
+| system/log | GET | 系统操作日志记录 | 
+| system/authorization/view | GET | 获取登录用户可以访问的视图 |   
 
 ### 代理商接口
 > **前缀/agent/api/**  
