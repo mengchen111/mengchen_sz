@@ -14,5 +14,6 @@ class AuthorizationController extends Controller
     public function showViewAccess(AdminRequest $request)
     {
         //TODO
+        return $this->view;
     }
 }
