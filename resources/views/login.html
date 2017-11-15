@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="dist/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,10 +29,10 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p id="login-message" class="login-box-msg" v-bind:class="{ 'text-danger': loginMessage.warning }">
+        <p id="login-message" class="login-box-msg" :class="{ 'text-danger': loginMessage.warning }">
             {{ loginMessage.message }}</p>
 
-        <form action="/login" method="POST" v-on:submit.prevent="login">
+        <form action="/login" method="POST" @submit.prevent="login">
             <div class="form-group has-feedback">
                 <input name="account" type="text" class="form-control" placeholder="账户" v-model="formData.account"
                        v-focus required>
@@ -47,17 +45,12 @@
             </div>
             <div class="row">
                 <div class="col-xs-8">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input name="remember" type="checkbox" v-model="formData.remember"> 记住我
-                        </label>
-                    </div>
+                    <input id="remember" type="checkbox" v-model="remember">
+                    <label for="remember">记住我</label>
                 </div>
-                <!-- /.col -->
                 <div class="col-xs-4">
                     <button type="submit" class="btn btn-primary btn-block btn-flat" id="login-button">登录</button>
                 </div>
-                <!-- /.col -->
             </div>
         </form>
 
@@ -70,8 +63,6 @@
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- iCheck -->
-<script src="plugins/iCheck/icheck.min.js"></script>
 <!-- Vue 2.3.0 -->
 <script src="dist/js/vue/vue.min.js"></script>
 <!-- Vee-validate 2.0.0-rc.3 -->
@@ -79,73 +70,74 @@
 <!-- axios -->
 <script src="dist/js/axios.min.js"></script>
 <script>
-    'use strict';
+  'use strict';
 
-    $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
-        });
-    });
+  //自定义获取焦点的指令（全局）
+  Vue.directive('focus', {
+    inserted: function (el) {
+      el.focus();
+    },
+  });
 
-    //自定义获取焦点的指令（全局）
-    Vue.directive('focus', {
-        inserted: function (el) {
-            el.focus();
-        },
-    });
+  var loginApp = new Vue({
+    el: '.login-box',
 
-    var loginApp = new Vue({
-        el: '.login-box',
+    data: {
+      loginMessage: {
+        message: '用户登录',
+        warning: false,
+      },
+      formData: {
+        account: '',
+        password: '',
+      },
+      remember: false,
+    },
 
-        data: {
-            loginMessage: {
-                message: '用户登录',
-                warning: false,
-            },
-            formData: {
-                account: '',
-                password: '',
-                remember: false,
-            },
-        },
+    methods: {
+      checkRemember: function () {
+        if (this.remember) {     //如果勾选remember才提交remember参数
+          this.formData.remember = true
+        }
+      },
 
-        methods: {
-            login: function () {
-                var _self = this;
+      login: function () {
+        var _self = this;
 
-                axios({
-                    method: 'POST',
-                    url: '/login',
-                    data: _self.formData,
-                    timeout: 5000,                          //超时时间
-                    xsrfCookieName: 'XSRF-TOKEN',
-                    xsrfHeaderName: 'X-XSRF-TOKEN',
-                    validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
-                        return status >= 200 && status < 500 && status != 404;
-                    }
-                })
-                    .then(function (response) {
-                        if (response.status === 200) {
-                            window.location.href='/';   //登录成功，跳转首页
-                        } else if (response.status === 422 || response.status === 423) {
-                            var responseData = response.data.account || response.data.password;
-                            _self.loginMessage.message = responseData.__proto__.constructor === Array ? responseData[0]
-                                : responseData;
-                            _self.loginMessage.warning = true;
-                            _self.formData.password = '';
-                        } else {
-                            alert('登录失败，错误代码：' + response.status);
-                        }
-                    })
-                    .catch(function (err) {
-                        alert(err);
-                        console.log(err);
-                    });
-            },
-        },
-    });
+        this.checkRemember()
+
+        axios({
+          method: 'POST',
+          url: '/login',
+          data: _self.formData,
+          timeout: 5000,                          //超时时间
+          validateStatus: function (status) {     //定义哪些http状态返回码会被promise resolve
+            return status >= 200 && status < 500 && status != 404;
+          },
+        })
+          .then(function (response) {
+            if (response.status === 200) {
+              window.location.href = '/';   //登录成功，跳转首页
+            } else if (response.status === 422 || response.status === 423) {
+              var responseData = response.data.account || response.data.password;
+
+              _self.loginMessage.message = responseData.__proto__.constructor === Array
+                ? responseData[0]
+                : responseData;
+
+              _self.loginMessage.warning = true;
+              _self.formData.password = '';
+            } else {
+              alert('登录失败，错误代码：' + response.status);
+            }
+          })
+          .catch(function (err) {
+            alert(err);
+            console.log(err);
+          });
+      },
+    },
+  });
 
 </script>
 </body>
