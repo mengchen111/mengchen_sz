@@ -106,6 +106,9 @@ Route::group([
     Route::get('top-up/agent', 'ViewController@topUpAgent');
     Route::get('top-up/player', 'ViewController@topUpPlayer');
 
+    Route::get('permission/member', 'ViewController@permissionMember');
+    Route::get('permission/group', 'ViewController@permissionGroup');
+
     Route::get('system/log', 'ViewController@systemLog');
 });
 

@@ -78,6 +78,16 @@ class ViewController extends Controller
         return view('admin.top-up.player');
     }
 
+    public function permissionMember(Request $request)
+    {
+        return view('admin.permission.member');
+    }
+
+    public function permissionGroup(Request $request)
+    {
+        return view('admin.permission.group');
+    }
+
     public function systemLog(Request $request)
     {
         return view('admin.system.log');

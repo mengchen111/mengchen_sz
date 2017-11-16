@@ -61,6 +61,15 @@ new Vue({
           isActive: false,
         },
       },
+      permission: {
+        isActive: false,
+        member: {
+          isActive: false,
+        },
+        group: {
+          isActive: false,
+        },
+      },
       system: {
         isActive: false,
         log: {
@@ -124,6 +133,15 @@ new Vue({
           ifShown: false,
         },
         player: {
+          ifShown: false,
+        },
+      },
+      permission: {
+        ifShown: false,
+        member: {
+          ifShown: false,
+        },
+        group: {
           ifShown: false,
         },
       },

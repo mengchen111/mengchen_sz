@@ -62,6 +62,15 @@ trait AuthorizationMap
                 'ifShown' => true,
             ],
         ],
+        'permission' => [
+            'ifShown' => true,
+            'member' => [
+                'ifShown' => true,
+            ],
+            'group' => [
+                'ifShown' => true,
+            ],
+        ],
         'system' => [
             'ifShown' => true,
             'log' => [
