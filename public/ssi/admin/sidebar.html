@@ -4,70 +4,70 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar Menu -->
-        <ul class="sidebar-menu">
+        <ul class="sidebar-menu" v-cloak>
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li :class="{ active: uri.home.isActive }"><a href="/admin/home"><i class="fa fa-home"></i> <span>首页</span></a></li>
-            <li class="treeview" :class="{ active: uri.statement.isActive }">
+            <li :class="{ active: uri.home.isActive }" v-show="isAdmin || shownMenu.home.ifShown"><a href="/admin/home"><i class="fa fa-home"></i> <span>首页</span></a></li>
+            <li class="treeview" :class="{ active: uri.statement.isActive }" v-show="isAdmin || shownMenu.statement.ifShown">
                 <a href="#"><i class="fa fa-pie-chart"></i> <span>数据报表</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.statement.summary.isActive }"><a href="/admin/statement/summary"><i class="fa fa-circle-o"></i>数据总览</a></li>
+                    <li :class="{ active: uri.statement.summary.isActive }" v-show="isAdmin || shownMenu.statement.summary.ifShown"><a href="/admin/statement/summary"><i class="fa fa-circle-o"></i>数据总览</a></li>
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri.gm.isActive }">
+            <li class="treeview" :class="{ active: uri.gm.isActive }" v-show="isAdmin || shownMenu.gm.ifShown">
                 <a href="#"><i class="fa fa fa-wrench"></i> <span>GM功能</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.gm.room.isActive }"><a href="/admin/gm/room"><i class="fa fa-circle-o"></i>房间管理</a></li>
-                    <li :class="{ active: uri.gm.record.isActive }"><a href="/admin/gm/record"><i class="fa fa-circle-o"></i>战绩查询</a></li>
+                    <li :class="{ active: uri.gm.room.isActive }" v-show="isAdmin || shownMenu.gm.room.ifShown"><a href="/admin/gm/room"><i class="fa fa-circle-o"></i>房间管理</a></li>
+                    <li :class="{ active: uri.gm.record.isActive }" v-show="isAdmin || shownMenu.gm.record.ifShown"><a href="/admin/gm/record"><i class="fa fa-circle-o"></i>战绩查询</a></li>
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri.player.isActive }">
+            <li class="treeview" :class="{ active: uri.player.isActive }" v-show="isAdmin || shownMenu.player.ifShown">
                 <a href="#"><i class="fa fa-gamepad"></i> <span>玩家管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.player.list.isActive }"><a href="/admin/player/list"><i class="fa fa-circle-o"></i>玩家列表</a></li>
+                    <li :class="{ active: uri.player.list.isActive }" v-show="isAdmin || shownMenu.player.list.ifShown"><a href="/admin/player/list"><i class="fa fa-circle-o"></i>玩家列表</a></li>
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri.stock.isActive }">
+            <li class="treeview" :class="{ active: uri.stock.isActive }" v-show="isAdmin || shownMenu.stock.ifShown">
                 <a href="#"><i class="fa fa-suitcase"></i> <span>库存管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.stock['apply-request'].isActive }"><a href="/admin/stock/apply-request"><i class="fa fa-circle-o"></i>申请库存</a></li>
-                    <li :class="{ active: uri.stock['apply-list'].isActive }"><a href="/admin/stock/apply-list"><i class="fa fa-circle-o"></i>申请列表</a></li>
-                    <li :class="{ active: uri.stock['apply-history'].isActive }"><a href="/admin/stock/apply-history"><i class="fa fa-circle-o"></i>审核记录</a></li>
+                    <li :class="{ active: uri.stock['apply-request'].isActive }" v-show="isAdmin || shownMenu.stock['apply-request'].ifShown"><a href="/admin/stock/apply-request"><i class="fa fa-circle-o"></i>申请库存</a></li>
+                    <li :class="{ active: uri.stock['apply-list'].isActive }" v-show="isAdmin || shownMenu.stock['apply-list'].ifShown"><a href="/admin/stock/apply-list"><i class="fa fa-circle-o"></i>申请列表</a></li>
+                    <li :class="{ active: uri.stock['apply-history'].isActive }" v-show="isAdmin || shownMenu.stock['apply-history'].ifShown"><a href="/admin/stock/apply-history"><i class="fa fa-circle-o"></i>审核记录</a></li>
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri.agent.isActive }">
+            <li class="treeview" :class="{ active: uri.agent.isActive }" v-show="isAdmin || shownMenu.agent.ifShown">
                 <a href="#"><i class="fa fa-users"></i> <span>代理商管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.agent.create.isActive }"><a href="/admin/agent/create"><i class="fa fa-circle-o"></i>新建代理商</a></li>
-                    <li :class="{ active: uri.agent.list.isActive }"><a href="/admin/agent/list"><i class="fa fa-circle-o"></i>代理商列表</a></li>
+                    <li :class="{ active: uri.agent.create.isActive }" v-show="isAdmin || shownMenu.agent.create.ifShown"><a href="/admin/agent/create"><i class="fa fa-circle-o"></i>新建代理商</a></li>
+                    <li :class="{ active: uri.agent.list.isActive }" v-show="isAdmin || shownMenu.agent.list.ifShown"><a href="/admin/agent/list"><i class="fa fa-circle-o"></i>代理商列表</a></li>
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri['top-up'].isActive }">
+            <li class="treeview" :class="{ active: uri['top-up'].isActive }" v-show="isAdmin || shownMenu['top-up'].ifShown">
                 <a href="#"><i class="fa fa-credit-card"></i> <span>充值记录</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri['top-up'].admin.isActive }"><a href="/admin/top-up/admin"><i class="fa fa-circle-o"></i>管理员充值记录</a></li>
-                    <li :class="{ active: uri['top-up'].agent.isActive }"><a href="/admin/top-up/agent"><i class="fa fa-circle-o"></i>代理商充值记录</a></li>
-                    <li :class="{ active: uri['top-up'].player.isActive }"><a href="/admin/top-up/player"><i class="fa fa-circle-o"></i>玩家充值记录</a></li>
+                    <li :class="{ active: uri['top-up'].admin.isActive }" v-show="isAdmin || shownMenu['top-up'].admin.ifShown"><a href="/admin/top-up/admin"><i class="fa fa-circle-o"></i>管理员充值记录</a></li>
+                    <li :class="{ active: uri['top-up'].agent.isActive }" v-show="isAdmin || shownMenu['top-up'].agent.ifShown"><a href="/admin/top-up/agent"><i class="fa fa-circle-o"></i>代理商充值记录</a></li>
+                    <li :class="{ active: uri['top-up'].player.isActive }" v-show="isAdmin || shownMenu['top-up'].player.ifShown"><a href="/admin/top-up/player"><i class="fa fa-circle-o"></i>玩家充值记录</a></li>
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri.system.isActive }">
+            <li class="treeview" :class="{ active: uri.system.isActive }" v-show="isAdmin || shownMenu.system.ifShown">
                 <a href="#"><i class="fa fa-gear"></i> <span>系统管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.system.log.isActive }"><a href="/admin/system/log"><i class="fa fa-circle-o"></i>系统日志</a></li>
+                    <li :class="{ active: uri.system.log.isActive }" v-show="isAdmin || shownMenu.system.log.ifShown"><a href="/admin/system/log"><i class="fa fa-circle-o"></i>系统日志</a></li>
                 </ul>
             </li>
         </ul>

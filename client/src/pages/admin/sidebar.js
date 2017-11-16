@@ -1,7 +1,8 @@
 new Vue({
   el: '#sidebar',
   data: {
-    viewAccessApi: '/admin/api/system/authorization/view',
+    viewAccessApi: '/admin/api/group/authorization/view/0',
+
     uri: {
       home: {
         isActive: false,
@@ -67,6 +68,74 @@ new Vue({
         },
       },
     },
+
+    shownMenu: {
+      home: {
+        ifShown: false,
+      },
+      statement: {
+        ifShown: false,
+        summary: {
+          ifShown: false,
+        },
+      },
+      gm: {
+        ifShown: false,
+        record: {
+          ifShown: false,
+        },
+        room: {
+          ifShown: false,
+        },
+      },
+      player: {
+        ifShown: false,
+        list: {
+          ifShown: false,
+        },
+      },
+      stock: {
+        ifShown: false,
+        'apply-request': {
+          ifShown: false,
+        },
+        'apply-list': {
+          ifShown: false,
+        },
+        'apply-history': {
+          ifShown: false,
+        },
+      },
+      agent: {
+        ifShown: false,
+        create: {
+          ifShown: false,
+        },
+        list: {
+          ifShown: false,
+        },
+      },
+      'top-up': {
+        ifShown: false,
+        admin: {
+          ifShown: false,
+        },
+        agent: {
+          ifShown: false,
+        },
+        player: {
+          ifShown: false,
+        },
+      },
+      system: {
+        ifShown: false,
+        log: {
+          ifShown: false,
+        },
+      },
+    },
+
+    isAdmin: false,
   },
 
   methods: {
@@ -82,9 +151,23 @@ new Vue({
         return lastValue[currentValue]
       }, _self.uri)
     },
+
+    setupMenu () {    //为不同的角色显示不同的menu菜单
+      let _self = this
+
+      axios.get(this.viewAccessApi)
+        .then(function (res) {
+          _self.shownMenu = res.data.view_access
+          _self.isAdmin = res.data.is_admin
+        })
+        .catch(function (err) {
+          alert('sidebar: ', err)
+        })
+    },
   },
 
   created: function () {
     this.activateMenu()
+    this.setupMenu()
   },
 })

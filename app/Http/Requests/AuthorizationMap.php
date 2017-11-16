@@ -1,71 +1,71 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Requests;
 
 trait AuthorizationMap
 {
     protected $view = [
         'home' => [
-            'ifShown' => true,      //首页默认都展示
+            'ifShown' => true,
         ],
         'statement' => [
-            'ifShown' => false,
+            'ifShown' => true,
             'summary' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
         ],
         'gm' => [
-            'ifShown' => false,
+            'ifShown' => true,
             'room' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
             'record' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
         ],
         'player' => [
-            'ifShown' => false,
+            'ifShown' => true,
             'list' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
         ],
         'stock' => [
-            'ifShown' => false,
+            'ifShown' => true,
             'apply-request' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
             'apply-list' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
             'apply-history' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
         ],
         'agent' => [
-            'ifShown' => false,
+            'ifShown' => true,
             'create' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
             'list' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
         ],
         'top-up' => [
-            'ifShown' => false,
+            'ifShown' => true,
             'admin' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
             'agent' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
             'player' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
         ],
         'system' => [
-            'ifShown' => false,
+            'ifShown' => true,
             'log' => [
-                'ifShown' => false,
+                'ifShown' => true,
             ],
         ],
     ];

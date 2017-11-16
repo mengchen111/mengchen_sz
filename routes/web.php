@@ -70,8 +70,10 @@ Route::group([
     Route::post('top-up/agent/{receiver}/{type}/{amount}', 'TopUpController@topUp2Agent')->where('amount', '-?[0-9]+');
     Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '-?[0-9]+');
 
+    Route::get('group/authorization/view/{user}', 'AuthorizationController@showViewAccess')->where('user', '[0-9]+');;
+    Route::post('group/authorization/view', 'AuthorizationController@setupViewAccess');
+
     Route::get('system/log', 'SystemController@showLog');
-    Route::get('system/authorization/view', 'AuthorizationController@showViewAccess');
 });
 
 //管理员视图路由
