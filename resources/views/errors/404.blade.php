@@ -37,8 +37,8 @@
 <div class="container">
     <div class="content">
         <div class="title">
-            404 Not Found<br>
-            您访问的页面不存在<br>
+            404 Not Found - 页面不存在<br>
+            {{$exception->getMessage()}}<br>
             <a href="/">返回首页</a>
         </div>
     </div>

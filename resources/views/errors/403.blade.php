@@ -37,8 +37,8 @@
 <div class="container">
     <div class="content">
         <div class="title">
-            403 Forbidden<br>
-            禁止访问此页面<br>
+            403 Forbidden - 禁止访问<br>
+            {{$exception->getMessage()}}<br>
             <a href="/">返回首页</a>
         </div>
     </div>
