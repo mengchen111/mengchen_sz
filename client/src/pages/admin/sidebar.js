@@ -157,7 +157,7 @@ new Vue({
 
       axios.get(this.viewAccessApi)
         .then(function (res) {
-          _self.shownMenu = res.data.view_access
+          _self.shownMenu = Object.assign(_self.shownMenu, res.data.view_access)  //merge
           _self.isAdmin = res.data.is_admin
         })
         .catch(function (err) {

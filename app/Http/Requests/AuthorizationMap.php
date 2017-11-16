@@ -70,6 +70,13 @@ trait AuthorizationMap
         ],
     ];
 
+    //新建立的组的默认可访问的view
+    protected $initGroupView = [
+        'home' => [
+            'ifShown' => true,
+        ],
+    ];
+
     protected $api = [
         //TODO 思考何种数据格式可以合理的对uri和方法做权限控制
     ];

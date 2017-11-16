@@ -70,9 +70,12 @@ Route::group([
     Route::post('top-up/agent/{receiver}/{type}/{amount}', 'TopUpController@topUp2Agent')->where('amount', '-?[0-9]+');
     Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '-?[0-9]+');
 
-    Route::get('group/authorization/view/{user}', 'AuthorizationController@showViewAccess')->where('user', '[0-9]+');;
+    Route::get('group/authorization/view/{user}', 'AuthorizationController@showViewAccess')->where('user', '[0-9]+');
     Route::post('group/authorization/view', 'AuthorizationController@setupViewAccess');
-    Route::get('group/list', 'GroupController@show');
+    Route::get('group', 'GroupController@show');
+    Route::post('group', 'GroupController@create');
+    Route::put('group/{group}', 'GroupController@edit')->where('group', '[0-9]+');
+    Route::delete('group/{group}', 'GroupController@destroy')->where('group', '[0-9]+');
 
     Route::get('system/log', 'SystemController@showLog');
 });
