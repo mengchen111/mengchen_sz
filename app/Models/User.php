@@ -8,13 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
+    use GroupIdMap;
 
     protected $table = 'users';
     protected $primaryKey = 'id';
-
-    protected $lowestAgentId = 4;
-    protected $adminId = 1;
-    protected $agentIds = [2, 3, 4];
 
     /**
      * The attributes that are mass assignable.
@@ -72,17 +69,17 @@ class User extends Authenticatable
     //定义访问器
     public function getIsLowestAgentAttribute()
     {
-        return $this->attributes['group_id'] >= $this->lowestAgentId;
+        return $this->attributes['group_id'] >= $this->lowestAgentGid;
     }
 
     public function getIsAdminAttribute()
     {
-        return $this->attributes['group_id'] == $this->adminId;
+        return (string) $this->attributes['group_id'] === $this->adminGid;
     }
 
     public function getIsAgentAttribute()
     {
-        return in_array($this->attributes['group_id'], $this->agentIds);
+        return in_array($this->attributes['group_id'], $this->agentGids);
     }
 
     //指定mail通知channel的地址（默认就为email字段）

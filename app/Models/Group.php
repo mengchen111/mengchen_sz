@@ -20,8 +20,17 @@ class Group extends Model
         'name', 'uri_access', 'view_access'
     ];
 
+    protected $hidden = [
+        'uri_access',
+    ];
+
     public function users()
     {
         return $this->hasMany('App\Models\User', 'group_id', 'id');
+    }
+
+    public function getViewAccessAttribute($value)
+    {
+        return json_decode($value, true);
     }
 }

@@ -30,7 +30,6 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/admin/home';
 
-    protected $adminId = 1;
     protected $adminHomePath = '/admin/home';
     protected $agentHomePath = '/agent/home';
 

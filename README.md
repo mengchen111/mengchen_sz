@@ -131,6 +131,7 @@ cd $codeDir
 | top-up/player/{player}/{type}/{amount} | POST | 给玩家充值 |
 | group/authorization/view/{group} | GET | 获取某个组可以访问的视图(group=0表示当前登录用户) |   
 | group/authorization/view | POST | 设置组权限(可访问的视图页面) |   
+| group/list | GET | 列出所有组(除了代理商) |
 | system/log | GET | 系统操作日志记录 | 
 
 ### 代理商接口

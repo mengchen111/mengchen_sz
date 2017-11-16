@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
 {
-    protected $adminId = 1;
     protected $adminHomePath = '/admin/home';
     protected $agentHomePath = '/agent/home';
 

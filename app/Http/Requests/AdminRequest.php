@@ -44,7 +44,7 @@ class AdminRequest extends FormRequest
         }
 
         $allViews = $this->formatData($this->view);
-        $userViewAccess = json_decode($user->group->view_access, true);
+        $userViewAccess = $user->group->view_access;
         $allowedViews = is_array($userViewAccess)
             ? $this->formatData($userViewAccess)
             : $allowedViews = [];

@@ -60,10 +60,6 @@ class TopUpController extends Controller
 //            throw new CustomException('只能给您的下级代理商充值');
 //        }
 
-        if (! $this->checkStock($provider, $amount)) {
-            throw new CustomException('库存不足，无法充值');
-        }
-
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '管理员给代理商充值[减库存]', $request->header('User-Agent'), json_encode($request->route()->parameters));
 
@@ -148,6 +144,10 @@ class TopUpController extends Controller
 
     protected function topUp4Child($request, $provider, $receiver, $type, $amount)
     {
+        if (! $this->checkStock($provider, $amount)) {
+            throw new CustomException('库存不足，无法充值');
+        }
+
         return DB::transaction(function () use ($request, $provider, $receiver, $type, $amount){
             //更新库存
             if (empty($receiver->inventory)) {
@@ -257,10 +257,6 @@ class TopUpController extends Controller
             $query->where('item_id', $type);
         }])->find($request->user()->id);
 
-        if (! $this->checkStock($provider, $amount)) {
-            throw new CustomException('库存不足，无法充值');
-        }
-
         //清空玩家列表缓存
         Cache::pull(config('custom.game_server_cache_players'));
 
@@ -325,6 +321,10 @@ class TopUpController extends Controller
 
     protected function topUp4Player($request, $provider, $player, $type, $amount)
     {
+        if (! $this->checkStock($provider, $amount)) {
+            throw new CustomException('库存不足，无法充值');
+        }
+
         return DB::transaction(function () use ($request, $provider, $player, $type, $amount){
             //减管理员的库存
             $provider->inventory->stock -= $amount;

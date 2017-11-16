@@ -72,6 +72,7 @@ Route::group([
 
     Route::get('group/authorization/view/{user}', 'AuthorizationController@showViewAccess')->where('user', '[0-9]+');;
     Route::post('group/authorization/view', 'AuthorizationController@setupViewAccess');
+    Route::get('group/list', 'GroupController@show');
 
     Route::get('system/log', 'SystemController@showLog');
 });
