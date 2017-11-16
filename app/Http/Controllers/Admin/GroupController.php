@@ -7,6 +7,7 @@ use App\Http\Requests\AdminRequest;
 use App\Http\Requests\AuthorizationMap;
 use App\Models\Group;
 use App\Models\GroupIdMap;
+use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -17,12 +18,16 @@ class GroupController extends Controller
 
     public function show(AdminRequest $request)
     {
-        return Group::whereNotIn('id', $this->agentGids)
+        $groups =  Group::whereNotIn('id', $this->agentGids)
             ->get()
             ->map(function ($value) {
                 unset($value['view_access']);
                 return $value;
-            });
+            })
+            ->toArray();
+        krsort($groups);
+
+        return Paginator::paginate($groups, $this->per_page, $this->page);
     }
 
     public function create(AdminRequest $request)
