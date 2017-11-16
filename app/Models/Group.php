@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
+    use GroupIdMap;
+
     public $timestamps = false;
     protected $table = 'groups';
     protected $primaryKey = 'id';
@@ -32,5 +34,15 @@ class Group extends Model
     public function getViewAccessAttribute($value)
     {
         return json_decode($value, true);
+    }
+
+    public function getIsAdminGroupAttribute()
+    {
+        return (string) $this->attributes['id'] === $this->adminGid;
+    }
+
+    public function hasMember()
+    {
+        return $this->users->count();
     }
 }

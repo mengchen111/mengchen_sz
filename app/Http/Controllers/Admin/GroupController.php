@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\CustomException;
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\AuthorizationMap;
 use App\Models\Group;
@@ -38,11 +39,38 @@ class GroupController extends Controller
 
     public function edit(AdminRequest $request, Group $group)
     {
-        //TODO 编辑组名(管理员组不允许编辑)
+        if ($group->is_admin_group) {
+            throw new CustomException('管理员组禁止编辑');
+        }
+
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+        ]);
+
+        $group->update([
+            'name' => $request->input('name')
+        ]);
+
+        return [
+            'message' => '更新组信息成功',
+        ];
     }
 
     public function destroy(AdminRequest $request, Group $group)
     {
-        //TODO 删除组（非空不能删）
+        if ($group->is_admin_group) {
+            throw new CustomException('管理员组禁止删除');
+        }
+
+        if ($group->hasMember()) {
+            return [
+                'error' => '禁止删除非空组, 请先清空此组下的成员再尝试删除'
+            ];
+        }
+
+        $group->delete();
+        return [
+            'message' => '删除组成功',
+        ];
     }
 }
