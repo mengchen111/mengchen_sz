@@ -166,7 +166,7 @@
                                     <div v-for="room of rooms" class="tab-pane" :id="room" :class="{ active: room === activeRoomType}">
                                         <form class="form-horizontal" @submit.prevent="createRoom(room)">
                                             <div class="form-group">
-                                                <label class="col-md-2 control-label">局数</label>
+                                                <div class="col-md-2 text-center">局数</div>
                                                 <div class="col-md-10">
                                                     <div class="row">
                                                         <div class="col-md-3">
@@ -182,7 +182,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-md-2 control-label">玩法</label>
+                                                <div class="col-md-2 text-center">玩法</div>
                                                 <div class="col-md-10">
                                                     <div class="row" v-for="(options, room) of roomType[room]['wanfa']">
                                                         <div class="col-md-3" v-for="option of options">
@@ -192,7 +192,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group" v-if="roomType[room]['gui_pai']['花牌类型']">
-                                                <label class="col-md-2 control-label">花牌</label>
+                                                <div class="col-md-2 text-center">花牌</div>
                                                 <div class="col-md-10">
                                                     <div class="row">
                                                         <div class="col-md-3" v-for="(huaPaiOption, key) of roomType[room]['gui_pai']['花牌类型']">
@@ -203,7 +203,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group" v-if="roomType[room]['ma_pai'].hasOwnProperty('抓马数')">
-                                                <label class="col-md-2 control-label">马牌</label>
+                                                <div class="col-md-2 text-center">马牌</div>
                                                 <div class="col-md-10">
                                                     <div class="row">
                                                         <div class="col-md-2">

@@ -10,6 +10,7 @@ use App\Models\GroupIdMap;
 use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\OperationLogs;
 
 class GroupController extends Controller
 {
@@ -27,29 +28,46 @@ class GroupController extends Controller
             ->toArray();
         krsort($groups);
 
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '查看组列表', $request->header('User-Agent'), json_encode($request->all()));
+
         return Paginator::paginate($groups, $this->per_page, $this->page);
     }
 
     public function create(AdminRequest $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:groups,name',
         ]);
 
-        return Group::create([
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '创建组', $request->header('User-Agent'), json_encode($request->all()));
+
+        Group::create([
             'name' => $request->input('name'),
             'view_access' => json_encode($this->initGroupView),
         ]);
+
+        return [
+            'message' => '创建组成功'
+        ];
     }
 
     public function edit(AdminRequest $request, Group $group)
     {
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '编辑组名', $request->header('User-Agent'), json_encode($request->all()));
+
         if ($group->is_admin_group) {
             throw new CustomException('管理员组禁止编辑');
         }
 
+        if ($group->name === $request->input('name')) {
+            throw new CustomException('新组名与原组名一致, 数据未更新');
+        }
+
         $this->validate($request, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:groups,name',
         ]);
 
         $group->update([
@@ -63,6 +81,9 @@ class GroupController extends Controller
 
     public function destroy(AdminRequest $request, Group $group)
     {
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '删除组', $request->header('User-Agent'), json_encode($request->all()));
+
         if ($group->is_admin_group) {
             throw new CustomException('管理员组禁止删除');
         }
