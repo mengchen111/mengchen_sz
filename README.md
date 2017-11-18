@@ -135,6 +135,10 @@ cd $codeDir
 | group | POST | 创建组 |
 | group/{group} | PUT | 更新组信息(名字) |
 | group/{group} | DELETE | 删除组 |
+| role | GET | 列出所有角色(除了代理商) |
+| role | POST | 创建角色 |
+| role/{role} | PUT | 更新角色信息 |
+| role/{role} | DELETE | 删除角色 |
 | system/log | GET | 系统操作日志记录 | 
 
 ### 代理商接口

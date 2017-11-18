@@ -32,8 +32,25 @@
                 </div>
 
                 <div class="box-body">
-                    角色列表
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-2">
+                            <button class="btn btn-block btn-primary btn-flat" data-toggle="modal"
+                                    data-target="#create-group-modal">新建组</button>
+                        </div>
+                        <div class="col-md-2 col-md-offset-8">
+                            <select>
+                                <option>组过滤选择框</option>
+                            </select>
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="col-md-12 phone-scrollable">
+                            <my-vuetable :table-url="memberListApi"
+                                         :table-fields="tableFields"
+                            ></my-vuetable>
+                        </div>
+                    </div>
                 </div>
             </div>
 
