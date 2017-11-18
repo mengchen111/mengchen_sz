@@ -99,4 +99,13 @@ class GroupController extends Controller
             'message' => '删除组成功',
         ];
     }
+
+    public function showMap(AdminRequest $request)
+    {
+        $groupMap = Group::whereNotIn('id', $this->agentGids)
+            ->get()
+            ->pluck('name', 'id');
+        unset($groupMap[$this->adminGid]);
+        return $groupMap;
+    }
 }

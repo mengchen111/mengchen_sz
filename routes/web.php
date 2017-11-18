@@ -76,6 +76,7 @@ Route::group([
     Route::post('group', 'GroupController@create');
     Route::put('group/{group}', 'GroupController@edit')->where('group', '[0-9]+');
     Route::delete('group/{group}', 'GroupController@destroy')->where('group', '[0-9]+');
+    Route::get('group/map', 'GroupController@showMap');
     Route::get('role', 'RoleController@show');
     Route::post('role', 'RoleController@create');
     Route::put('role/{role}', 'RoleController@edit')->where('role', '[0-9]+');

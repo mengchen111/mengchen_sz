@@ -135,6 +135,7 @@ cd $codeDir
 | group | POST | 创建组 |
 | group/{group} | PUT | 更新组信息(名字) |
 | group/{group} | DELETE | 删除组 |
+| group/map | GET | 获取组id与名字的映射关系 |
 | role | GET | 列出所有角色(除了代理商) |
 | role | POST | 创建角色 |
 | role/{role} | PUT | 更新角色信息 |

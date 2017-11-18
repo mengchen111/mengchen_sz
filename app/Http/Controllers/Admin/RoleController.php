@@ -8,6 +8,7 @@ use App\Models\GroupIdMap;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\OperationLogs;
 
 class RoleController extends Controller
 {
@@ -15,12 +16,25 @@ class RoleController extends Controller
 
     public function show(AdminRequest $request)
     {
-        return User::whereNotIn('group_id', $this->agentGids)
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '查看角色列表', $request->header('User-Agent'), json_encode($request->all()));
+
+        $groupId = $request->input('group_id');
+
+        return User::with('group')
+            ->whereNotIn('group_id', $this->agentGids)
+            ->when($groupId, function ($query) use ($groupId) {
+                return $query->where('group_id', $groupId);
+            })
+            ->orderBy('id', 'desc')
             ->paginate($this->per_page);
     }
 
     public function create(AdminRequest $request)
     {
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '创建角色', $request->header('User-Agent'), json_encode($request->all()));
+
         $data = $this->filterCreateData($request);
 
         User::create($data);
@@ -45,6 +59,9 @@ class RoleController extends Controller
 
     public function edit(AdminRequest $request, User $role)
     {
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '编辑角色', $request->header('User-Agent'), json_encode($request->all()));
+
         $data = $this->filterEditData($request, $role);
 
         $role->update($data);
@@ -83,6 +100,9 @@ class RoleController extends Controller
 
     public function destroy(AdminRequest $request, User $role)
     {
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '删除角色', $request->header('User-Agent'), json_encode($request->all()));
+
         if ($role->is_admin or $role->is_agent) {
             throw new CustomException('禁止删除管理员或代理商');
         }

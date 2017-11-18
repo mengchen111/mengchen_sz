@@ -35,12 +35,10 @@
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-2">
                             <button class="btn btn-block btn-primary btn-flat" data-toggle="modal"
-                                    data-target="#create-group-modal">新建组</button>
+                                    data-target="#create-member-modal">新建角色</button>
                         </div>
-                        <div class="col-md-2 col-md-offset-8">
-                            <select>
-                                <option>组过滤选择框</option>
-                            </select>
+                        <div class="col-md-3 col-md-offset-6">
+                            <v-select :searchable="false" v-model="searchGroupValue" :on-change="searchGroupCallback" :options="searchGroupOptions"></v-select>
                         </div>
                     </div>
 
@@ -49,6 +47,101 @@
                             <my-vuetable :table-url="memberListApi"
                                          :table-fields="tableFields"
                             ></my-vuetable>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="create-member-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h4 class="text-center">新建角色</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" method="POST" action="#" @submit.prevent="createMember">
+                                <div class="form-group">
+                                    <label>账号</label>
+                                    <input type="text" required class="form-control" v-model.trim="createMemberData.account" placeholder="账户">
+                                </div>
+                                <div class="form-group">
+                                    <label>昵称</label>
+                                    <input type="text" required class="form-control" v-model.trim="createMemberData.name" placeholder="昵称">
+                                </div>
+                                <div class="form-group">
+                                    <label>密码</label>
+                                    <input type="password" required class="form-control" v-model.trim="createMemberData.password" placeholder="密码">
+                                </div>
+                                <div class="form-group">
+                                    <label>密码确认</label>
+                                    <input type="password" required class="form-control" v-model.trim="createMemberData.password_confirmation" placeholder="再次输入密码">
+                                </div>
+                                <div class="form-group">
+                                    <label>选择组</label>
+                                    <v-select :searchable="false" v-model="createMemberData.group" :options="groups"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="edit-member-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h4 class="text-center">编辑角色</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" method="POST" action="#" @submit.prevent="editMember">
+                                <div class="form-group">
+                                    <label>账号</label>
+                                    <input type="text" required class="form-control" v-model.trim="editMemberData.account" placeholder="账户">
+                                </div>
+                                <div class="form-group">
+                                    <label>昵称</label>
+                                    <input type="text" required class="form-control" v-model.trim="editMemberData.name" placeholder="昵称">
+                                </div>
+                                <div class="form-group">
+                                    <label>密码</label>
+                                    <input type="password" required class="form-control" v-model.trim="editMemberData.password" placeholder="密码">
+                                </div>
+                                <div class="form-group">
+                                    <label>密码确认</label>
+                                    <input type="password" required class="form-control" v-model.trim="editMemberData.password_confirmation" placeholder="再次输入密码">
+                                </div>
+                                <div class="form-group">
+                                    <label>选择组</label>
+                                    <v-select v-model="editMemberData.group" required :options="groups"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="delete-member-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h4 class="text-center">是否确认删除角色 <b class="text-red">{{ activatedRow.account }}</b></h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
+                                取消
+                            </button>
+                            <button class="btn btn-flat btn-danger btn-lg pull-left" type="submit" @click="deleteMember">
+                                删除
+                            </button>
                         </div>
                     </div>
                 </div>
