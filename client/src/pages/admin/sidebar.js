@@ -17,10 +17,10 @@ new Vue({
       },
       gm: {
         isActive: false,
-        record: {
+        room: {
           isActive: false,
         },
-        room: {
+        record: {
           isActive: false,
         },
       },
@@ -104,7 +104,7 @@ new Vue({
 
       axios.get(this.viewAccessApi)
         .then(function (res) {
-          _self.shownMenu = Object.assign(_self.shownMenu, res.data.view_access)  //merge
+          _self.shownMenu = Object.assign({}, _self.shownMenu, res.data.view_access)  //merge
           _self.isAdmin = res.data.is_admin
         })
         .catch(function (err) {

@@ -1,5 +1,5 @@
 <template>
-    <div class="table-actions">
+    <div class="table-actions" v-if="rowData.id != 1">
         <button class="btn btn-default btn-flat" data-toggle="modal" data-target="#edit-group-name-modal"
                 @click="editGroupNameAction(rowData)" title="更改组名">更改组名
         </button>

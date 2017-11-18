@@ -3,18 +3,16 @@ import MyToastr from '../../../components/MyToastr.vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import TableActions from './components/GroupTableActions.vue'
 import shownMenu from '../sidebarMenuShown.js'
-import CheckboxRadio from 'vue-checkbox-radio'
+import {Checkbox} from 'vue-checkbox-radio'
 
 Vue.component('table-actions', TableActions)
-Vue.use(CheckboxRadio)
 
 new Vue({
   el: '#app',
   components: {
     MyToastr,
     MyVuetable,
-    // Checkbox,
-    // Radio,
+    Checkbox,
   },
   data: {
     eventHub: new Vue(),
@@ -109,12 +107,9 @@ new Vue({
 
       axios.get(this.groupPermissionApiPrefix + '/' + this.activatedRow.id)
         .then(function (res) {
-          _self.currentGroupPermission = Object.assign(_self.currentGroupPermission, res.data.view_access)
+          _self.currentGroupPermission = Object.assign({}, _.cloneDeep(shownMenu), res.data.view_access)
         })
     },
-  },
-
-  created: function () {
   },
 
   mounted: function () {

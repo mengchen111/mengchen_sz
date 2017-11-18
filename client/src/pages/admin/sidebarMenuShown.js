@@ -10,10 +10,10 @@ export default {
   },
   gm: {
     ifShown: false,
-    record: {
+    room: {
       ifShown: false,
     },
-    room: {
+    record: {
       ifShown: false,
     },
   },
