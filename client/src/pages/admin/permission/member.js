@@ -114,6 +114,10 @@ new Vue({
         return toastr.message('未选择组', 'error')
       }
 
+      if (this.editMemberData.password === '') {
+        delete this.editMemberData.password
+      }
+
       this.editMemberData.group_id = _.findKey(this.groupMap, function (value) {
         return value === _self.editMemberData.group
       })
