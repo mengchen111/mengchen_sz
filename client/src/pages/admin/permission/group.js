@@ -82,7 +82,19 @@ new Vue({
     },
 
     editGroupPermission () {
-      console.log('group permission ', this.currentGroupPermission)
+      let toastr = this.$refs.toastr
+      let data = {}
+      data.view_access = JSON.stringify(this.currentGroupPermission)
+
+      axios.put(this.groupPermissionApiPrefix + '/' + this.activatedRow.id, data)
+        .then(function (res) {
+          res.data.error
+            ? toastr.message(res.data.error, 'error')
+            : toastr.message(res.data.message)
+        })
+        .catch(function (err) {
+          toastr.message(err, 'error')
+        })
     },
 
     deleteGroup () {

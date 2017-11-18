@@ -32,13 +32,14 @@ class AuthorizationController extends Controller
     }
 
     //设置组权限（可以访问的页面）
-    public function setupViewAccess(AdminRequest $request)
+    public function setupViewAccess(AdminRequest $request, Group $group)
     {
         $viewAccess = $this->filterViewAccessData($request);
 
-        $group = Group::find($request->input('gid'));
-        $group->update($viewAccess);
-
+        $group->update([
+            'view_access' => json_encode($viewAccess),
+        ]);
+        
         return [
             'message' => '设置组权限成功',
         ];
@@ -47,7 +48,6 @@ class AuthorizationController extends Controller
     protected function filterViewAccessData($request)
     {
         $this->validate($request, [
-            'gid' => 'required|exists:groups,id',
             'view_access' => 'required',
         ]);
 

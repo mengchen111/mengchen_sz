@@ -130,7 +130,7 @@ cd $codeDir
 | top-up/agent/{receiver}/{type}/{amount} | POST | 给代理商充值 |
 | top-up/player/{player}/{type}/{amount} | POST | 给玩家充值 |
 | group/authorization/view/{group} | GET | 获取某个组可以访问的视图(group=0表示当前登录用户) |   
-| group/authorization/view | POST | 设置组权限(可访问的视图页面) |   
+| group/authorization/view/{group} | PUT | 设置组权限(可访问的视图页面) |   
 | group | GET | 列出所有组(除了代理商) |
 | group | POST | 创建组 |
 | group/{group} | PUT | 更新组信息(名字) |
