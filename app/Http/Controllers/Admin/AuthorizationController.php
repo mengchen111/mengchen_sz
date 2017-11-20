@@ -39,7 +39,7 @@ class AuthorizationController extends Controller
         $group->update([
             'view_access' => json_encode($viewAccess),
         ]);
-        
+
         return [
             'message' => '设置组权限成功',
         ];

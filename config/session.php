@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'lifetime' => 1440,     //one day, session lifetime指的是session的失效时间，而不是浏览器cookie失效的时间
+    'lifetime' => 300,     //5个小时
 
     'expire_on_close' => true,
 
