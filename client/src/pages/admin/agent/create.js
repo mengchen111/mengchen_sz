@@ -34,7 +34,7 @@ new Vue({
               : toastr.message('添加代理商成功')
 
             //清空表单数据
-            for (let index of Object.keys(_self.formData)) {
+            for (let index of _.keys(_self.formData)) {
               _self.formData[index] = index === 'group_id' ? _self.formData[index] : ''
             }
           }

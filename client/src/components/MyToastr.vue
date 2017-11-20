@@ -26,7 +26,7 @@
 
     methods: {
       setToastrOptions (options) {
-        for (let [key, value] of Object.entries(options)) {
+        for (let [key, value] of _.entries(options)) {
           this.$refs.toastr[key] = value
         }
       },

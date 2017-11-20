@@ -68,7 +68,7 @@
               return alert(JSON.stringify(response.data))
             }
             response.data.error ? alert(response.data.error) : alert(response.data.message)
-            for (let index of Object.keys(_self.formData)) {
+            for (let index of _.keys(_self.formData)) {
               _self.formData[index] = ''
             }
             return true

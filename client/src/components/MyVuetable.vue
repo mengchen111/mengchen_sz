@@ -147,7 +147,7 @@
 
     mounted: function () {
       //将传过来的回调函数绑定到组件实例上
-      for (let [key, value] of Object.entries(this.callbacks)) {
+      for (let [key, value] of _.entries(this.callbacks)) {
         this[key] = value
       }
 

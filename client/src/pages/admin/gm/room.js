@@ -57,7 +57,7 @@ new Vue({
       let toastr = this.$refs.toastr
 
       //鬼牌的选项的值传递到表单数据上
-      for (let [type, value] of Object.entries(this.guiPaiData)) {
+      for (let [type, value] of _.entries(this.guiPaiData)) {
         if (value !== null) {
           this.createRoomFormData.gui_pai[type] = value
         }
@@ -86,7 +86,7 @@ new Vue({
     },
 
     chunkWanfa () {   //玩法选项每行4个，格式化之
-      for (let [room, options] of Object.entries(this.roomType)) {
+      for (let [room, options] of _.entries(this.roomType)) {
         this.roomType[room]['wanfa'] = _.chunk(options['wanfa'], 4)
       }
     },

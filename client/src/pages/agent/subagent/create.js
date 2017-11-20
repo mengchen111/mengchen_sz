@@ -37,7 +37,7 @@ new Vue({
             response.data.error ? alert(response.data.error) : alert(response.data.message)
 
             //清空表单数据
-            for (let index of Object.keys(_self.formData)) {
+            for (let index of _.keys(_self.formData)) {
               _self.formData[index] = ''
             }
           }
