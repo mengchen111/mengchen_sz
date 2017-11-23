@@ -1,4 +1,4 @@
-import '../common.js'
+import '../index.js'
 import MyToastr from '../../../components/MyToastr.vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import TableActions from './components/MemberTableActions.vue'

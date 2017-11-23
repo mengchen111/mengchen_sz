@@ -1,4 +1,4 @@
-import '../common.js'
+import '../index.js'
 import MyDatePicker from '../../../components/MyDatePicker.vue'
 import MyToastr from '../../../components/MyToastr.vue'
 

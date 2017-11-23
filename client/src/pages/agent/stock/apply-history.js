@@ -1,4 +1,4 @@
-import '../common.js'
+import '../index.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
 
 new Vue({

@@ -1,4 +1,4 @@
-import '../common.js'
+import '../index.js'
 import FilterBar from '../../../components/MyFilterBar.vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import MyToastr from '../../../components/MyToastr.vue'

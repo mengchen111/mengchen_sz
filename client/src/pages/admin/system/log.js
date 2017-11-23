@@ -2,7 +2,7 @@
  * Created by liudian on 9/20/17.
  */
 
-import '../common.js'
+import '../index.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import FilterBar from '../../../components/MyFilterBar.vue'
 

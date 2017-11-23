@@ -1,4 +1,4 @@
-import './common.js'
+import './index.js'
 
 new Vue({
   el: '#app',

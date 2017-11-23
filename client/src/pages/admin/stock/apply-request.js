@@ -1,4 +1,4 @@
-import '../common.js'
+import '../index.js'
 import MyToastr from '../../../components/MyToastr.vue'
 
 new Vue({
