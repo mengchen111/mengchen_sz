@@ -19,6 +19,9 @@ let myTools = {
     if (res.data.error) {
       return toastr.message(res.data.error, 'error')
     }
+    if (res.data.info) {
+      return toastr.message(res.data.info, 'info')
+    }
     return toastr.message(res.data.message)
   },
 }

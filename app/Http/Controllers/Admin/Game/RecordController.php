@@ -55,7 +55,7 @@ class RecordController extends Controller
         $api = config('custom.game_api_records');
         $records = GameApiService::request('POST', $api, [
             'uid' => $searchUid,
-        ]);
+        ]);         //$records为空时分页数据也为空，不会报错
         krsort($records);
 
         foreach ($records as &$record) {
