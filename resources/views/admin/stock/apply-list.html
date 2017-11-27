@@ -35,11 +35,15 @@
 
                         <div class="box-body">
                             <filter-bar placeholder="查找代理商账号..."></filter-bar>
-                            <my-vuetable
-                                    :table-url="tableUrl"
-                                    :table-fields="tableFields"
-                            >
-                            </my-vuetable>
+                            <div class="row phone-scrollable">
+                                <div class="col-md-12">
+                                    <my-vuetable
+                                            :table-url="tableUrl"
+                                            :table-fields="tableFields"
+                                    >
+                                    </my-vuetable>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
