@@ -9,6 +9,8 @@
     }
 }
 
-.modal-dialog {
-    width: 35%;
+@media (min-width: 769px) {
+/*    .modal-dialog {
+        width: 35%;
+    }*/
 }

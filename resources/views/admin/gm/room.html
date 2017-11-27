@@ -37,7 +37,7 @@
                         <div class="tab-content no-padding">
                             <div class="tab-pane" id="closed-room">
                                 <div class="row" style="margin-bottom: 10px;margin-top: 10px;">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-xs-4">
                                         <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
                                                 data-target="#create-room-modal">
                                             创建房间
@@ -52,7 +52,7 @@
 
                                 <div class="box box-primary box-body" v-cloak v-for="data in currentPageData">
                                     <div class="row">
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 col-xs-6">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <p>
@@ -64,7 +64,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-10">
+                                        <div class="col-md-10 col-xs-6">
                                             <div class="row">
                                                 <div class="col-md-3" v-for="player in data.players">
                                                     <div class="info-box">
@@ -103,7 +103,7 @@
 
                                 <div class="box box-primary box-body" v-cloak v-for="data in currentPageData">
                                     <div class="row">
-                                        <div class="col-md-2">
+                                        <div class="col-md-2 col-xs-6">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <p>
@@ -115,7 +115,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-10">
+                                        <div class="col-md-10 col-xs-6">
                                             <div class="row">
                                                 <div class="col-md-3" v-for="player in data.players">
                                                     <div class="info-box">
@@ -146,7 +146,7 @@
 
             <!--创建房间模态框-->
             <div id="create-room-modal" class="modal fade" tabindex="-1">
-                <div class="modal-dialog" style="width: 45%;">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button class="close" type="button" data-dismiss="modal">x</button>
@@ -169,13 +169,13 @@
                                                 <div class="col-md-2 text-center">局数</div>
                                                 <div class="col-md-10">
                                                     <div class="row">
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-3 col-xs-3">
                                                             <radio value="4" checked v-model="createRoomFormData['rounds']">&nbsp;&nbsp; 4局</radio>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-3 col-xs-3">
                                                             <radio value="8" v-model="createRoomFormData['rounds']">&nbsp;&nbsp; 8局</radio>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-3 col-xs-3">
                                                             <radio value="16" v-model="createRoomFormData['rounds']">&nbsp;&nbsp; 16局</radio>
                                                         </div>
                                                     </div>
@@ -185,7 +185,7 @@
                                                 <div class="col-md-2 text-center">玩法</div>
                                                 <div class="col-md-10">
                                                     <div class="row" v-for="(options, room) of roomType[room]['wanfa']">
-                                                        <div class="col-md-3" v-for="option of options">
+                                                        <div class="col-md-3 col-xs-6" v-for="option of options">
                                                             <checkbox :value="option" v-model="createRoomFormData.wanfa">{{ option }}</checkbox>
                                                         </div>
                                                     </div>
@@ -195,7 +195,7 @@
                                                 <div class="col-md-2 text-center">花牌</div>
                                                 <div class="col-md-10">
                                                     <div class="row">
-                                                        <div class="col-md-3" v-for="(huaPaiOption, key) of roomType[room]['gui_pai']['花牌类型']">
+                                                        <div class="col-md-3 col-xs-6" v-for="(huaPaiOption, key) of roomType[room]['gui_pai']['花牌类型']">
                                                             <radio :value="key" v-if="key == 0" v-model="guiPaiData['花牌类型']" checked>&nbsp;&nbsp; {{ huaPaiOption }}</radio>
                                                             <radio :value="key" v-else v-model="guiPaiData['花牌类型']">&nbsp;&nbsp; {{ huaPaiOption }}</radio>
                                                         </div>
@@ -206,22 +206,22 @@
                                                 <div class="col-md-2 text-center">马牌</div>
                                                 <div class="col-md-10">
                                                     <div class="row">
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-2 col-xs-4">
                                                             <radio value="0" checked v-model="createRoomFormData.ma_pai">无马</radio>
                                                         </div>
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-2 col-xs-4">
                                                             <radio value="2" v-model="createRoomFormData.ma_pai">2马</radio>
                                                         </div>
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-2 col-xs-4">
                                                             <radio value="4" v-model="createRoomFormData.ma_pai">4马</radio>
                                                         </div>
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-2 col-xs-4">
                                                             <radio value="6" v-model="createRoomFormData.ma_pai">6马</radio>
                                                         </div>
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-2 col-xs-4">
                                                             <radio value="8" v-model="createRoomFormData.ma_pai">8马</radio>
                                                         </div>
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-2 col-xs-4">
                                                             <radio value="10" v-model="createRoomFormData.ma_pai">10马</radio>
                                                         </div>
                                                     </div>
