@@ -1,4 +1,4 @@
-import '../index.js'
+import { myTools } from '../index.js'
 import MyToastr from '../../../components/MyToastr.vue'
 import MyPagination from '../../../components/MyPagination.vue'
 import {Checkbox, Radio} from 'vue-checkbox-radio'
@@ -13,6 +13,8 @@ new Vue({
   },
   data: {
     eventHub: new Vue(),
+    httpClient: myTools.axiosInstance,
+    msgResolver: myTools.msgResolver,
     rooms: {},      //可创建的房间
     roomType: {},   //每种房间对应的可用选项
     currentPageData: null,  //当前页面的数据
@@ -58,8 +60,9 @@ new Vue({
     },
 
     createRoom (room) {
-      this.createRoomFormData.room = room
+      let _self = this
       let toastr = this.$refs.toastr
+      this.createRoomFormData.room = room
 
       //鬼牌的选项的值传递到表单数据上
       for (let [type, value] of _.entries(this.guiPaiData)) {
@@ -68,22 +71,9 @@ new Vue({
         }
       }
 
-      axios({
-        method: 'POST',
-        url: this.roomCreateApi,
-        data: this.createRoomFormData,
-        validateStatus: function (status) {
-          return status === 200 || status === 422
-        },
-      })
-        .then(function (response) {
-          if (response.status === 422) {
-            toastr.message(JSON.stringify(response.data), 'error')
-          } else {
-            response.data.error
-              ? toastr.message(response.data.error, 'error')
-              : toastr.message(response.data.message)
-          }
+      this.httpClient.post(this.roomCreateApi, this.createRoomFormData)
+        .then(function (res) {
+          _self.msgResolver(res, toastr)
         })
         .catch(function (err) {
           alert(err)
@@ -103,7 +93,7 @@ new Vue({
     let _self = this
     let toastr = this.$refs.toastr
 
-    axios.get(this.roomTypeApi)
+    this.httpClient.get(this.roomTypeApi)
       .then(function (res) {
         _self.rooms = res.data.rooms
         _self.roomType = res.data.room_type
