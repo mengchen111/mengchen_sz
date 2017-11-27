@@ -1,4 +1,4 @@
-import '../index.js'
+import { myTools } from '../index.js'
 import MyDatePicker from '../../../components/MyDatePicker.vue'
 import MyToastr from '../../../components/MyToastr.vue'
 
@@ -9,6 +9,8 @@ new Vue({
     MyToastr,
   },
   data: {
+    httpClient: myTools.axiosInstance,
+    msgResolver: myTools.msgResolver,
     dateFormat: 'YYYY-MM-DD',
     formData: {
       date: moment().format('YYYY-MM-DD'),
@@ -27,13 +29,11 @@ new Vue({
       let _self = this
       let toastr = this.$refs.toastr
 
-      axios.get(this.summaryDataApi, {
+      this.httpClient.get(this.summaryDataApi, {
         params: this.formData,
       })
         .then(function (res) {
-          if (res.data.error) {
-            toastr.message(res.data.error, 'error')
-          }
+          _self.msgResolver(res, toastr)
           _self.summaryData = res.data
         })
     },
@@ -43,7 +43,7 @@ new Vue({
     let _self = this
 
     //获取实时数据
-    axios.get(this.realTimeDataApi)
+    this.httpClient.get(this.realTimeDataApi)
       .then(function (res) {
         _self.realTimeData = res.data
       })
@@ -54,11 +54,9 @@ new Vue({
     let toastr = this.$refs.toastr
 
     //获取总览数据
-    axios.get(this.summaryDataApi)
+    this.httpClient.get(this.summaryDataApi)
       .then(function (res) {
-        if (res.data.error) {
-          toastr.message(res.data.error, 'error')
-        }
+        _self.msgResolver(res, toastr)
         _self.summaryData = res.data
         _self.loading = false
       })

@@ -22,7 +22,10 @@ let myTools = {
     if (res.data.info) {
       return toastr.message(res.data.info, 'info')
     }
-    return toastr.message(res.data.message)
+    if (res.data.message) {
+      return toastr.message(res.data.message)
+    }
+    return true
   },
 }
 
