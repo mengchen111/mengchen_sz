@@ -4,7 +4,7 @@
             <input type="text" v-model.trim="filterText" class="form-control" @keyup.enter="doFilter"
                    :placeholder="placeholder">
             <span class="input-group-btn">
-                <button class="btn btn-flat" @click="doFilter">
+                <button class="btn btn-flat" @click="doFilter" style="background-color: #b5bbc8">
                     <i class="glyphicon glyphicon-search"></i>
                 </button>
             </span>
