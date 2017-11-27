@@ -16,7 +16,7 @@ new Vue({
     rooms: {},      //可创建的房间
     roomType: {},   //每种房间对应的可用选项
     currentPageData: null,  //当前页面的数据
-    activeRoomType: '惠州庄',
+    activeRoomType: '惠州庄',  //默认的打开的tab
     createRoomFormData: {
       'room': null,
       'rounds': null,
@@ -52,6 +52,11 @@ new Vue({
       this.$root.eventHub.$emit('MyPagination:changePage', 1)
     },
 
+    //玩法默认选中
+    tabClick (room) {
+      this.createRoomFormData.wanfa = this.roomType[room]['wanfa']
+    },
+
     createRoom (room) {
       this.createRoomFormData.room = room
       let toastr = this.$refs.toastr
@@ -85,10 +90,8 @@ new Vue({
         })
     },
 
-    chunkWanfa () {   //玩法选项每行4个，格式化之
-      for (let [room, options] of _.entries(this.roomType)) {
-        this.roomType[room]['wanfa'] = _.chunk(options['wanfa'], 4)
-      }
+    setActiveRoomWanfa () {
+      this.createRoomFormData.wanfa = this.roomType[this.activeRoomType]['wanfa']
     },
   },
 
@@ -104,7 +107,7 @@ new Vue({
       .then(function (res) {
         _self.rooms = res.data.rooms
         _self.roomType = res.data.room_type
-        _self.chunkWanfa()    //格式化玩法选项，方便循环，每行显示4个
+        _self.setActiveRoomWanfa()     //填充默认选中的tab的玩法菜单
       })
       .catch(function (err) {
         toastr.message(err, 'error')
