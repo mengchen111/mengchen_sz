@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CustomException;
+use App\Exceptions\GameApiServiceException;
+use App\Exceptions\GameServerException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -28,6 +30,23 @@ class DevToolsController extends Controller
             return base64_decode($request->code);
         } catch (Exception $e) {
             throw new CustomException('base64 转码错误');
+        }
+    }
+
+    public function showException(Request $request)
+    {
+        switch ($request->exception) {
+            case 'custom':
+                throw new CustomException('custom exception');
+                break;
+            case 'gameApi':
+                throw new GameApiServiceException('game api exception');
+                break;
+            case 'gameServer':
+                throw new GameServerException('game server exception');
+                break;
+            default:
+                throw new CustomException('default custom exception');
         }
     }
 }

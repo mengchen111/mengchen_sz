@@ -23,6 +23,7 @@ Route::prefix('dev')->group(function () {
     Route::get('list-session', 'DevToolsController@listSession');
     Route::get('hashed-pass/{pass}', 'DevToolsController@hashedPass');
     Route::post('base64-decode', 'DevToolsController@base64Decode');
+    Route::get('exception', 'DevToolsController@showException');
 });
 
 //公共接口

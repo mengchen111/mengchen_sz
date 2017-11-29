@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use App\Exceptions\CustomException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -21,6 +21,8 @@ class Handler extends ExceptionHandler
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
         \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
+
+        CustomException::class,
     ];
 
     /**
@@ -33,6 +35,11 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        //发送异常报告到Sentry
+        if (app()->bound('sentry') && $this->shouldReport($exception) && !config('app.debug')) {
+            app('sentry')->captureException($exception);
+        }
+
         parent::report($exception);
     }
 
@@ -57,6 +64,11 @@ class Handler extends ExceptionHandler
                 'result' => false,
                 'error' => $exception->getMessage(),
             ], 200, [], JSON_UNESCAPED_UNICODE);
+        }
+
+        // 显示Sentry反馈页面（.env的DEBUG要配置为false）
+        if ($this->shouldReport($exception) && !$this->isHttpException($exception) && !config('app.debug')) {
+            $exception = new HttpException(500, 'Whoops!');
         }
         return parent::render($request, $exception);
     }
