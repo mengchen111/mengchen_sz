@@ -26,19 +26,21 @@
 
         <!-- Main content -->
         <section class="content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">系统日志</h3>
-                        </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">系统日志</h3>
+                </div>
 
-                        <filter-bar placeholder="搜索用户账号..."></filter-bar>
-                        <my-vuetable
-                                :table-url="tableUrl"
-                                :table-fields="tableFields"
-                                :detail-row-component="detailRowComponent">
-                        </my-vuetable>
+                <div class="box-body">
+                    <filter-bar placeholder="搜索用户账号..."></filter-bar>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12 phone-scrollable">
+                            <my-vuetable
+                                    :table-url="tableUrl"
+                                    :table-fields="tableFields"
+                                    :detail-row-component="detailRowComponent">
+                            </my-vuetable>
+                        </div>
                     </div>
                 </div>
             </div>

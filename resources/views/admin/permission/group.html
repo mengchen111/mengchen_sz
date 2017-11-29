@@ -113,7 +113,7 @@
             </div>
 
             <div id="edit-group-permission-modal" class="modal fade" tabindex="-1">
-                <div class="modal-dialog phone-scrollable" style="width: 40%;">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button class="close" type="button" data-dismiss="modal">x</button>
@@ -122,118 +122,118 @@
                         <div class="modal-body">
                             <form class="form-horizontal" @submit.prevent="editGroupPermission">
                                 <div class="form-group">
-                                    <div class="col-md-3 text-center">首页</div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-3 col-xs-3 text-center">首页</div>
+                                    <div class="col-md-9 col-xs-9">
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox disabled v-model="currentGroupPermission.home.ifShown">&nbsp;显示</checkbox>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-3 text-center">数据报表</div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-3 col-xs-3 text-center">数据报表</div>
+                                    <div class="col-md-9 col-xs-9">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.statement.summary.ifShown">&nbsp;数据总览</checkbox>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-3 text-center">GM功能</div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-3 col-xs-3 text-center">GM功能</div>
+                                    <div class="col-md-9 col-xs-9">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.gm.room.ifShown">&nbsp;房间管理</checkbox>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.gm.record.ifShown">&nbsp;战绩查询</checkbox>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-3 text-center">玩家管理</div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-3 col-xs-3 text-center">玩家管理</div>
+                                    <div class="col-md-9 col-xs-9">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.player.list.ifShown">&nbsp;玩家列表</checkbox>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-3 text-center">库存管理</div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-3 col-xs-3 text-center">库存管理</div>
+                                    <div class="col-md-9 col-xs-9">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.stock['apply-request'].ifShown">&nbsp;申请库存</checkbox>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.stock['apply-list'].ifShown">&nbsp;库存列表</checkbox>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.stock['apply-history'].ifShown">&nbsp;审核记录</checkbox>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-3 text-center">代理商管理</div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-3 col-xs-3 text-center">代理商管理</div>
+                                    <div class="col-md-9 col-xs-9">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.agent.create.ifShown">&nbsp;新建代理商</checkbox>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.agent.list.ifShown">&nbsp;代理商列表</checkbox>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-3 text-center">充值记录</div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-3 col-xs-3 text-center">充值记录</div>
+                                    <div class="col-md-9 col-xs-9">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission['top-up'].admin.ifShown">&nbsp;管理员充值记录</checkbox>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission['top-up'].agent.ifShown">&nbsp;代理商充值记录</checkbox>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission['top-up'].player.ifShown">&nbsp;玩家充值记录</checkbox>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-3 text-center">权限管理</div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-3 col-xs-3 text-center">权限管理</div>
+                                    <div class="col-md-9 col-xs-9">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.permission.member.ifShown">&nbsp;角色列表</checkbox>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.permission.group.ifShown">&nbsp;组列表</checkbox>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-3 text-center">系统管理</div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-3 col-xs-3 text-center">系统管理</div>
+                                    <div class="col-md-9 col-xs-9">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 col-xs-6">
                                                 <checkbox v-model="currentGroupPermission.system.log.ifShown">&nbsp;系统日志</checkbox>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 col-xs-12">
                                         <button class="btn btn-block btn-primary btn-flat" type="submit">提交</button>
                                     </div>
                                 </div>
