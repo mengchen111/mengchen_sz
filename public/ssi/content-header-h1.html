@@ -1,0 +1,18 @@
+<!-- 动态显示面包屑导航左边的标题文字 -->
+<h1 id="content-header-h1"></h1>
+
+<script>
+    var h1 = document.getElementById('content-header-h1')
+    var infoApi = '/api/content-header-h1'
+    var xhr = new XMLHttpRequest()
+
+    xhr.open('GET', infoApi, true)     //异步请求
+    xhr.send()
+    xhr.onreadystatechange = function () {
+      if (this.readyState === 4) {
+        if (this.status === 200) {
+          h1.textContent = this.responseText
+        }
+      }
+    }
+</script>

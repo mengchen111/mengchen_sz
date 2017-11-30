@@ -33,4 +33,8 @@ class InfoController extends Controller
     {
         return User::with(['group', 'parent', 'inventorys.item'])->find(Auth::id());
     }
+    public function getContentHeaderH1(Request $request)
+    {
+        return '';  //面包屑导航左边的标题文字
+    }
 }
