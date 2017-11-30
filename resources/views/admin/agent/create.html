@@ -11,12 +11,11 @@
     <!--#include virtual="/ssi/admin/sidebar.html"-->
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" id="app">
+    <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-                梦晨
-            </h1>
+            <!--#include virtual="/ssi/content-header-h1.html"-->
+
             <ol class="breadcrumb">
                 <li><a href="/admin/home"><i class="fa fa-dashboard"></i>首页</a></li>
                 <li>代理商</li>
@@ -25,7 +24,7 @@
         </section>
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content" id="app">
             <div class="box box-primary col-xs-12">
                 <div class="box-header with-border">
                     <h3 class="box-title">新建代理商</h3>
@@ -71,10 +70,10 @@
                 </form>
             </div>
 
+            <my-toastr ref="toastr"></my-toastr>
         </section>
         <!-- /.content -->
 
-        <my-toastr ref="toastr"></my-toastr>
     </div>
     <!-- /.content-wrapper -->
 
