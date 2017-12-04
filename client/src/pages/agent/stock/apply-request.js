@@ -1,7 +1,11 @@
-import '../index.js'
+import {myTools} from '../index.js'
+import MyToastr from '../../../components/MyToastr.vue'
 
 new Vue({
   el: '#app',
+  components: {
+    MyToastr,
+  },
   data: {
     stockApplyData: {
       type: {
@@ -17,23 +21,17 @@ new Vue({
   methods: {
     stockApply () {
       let _self = this
+      let toastr = this.$refs.toastr
 
-      axios({
-        method: 'POST',
-        url: _self.stockApplyApi,
-        data: _self.stockApplyData,
-        validateStatus: function (status) {
-          return status === 200 || status === 422
-        },
-      })
-        .then(function (response) {
-          if (response.status === 422) {
-            alert(JSON.stringify(response.data))
-          } else {
-            response.data.error ? alert(response.data.error) : alert(response.data.message)
-            _self.stockApplyData.amount = null
-            _self.stockApplyData.remark = null
-          }
+      myTools.axiosInstance.post(this.stockApplyApi, this.stockApplyData)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+
+          _self.stockApplyData.amount = null
+          _self.stockApplyData.remark = null
+        })
+        .catch(function (err) {
+          alert(err)
         })
     },
   },

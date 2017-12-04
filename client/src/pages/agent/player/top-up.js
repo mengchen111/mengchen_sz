@@ -1,7 +1,11 @@
-import '../index.js'
+import {myTools} from '../index.js'
+import MyToastr from '../../../components/MyToastr.vue'
 
 new Vue({
-  el: "#app",
+  el: '#app',
+  components: {
+    MyToastr,
+  },
   data: {
     topUpData: {
       playerId: '',
@@ -17,21 +21,14 @@ new Vue({
   methods: {
     topUpPlayer () {
       let _self = this
+      let toastr = this.$refs.toastr
+      let api = `${this.topUpApiPrefix}/${this.topUpData.playerId}/${this.topUpData.typeId}/${this.topUpData.amount}`
 
-      axios({
-        method: 'POST',
-        url: `${_self.topUpApiPrefix}/${_self.topUpData.playerId}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
-        validateStatus: function (status) {
-          return status === 200 || status === 422
-        },
-      })
-        .then(function (response) {
-          if (response.status === 422) {
-            alert(JSON.stringify(response.data))
-          } else {
-            response.data.error ? alert(response.data.error) : alert(response.data.message)
-            _self.topUpData.amount = null
-          }
+      myTools.axiosInstance.post(api)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+
+          _self.topUpData.amount = null
         })
     },
   },

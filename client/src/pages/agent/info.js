@@ -1,7 +1,11 @@
-import './index.js'
+import { myTools } from './index.js'
+import MyToastr from '../../components/MyToastr.vue'
 
 new Vue({
   el: '#app',
+  components: {
+    MyToastr,
+  },
   data: {
     formData: {},
     currentAgentInfo: {
@@ -15,33 +19,27 @@ new Vue({
   methods: {
     editInfo () {
       let _self = this
+      let toastr = this.$refs.toastr
 
-      axios({
-        method: 'PUT',
-        url: _self.editInfoApi,
-        data: _self.currentAgentInfo,
-        validateStatus: function (status) {
-          return status === 200 || status === 422
-        },
-      })
-        .then(function (response) {
-          if (response.status === 422) {
-            alert(JSON.stringify(response.data))
-          } else {
-            response.data.error ? alert(response.data.error) : alert('信息更新成功')
+      myTools.axiosInstance.put(this.editInfoApi, this.currentAgentInfo)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
 
-            //清空表单数据
-            for (let index of _.keys(_self.formData)) {
-              _self.formData[index] = ''
-            }
+          //清空表单数据
+          for (let index of _.keys(_self.formData)) {
+            _self.formData[index] = ''
           }
+        })
+        .catch(function (err) {
+          alert(err)
         })
     },
   },
 
   created: function () {
     let _self = this
-    axios.get(_self.infoApi)
+
+    myTools.axiosInstance.get(_self.infoApi)
       .then(function (response) {
         _self.currentAgentInfo = response.data
       })
