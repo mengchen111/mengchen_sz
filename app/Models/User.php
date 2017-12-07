@@ -99,4 +99,10 @@ class User extends Authenticatable
     {
         return User::where('parent_id', $this->id)->get()->count();
     }
+
+    //钻石代理和黄金代理不能申请库存(只有管理员(和其分离出来的角色)和总代可以申请库存)
+    public function isNotValidStockApplicant()
+    {
+        return in_array($this->group_id, [3, 4]);
+    }
 }

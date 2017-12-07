@@ -65,7 +65,7 @@ class StockController extends Controller
 
     protected function validateApplicant($applicant)
     {
-        if (2 != $applicant->group->id) {
+        if ($applicant->isNotValidStockApplicant()) {
             throw new CustomException('提交库存申请失败，只有总代能提交申请');
         }
     }
