@@ -17,13 +17,13 @@ new Vue({
         title: '申请时间',
         sortField: 'id',
       },
-      {
-        name: 'applicant.account',
-        title: '申请人',
-      },
+      // {
+      //   name: 'applicant.account',
+      //   title: '申请人',
+      // },
       {
         name: 'item.name',
-        title: '道具类型',
+        title: '类型',
         sortField: 'item_id',
       },
       {
@@ -35,15 +35,15 @@ new Vue({
         name: 'remark',
         title: '备注',
       },
-      {
-        name: 'approver.account',
-        title: '审批人',
-      },
-      {
-        name: 'updated_at',
-        title: '审批时间',
-        sortField: 'updated_at',
-      },
+      // {
+      //   name: 'approver.account',
+      //   title: '审批人',
+      // },
+      // {
+      //   name: 'updated_at',
+      //   title: '审批时间',
+      //   sortField: 'updated_at',
+      // },
       {
         name: 'state',
         title: '审核状态',
