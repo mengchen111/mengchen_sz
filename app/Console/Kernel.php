@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\FetchOnlinePlayerCount;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Psy\Command\Command;
@@ -16,6 +17,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //Commands\DataMigrate::class,
         Commands\GenerateDailyStatement::class,
+        FetchOnlinePlayerCount::class,
     ];
 
     /**
@@ -28,6 +30,11 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('admin:generate-daily-statement')
             ->dailyAt('00:00')
+            ->withoutOverlapping()
+            ->evenInMaintenanceMode()
+            ->appendOutputTo(config('custom.cron_task_log'));
+        $schedule->command('admin:fetch-online-player-count')
+            ->everyTenMinutes()
             ->withoutOverlapping()
             ->evenInMaintenanceMode()
             ->appendOutputTo(config('custom.cron_task_log'));

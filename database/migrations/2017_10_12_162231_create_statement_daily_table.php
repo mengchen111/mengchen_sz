@@ -27,7 +27,7 @@ class CreateStatementDailyTable extends Migration
             $table->string('card_bought_data')->comment('房卡购买数据'); //格式'200|2|100 - 当日玩家购卡总数|当日有过购卡记录的玩家总数|平均购卡
             $table->unsignedInteger('card_consumed_sum')->comment('截止今日耗卡总数');        //截止今日，玩家耗卡的总量
             $table->unsignedInteger('card_bought_sum')->comment('截止今日购卡总数');          //截止今日，给玩家充卡的总量
-            $table->mediumText('players_data')->comment('今日玩家数据');  //保存每日的玩家数据
+            $table->mediumText('players_data')->nullable()->comment('今日玩家数据');  //保存每日的玩家数据
             $table->timestamps();
             $table->index('date');  //创建索引
         });

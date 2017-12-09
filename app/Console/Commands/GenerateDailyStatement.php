@@ -6,10 +6,8 @@ use App\Models\StatementDaily;
 use App\Services\Game\PlayerService;
 use App\Services\Game\StatementDailyService;
 use Carbon\Carbon;
-use function GuzzleHttp\Promise\is_rejected;
-use Illuminate\Console\Command;
 
-class GenerateDailyStatement extends Command
+class GenerateDailyStatement extends BaseCommand
 {
     /**
      * The name and signature of the console command.
@@ -45,7 +43,7 @@ class GenerateDailyStatement extends Command
     {
         if ($this->option('init')) {
             $this->initializeDailyStatement();
-            return $this->info('[' . Carbon::now()->toDateTimeString() . '] 初始化每日数据报表数据完成');
+            return $this->logInfo('初始化每日数据报表数据完成');
         }
 
         //每天凌晨运行，生成昨天的报表数据
@@ -95,20 +93,20 @@ class GenerateDailyStatement extends Command
         $data->card_bought_data = $statementDailyService->getCardBoughtData($date);
         $data->card_consumed_sum = $statementDailyService->getCardConsumedSum($date);
         $data->card_bought_sum = $statementDailyService->getCardBoughtSum($date);
-        $data->players_data = json_encode(PlayerService::getAllPlayers());
+        //$data->players_data = json_encode(PlayerService::getAllPlayers());    //不保存玩家数据，数据量太大
 
         if ($this->ifRecordExist($date)) {
             if ($this->confirm('[' . Carbon::now()->toDateTimeString() . "] ${date}: 此条记录已存在，是否覆盖？")) {
                 StatementDaily::whereDate('date', $date)->first()
                     ->update(get_object_vars($data));
-                return $this->info('[' . Carbon::now()->toDateTimeString() . "] ${date}: 数据报表覆盖完成");
+                return $this->logInfo("] ${date}: 数据报表覆盖完成");
             }
-            $this->info('[' . Carbon::now()->toDateTimeString() . "] ${date}: 记录未覆盖。");
+            $this->logInfo("] ${date}: 记录未覆盖。");
             return false;
         }
 
         StatementDaily::create(get_object_vars($data));
-        return $this->info('[' . Carbon::now()->toDateTimeString() . "] ${date}: 数据报表生成完成");
+        return $this->logInfo("${date}: 数据报表生成完成");
     }
 
     protected function ifRecordExist($date)
