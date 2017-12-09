@@ -98,6 +98,7 @@ Route::group([
     Route::get('player/list', 'ViewController@playerList');
 
     Route::get('statement/summary', 'ViewController@statementSummary');
+    Route::get('statement/online-players', 'ViewController@statementOnlinePlayers');
 
     Route::get('gm/record', 'ViewController@gmRecord');
     Route::get('gm/room', 'ViewController@gmRoom');

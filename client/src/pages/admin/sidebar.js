@@ -14,6 +14,9 @@ new Vue({
         summary: {
           isActive: false,
         },
+        'online-players': {
+          isActive: false,
+        },
       },
       gm: {
         isActive: false,

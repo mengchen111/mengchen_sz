@@ -7,6 +7,9 @@ export default {
     summary: {
       ifShown: false,
     },
+    'online-players': {
+      ifShown: false,
+    },
   },
   gm: {
     ifShown: false,

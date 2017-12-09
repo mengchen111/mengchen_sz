@@ -13,6 +13,9 @@ trait AuthorizationMap
             'summary' => [
                 'ifShown' => true,
             ],
+            'online-players' => [
+                'ifShown' => true,
+            ],
         ],
         'gm' => [
             'ifShown' => true,
