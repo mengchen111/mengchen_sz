@@ -35,6 +35,12 @@ class StatementDailyService
         return PlayerService::getOnlinePlayersAmount();
     }
 
+    //平均在线人数
+    public function getAverageOnlinePlayersCount($date)
+    {
+        return PlayerService::getAverageOnlinePlayersCount($date);
+    }
+
     //日高峰在线
     public function getPeakOnlinePlayersAmount($date)
     {

@@ -20,6 +20,7 @@ use App\Models\OperationLogs;
 class StatementSummaryController
 {
     protected $data = [
+        'average_online_players' => 0,      //日均在线
         'peak_online_players' => 0,         //日高峰
         'active_players' => 0,              //当日活跃用户
         'incremental_players' => 0,         //新增玩家数
@@ -52,6 +53,7 @@ class StatementSummaryController
         if (Carbon::parse($date)->isToday()) {
             $statementDailyService = new StatementDailyService();
 
+            $this->data['average_online_players'] = $statementDailyService->getAverageOnlinePlayersCount($date);
             $this->data['peak_online_players'] = $statementDailyService->getPeakOnlinePlayersAmount($date);
             $this->data['active_players'] = $statementDailyService->getActivePlayersAmount($date);
             $this->data['incremental_players'] = $statementDailyService->getIncrementalPlayersAmount($date);

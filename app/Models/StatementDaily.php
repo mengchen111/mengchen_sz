@@ -11,10 +11,8 @@ class StatementDaily extends Model
     protected $primaryKey = 'id';
     //protected $dateFormat = 'Y-m-d';
 
-    protected $fillable = [
-        'date', 'peak_online_players', 'active_players', 'incremental_players', 'one_day_remained',
-        'one_week_remained', 'two_weeks_remained', 'one_month_remained', 'card_consumed_data',
-        'card_bought_data', 'card_consumed_sum', 'card_bought_sum', 'players_data'
+    protected $guarded = [
+        //
     ];
 
     public function getDateAttribute($value)

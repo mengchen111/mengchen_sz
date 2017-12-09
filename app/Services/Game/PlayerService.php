@@ -8,6 +8,7 @@
 
 namespace App\Services\Game;
 
+use App\Models\StatisticOnlinePlayer;
 use App\Services\Game\GameApiService;
 use BadMethodCallException;
 use Carbon\Carbon;
@@ -42,6 +43,17 @@ class PlayerService
         return GameApiService::request('GET', self::playersOnlinePeakApi(), [
             'date' => $date,
         ]);
+    }
+
+    //获取平均在线人数
+    public static function getAverageOnlinePlayersCount($date)
+    {
+        $date = Carbon::parse($date)->toDateString();
+        $players = StatisticOnlinePlayer::whereDate('created_at', $date)->get();
+        if ($players->isEmpty()) {
+            return 0;
+        }
+        return ceil($players->avg('online_count'));
     }
 
     //老接口传回来的昵称是base64编码的

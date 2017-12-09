@@ -16,6 +16,7 @@ class CreateStatementDailyTable extends Migration
         Schema::create('statement_daily', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamp('date')->useCurrent();
+            $table->unsignedInteger('average_online_players')->comment('平均在线玩家数');
             $table->unsignedInteger('peak_online_players')->comment('最高同时在线玩家数');
             $table->unsignedInteger('active_players')->comment('活跃玩家数(当日有过登录)');
             $table->unsignedInteger('incremental_players')->comment('新增玩家数');
