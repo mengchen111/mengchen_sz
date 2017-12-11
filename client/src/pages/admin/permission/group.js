@@ -119,7 +119,7 @@ new Vue({
 
       axios.get(this.groupPermissionApiPrefix + '/' + this.activatedRow.id)
         .then(function (res) {
-          _self.currentGroupPermission = _.assign({}, _.cloneDeep(shownMenu), res.data.view_access)
+          _self.currentGroupPermission = _.merge({}, _.cloneDeep(shownMenu), res.data.view_access)
         })
     },
   },
