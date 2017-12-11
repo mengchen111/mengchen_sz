@@ -32,6 +32,7 @@ return [
     'game_api_players_online_amount' => 'players/online/amount', //获取实时在线玩家数量
     'game_api_players_online_peak' => 'players/online/peak',     //获取指定日期的当日玩家最高在线数量
     'game_api_players_in-game' => 'players/in-game',    //获取实时游戏中的玩家数量
+    'game_api_players_in-game_peak' => 'players/in-game/peak',    //获取指定日期的在游戏中的玩家最高数量
     'game_api_top-up' => 'top-up',                  //玩家充值
     'game_api_room_create' => 'room',               //创建游戏房间
     'game_api_room_open' => 'room/open',            //查看正在玩的房间

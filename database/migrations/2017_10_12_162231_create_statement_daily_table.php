@@ -18,6 +18,7 @@ class CreateStatementDailyTable extends Migration
             $table->timestamp('date')->useCurrent();
             $table->unsignedInteger('average_online_players')->comment('平均在线玩家数');
             $table->unsignedInteger('peak_online_players')->comment('最高同时在线玩家数');
+            $table->unsignedInteger('peak_in_game_players')->comment('最高游戏中玩家数');
             $table->unsignedInteger('active_players')->comment('活跃玩家数(当日有过登录)');
             $table->unsignedInteger('incremental_players')->comment('新增玩家数');
             $table->string('one_day_remained')->comment('次日留存');    //格式'2|4|50.00 - 留存玩家数|创建日玩家数|百分比(保留两位小数)

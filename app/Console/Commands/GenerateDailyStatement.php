@@ -84,6 +84,7 @@ class GenerateDailyStatement extends BaseCommand
         $data->date = $date;
         $data->average_online_players = $statementDailyService->getAverageOnlinePlayersCount($date);
         $data->peak_online_players = $statementDailyService->getPeakOnlinePlayersAmount($date);
+        $data->peak_in_game_players = $statementDailyService->getPeakInGamePlayersAmount($date);
         $data->active_players = $statementDailyService->getActivePlayersAmount($date);
         $data->incremental_players = $statementDailyService->getIncrementalPlayersAmount($date);
         $data->one_day_remained = $statementDailyService->getRemainedData($date, 1);

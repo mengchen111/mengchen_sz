@@ -22,6 +22,7 @@ class StatementSummaryController
     protected $data = [
         'average_online_players' => 0,      //日均在线
         'peak_online_players' => 0,         //日高峰
+        'peak_in_game_players' => 0,        //当日最高处于游戏中的玩家数量
         'active_players' => 0,              //当日活跃用户
         'incremental_players' => 0,         //新增玩家数
         'one_day_remained' => '0|0|0.00',   //次日留存, 留存玩家数|创建日新增玩家数|百分比(保留两位小数)
@@ -55,6 +56,7 @@ class StatementSummaryController
 
             $this->data['average_online_players'] = $statementDailyService->getAverageOnlinePlayersCount($date);
             $this->data['peak_online_players'] = $statementDailyService->getPeakOnlinePlayersAmount($date);
+            $this->data['peak_in_game_players'] = $statementDailyService->getPeakInGamePlayersAmount($date);
             $this->data['active_players'] = $statementDailyService->getActivePlayersAmount($date);
             $this->data['incremental_players'] = $statementDailyService->getIncrementalPlayersAmount($date);
             $this->data['one_day_remained'] = $statementDailyService->getRemainedData($date, 1);
