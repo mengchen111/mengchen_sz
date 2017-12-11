@@ -109,6 +109,7 @@ cd $codeDir
 | game/player | GET | 玩家列表 |
 | statement/summary | GET | 获取数据报表总览 |
 | statement/real-time | GET | 获取实时报表数据 |
+| statement/online-players | GET | 获取在线玩家图表数据 |
 | gm/records | GET | 根据玩家id战绩其查询 |
 | gm/record-info/{recId} | GET | 根据战绩id查询战绩详情 |
 | gm/room | GET | 获取可创建的房间类型 |
