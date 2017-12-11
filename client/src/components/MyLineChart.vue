@@ -1,7 +1,7 @@
 <template>
     <chart ref="echart"
            :options="options"
-           :auto-resize="true">
+           auto-resize>
     </chart>
 </template>
 

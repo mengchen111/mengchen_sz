@@ -33,9 +33,24 @@
                         </div>
 
                         <div class="box-body">
-                            <my-chart
-                                    :chart-options="chartOptions">
-                            </my-chart>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">选择日期</span>
+                                        <my-date-picker
+                                                :date-format="dateFormat"
+                                                v-model="date"
+                                        ></my-date-picker>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <my-chart
+                                            :chart-options="chartOptions">
+                                    </my-chart>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

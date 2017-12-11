@@ -16,10 +16,12 @@ class OnlinePlayerController extends Controller
             'date' => 'required|date_format:"Y-m-d"'
         ]);
 
-        return StatisticOnlinePlayer::whereDate('created_at', $request->input('date'))
+        $data = StatisticOnlinePlayer::whereDate('created_at', $request->input('date'))
             ->get()
             ->keyBy(function ($item) {
                 return Carbon::parse($item->created_at)->format('H:i');
             });
+        
+        return $data;
     }
 }
