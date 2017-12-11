@@ -40,8 +40,10 @@ class FetchOnlinePlayerCount extends BaseCommand
     public function handle()
     {
         $onlinePlayerCount = PlayerService::getOnlinePlayersAmount();
+        $inGamePlayerCount = PlayerService::getInGamePlayersCount();
         StatisticOnlinePlayer::create([
             'online_count' => $onlinePlayerCount,
+            'playing_count' => $inGamePlayerCount,
         ]);
         return $this->LogInfo('在线玩家数量入库成功');
     }

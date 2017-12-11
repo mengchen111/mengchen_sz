@@ -45,6 +45,11 @@ class PlayerService
         ]);
     }
 
+    public static function getInGamePlayersCount()
+    {
+        return GameApiService::request('GET', self::playersInGameApi());
+    }
+
     //获取平均在线人数
     public static function getAverageOnlinePlayersCount($date)
     {
@@ -84,6 +89,9 @@ class PlayerService
                 break;
             case 'playersOnlinePeakApi':
                 return config('custom.game_api_players_online_peak');
+                break;
+            case 'playersInGameApi':
+                return config('custom.game_api_players_in-game');
                 break;
             default:
                 throw new BadMethodCallException('Call to undefined method ' . self::class . "::${name}()");
