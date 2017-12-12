@@ -89,6 +89,7 @@ class StatementSummaryController
         $statementDailyService = new StatementDailyService();
         $this->realTimeData['total_players_amount'] = $statementDailyService->getTotalPlayersAmount();
         $this->realTimeData['online_players_amount'] = $statementDailyService->getOnlinePlayersAmount();
+        $this->realTimeData['in_game_players_amount'] = $statementDailyService->getInGamePlayersAmount();
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '查看实时报表数据', $request->header('User-Agent'), json_encode($request->all()));

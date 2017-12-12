@@ -73,7 +73,7 @@
                     </form>
 
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-4">
                             <div class="info-box">
                                 <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
                                 <div class="info-box-content">
@@ -84,13 +84,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-4">
                             <div class="info-box">
                                 <span class="info-box-icon bg-aqua"><i class="fa fa-line-chart"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">在线人数</span>
                                     <span class="info-box-number" v-cloak v-if="!loading">
                                         {{ realTimeData.online_players_amount ? realTimeData.online_players_amount : 0 }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-aqua"><i class="fa fa-gamepad"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">游戏中</span>
+                                    <span class="info-box-number" v-cloak v-if="!loading">
+                                        {{ realTimeData.in_game_players_amount ? realTimeData.in_game_players_amount : 0 }}
                                     </span>
                                 </div>
                             </div>

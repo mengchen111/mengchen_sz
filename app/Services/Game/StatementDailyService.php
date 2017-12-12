@@ -47,6 +47,12 @@ class StatementDailyService
         return PlayerService::getOnlinePlayersPeak($date);
     }
 
+    //实时处于游戏中的玩家数
+    public function getInGamePlayersAmount()
+    {
+        return PlayerService::getInGamePlayersCount();
+    }
+
     //当日处于游戏中的玩家数的峰值
     public function getPeakInGamePlayersAmount($date)
     {
