@@ -32,92 +32,98 @@
                 <!-- /.box-header -->
                 <div class="box-body" >
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12 col-xs-12">
                             <div class="box box-primary">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">信息概要</h3>
                                 </div>
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <b>账号：</b>
-                                        <a class="pull-right">{{ currentAgentInfo.account }}</a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b>代理级别：</b>
-                                        <a class="pull-right">{{ currentAgentInfo.group.name }}</a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b>上级代理：</b>
-                                        <a class="pull-right">{{ currentAgentInfo.parent.account }}</a>
-                                    </li>
-                                    <li class="list-group-item" v-for="(item, index) in currentAgentInfo.inventorys">
-                                        <b>{{ item.item.name }}库存：</b>
-                                        <a class="pull-right">{{ item.stock }}</a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b>创建时间：</b>
-                                        <a class="pull-right">{{ currentAgentInfo.created_at }}</a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b>上次登录：</b>
-                                        <a class="pull-right">{{ currentAgentInfo.updated_at }}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-6" style="margin-left: 40px;">
-                            <div class="box box-primary">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">更新信息</h3>
-                                </div>
+
                                 <div class="box-body">
-                                    <form class="form-horizontal" method="POST" action="#" @submit.prevent="editInfo">
-                                        <div class="form-group has-feedback">
-                                            <label class="col-sm-2 control-label">账号</label>
-                                            <div class="col-sm-10">
-                                                <input name="account" type="text" class="form-control"
-                                                       :placeholder="currentAgentInfo.account" disabled>
-                                                <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group has-feedback">
-                                            <label class="col-sm-2 control-label">昵称</label>
-                                            <div class="col-sm-10">
-                                                <input name="name" type="text" class="form-control" required
-                                                       v-model.trim="currentAgentInfo.name" placeholder="昵称">
-                                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                                            </div>
-                                        </div>
-                                        <!--<div class="form-group has-feedback">
-                                            <label class="col-sm-2 control-label">邮箱</label>
-                                            <div class="col-sm-10">
-                                                <input name="email" type="email" class="form-control" v-validate="'email'"
-                                                       v-model.trim="currentAgentInfo.email" placeholder="邮箱">
-                                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                                                <span v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group has-feedback">
-                                            <label class="col-sm-2 control-label">电话</label>
-                                            <div class="col-sm-10">
-                                                <input name="phone" type="text" class="form-control" v-validate="'digits:11'"
-                                                       v-model.trim="currentAgentInfo.phone" placeholder="电话">
-                                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                                                <span v-show="errors.has('phone')" class="text-danger">{{ errors.first('phone') }}</span>
-                                            </div>
-                                        </div>-->
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">提交</label>
-                                            <div class="col-sm-10">
-                                                <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <b>账号：</b>
+                                            <a class="pull-right">{{ currentAgentInfo.account }}</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>代理级别：</b>
+                                            <a class="pull-right">{{ currentAgentInfo.group.name }}</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>上级代理：</b>
+                                            <a class="pull-right">{{ currentAgentInfo.parent.account }}</a>
+                                        </li>
+                                        <li class="list-group-item" v-for="(item, index) in currentAgentInfo.inventorys">
+                                            <b>{{ item.item.name }}库存：</b>
+                                            <a class="pull-right">{{ item.stock }}</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>创建时间：</b>
+                                            <a class="pull-right">{{ currentAgentInfo.created_at }}</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>上次登录：</b>
+                                            <a class="pull-right">{{ currentAgentInfo.updated_at }}</a>
+                                        </li>
+                                    </ul>
 
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!--<div class="row">-->
+                            <!--<div class="col-md-12">-->
+                                <!--<div class="box box-primary">-->
+                                    <!--<div class="box-header with-border">-->
+                                        <!--<h3 class="box-title">更新信息</h3>-->
+                                    <!--</div>-->
+                                    <!--<div class="box-body">-->
+                                        <!--<form class="form-horizontal" method="POST" action="#" @submit.prevent="editInfo">-->
+                                            <!--<div class="form-group has-feedback">-->
+                                                <!--<label class="col-sm-2 control-label">账号</label>-->
+                                                <!--<div class="col-sm-10">-->
+                                                    <!--<input name="account" type="text" class="form-control"-->
+                                                           <!--:placeholder="currentAgentInfo.account" disabled>-->
+                                                    <!--<span class="glyphicon glyphicon-info-sign form-control-feedback"></span>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="form-group has-feedback">-->
+                                                <!--<label class="col-sm-2 control-label">昵称</label>-->
+                                                <!--<div class="col-sm-10">-->
+                                                    <!--<input name="name" type="text" class="form-control" required-->
+                                                           <!--v-model.trim="currentAgentInfo.name" placeholder="昵称">-->
+                                                    <!--<span class="glyphicon glyphicon-user form-control-feedback"></span>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--&lt;!&ndash;<div class="form-group has-feedback">-->
+                                                <!--<label class="col-sm-2 control-label">邮箱</label>-->
+                                                <!--<div class="col-sm-10">-->
+                                                    <!--<input name="email" type="email" class="form-control" v-validate="'email'"-->
+                                                           <!--v-model.trim="currentAgentInfo.email" placeholder="邮箱">-->
+                                                    <!--<span class="glyphicon glyphicon-user form-control-feedback"></span>-->
+                                                    <!--<span v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</span>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="form-group has-feedback">-->
+                                                <!--<label class="col-sm-2 control-label">电话</label>-->
+                                                <!--<div class="col-sm-10">-->
+                                                    <!--<input name="phone" type="text" class="form-control" v-validate="'digits:11'"-->
+                                                           <!--v-model.trim="currentAgentInfo.phone" placeholder="电话">-->
+                                                    <!--<span class="glyphicon glyphicon-user form-control-feedback"></span>-->
+                                                    <!--<span v-show="errors.has('phone')" class="text-danger">{{ errors.first('phone') }}</span>-->
+                                                <!--</div>-->
+                                            <!--</div>&ndash;&gt;-->
+                                            <!--<div class="form-group">-->
+                                                <!--<label class="col-sm-2 control-label">提交</label>-->
+                                                <!--<div class="col-sm-10">-->
+                                                    <!--<button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</form>-->
+
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
                 </div>
                 <!-- /.box-body -->
             </div>
