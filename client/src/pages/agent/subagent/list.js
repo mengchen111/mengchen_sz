@@ -42,39 +42,39 @@ new Vue({
 
     tableUrl: '/agent/api/subagent',
     tableFields: [
-      {
-        name: 'id',
-        title: 'ID',
-        sortField: 'id',
-      },
-      {
-        name: 'name',
-        title: '昵称',
-      },
+      // {
+      //   name: 'id',
+      //   title: 'ID',
+      //   sortField: 'id',
+      // },
+      // {
+      //   name: 'name',
+      //   title: '昵称',
+      // },
       {
         name: 'account',
-        title: '登录账号',
+        title: '账号',
         sortField: 'account',
       },
       {
         name: 'group.name',
-        title: '代理级别',
+        title: '级别',
         sortField: 'group_id',
       },
-      {
-        name: 'parent.account',
-        title: '上级代理',
-      },
+      // {
+      //   name: 'parent.account',
+      //   title: '上级',
+      // },
       {
         name: 'inventorys',
-        title: '房卡数量',
+        title: '房卡',
         callback: 'getCardsCount',
       },
-      {
-        name: 'inventorys',
-        title: '金币数量',
-        callback: 'getCoinsCount',
-      },
+      // {
+      //   name: 'inventorys',
+      //   title: '金币',
+      //   callback: 'getCoinsCount',
+      // },
       {
         name: '__component:table-actions',
         title: '操作',
