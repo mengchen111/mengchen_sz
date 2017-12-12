@@ -41,10 +41,10 @@ new Vue({
         name: 'ycoins',
         title: '房卡数量',
       },
-      {
-        name: 'ypoints',
-        title: '金币数量',
-      },
+      // {
+      //   name: 'ypoints',
+      //   title: '金币数量',
+      // },
       {
         name: 'state',
         title: '账号状态',

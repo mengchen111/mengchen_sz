@@ -1,46 +1,53 @@
-import '../index.js'
+import {myTools} from '../index.js'
 import MyToastr from '../../../components/MyToastr.vue'
+import vSelect from 'vue-select'
 
 new Vue({
   el: '#app',
   components: {
     MyToastr,
+    vSelect,
   },
   data: {
     stockApplyApi: '/admin/api/stock',
+    itemType: {
+      1: '房卡',
+      //2: '金币',
+    },
+    typeValue: '房卡',
     stockApplyData: {
-      type: {
-        1: '房卡',
-        2: '金币',
-      },
       item_id: 1,
       amount: null,
       remark: null,
     },
   },
+
+  computed: {
+    options: function () {
+      return _.values(this.itemType)
+    },
+  },
+
+  watch: {
+    typeValue: function (value) {
+      this.stockApplyData.item_id = _.findKey(this.itemType, (o) => o === value)
+    },
+  },
+
   methods: {
     stockApply () {
       let _self = this
       let toastr = this.$refs.toastr
 
-      axios({
-        method: 'POST',
-        url: _self.stockApplyApi,
-        data: _self.stockApplyData,
-        validateStatus: function (status) {
-          return status == 200 || status == 422
-        },
-      })
-        .then(function (response) {
-          if (response.status === 422) {
-            toastr.message(JSON.stringify(response.data), 'error')
-          } else {
-            response.data.error
-              ? toastr.message(response.data.error, 'error')
-              : toastr.message(response.data.message)
-            _self.stockApplyData.amount = null
-            _self.stockApplyData.remark = null
-          }
+      myTools.axiosInstance.post(this.stockApplyApi, this.stockApplyData)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+
+          _self.stockApplyData.amount = null
+          _self.stockApplyData.remark = null
+        })
+        .catch(function (err) {
+          alert(err)
         })
     },
   },

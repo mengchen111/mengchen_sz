@@ -1,9 +1,10 @@
-import '../index.js'
+import {myTools} from '../index.js'
 import FilterBar from '../../../components/MyFilterBar.vue'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import MyToastr from '../../../components/MyToastr.vue'
 import TableActions from './components/TableActions.vue'
 import DetailRow from './components/DetailRow.vue'
+import vSelect from 'vue-select'
 
 Vue.component('table-actions', TableActions)
 Vue.component('detail-row', DetailRow)
@@ -14,6 +15,7 @@ new Vue({
     FilterBar,
     MyVuetable,
     MyToastr,
+    vSelect,
   },
   data: {
     eventHub: new Vue(),
@@ -27,11 +29,12 @@ new Vue({
       3: '钻石代理',
       4: '金牌代理',
     },
+    itemType: {
+      1: '房卡',
+      //2: '金币',
+    },
+    itemTypeValue: '房卡',
     topUpData: {
-      type: {
-        1: '房卡',
-        2: '金币',
-      },
       typeId: 1,
       amount: null,
     },
@@ -71,14 +74,14 @@ new Vue({
       },
       {
         name: 'inventorys',
-        title: '房卡数量',
+        title: '房卡库存',
         callback: 'getCardsCount',
       },
-      {
-        name: 'inventorys',
-        title: '金币数量',
-        callback: 'getCoinsCount',
-      },
+      // {
+      //   name: 'inventorys',
+      //   title: '金币库存',
+      //   callback: 'getCoinsCount',
+      // },
       {
         name: '__component:table-actions',
         title: '操作',
@@ -110,87 +113,79 @@ new Vue({
     },
   },
 
+  computed: {
+    itemTypeOptions: function () {
+      return _.values(this.itemType)
+    },
+  },
+
+  watch: {
+    itemTypeValue: function (value) {
+      this.topUpData.typeId = _.findKey(this.itemType, (o) => o === value)
+    },
+  },
+
   methods: {
     topUpAgent () {
       let _self = this
       let toastr = this.$refs.toastr
+      let api = `${this.topUpApiPrefix}/${this.activatedRow.account}/${this.topUpData.typeId}/${this.topUpData.amount}`
 
-      axios({
-        method: 'POST',
-        url: `${_self.topUpApiPrefix}/${_self.activatedRow.account}/${_self.topUpData.typeId}/${_self.topUpData.amount}`,
-        validateStatus: function (status) {
-          return status === 200 || status === 422 //定义哪些http状态返回码会被promise resolve
-        },
-      })
-        .then(function (response) {
-          if (response.status === 422) {
-            toastr.message(JSON.stringify(response.data), 'error')
-          } else {
-            response.data.error
-              ? toastr.message(response.data.error, 'error')
-              : toastr.message(response.data.message)
-            _self.topUpData.amount = null
-            _self.topUpConfirmation = false
-            _self.$root.eventHub.$emit('MyVuetable:refresh')  //重新刷新表格
-          }
+      myTools.axiosInstance.post(api)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+
+          _self.topUpData.amount = null
+          _self.topUpConfirmation = false
+          _self.$root.eventHub.$emit('MyVuetable:refresh')  //重新刷新表格
+        })
+        .catch(function (err) {
+          alert(err)
         })
     },
 
     editAgentInfo () {
       let _self = this
       let toastr = this.$refs.toastr
+      let api = `${_self.editApiPrefix}/${_self.activatedRow.id}`
 
-      axios({
-        method: 'PUT',
-        url: `${_self.editApiPrefix}/${_self.activatedRow.id}`,
-        data: _self.activatedRow,
-        validateStatus: function (status) {
-          return status === 200 || status === 422
-        },
-      })
-        .then(function (response) {
-          if (response.status === 422) {
-            return toastr.message(JSON.stringify(response.data), 'error')
-          }
-          return toastr.message(response.data.message)
+      myTools.axiosInstance.put(api, this.activatedRow)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+        })
+        .catch(function (err) {
+          alert(err)
         })
     },
 
     updateAgentPassword () {
       let _self = this
       let toastr = this.$refs.toastr
+      let api = `${_self.updatePassApiPrefix}/${_self.activatedRow.id}`
 
-      axios({
-        method: 'PUT',
-        url: `${_self.updatePassApiPrefix}/${_self.activatedRow.id}`,
-        data: _self.changePassword,
-        validateStatus: function (status) {
-          return status === 200 || status === 422
-        },
-      })
-        .then(function (response) {
-          if (response.status === 422) {
-            return toastr.message(JSON.stringify(response.data), 'error')
-          }
-          return toastr.message(response.data.message)
+      myTools.axiosInstance.put(api, this.changePassword)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+        })
+        .catch(function (err) {
+          alert(err)
         })
     },
 
     deleteAgent () {
       let _self = this
       let toastr = this.$refs.toastr
+      let api = `${_self.deleteApiPrefix}/${_self.activatedRow.id}`
 
-      axios({
-        method: 'DELETE',
-        url: `${_self.deleteApiPrefix}/${_self.activatedRow.id}`,
-      })
-        .then(function (response) {
-          response.data.error
-            ? toastr.message(response.data.error, 'error')
-            : toastr.message(response.data.message)
+      myTools.axiosInstance.delete(api)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
 
           //删除完成用户之后重新刷新表格数据，避免被删除用户继续留存在表格中
           _self.$root.eventHub.$emit('MyVuetable:refresh')
+        })
+        .catch(function (err) {
+          alert(err)
         })
     },
   },
