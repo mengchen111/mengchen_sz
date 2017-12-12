@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Admin\Game;
 
 use App\Exceptions\CustomException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminRequest;
 use App\Models\StatementDaily;
 use App\Services\Game\StatementDailyService;
@@ -17,7 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\OperationLogs;
 
-class StatementSummaryController
+class StatementSummaryController extends Controller
 {
     protected $data = [
         'average_online_players' => 0,      //日均在线
@@ -44,7 +45,11 @@ class StatementSummaryController
 
     public function show(AdminRequest $request)
     {
-        $date = $request->date ?: Carbon::parse($request->date)->toDateString();
+        $this->validate($request, [
+            'date' => 'required|date_format:Y-m-d'
+        ]);
+
+        $date = $request->input('date');
 
         //月数据
         $this->data['monthly_card_bought_players'] = StatementMonthlyService::getMonthlyCardBoughtPlayersSum($date);

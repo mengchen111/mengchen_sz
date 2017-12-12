@@ -37,4 +37,6 @@ return [
     'game_api_room_create' => 'room',               //创建游戏房间
     'game_api_room_open' => 'room/open',            //查看正在玩的房间
     'game_api_room_history' => 'room/history',      //查看已经结束的房间
+    'game_api_card_consumed' => 'card/consumed',    //房卡消耗数据（指定日期）
+    'game_api_card_consumed_total' => 'card/consumed/total',    //房卡总消耗
 ];

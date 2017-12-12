@@ -100,8 +100,10 @@ class StatementDailyService
      */
     public function getCardConsumedData($date)
     {
-        return '0|0|0';
-        //TODO 待游戏端给出数据后完成
+        $api = config('custom.game_api_card_consumed');
+        return GameApiService::request('GET', $api, [
+            'date' => $date,
+        ]);
     }
 
     /**
@@ -127,8 +129,6 @@ class StatementDailyService
         return "${cardBoughtAmount}|${cardBoughtPlayersAmount}|"
             . ceil($cardBoughtAmount/$cardBoughtPlayersAmount); //向上取整
     }
-
-    //
 
     /**
      * 获取截止给定日期给玩家充卡的总数，如果不给定日期则查询截止当前给玩家充卡的总数
@@ -157,12 +157,10 @@ class StatementDailyService
      */
     public function getCardConsumedSum($date = 'today')
     {
-        //TODO 待游戏端给出数据后完成
-        if (Carbon::parse($date)->isToday()) {
-            //返回当前实时的耗卡总数
-            return 0;
-        }
-        return 0;
+        $api = config('custom.game_api_card_consumed_total');
+        return GameApiService::request('GET', $api, [
+            'date' => $date,
+        ]);
     }
 
     /**

@@ -54,7 +54,9 @@ new Vue({
     let toastr = this.$refs.toastr
 
     //获取总览数据
-    this.httpClient.get(this.summaryDataApi)
+    this.httpClient.get(this.summaryDataApi, {
+      params: this.formData,
+    })
       .then(function (res) {
         _self.msgResolver(res, toastr)
         _self.summaryData = res.data
