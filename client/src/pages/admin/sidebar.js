@@ -53,6 +53,9 @@ new Vue({
         list: {
           isActive: false,
         },
+        bills: {  //售卡记录
+          isActive: false,
+        },
       },
       'top-up': {
         isActive: false,

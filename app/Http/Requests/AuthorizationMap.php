@@ -52,6 +52,9 @@ trait AuthorizationMap
             'list' => [
                 'ifShown' => true,
             ],
+            'bills' => [
+                'ifShown' => true,
+            ],
         ],
         'top-up' => [
             'ifShown' => true,

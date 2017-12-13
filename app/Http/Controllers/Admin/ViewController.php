@@ -58,14 +58,19 @@ class ViewController extends Controller
         return view('admin.stock.apply-history');
     }
 
+    public function agentCreate(Request $request)
+    {
+        return view('admin.agent.create');
+    }
+
     public function agentList(Request $request)
     {
         return view('admin.agent.list');
     }
 
-    public function agentCreate(Request $request)
+    public function agentBills(Request $request)
     {
-        return view('admin.agent.create');
+        return view('admin.agent.bills');
     }
 
     public function topUpAdmin(Request $request)

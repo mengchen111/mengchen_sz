@@ -46,6 +46,9 @@ export default {
     list: {
       ifShown: false,
     },
+    bills: {  //售卡记录
+      ifShown: false,
+    },
   },
   'top-up': {
     ifShown: false,

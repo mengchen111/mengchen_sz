@@ -108,8 +108,9 @@ Route::group([
     Route::get('stock/apply-list', 'ViewController@stockApplyList');
     Route::get('stock/apply-history', 'ViewController@stockApplyHistory');
 
-    Route::get('agent/list', 'ViewController@agentList');
     Route::get('agent/create', 'ViewController@agentCreate');
+    Route::get('agent/list', 'ViewController@agentList');
+    Route::get('agent/bills', 'ViewController@agentBills');
 
     Route::get('top-up/admin', 'ViewController@topUpAdmin');
     Route::get('top-up/agent', 'ViewController@topUpAgent');
