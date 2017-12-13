@@ -26,16 +26,47 @@ class AgentController extends Controller
         //查找用户名
         if ($request->has('filter')) {
             $filterText = $request->filter;
-            return User::with(['group', 'parent', 'inventorys.item'])
+            $data = User::with(['group', 'parent', 'inventorys.item', 'agentTopUpRecords', 'playerTopUpRecords'])
                 ->where('account', 'like', "%{$filterText}%")
                 ->whereIn('group_id', $this->agentGroups)
                 ->orderBy($order[0], $order[1])
                 ->paginate($per_page);
+        } else {
+            $data = User::with(['group', 'parent', 'inventorys.item', 'agentTopUpRecords', 'playerTopUpRecords'])
+                ->whereIn('group_id', $this->agentGroups)
+                ->orderBy($order[0], $order[1])     //不允许查看管理员
+                ->paginate($per_page);
         }
-        return User::with(['group', 'parent', 'inventorys.item'])
-            ->whereIn('group_id', $this->agentGroups)
-            ->orderBy($order[0], $order[1])     //不允许查看管理员
-            ->paginate($per_page);
+
+        return $this->buildData4ItemSoldCount($data);
+    }
+
+    //计算代理商的总售卡数
+    public function buildData4ItemSoldCount($data)
+    {
+        foreach ($data->items() as $user) {
+            $itemSoldTotal = [];
+            $agentSoldCount = $user->agentTopUpRecords->groupBy('type')->map(function ($v) {
+                return $v->sum('amount');
+            });
+            $playerSoldCount = $user->playerTopUpRecords->groupBy('type')->map(function ($v) {
+                return $v->sum('amount');
+            });
+            foreach ($agentSoldCount as $k => $v) {
+                $itemSoldTotal[$k] = $v;
+            }
+            foreach ($playerSoldCount as $k => $v) {
+                if (array_key_exists($k, $itemSoldTotal)) {
+                    $itemSoldTotal[$k] += $v;
+                } else {
+                    $itemSoldTotal[$k] = $v;
+                }
+            }
+            $user['item_sold_total'] = $itemSoldTotal;
+            unset($user->agentTopUpRecords);
+            unset($user->playerTopUpRecords);
+        }
+        return $data;
     }
 
     //创建代理商

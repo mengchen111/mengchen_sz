@@ -105,4 +105,16 @@ class User extends Authenticatable
     {
         return in_array($this->group_id, [3, 4]);
     }
+
+    //此代理商给其它代理商的充卡记录(驼峰式的写法，输出给前端会自动转成下划线形式)
+    public function agentTopUpRecords()
+    {
+        return $this->hasMany('App\Models\TopUpAgent', 'provider_id', 'id');
+    }
+
+    //此代理商给玩家的充卡记录
+    public function playerTopUpRecords()
+    {
+        return $this->hasMany('App\Models\TopUpPlayer', 'provider_id', 'id');
+    }
 }
