@@ -66,6 +66,7 @@ Route::group([
     Route::delete('agent/{user}', 'AgentController@destroy')->where('user', '[0-9]+');
     Route::put('agent/{user}', 'AgentController@update')->where('user', '[0-9]+');
     Route::put('agent/pass/{user}', 'AgentController@updatePass')->where('user', '[0-9]+');
+    Route::get('agent/bills', 'AgentController@getItemSoldRecords');
 
     Route::get('top-up/admin', 'TopUpController@admin2AgentHistory');
     Route::get('top-up/agent', 'TopUpController@agent2AgentHistory');

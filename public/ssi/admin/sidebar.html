@@ -51,7 +51,7 @@
                 <ul class="treeview-menu">
                     <li :class="{ active: uri.agent.create.isActive }" v-show="isAdmin || shownMenu.agent.create.ifShown"><a href="/admin/agent/create"><i class="fa fa-circle-o"></i>新建代理商</a></li>
                     <li :class="{ active: uri.agent.list.isActive }" v-show="isAdmin || shownMenu.agent.list.ifShown"><a href="/admin/agent/list"><i class="fa fa-circle-o"></i>代理商列表</a></li>
-                    <li :class="{ active: uri.agent.bills.isActive }" v-show="isAdmin || shownMenu.agent.bills.ifShown"><a href="/admin/agent/bills"><i class="fa fa-circle-o"></i>售卡记录</a></li>
+                    <!--<li :class="{ active: uri.agent.bills.isActive }" v-show="isAdmin || shownMenu.agent.bills.ifShown"><a href="/admin/agent/bills"><i class="fa fa-circle-o"></i>售卡记录</a></li>-->
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri['top-up'].isActive }" v-show="isAdmin || shownMenu['top-up'].ifShown">

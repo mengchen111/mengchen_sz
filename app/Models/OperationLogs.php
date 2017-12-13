@@ -18,6 +18,9 @@ class OperationLogs extends Model
         if (! config('custom.operation_log')) {
             return true;
         }
+        if (is_array($data)) {
+            $data = json_encode($data);
+        }
         return self::create([
             'user_id' => $userId,
             'uri' => $uri,

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
+use App\Services\Game\PlayerService;
+use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
 use App\Models\User;
@@ -168,5 +170,58 @@ class AgentController extends Controller
         return [
             'message' => '更新密码成功'
         ];
+    }
+
+    //获取已售出的道具（给下级代理商充值的道具 + 给玩家充值的道具）
+    public function getItemSoldRecords(AdminRequest $request)
+    {
+        $this->validate($request, [
+            'item_type' => 'required|exists:item_type,id',
+            'account' => 'required',
+        ]);
+        $itemType = $request->input('item_type');
+
+        //打开页面vuetable第一次请求是，直接返回空数据
+        if ($request->input('account') === '0') {
+            return Paginator::paginate([]);
+        }
+
+        $agent = User::with([
+            'agentTopUpRecords' => function ($query) use ($itemType) {
+                $query->where('type', $itemType);
+            },
+            'playerTopUpRecords' => function ($query) use ($itemType) {
+                $query->where('type', $itemType);
+            }])
+            ->where('account', $request->input('account'))
+            ->first();
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '查询售卡记录', $request->header('User-Agent'), $request->all());
+
+        if (empty($agent)) {
+            throw new CustomException('代理商不存在');
+        }
+
+        //将receiver接收者的信息append到agent_top_up_records里面
+        foreach ($agent->agentTopUpRecords as $agentTopUpRecord) {
+            $agentTopUpRecord['receiver'] = User::where('id', $agentTopUpRecord['receiver_id'])->first();
+        }
+
+        //获取玩家昵称，append到数据集中
+        $allPlayers = collect(PlayerService::getAllPlayers());
+        foreach ($agent->playerTopUpRecords as $playerTopUpRecord) {
+            $player = $allPlayers->where('id', $playerTopUpRecord->player)->first();
+            if (empty($player)) {
+                $playerTopUpRecord['nick_name'] = null;
+            } else {
+                $playerTopUpRecord['nick_name'] = $player['nickname'];
+            }
+        }
+
+        $data = array_merge([], $agent->agentTopUpRecords->toArray(), $agent->playerTopUpRecords->toArray());
+        $data = collect($data)->sortByDesc('created_at')->toArray();
+
+        return Paginator::paginate($data, $this->per_page, $this->page);
     }
 }
