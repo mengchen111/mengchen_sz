@@ -9,6 +9,9 @@
         <button class="btn btn-default btn-flat" data-toggle="modal" data-target="#agent-password-modal"
                 @click="changePasswordAction(rowData)" title="更改密码"><i class="glyphicon glyphicon-pencil"></i>
         </button>
+        <a class="btn btn-default btn-flat" :href="'/admin/agent/bills?item_type=1&account=' + rowData.account"
+                title="查看售卡记录"><i class="glyphicon glyphicon-th-list"></i>
+        </a>
         <button class="btn btn-default btn-flat" data-toggle="modal" data-target="#delete-agent-modal"
                 @click="deleteAgentAction(rowData)" title="删除代理商"><i class="glyphicon glyphicon-trash"></i>
         </button>
