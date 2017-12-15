@@ -18,7 +18,8 @@ return [
 
     //游戏服数据缓存时的key
     'game_server_cache_duration' => 3,              //数据缓存时间，3min
-    'game_server_cache_players' => 'game:players',  //所有玩家
+    'game_server_cache_players' => 'game:players',  //缓存所有玩家数据
+    'game_server_cache_room_history' => 'room:history',     //格式化之后的房间历史记录的缓存
 
     //游戏后端数据交互接口信息
     'game_api_address' => env('GAME_API_ADDRESS'),
@@ -39,4 +40,5 @@ return [
     'game_api_room_history' => 'room/history',      //查看已经结束的房间
     'game_api_card_consumed' => 'card/consumed',    //房卡消耗数据（指定日期）
     'game_api_card_consumed_total' => 'card/consumed/total',    //房卡总消耗
+    'game_api_currency_log' => 'currency/log',      //道具消耗记录
 ];

@@ -49,8 +49,15 @@ class RoomController extends Controller
     public function showRoomHistory(AdminRequest $request)
     {
         $api = config('custom.game_api_room_history');
-        $roomsHistory = GameApiService::request('GET', $api);
-        $result = $this->formatRoomData($roomsHistory);
+
+        //房间历史缓存3分钟（数据格式化时间太耗时）
+        $cacheKey = config('custom.game_server_cache_room_history');
+        $cacheDuration = config('custom.game_server_cache_duration');
+        $result = Cache::remember($cacheKey, $cacheDuration, function () use ($api) {
+            $roomsHistory = GameApiService::request('GET', $api);
+            return $this->formatRoomData($roomsHistory);
+        });
+
         krsort($result);    //最新的房间放最上
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
