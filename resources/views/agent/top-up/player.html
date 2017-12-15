@@ -30,13 +30,22 @@
                     <h3 class="box-title">代理商充值记录</h3>
                 </div>
                 <!-- /.box-header -->
+
                 <div class="box-body">
-                    <filter-bar placeholder="查找玩家id..."></filter-bar>
-                    <my-vuetable
-                            :table-url="tableUrl"
-                            :table-fields="tableFields"
-                    >
-                    </my-vuetable>
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12 pull-right">
+                            <filter-bar placeholder="查找玩家id..."></filter-bar>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <my-vuetable
+                                    :table-url="tableUrl"
+                                    :table-fields="tableFields"
+                            >
+                            </my-vuetable>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.box-body -->
             </div>

@@ -30,15 +30,24 @@
                     <h3 class="box-title">子代理商列表</h3>
                 </div>
                 <!-- /.box-header -->
+
                 <div class="box-body">
-                    <filter-bar placeholder="查找代理商账号"></filter-bar>
-                    <my-vuetable
-                            :table-url="tableUrl"
-                            :table-fields="tableFields"
-                            :callbacks="callbacks"
-                            detail-row-component="detail-row"
-                    >
-                    </my-vuetable>
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12 pull-right">
+                            <filter-bar placeholder="查找代理商账号"></filter-bar>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12 phone-scrollable">
+                            <my-vuetable
+                                    :table-url="tableUrl"
+                                    :table-fields="tableFields"
+                                    :callbacks="callbacks"
+                                    detail-row-component="detail-row"
+                            >
+                            </my-vuetable>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.box-body -->
             </div>
