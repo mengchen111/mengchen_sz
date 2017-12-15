@@ -24,8 +24,12 @@ new Vue({
       },
       {
         name: 'player',
-        title: '玩家',
+        title: '玩家id',
         sortField: 'player',
+      },
+      {
+        name: 'nick_name',
+        title: '玩家昵称',
       },
       {
         name: 'item.name',

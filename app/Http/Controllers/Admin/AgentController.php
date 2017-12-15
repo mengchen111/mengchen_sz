@@ -209,14 +209,8 @@ class AgentController extends Controller
         }
 
         //获取玩家昵称，append到数据集中
-        $allPlayers = collect(PlayerService::getAllPlayers());
         foreach ($agent->playerTopUpRecords as $playerTopUpRecord) {
-            $player = $allPlayers->where('id', $playerTopUpRecord->player)->first();
-            if (empty($player)) {
-                $playerTopUpRecord['nick_name'] = null;
-            } else {
-                $playerTopUpRecord['nick_name'] = $player['nickname'];
-            }
+            $playerTopUpRecord['nick_name'] = PlayerService::getNickName($playerTopUpRecord->player);
         }
 
         $data = array_merge([], $agent->agentTopUpRecords->toArray(), $agent->playerTopUpRecords->toArray());

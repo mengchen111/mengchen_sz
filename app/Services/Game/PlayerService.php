@@ -33,6 +33,18 @@ class PlayerService
         ]);
     }
 
+    public static function getNickName($uid)
+    {
+        $allPlayers = collect(self::getAllPlayers());
+        $player = $allPlayers->where('id', $uid)->first();
+
+        if (empty($player)) {
+            return null;
+        }
+
+        return $player['nickname'];
+    }
+
     public static function getOnlinePlayersAmount()
     {
         return GameApiService::request('GET', self::playersOnlineAmountApi());

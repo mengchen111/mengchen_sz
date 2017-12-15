@@ -227,16 +227,23 @@ class TopUpController extends Controller
         if ($request->has('filter')) {
             $accounts = array_column(User::where('account', 'like', "%{$request->filter}%")->get()->toArray(), 'id');
 
-            return TopUpPlayer::with(['provider', 'item'])
+            $playerTopUpRecords = TopUpPlayer::with(['provider', 'item'])
                 ->where('player', 'like', "%{$request->filter}%")
                 ->whereIn('provider_id', $accounts, 'or')
                 ->orderBy($this->order[0], $this->order[1])
                 ->paginate($this->per_page);
+        } else {
+            $playerTopUpRecords = TopUpPlayer::with(['provider', 'item'])
+                ->orderBy($this->order[0], $this->order[1])
+                ->paginate($this->per_page);
         }
 
-        return TopUpPlayer::with(['provider', 'item'])
-            ->orderBy($this->order[0], $this->order[1])
-            ->paginate($this->per_page);
+        //获取玩家昵称，append到数据集中
+        foreach ($playerTopUpRecords->items() as $playerTopUpRecord) {
+            $playerTopUpRecord['nick_name'] = PlayerService::getNickName($playerTopUpRecord->player);
+        }
+
+        return $playerTopUpRecords;
     }
 
     /**
