@@ -25,20 +25,15 @@ class AgentController extends Controller
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '查看代理商列表', $request->header('User-Agent'));
 
-        //查找用户名
-        if ($request->has('filter')) {
-            $filterText = $request->filter;
-            $data = User::with(['group', 'parent', 'inventorys.item', 'agentTopUpRecords', 'playerTopUpRecords'])
-                ->where('account', 'like', "%{$filterText}%")
-                ->whereIn('group_id', $this->agentGroups)
-                ->orderBy($order[0], $order[1])
-                ->paginate($per_page);
-        } else {
-            $data = User::with(['group', 'parent', 'inventorys.item', 'agentTopUpRecords', 'playerTopUpRecords'])
-                ->whereIn('group_id', $this->agentGroups)
-                ->orderBy($order[0], $order[1])     //不允许查看管理员
-                ->paginate($per_page);
-        }
+        //查找用户名或昵称
+        $data = User::with(['group', 'parent', 'inventorys.item', 'agentTopUpRecords', 'playerTopUpRecords'])
+            ->when($request->has('filter'), function ($query) use ($request) {
+                return $query->where('account', 'like', "%{$request->filter}%")
+                    ->where('name', 'like', "%{$request->filter}%", 'or');
+            })
+            ->whereIn('group_id', $this->agentGroups)
+            ->orderBy($order[0], $order[1])
+            ->paginate($per_page);
 
         return $this->buildData4ItemSoldCount($data);
     }

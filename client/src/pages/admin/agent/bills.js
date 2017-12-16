@@ -21,6 +21,10 @@ new Vue({
         title: '代理商',
       },
       {
+        name: 'receiver.name',
+        title: '代理商昵称',
+      },
+      {
         name: 'player',
         title: '玩家id',
       },
