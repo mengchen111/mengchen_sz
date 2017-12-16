@@ -37,8 +37,8 @@ class PlayerController extends Controller
     public function show(AdminRequest $request)
     {
         if ($request->has('filter')) {
-            $this->validateUid($request);
-            $data = PlayerService::searchPlayers($request->filter);
+            //$this->validateUid($request);
+            $data = PlayerService::searchPlayers($request->filter, $request->filter);
         } else {
             $cacheKey = config('custom.game_server_cache_players');
             $cacheDuration = config('custom.game_server_cache_duration');
@@ -63,14 +63,15 @@ class PlayerController extends Controller
         return Paginator::paginate($data, $this->per_page, $this->page);
     }
 
-    protected function validateUid($request)
-    {
-        try {
-            $this->validate($request, [
-                'filter' => 'required|numeric',
-            ]);
-        } catch (ValidationException $exception) {
-            throw new CustomException('待查询的玩家id必须为数字');
-        }
-    }
+    //添加昵称模糊查询，注释此方法
+//    protected function validateUid($request)
+//    {
+//        try {
+//            $this->validate($request, [
+//                'filter' => 'required|numeric',
+//            ]);
+//        } catch (ValidationException $exception) {
+//            throw new CustomException('待查询的玩家id必须为数字');
+//        }
+//    }
 }

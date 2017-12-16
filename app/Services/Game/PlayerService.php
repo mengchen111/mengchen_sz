@@ -26,10 +26,12 @@ class PlayerService
         });
     }
 
-    public static function searchPlayers($uid)
+    //查找玩家，默认通过uid查找(如果不传第二个参数，那么nickname为空，后端不会查找)
+    public static function searchPlayers($uid, $nickname = '')
     {
         return GameApiService::request('POST', self::playersApi(), [
             'uid' => $uid,
+            'nickname' => $nickname,
         ]);
     }
 
