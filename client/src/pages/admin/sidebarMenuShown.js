@@ -7,6 +7,9 @@ export default {
     summary: {
       ifShown: false,
     },
+    room: {
+      ifShown: false,
+    },
     'online-players': {
       ifShown: false,
     },

@@ -14,6 +14,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li :class="{ active: uri.statement.summary.isActive }" v-show="isAdmin || shownMenu.statement.summary.ifShown"><a href="/admin/statement/summary"><i class="fa fa-circle-o"></i>数据总览</a></li>
+                    <li :class="{ active: uri.statement.summary.isActive }" v-show="isAdmin || shownMenu.statement.room.ifShown"><a href="/admin/statement/room"><i class="fa fa-circle-o"></i>开房数据报表</a></li>
                     <li :class="{ active: uri.statement['online-players'].isActive }" v-show="isAdmin || shownMenu.statement['online-players'].ifShown"><a href="/admin/statement/online-players"><i class="fa fa-circle-o"></i>在线玩家图表</a></li>
                 </ul>
             </li>

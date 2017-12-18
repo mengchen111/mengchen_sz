@@ -102,6 +102,7 @@ Route::group([
 
     Route::get('statement/summary', 'ViewController@statementSummary');
     Route::get('statement/online-players', 'ViewController@statementOnlinePlayers');
+    Route::get('statement/room', 'ViewController@statementRoom');
 
     Route::get('gm/record', 'ViewController@gmRecord');
     Route::get('gm/room', 'ViewController@gmRoom');
