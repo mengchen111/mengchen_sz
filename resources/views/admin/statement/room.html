@@ -33,8 +33,134 @@
                         </div>
 
                         <div class="box-body">
-                            开房数据报表
+                            <form role="form" method="GET" action="#" @submit.prevent="getRoomStatement">
+                                <div class="row">
+                                    <div class="col-md-4 col-xs-12">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">游戏类型</span>
+                                                <v-select v-if="roomTypeOptions" :searchable="false" :options="roomTypeOptions"
+                                                          v-model="roomTypeValue"></v-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-xs-12">
+                                        <div class="from-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">选择日期</span>
+                                                <my-date-picker required v-model="searchFormData.date"
+                                                                placeholder="选择日期"
+                                                                :date-format="dateFormat">
+                                                </my-date-picker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-xs-12">
+                                        <div class="from-group">
+                                            <button class="btn btn-block btn-primary btn-flat" type="submit">提交</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
 
+                            <div class="row">
+                                <div class="col-md-3 col-xs-6 col-md-offset-9 col-xs-offset-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>开房次数</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ roomStatementData.room_open_count }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>房卡开房次数</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ roomStatementData.room_open_by_card_count }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>开房人数</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ roomStatementData.room_open_players_count }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>平均开房次数</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ ! roomStatementData.room_open_players_count ? 0
+                                                    : _.floor(roomStatementData.room_open_by_card_count / roomStatementData.room_open_players_count, 2) }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>游戏局数</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ roomStatementData.game_rounds_count }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>游戏人数</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ roomStatementData.players_count }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>平均局数</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ ! roomStatementData.players_count ? 0
+                                                    : _.floor(roomStatementData.game_rounds_count / roomStatementData.players_count, 2) }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>平均游戏时长(小时)</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ roomStatementData.player_avg_game_duration }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>单局游戏时长(秒)</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ roomStatementData.round_avg_duration }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -53,6 +179,7 @@
 </div>
 <!-- ./wrapper -->
 
+<link rel="stylesheet" type="text/css" href="/css/admin/statement/room.css" />
 <script src="/dist/webpack/admin/statement/room.js"></script>
 </body>
 </html>

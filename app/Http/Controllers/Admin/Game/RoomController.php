@@ -204,4 +204,10 @@ class RoomController extends Controller
         });
         return $maPai;
     }
+
+    //获取游戏类型映射关系，公共接口
+    public function getRoomTypeMap(Request $request)
+    {
+        return $this->maJiangTypes;
+    }
 }

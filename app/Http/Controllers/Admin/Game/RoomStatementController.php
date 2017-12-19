@@ -13,7 +13,7 @@ class RoomStatementController extends Controller
     {
         $this->validate($request, [
             'date' => 'required|date_format:"Y-m-d"',
-            'game_kind' => 'integer',
+            //'game_kind' => 'integer',
         ]);
 
         $date = $request->input('date');

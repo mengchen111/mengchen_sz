@@ -169,3 +169,5 @@ cd $codeDir
 | URI   | Method  | Description |     
 | ----  | :-----: | ----------: |
 | /api/info | GET | 获取用户个人信息 |
+| /api/content-header-h1 | GET | 获取页面的H1标题内容|
+| /api/game/room/type-map | GET | 获取游戏后端游戏类型id的映射关系 |
