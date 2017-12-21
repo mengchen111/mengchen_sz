@@ -125,19 +125,41 @@ class AgentController extends Controller
             'account' => 'string|max:255|unique:users',
             'email' => 'string|email|max:255',
             'phone' => 'integer|digits:11',
-            'group_id' => 'integer|not_in:1',   //不能将代理商改成管理员
-            //'parent_account' => 'string|exists:users,account',
+            'group_id' => 'integer|not_in:1|exists:groups,id',   //不能将代理商改成管理员
+            'parent_account' => 'string',
         ])->validate();
 
         $data = $request->intersect(
             'name', 'account', 'email', 'phone', 'group_id'
         );
 
-        //暂不支持改上级
-        /*if ($request->has('parent_account')) {
-            $parentId = User::where('account', $request->get('parent_account'))->first()->id;
-            $data = array_merge($data, ['parent_id' => $parentId]);
-        }*/
+        //更改代理商级别
+        if ($request->has('group_id')) {
+            if (! $this->ifCanChangeGroup($user, $request->input('group_id'))) {
+                throw new CustomException('新的代理商级别不能等于或低于其下级代理商的级别');
+            }
+            $data = array_merge($data, ['group_id' => $request->input('group_id')]);
+        }
+
+        //更新上级
+        if ($request->has('parent_account')) {
+            $parent = User::where('account', $request->get('parent_account'))->first();
+            if (empty($parent)) {
+                throw new CustomException('指定的上级代理不存在, 请正确输入上级代理商的账号');
+            }
+
+            if ($request->has('group_id')) {
+                if ($parent->group_id >= $request->input('group_id')) {
+                    //throw new CustomException('新的上级代理商级别应高于此代理商更新之后的级别');
+                    throw new CustomException('新的上级代理商级别应高于此代理商的级别');
+                }
+            } else {
+                if ($parent->group_id >= $user->group_id) {
+                    throw new CustomException('新的上级代理商级别应高于此代理商的级别');
+                }
+            }
+            $data = array_merge($data, ['parent_id' => $parent->id]);
+        }
 
         $user->update($data);
 
@@ -147,6 +169,18 @@ class AgentController extends Controller
         return [
             'message' => '更新信息成功'
         ];
+    }
+
+    //查询此代理商的下级，与将要更改的组级别作对比，如果将要更改的代理商级别等于或低于其下级代理级别
+    public function ifCanChangeGroup(User $user, $groupId)
+    {
+        $children = User::where('parent_id', $user->id)->get();
+        foreach ($children as $child) {
+            if ($child->group_id <= $groupId) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function updatePass(AdminRequest $request, User $user)

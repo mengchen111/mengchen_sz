@@ -126,26 +126,16 @@
                                            v-model.trim="activatedRow.account" placeholder="账号">
                                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                 </div>
-                                <!--                    <div class="form-group">
-                                                        <label>代理类型</label>
-                                                        <select class="form-control" v-model="activatedRow.group_id">
-                                                            <option v-for="(agent, index) in agentType" :value="index"
-                                                                    v-if="agent == agentType[activatedRow.group_id]" selected>
-                                                                {{ agent }}
-                                                            </option>
-                                                            <option v-else :value="index">
-                                                                {{ agent }}
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group has-feedback">
-                                                        <label>上级代理</label>
-                                                        <input name="parent_account" type="parent_account" class="form-control" v-validate="'required|min: 6'"
-                                                               v-model.trim="activatedRow.parent.name" placeholder="上级代理账号名">
-                                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                                                        <span v-show="errors.has('parent_account')" class="text-danger">{{ errors.first('parent_account') }}</span>
-                                                    </div>-->
-
+                                <div class="form-group">
+                                    <label>代理级别</label>
+                                    <v-select :searchable="false" :options="agentTypeOptions" v-model="agentTypeValue"></v-select>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label>上级代理</label>
+                                    <input name="parent_account" type="parent_account" class="form-control"
+                                           v-model.trim="activatedRow.parent.account" placeholder="上级代理账号名">
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
                                 </div>

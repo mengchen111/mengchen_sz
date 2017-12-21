@@ -117,4 +117,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\TopUpPlayer', 'provider_id', 'id');
     }
+
+    //下级代理商
+    public function children()
+    {
+        return $this->hasMany('App\Models\User', 'parent_id', 'id');
+    }
 }

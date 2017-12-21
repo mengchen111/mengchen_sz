@@ -29,6 +29,7 @@ new Vue({
       3: '钻石代理',
       4: '金牌代理',
     },
+    agentTypeValue: null,
     itemType: {
       1: '房卡',
       //2: '金币',
@@ -126,6 +127,9 @@ new Vue({
     itemTypeOptions: function () {
       return _.values(this.itemType)
     },
+    agentTypeOptions: function () {
+      return _.values(this.agentType)
+    },
   },
 
   watch: {
@@ -157,8 +161,14 @@ new Vue({
       let _self = this
       let toastr = this.$refs.toastr
       let api = `${_self.editApiPrefix}/${_self.activatedRow.id}`
+      let formData = {
+        name: this.activatedRow.name,
+        account: this.activatedRow.account,
+        group_id: _.findKey(this.agentType, (o) => o === this.agentTypeValue),
+        parent_account: this.activatedRow.parent.account,
+      }
 
-      myTools.axiosInstance.put(api, this.activatedRow)
+      myTools.axiosInstance.put(api, formData)
         .then(function (res) {
           myTools.msgResolver(res, toastr)
         })
@@ -203,7 +213,10 @@ new Vue({
     let _self = this
 
     this.$root.eventHub.$on('topUpAgentEvent', (data) => _self.activatedRow = data)
-    this.$root.eventHub.$on('editInfoEvent', (data) => _self.activatedRow = data)
+    this.$root.eventHub.$on('editInfoEvent', function (data) {
+      _self.activatedRow = data
+      _self.agentTypeValue = _self.activatedRow.group.name
+    })
     this.$root.eventHub.$on('changeAgentPasswordEvent', (data) => _self.activatedRow = data)
     this.$root.eventHub.$on('deleteAgentEvent', (data) => _self.activatedRow = data)
   },
