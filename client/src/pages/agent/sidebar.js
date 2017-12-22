@@ -55,8 +55,8 @@ new Vue({
     //不同的代理商级别显示不同的菜单
     axios.get(agentTypeApi)
       .then(function (response) {
-        _self.isTopAgent = '总代理' === response.data.name
-        _self.isGoldAgent = '黄金代理' === response.data.name
+        _self.isTopAgent = 2 === response.data.id
+        _self.isGoldAgent = 4 === response.data.id
       })
 
     //被访问的页面的菜单项会被设置为active

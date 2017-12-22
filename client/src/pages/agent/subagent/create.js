@@ -10,9 +10,9 @@ new Vue({
   },
   data: {
     agentType: {
-      2: '总代理',
-      3: '钻石代理',
-      4: '金牌代理',
+      2: '总代',
+      3: '钻石',
+      4: '金牌',
     },
     agentTypeValue: null,
     formData: {},
