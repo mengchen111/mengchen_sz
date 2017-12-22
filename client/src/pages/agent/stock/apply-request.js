@@ -1,22 +1,37 @@
 import {myTools} from '../index.js'
 import MyToastr from '../../../components/MyToastr.vue'
+import vSelect from 'vue-select'
 
 new Vue({
   el: '#app',
   components: {
     MyToastr,
+    vSelect,
   },
   data: {
+    itemType: {
+      1: '房卡',
+      //2: '金币',  //未使用暂时屏蔽
+    },
+    typeValue: '房卡',
     stockApplyData: {
-      type: {
-        1: '房卡',
-        2: '金币',
-      },
       item_id: 1,
       amount: null,
       remark: null,
     },
     stockApplyApi: '/agent/api/stock',
+  },
+
+  computed: {
+    options: function () {
+      return _.values(this.itemType)
+    },
+  },
+
+  watch: {
+    typeValue: function (value) {
+      this.stockApplyData.item_id = _.findKey(this.itemType, (o) => o === value)
+    },
   },
   methods: {
     stockApply () {

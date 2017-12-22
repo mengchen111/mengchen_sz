@@ -12,34 +12,34 @@ new Vue({
     eventHub: new Vue(),
     tableUrl: '/agent/api/top-up/child',
     tableFields: [
-      {
-        name: 'id',
-        title: 'ID',
-        sortField: 'id',
-      },
-      {
-        name: 'provider.account',
-        title: '发放者(上级代理)',
-        sortField: 'provider_id',
-      },
+      // {
+      //   name: 'id',
+      //   title: 'ID',
+      //   sortField: 'id',
+      // },
+      // {
+      //   name: 'provider.account',
+      //   title: '发放者(上级代理)',
+      //   sortField: 'provider_id',
+      // },
       {
         name: 'receiver.account',
-        title: '接收者(下级代理)',
+        title: '接收者',
         sortField: 'receiver_id',
       },
       {
         name: 'item.name',
-        title: '充值类型',
+        title: '类型',
         sortField: 'type',
       },
       {
         name: 'amount',
-        title: '充值数量',
+        title: '数量',
         sortField: 'amount',
       },
       {
         name: 'created_at',
-        title: '充值时间',
+        title: '时间',
       },
     ],
   },
