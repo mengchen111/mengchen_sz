@@ -31,7 +31,8 @@ Route::prefix('api')->middleware(['auth'])->group(function () {
     Route::get('info', 'InfoController@info');
     Route::get('content-header-h1', 'InfoController@getContentHeaderH1');
 
-    Route::get('/game/room/type-map', 'Admin\Game\RoomController@getRoomTypeMap');  //房间类型映射关系
+    Route::get('game/room/type-map', 'Admin\Game\RoomController@getRoomTypeMap');  //房间类型映射关系
+    Route::get('game/player', 'PlayerController@searchPlayer');
 });
 
 //管理员接口

@@ -14,12 +14,15 @@ new Vue({
       //2: '金币',  //暂不开放金币
     },
     typeValue: '房卡',
+    searchingBalance: true,
+    playerBalanceMsg: '',
     topUpData: {
       typeId: 1,
       playerId: null,
       amount: null,
     },
     topUpApiPrefix: '/agent/api/top-up/player',
+    searchPlayerApi: '/api/game/player',
   },
 
   computed: {
@@ -47,5 +50,31 @@ new Vue({
           _self.topUpData.amount = null
         })
     },
+
+    searchBalance: _.debounce(function () {
+      this.searchingBalance = true
+      this.playerBalanceMsg = ''
+      let _self = this
+
+      if (! this.topUpData.playerId) {
+        return true
+      }
+
+      myTools.axiosInstance.get(this.searchPlayerApi, {
+        params: { player_id: _self.topUpData.playerId },
+      })
+        .then(function (res) {
+          if (res.data.error) {
+            _self.playerBalanceMsg = res.data.error
+          } else {
+            let player = res.data
+            _self.playerBalanceMsg = '房卡余额: ' + player.ycoins
+          }
+          _self.searchingBalance = false
+        })
+        .catch(function (err) {
+          alert(err)
+        })
+    }, 800),
   },
 })
