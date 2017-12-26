@@ -47,15 +47,15 @@ new Vue({
       //   title: 'ID',
       //   sortField: 'id',
       // },
-      // {
-      //   name: 'name',
-      //   title: '昵称',
-      // },
       {
-        name: 'account',
-        title: '账号',
-        sortField: 'account',
+        name: 'name',
+        title: '昵称',
       },
+      // {
+      //   name: 'account',
+      //   title: '账号',
+      //   sortField: 'account',
+      // },
       {
         name: 'group.name',
         title: '级别',
