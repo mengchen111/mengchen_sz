@@ -17,6 +17,7 @@ use App\Services\Game\StatementMonthlyService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\OperationLogs;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StatementSummaryController extends Controller
 {
@@ -24,7 +25,7 @@ class StatementSummaryController extends Controller
         'average_online_players' => 0,      //日均在线
         'peak_online_players' => 0,         //日高峰
         'peak_in_game_players' => 0,        //当日最高处于游戏中的玩家数量
-        'active_players' => 0,              //当日活跃用户
+        'active_players' => 0,              //当日活跃玩家
         'incremental_players' => 0,         //新增玩家数
         'one_day_remained' => '0|0|0.00',   //次日留存, 留存玩家数|创建日新增玩家数|百分比(保留两位小数)
         'one_week_remained' => '0|0|0.00',  //7日留存
@@ -39,8 +40,9 @@ class StatementSummaryController extends Controller
     ];
 
     protected $realTimeData = [
-        'total_players_amount' => 0,        //累计用户
+        'total_players_amount' => 0,        //累计玩家
         'online_players_amount' => 0,       //在线人数
+        'in_game_players_amount' => 0,      //游戏中人数
     ];
 
     public function show(AdminRequest $request)
@@ -100,5 +102,62 @@ class StatementSummaryController extends Controller
             '查看实时报表数据', $request->header('User-Agent'), json_encode($request->all()));
 
         return $this->realTimeData;
+    }
+
+    public function exportData2Excel(AdminRequest $request)
+    {
+        $this->validate($request, [
+            'date' => 'required|date_format:Y-m-d'
+        ]);
+        $realTimeData = $this->showRealTimeData($request);
+        $summaryData = $this->show($request);
+
+        $fileName = '数据总览_' . $request->input('date');
+        $data = $this->buildExcelData($realTimeData, $summaryData);
+        Excel::create($fileName, function ($excel) use ($data) {
+            $excel->sheet('数据总览', function ($sheet) use ($data) {
+                foreach ($data as $k => $v) {
+                    $sheet->appendRow([$k, $v]);
+                }
+            });
+        })->export('xls');
+    }
+
+    protected function buildExcelData($realTimeData, $summaryData)
+    {
+        $data = [];
+        $data['累计玩家'] = $realTimeData['total_players_amount'];
+        $data['在线人数'] = $realTimeData['online_players_amount'];
+        $data['游戏中人数'] = $realTimeData['in_game_players_amount'];
+
+        $data['平均在线'] = $summaryData['average_online_players'];
+        $data['日高峰'] = $summaryData['peak_online_players'];
+        //$data['游戏中最高玩家数'] = $summaryData['peak_in_game_players'];
+        $data['活跃玩家'] = $summaryData['active_players'];
+        $data['新增玩家'] = $summaryData['incremental_players'];
+
+        $oneDayRemainData = explode('|', $summaryData['one_day_remained']);
+        $data['次日留存'] = $oneDayRemainData[2] . '% (' . $oneDayRemainData[0] . '/' . $oneDayRemainData[1] . ')';
+        $oneWeekRemainData = explode('|', $summaryData['one_week_remained']);
+        $data['7日留存'] = $oneWeekRemainData[2] . '% (' . $oneWeekRemainData[0] . '/' . $oneWeekRemainData[1] . ')';
+        $twoWeeksRemainData = explode('|', $summaryData['two_weeks_remained']);
+        $data['14日留存'] = $twoWeeksRemainData[2] . '% (' . $twoWeeksRemainData[0] . '/' . $twoWeeksRemainData[1] . ')';
+        $oneMonthRemainData = explode('|', $summaryData['one_month_remained']);
+        $data['30日留存'] = $oneMonthRemainData[2] . '% (' . $oneMonthRemainData[0] . '/' . $oneMonthRemainData[1] . ')';
+
+        $cardConsumedData = explode('|', $summaryData['card_consumed_data']);
+        $data['日耗卡'] = $cardConsumedData[0];
+        $data['平均耗卡'] = $cardConsumedData[2];
+
+        $cardBoughtData = explode('|', $summaryData['card_bought_data']);
+        $data['日购卡'] = $cardBoughtData[0];
+        $data['平均购卡'] = $cardBoughtData[2];
+
+        $data['购卡总数'] = $summaryData['card_bought_sum'];
+        $data['耗卡总数'] = $summaryData['card_consumed_sum'];
+        $data['当月购卡累计人数'] = $summaryData['monthly_card_bought_players'];
+        $data['当月购卡总数'] = $summaryData['monthly_card_bought_sum'];
+
+        return $data;
     }
 }

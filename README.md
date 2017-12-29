@@ -108,6 +108,7 @@ cd $codeDir
 | self/password | PUT | 更新密码 |
 | game/player | GET | 玩家列表 |
 | statement/summary | GET | 获取数据报表总览 |
+| statement/summary/excel | GET | 导出数据报表总览为excel |
 | statement/real-time | GET | 获取实时报表数据 |
 | statement/online-players | GET | 获取在线玩家图表数据 |
 | statement/room | GET | 获取开房数据报表数据 |

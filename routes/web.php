@@ -48,6 +48,7 @@ Route::group([
     Route::get('game/players', 'Game\PlayerController@show');
 
     Route::get('statement/summary', 'Game\StatementSummaryController@show');
+    Route::get('statement/summary/excel', 'Game\StatementSummaryController@exportData2Excel');
     Route::get('statement/real-time', 'Game\StatementSummaryController@showRealTimeData');
     Route::get('statement/online-players', 'OnlinePlayerController@getOnlinePlayersChartData');
     Route::get('statement/room', 'Game\RoomStatementController@getRoomStatement');

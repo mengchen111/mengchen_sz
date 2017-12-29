@@ -18,6 +18,7 @@ new Vue({
 
     loading: true,
     summaryDataApi: '/admin/api/statement/summary',
+    summaryExcelDataApi: '/admin/api/statement/summary/excel',
     summaryData: {},
 
     realTimeDataApi: '/admin/api/statement/real-time',
