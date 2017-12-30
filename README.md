@@ -129,6 +129,7 @@ cd $codeDir
 | agent/{id} | PUT | 更新代理商信息 |
 | agent/pass/{id} | PUT | 更新代理商密码 |
 | agent/bills | GET | 查询代理商的售卡记录 |
+| agent/card/valid-consumed-list | GET | 代理商有效耗卡记录 |
 | top-up/admin | GET | 管理员给代理商充值记录 |
 | top-up/agent | GET | 代理商给下级代理商充值记录 |
 | top-up/player | GET | 给玩家的充值记录 |

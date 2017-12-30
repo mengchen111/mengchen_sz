@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Services\Game\PlayerService;
+use App\Services\Game\ValidCardConsumedService;
 use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminRequest;
@@ -246,5 +247,16 @@ class AgentController extends Controller
         $data = collect($data)->sortByDesc('created_at')->toArray();
 
         return Paginator::paginate($data, $this->per_page, $this->page);
+    }
+
+    //代理商有效耗卡列表
+    public function getAgentValidCardConsumedRecord(AdminRequest $request)
+    {
+        $this->validate($request, [
+            'agent_id' => 'required|integer'
+        ]);
+
+        $agentId = $request->input('agent_id');
+        return ValidCardConsumedService::getSpecifiedAgentTopUpLog($agentId);
     }
 }
