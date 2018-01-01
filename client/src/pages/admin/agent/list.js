@@ -89,6 +89,10 @@ new Vue({
         callback: 'getCardSoldTotal',
       },
       {
+        name: 'valid_card_consumed_num',
+        title: '有效耗卡',
+      },
+      {
         name: '__component:table-actions',
         title: '操作',
         titleClass: 'text-center',
@@ -98,7 +102,7 @@ new Vue({
     callbacks: {
       getCardsCount (inventorys) {
         if (0 === inventorys.length) {
-          return null
+          return 0
         }
         for (let inventory of inventorys) {
           if (inventory.item.name === '房卡') {
@@ -108,7 +112,7 @@ new Vue({
       },
       getCoinsCount (inventorys) {
         if (0 === inventorys.length) {
-          return null
+          return 0
         }
         for (let inventory of inventorys) {
           if (inventory.item.name === '金币') {
@@ -118,7 +122,7 @@ new Vue({
       },
       getCardSoldTotal (v) {
         let cardTypeId = 1
-        return v[cardTypeId]
+        return v[cardTypeId] ? v[cardTypeId] : 0
       },
     },
   },

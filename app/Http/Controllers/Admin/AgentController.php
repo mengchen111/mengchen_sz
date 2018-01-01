@@ -36,7 +36,10 @@ class AgentController extends Controller
             ->orderBy($order[0], $order[1])
             ->paginate($per_page);
 
-        return $this->buildData4ItemSoldCount($data);
+        //每个代理商添加累计售卡数
+        $data = $this->buildData4ItemSoldCount($data);
+        //添加有效耗卡数
+        return $this->addValiidCardConsumedNum($data);
     }
 
     //计算代理商的总售卡数
@@ -63,6 +66,14 @@ class AgentController extends Controller
             $user['item_sold_total'] = $itemSoldTotal;
             unset($user->agentTopUpRecords);
             unset($user->playerTopUpRecords);
+        }
+        return $data;
+    }
+
+    public function addValiidCardConsumedNum($data)
+    {
+        foreach ($data->items() as $agent) {
+            $agent['valid_card_consumed_num'] = ValidCardConsumedService::getAgentValidCardConsumedNum($agent->id);
         }
         return $data;
     }
