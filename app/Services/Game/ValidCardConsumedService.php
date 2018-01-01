@@ -19,7 +19,7 @@ class ValidCardConsumedService
     {
         $cardConsumedLogApi = config('custom.game_api_currency_log');
         $cacheKey = config('custom.game_server_cache_currency_log');
-        $cacheDuration = 1;     //缓存1分钟
+        $cacheDuration = config('custom.game_server_cache_duration');     //缓存3分钟
 
         //获取道具消耗记录并缓存一分钟
         return Cache::remember($cacheKey, $cacheDuration, function () use ($cardConsumedLogApi) {
