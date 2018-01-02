@@ -91,7 +91,7 @@ class ValidCardConsumedService
             ->groupBy('provider_id');
     }
 
-    protected static function getAgentTopUpLogsCache()
+    public static function getAgentTopUpLogsCache()
     {
         $cacheKey = config('custom.game_server_cache_valid_card_agent_log');
         $cacheDuration = config('custom.game_server_cache_duration');
