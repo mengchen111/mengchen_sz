@@ -81,7 +81,7 @@ class ValidCardConsumedService
     }
 
     //获取包含了有效耗卡数据的代理商给玩家充值记录
-    protected static function getAgentTopUpLogs()
+    public static function getAgentTopUpLogs()
     {
         $playerCardConsumedFlow = self::getPlayerCardConsumedFlow();
         return collect($playerCardConsumedFlow)
@@ -94,11 +94,15 @@ class ValidCardConsumedService
     public static function getAgentTopUpLogsCache()
     {
         $cacheKey = config('custom.game_server_cache_valid_card_agent_log');
-        $cacheDuration = config('custom.game_server_cache_duration');
 
-        $data = Cache::remember($cacheKey, $cacheDuration, function () {
-            return self::getAgentTopUpLogs();
-        });
+        if (! Cache::has($cacheKey)) {  //web访问时使用的key
+            $data = ValidCardConsumedService::getAgentTopUpLogs();
+            //永久缓存代理商有效耗卡数据，这样web端访问就不会超时，通过command来更新此缓存中的数据
+            Cache::forever($cacheKey, $data);
+        } else {
+            $data = Cache::get($cacheKey);
+        }
+
         return ($data instanceof Collection) ? $data : collect($data);
     }
 
