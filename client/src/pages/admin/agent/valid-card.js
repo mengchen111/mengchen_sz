@@ -12,29 +12,34 @@ new Vue({
     eventHub: new Vue(),
 
     agentAccount: null,
-    cardSoldRecordsApi: '/admin/api/agent/bills',
+    validCardConsumedRecordsApi: '/admin/api/agent/card/valid-consumed-list',
 
-    tableUrl: '/admin/api/agent/bills?item_type=1&account=0', //account设为0，获取空数据
+    tableUrl: '/admin/api/agent/card/valid-consumed-list?&account=0', //account设为0，获取空数据
     tableFields: [
-      {
-        name: 'receiver.account',
-        title: '代理商',
-      },
-      {
-        name: 'receiver.name',
-        title: '代理商昵称',
-      },
+      // 查找的就是代理商账号，此列无须显示
+      // {
+      //   name: 'provider_account',
+      //   title: '代理商',
+      // },
+      // {
+      //   name: 'provider_nickname',
+      //   title: '代理商昵称',
+      // },
       {
         name: 'player',
         title: '玩家id',
       },
       {
-        name: 'nick_name',
+        name: 'player_nickname',
         title: '玩家昵称',
       },
       {
         name: 'amount',
         title: '充值数量',
+      },
+      {
+        name: 'valid_card_consumed_num',
+        title: '有效耗卡数量',
       },
       {
         name: 'created_at',
@@ -44,15 +49,21 @@ new Vue({
   },
   methods: {
     getValidCardConsumedRecords () {
-      console.log('aaa')
+      //如果输入框为空，那么传递到后端的account值为0
+      if (this.agentAccount) {
+        this.tableUrl = this.validCardConsumedRecordsApi + '?account=' + this.agentAccount  //更改tableUrl之后vuetable会自动刷新数据
+      } else {
+        this.tableUrl = this.validCardConsumedRecordsApi + '?account=0'
+      }
     },
   },
 
   created () {
     this.agentAccount = myTools.getQueryString('account')
-    let itemType = myTools.getQueryString('item_type')
-    if (itemType) {
-      this.tableUrl = this.cardSoldRecordsApi + '?item_type=' + itemType + '&account=' + this.agentAccount
+    if (this.agentAccount) {
+      this.tableUrl = this.validCardConsumedRecordsApi + '?account=' + this.agentAccount
+    } else {
+      this.tableUrl = this.validCardConsumedRecordsApi + '?account=0'
     }
   },
 })

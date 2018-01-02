@@ -46,7 +46,10 @@ class ValidCardConsumedService
     protected static function getPlayerCardConsumedFlow()
     {
         //获取充值记录，排序默认是id升序(即最先充值的排前面)，不用调整
-        $playerTopUpData = TopUpPlayer::where('amount', '>', 0)->get()->groupBy('player');
+        $playerTopUpData = TopUpPlayer::where('type', 1)    //type 1为房卡
+            ->where('amount', '>', 0)
+            ->get()
+            ->groupBy('player');
         $PlayerCardConsumedFlowData = [];
         foreach ($playerTopUpData as $playerId => &$topUpLogs) {
             //玩家总的耗卡量，如果where查找不到玩家，会返回0
@@ -111,7 +114,7 @@ class ValidCardConsumedService
     {
         $agentTopUpLogs = self::getAgentTopUpLogsCache();
         return $agentTopUpLogs->has($agentId)
-            ? $agentTopUpLogs[$agentId]
+            ? $agentTopUpLogs[$agentId]->toArray()
             : [];
     }
 
