@@ -54,7 +54,9 @@ class RoomController extends Controller
         $cacheKey = config('custom.game_server_cache_room_history');
         $cacheDuration = config('custom.game_server_cache_duration');
         $result = Cache::remember($cacheKey, $cacheDuration, function () use ($api) {
-            $roomsHistory = GameApiService::request('GET', $api);
+            $roomsHistory = collect(GameApiService::request('GET', $api))
+                ->where('agent_uid', '!=', 0)   //房间历史，只获取后台创建的房间（不然数据量很大）
+                ->toArray();
             return $this->formatRoomData($roomsHistory);
         });
 
@@ -70,10 +72,13 @@ class RoomController extends Controller
     protected function formatRoomData($rooms)
     {
         foreach ($rooms as &$room) {
-            $room['total_round'] = $room['options_jstr'][2];
+            if ($room['agent_uid'] == 0) {
+                $room['agent_account'] = 0;
+            } else {
+                $agent = User::find($room['agent_uid']);
+                $room['agent_account'] = !empty($agent) ? $agent->account : '管理员(不存在): ' . $room['agent_uid'];
+            }
 
-            $agent = User::find($room['agent_uid']);
-            $room['agent_account'] = !empty($agent) ? $agent->account : "Unknown[{$room['agent_uid']}]";
             $room['players'] = [];
             for ($i = 1; $i <= 4; $i++) {
                 $tmp = [];
