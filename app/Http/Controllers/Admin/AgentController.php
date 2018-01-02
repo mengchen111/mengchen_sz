@@ -36,16 +36,15 @@ class AgentController extends Controller
             ->orderBy($order[0], $order[1])
             ->paginate($per_page);
 
-        //每个代理商添加累计售卡数
-        $data = $this->buildData4ItemSoldCount($data);
-        //添加有效耗卡数
-        return $this->addValiidCardConsumedNum($data);
+        $data = $this->addDataOnAgent($data);   //添加额外的数据
+        return $data;
     }
 
-    //计算代理商的总售卡数
-    public function buildData4ItemSoldCount($data)
+    //输出的代理商列表数据，添加额外的数据
+    protected function addDataOnAgent($data)
     {
         foreach ($data->items() as $user) {
+            //每个代理商添加累计售卡数
             $itemSoldTotal = [];
             $agentSoldCount = $user->agentTopUpRecords->groupBy('type')->map(function ($v) {
                 return $v->sum('amount');
@@ -66,14 +65,9 @@ class AgentController extends Controller
             $user['item_sold_total'] = $itemSoldTotal;
             unset($user->agentTopUpRecords);
             unset($user->playerTopUpRecords);
-        }
-        return $data;
-    }
 
-    public function addValiidCardConsumedNum($data)
-    {
-        foreach ($data->items() as $agent) {
-            $agent['valid_card_consumed_num'] = ValidCardConsumedService::getAgentValidCardConsumedNum($agent->id);
+            //添加有效耗卡数
+            $user['valid_card_consumed_num'] = ValidCardConsumedService::getAgentValidCardConsumedNum($user->id);
         }
         return $data;
     }

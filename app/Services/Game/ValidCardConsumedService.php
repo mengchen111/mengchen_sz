@@ -11,23 +11,19 @@
 namespace App\Services\Game;
 
 use App\Models\TopUpPlayer;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class ValidCardConsumedService
 {
-    public static function getCurrencyLog()
+    protected static function getCurrencyLog()
     {
         $cardConsumedLogApi = config('custom.game_api_currency_log');
-        $cacheKey = config('custom.game_server_cache_currency_log');
-        $cacheDuration = config('custom.game_server_cache_duration');     //缓存3分钟
 
-        //获取道具消耗记录并缓存一分钟
-        return Cache::remember($cacheKey, $cacheDuration, function () use ($cardConsumedLogApi) {
-            return GameApiService::request('GET', $cardConsumedLogApi);
-        });
+        return GameApiService::request('GET', $cardConsumedLogApi);
     }
 
-    public static function getCardConsumedLog()
+    protected static function getCardConsumedLog()
     {
         $currencyLog = self::getCurrencyLog();
         return collect($currencyLog)->where('type', 1)  //房卡道具类型id
@@ -35,7 +31,7 @@ class ValidCardConsumedService
     }
 
     //获取玩家房卡的充值和消费流
-    public static function getPlayerCardConsumedFlow()
+    protected static function getPlayerCardConsumedFlow()
     {
         //获取充值记录，排序默认是id升序(即最先充值的排前面)，不用调整
         $playerTopUpData = TopUpPlayer::where('amount', '>', 0)->get()->groupBy('player');
@@ -73,7 +69,7 @@ class ValidCardConsumedService
     }
 
     //获取包含了有效耗卡数据的代理商给玩家充值记录
-    public static function getAgentTopUpLogs()
+    protected static function getAgentTopUpLogs()
     {
         $playerCardConsumedFlow = self::getPlayerCardConsumedFlow();
         return collect($playerCardConsumedFlow)
@@ -83,10 +79,21 @@ class ValidCardConsumedService
             ->groupBy('provider_id');
     }
 
+    protected static function getAgentTopUpLogsCache()
+    {
+        $cacheKey = config('custom.game_server_cache_valid_card_agent_log');
+        $cacheDuration = config('custom.game_server_cache_duration');
+
+        $data = Cache::remember($cacheKey, $cacheDuration, function () {
+            return self::getAgentTopUpLogs();
+        });
+        return ($data instanceof Collection) ? $data : collect($data);
+    }
+
     //获取指定的代理商的充值记录(with 有效耗卡字段)
     public static function getSpecifiedAgentTopUpLog($agentId)
     {
-        $agentTopUpLogs = self::getAgentTopUpLogs();
+        $agentTopUpLogs = self::getAgentTopUpLogsCache();
         return $agentTopUpLogs->has($agentId)
             ? $agentTopUpLogs[$agentId]
             : [];
@@ -95,7 +102,7 @@ class ValidCardConsumedService
     //获取指定的agent id的代理商的有效耗卡数
     public static function getAgentValidCardConsumedNum($agentId)
     {
-        $agentTopUpLogs = self::getAgentTopUpLogs();
+        $agentTopUpLogs = self::getAgentTopUpLogsCache();
         return $agentTopUpLogs->has($agentId)
             ? $agentTopUpLogs[$agentId]->sum('valid_card_consumed_num')
             : 0;

@@ -20,7 +20,8 @@ return [
     'game_server_cache_duration' => 3,              //数据缓存时间，3min
     'game_server_cache_players' => 'game:players',  //缓存所有玩家数据
     'game_server_cache_room_history' => 'room:history',     //格式化之后的房间历史记录的缓存
-    'game_server_cache_currency_log' => 'currency:all',     //道具消耗记录的缓存
+    'game_server_cache_currency_log' => 'currency:all',     //道具消耗记录的缓存(暂未使用)
+    'game_server_cache_valid_card_agent_log' => 'card-valid:agent',     //包含了有效耗卡数据的代理商给玩家充值记录
 
     //游戏后端数据交互接口信息
     'game_api_address' => env('GAME_API_ADDRESS'),
