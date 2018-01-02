@@ -40,6 +40,6 @@ class CacheAgentValidCardLog extends BaseCommand
     {
         //缓存数据到redis，这样web端访问的时候就不会卡顿
         ValidCardConsumedService::getAgentTopUpLogsCache();
-        $this->info('缓存代理商有效耗卡数据成功');
+        $this->logInfo('缓存代理商有效耗卡数据成功');
     }
 }
