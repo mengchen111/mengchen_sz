@@ -30,6 +30,18 @@ class ValidCardConsumedService
             ->where('val', '<', 0);                     //val大于0为代理商给玩家的充卡记录，小于0的为玩家的耗卡记录
     }
 
+    //从后端返回的道具消耗日志中提取有效耗卡记录并缓存
+    protected static function getCardConsumedLogCache()
+    {
+        $cacheKey = config('custom.game_server_cache_valid_card_consumed_log');
+        $cacheDuration = config('custom.game_server_cache_duration');
+
+        $data = Cache::remember($cacheKey, $cacheDuration, function () {
+            return self::getCardConsumedLog();
+        });
+        return ($data instanceof Collection) ? $data : collect($data);
+    }
+
     //获取玩家房卡的充值和消费流
     protected static function getPlayerCardConsumedFlow()
     {
@@ -38,7 +50,7 @@ class ValidCardConsumedService
         $PlayerCardConsumedFlowData = [];
         foreach ($playerTopUpData as $playerId => &$topUpLogs) {
             //玩家总的耗卡量，如果where查找不到玩家，会返回0
-            $playerCardConsumedTotalNum = abs(self::getCardConsumedLog()->where('uid', $playerId)->sum('val'));
+            $playerCardConsumedTotalNum = abs(self::getCardConsumedLogCache()->where('uid', $playerId)->sum('val'));
             //每条充值记录中增加一个有效耗卡字段
             $topUpLogs = self::addValidCardConsumedNum($topUpLogs, $playerCardConsumedTotalNum);
 
