@@ -43,7 +43,7 @@ class Kernel extends ConsoleKernel
             ->evenInMaintenanceMode()
             ->appendOutputTo(config('custom.cron_task_log'));
         //缓存代理商有效耗卡数据
-        $schedule->command('cache:agent-valid-card-log')
+        $schedule->command('admin:cache-agent-valid-card-log')
             ->everyMinute()
             ->withoutOverlapping()
             ->evenInMaintenanceMode()
