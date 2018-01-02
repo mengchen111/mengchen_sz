@@ -78,6 +78,11 @@ class ViewController extends Controller
         return view('admin.agent.bills');
     }
 
+    public function agentValidCard(Request $request)
+    {
+        return view('admin.agent.valid-card');
+    }
+
     public function topUpAdmin(Request $request)
     {
         return view('admin.top-up.admin');

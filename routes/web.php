@@ -119,6 +119,7 @@ Route::group([
     Route::get('agent/create', 'ViewController@agentCreate');
     Route::get('agent/list', 'ViewController@agentList');
     Route::get('agent/bills', 'ViewController@agentBills');
+    Route::get('agent/valid-card', 'ViewController@agentValidCard');
 
     Route::get('top-up/admin', 'ViewController@topUpAdmin');
     Route::get('top-up/agent', 'ViewController@topUpAgent');
