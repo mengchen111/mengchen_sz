@@ -99,7 +99,7 @@
                                 <div class="col-md-3 col-xs-6">
                                     <div class="small-box">
                                         <div class="inner">
-                                            <h5>开房无效次数</h5>
+                                            <h5>无效开房次数</h5>
                                             <h4 class="text-bold" v-cloak>
                                                 {{ roomStatementData.player_opened_invalid_room_count }}
                                             </h4>
@@ -123,7 +123,7 @@
                                             <h4 class="text-bold" v-cloak>
                                                 {{ ! roomStatementData.normal_room_opened_players_count ? 0
                                                     : _.floor(roomStatementData.player_opened_normal_room_count
-                                                        / roomStatementData.normal_room_opened_players_count, 4) }}
+                                                        / roomStatementData.normal_room_opened_players_count, 2) }}
                                             </h4>
                                         </div>
                                     </div>
@@ -157,7 +157,7 @@
                                             <h4 class="text-bold" v-cloak>
                                                 {{ ! roomStatementData.game_players_total_count ? 0
                                                     : _.floor(roomStatementData.game_rounds_total_count
-                                                        / roomStatementData.game_players_total_count, 4) }}
+                                                        / roomStatementData.game_players_total_count, 2) }}
                                             </h4>
                                         </div>
                                     </div>
@@ -169,7 +169,7 @@
                                             <h4 class="text-bold" v-cloak>
                                                 {{ ! roomStatementData.game_players_total_count ? 0
                                                     : _.floor(roomStatementData.total_player_game_duration
-                                                        / roomStatementData.game_players_total_count / 3600, 4) }}
+                                                        / roomStatementData.game_players_total_count / 3600, 2) }}
                                             </h4>
                                         </div>
                                     </div>
@@ -181,7 +181,7 @@
                                             <h4 class="text-bold" v-cloak>
                                                 {{ ! roomStatementData.game_rounds_total_count ? 0
                                                     : _.floor(roomStatementData.total_room_game_duration
-                                                        / roomStatementData.game_rounds_total_count, 4) }}
+                                                        / roomStatementData.game_rounds_total_count, 2) }}
                                             </h4>
                                         </div>
                                     </div>
