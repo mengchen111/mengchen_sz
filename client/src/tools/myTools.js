@@ -3,7 +3,7 @@ import axios from 'axios'
 let myTools = {
   //axios默认实例
   axiosInstance: axios.create({
-    timeout: 5000,                          //超时时间
+    timeout: 10000,                          //超时时间
     xsrfCookieName: 'XSRF-TOKEN',
     xsrfHeaderName: 'X-XSRF-TOKEN',
     validateStatus: function (status) {

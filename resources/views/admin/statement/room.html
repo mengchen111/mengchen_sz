@@ -64,12 +64,32 @@
                             </form>
 
                             <div class="row">
-                                <div class="col-md-3 col-xs-6 col-md-offset-9 col-xs-offset-6">
+                                <div class="col-md-3 col-xs-6 col-md-offset-3 col-xs-offset-6">
                                     <div class="small-box">
                                         <div class="inner">
-                                            <h5>开房次数</h5>
+                                            <h5>开房总次数</h5>
                                             <h4 class="text-bold" v-cloak>
-                                                {{ roomStatementData.room_open_count }}
+                                                {{ roomStatementData.room_total_count }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>房卡开房次数</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ roomStatementData.player_opened_normal_room_count }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>后台开房次数</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ roomStatementData.web_opened_room_count }}
                                             </h4>
                                         </div>
                                     </div>
@@ -79,9 +99,9 @@
                                 <div class="col-md-3 col-xs-6">
                                     <div class="small-box">
                                         <div class="inner">
-                                            <h5>房卡开房次数</h5>
+                                            <h5>开房无效次数</h5>
                                             <h4 class="text-bold" v-cloak>
-                                                {{ roomStatementData.room_open_by_card_count }}
+                                                {{ roomStatementData.player_opened_invalid_room_count }}
                                             </h4>
                                         </div>
                                     </div>
@@ -91,7 +111,7 @@
                                         <div class="inner">
                                             <h5>开房人数</h5>
                                             <h4 class="text-bold" v-cloak>
-                                                {{ roomStatementData.room_open_players_count }}
+                                                {{ roomStatementData.normal_room_opened_players_count }}
                                             </h4>
                                         </div>
                                     </div>
@@ -101,8 +121,9 @@
                                         <div class="inner">
                                             <h5>平均开房次数</h5>
                                             <h4 class="text-bold" v-cloak>
-                                                {{ ! roomStatementData.room_open_players_count ? 0
-                                                    : _.floor(roomStatementData.room_open_by_card_count / roomStatementData.room_open_players_count, 2) }}
+                                                {{ ! roomStatementData.normal_room_opened_players_count ? 0
+                                                    : _.floor(roomStatementData.player_opened_normal_room_count
+                                                        / roomStatementData.normal_room_opened_players_count, 4) }}
                                             </h4>
                                         </div>
                                     </div>
@@ -112,7 +133,7 @@
                                         <div class="inner">
                                             <h5>游戏局数</h5>
                                             <h4 class="text-bold" v-cloak>
-                                                {{ roomStatementData.game_rounds_count }}
+                                                {{ roomStatementData.game_rounds_total_count }}
                                             </h4>
                                         </div>
                                     </div>
@@ -124,7 +145,7 @@
                                         <div class="inner">
                                             <h5>游戏人数</h5>
                                             <h4 class="text-bold" v-cloak>
-                                                {{ roomStatementData.players_count }}
+                                                {{ roomStatementData.game_players_total_count }}
                                             </h4>
                                         </div>
                                     </div>
@@ -134,8 +155,9 @@
                                         <div class="inner">
                                             <h5>平均局数</h5>
                                             <h4 class="text-bold" v-cloak>
-                                                {{ ! roomStatementData.players_count ? 0
-                                                    : _.floor(roomStatementData.game_rounds_count / roomStatementData.players_count, 2) }}
+                                                {{ ! roomStatementData.game_players_total_count ? 0
+                                                    : _.floor(roomStatementData.game_rounds_total_count
+                                                        / roomStatementData.game_players_total_count, 4) }}
                                             </h4>
                                         </div>
                                     </div>
@@ -145,7 +167,9 @@
                                         <div class="inner">
                                             <h5>平均游戏时长(小时)</h5>
                                             <h4 class="text-bold" v-cloak>
-                                                {{ roomStatementData.player_avg_game_duration }}
+                                                {{ ! roomStatementData.game_players_total_count ? 0
+                                                    : _.floor(roomStatementData.total_player_game_duration
+                                                        / roomStatementData.game_players_total_count / 3600, 4) }}
                                             </h4>
                                         </div>
                                     </div>
@@ -155,7 +179,9 @@
                                         <div class="inner">
                                             <h5>单局游戏时长(秒)</h5>
                                             <h4 class="text-bold" v-cloak>
-                                                {{ roomStatementData.round_avg_duration }}
+                                                {{ ! roomStatementData.game_rounds_total_count ? 0
+                                                    : _.floor(roomStatementData.total_room_game_duration
+                                                        / roomStatementData.game_rounds_total_count, 4) }}
                                             </h4>
                                         </div>
                                     </div>
