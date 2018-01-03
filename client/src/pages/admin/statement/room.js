@@ -43,11 +43,13 @@ new Vue({
   methods: {
     getRoomStatement () {
       let _self = this
+      let toastr = this.$refs.toastr
 
       myTools.axiosInstance.get(this.roomStatementApi, {
         params: this.searchFormData,
       })
         .then(function (res) {
+          myTools.msgResolver(res, toastr)
           _self.roomStatementData = res.data
         })
         .catch(function (err) {
@@ -70,11 +72,13 @@ new Vue({
 
   mounted: function () {
     let _self = this
+    let toastr = this.$refs.toastr
 
     myTools.axiosInstance.get(this.roomStatementApi, {
       params: this.searchFormData,
     })
       .then(function (res) {
+        myTools.msgResolver(res, toastr)
         _self.roomStatementData = res.data
       })
       .catch(function (err) {

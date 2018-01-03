@@ -5,6 +5,7 @@
 
 namespace App\Services\Game;
 
+use App\Exceptions\RoomStatementServiceException;
 use Carbon\Carbon;
 
 class RoomStatementService
@@ -45,6 +46,9 @@ class RoomStatementService
     //计算前端所需要的报表数据
     public function computeData()
     {
+        if (empty($this->roomHistory)) {
+            throw new RoomStatementServiceException('指定日期的数据不存在');
+        }
         $this->data['room_total_count'] = count($this->roomHistory);
         $this->computeOpenedRoomCountData();   //计算开房相关的数据
         return $this->data;
