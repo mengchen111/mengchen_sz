@@ -52,6 +52,7 @@ Route::group([
     Route::get('statement/real-time', 'Game\StatementSummaryController@showRealTimeData');
     Route::get('statement/online-players', 'OnlinePlayerController@getOnlinePlayersChartData');
     Route::get('statement/room', 'Game\RoomStatementController@getRoomStatement');
+    Route::get('statement/room/excel', 'Game\RoomStatementController@exportRoomStatement');
 
     Route::get('gm/records', 'Game\RecordController@search');
     Route::get('gm/record-info/{recId}', 'Game\RecordController@getRecordInfo')->where('recId', '[0-9]+');

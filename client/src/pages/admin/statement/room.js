@@ -23,6 +23,7 @@ new Vue({
     },
     roomTypeMapApi: '/api/game/room/type-map',
     roomStatementApi: '/admin/api/statement/room',
+    roomExcelDataApi: '/admin/api/statement/room/excel',
     roomStatementData: {},
   },
 

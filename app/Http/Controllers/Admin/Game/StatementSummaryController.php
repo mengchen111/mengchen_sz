@@ -112,6 +112,9 @@ class StatementSummaryController extends Controller
         $realTimeData = $this->showRealTimeData($request);
         $summaryData = $this->show($request);
 
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '导出实时报表数据', $request->header('User-Agent'), json_encode($request->all()));
+
         $fileName = '数据总览_' . $request->input('date');
         $data = $this->buildExcelData($realTimeData, $summaryData);
         Excel::create($fileName, function ($excel) use ($data) {
