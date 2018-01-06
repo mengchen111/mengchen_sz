@@ -82,16 +82,17 @@ class AuthorizationController extends Controller
             $foo = $lowerLevel;
             unset($foo['ifShown']);
             if (! empty($foo)) {
+                //如果当前菜单为激活状态，那么就不检查其子菜单了，将上级菜单标记为true
+                //此时还不能return跳出foreach，因为还要检查其同级菜单
                 if ($arr[$upperLever]['ifShown'] === true) {
+                    $ifShown = true;
                     continue;
                 }
-                unset($lowerLevel['ifShown']);
                 if ($this->iterateFormat($lowerLevel)) {
-                    $arr['ifShown'] = true;
                     $arr[$upperLever]['ifShown'] = true;
-                    return true;
+                    return true;    //只要有个子菜单被激活，那么无须检查下面的子菜单，直接激活上级菜单
                 }
-            } else {
+            } else {    //如果unset下级菜单的isShown之后为空，那么说明下级菜单下面有没子菜单了
                 $ifShown = $lowerLevel['ifShown'];
                 if ($ifShown) {
                     return true;
@@ -99,7 +100,7 @@ class AuthorizationController extends Controller
                     continue;
                 }
             }
-        }
+        }       //子菜单全部检查完成之后，都为false，那么上级菜单也为false
         return $ifShown;
     }
 }

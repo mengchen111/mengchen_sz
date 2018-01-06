@@ -29,6 +29,18 @@ trait AuthorizationMap
                 'ifShown' => true,
             ],
         ],
+        'activities' => [
+            'ifShown' => true,
+            'wheel' => [
+                'ifShown' => true,
+                'edit' => [
+                    'ifShown' => true,
+                ],
+                'summary' => [
+                    'ifShown' => true,
+                ],
+            ]
+        ],
         'player' => [
             'ifShown' => true,
             'list' => [

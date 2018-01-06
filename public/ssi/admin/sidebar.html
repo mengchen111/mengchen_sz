@@ -19,12 +19,27 @@
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.gm.isActive }" v-show="isAdmin || shownMenu.gm.ifShown">
-                <a href="#"><i class="fa fa fa-wrench"></i> <span>GM功能</span>
+                <a href="#"><i class="fa fa-wrench"></i> <span>GM功能</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
                     <li :class="{ active: uri.gm.room.isActive }" v-show="isAdmin || shownMenu.gm.room.ifShown"><a href="/admin/gm/room"><i class="fa fa-circle-o"></i>房间管理</a></li>
                     <li :class="{ active: uri.gm.record.isActive }" v-show="isAdmin || shownMenu.gm.record.ifShown"><a href="/admin/gm/record"><i class="fa fa-circle-o"></i>战绩查询</a></li>
+                </ul>
+            </li>
+            <li class="treeview" :class="{ active: uri.activities.isActive }" v-show="isAdmin || shownMenu.activities.ifShown">
+                <a href="#"><i class="fa fa-futbol-o"></i> <span>活动管理</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li :class="{ active: uri.activities.wheel.isActive }" v-show="isAdmin || shownMenu.activities.wheel.ifShown"><a href="#"><i class="fa fa-share"></i>转盘活动
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                        <ul class="treeview-menu">
+                            <li :class="{ active: uri.activities.wheel.edit.isActive }" v-show="isAdmin || shownMenu.activities.wheel.edit.ifShown"><a href="/admin/activities/wheel/edit"><i class="fa fa-circle-o"></i>活动编辑</a></li>
+                            <li :class="{ active: uri.activities.wheel.summary.isActive }" v-show="isAdmin || shownMenu.activities.wheel.summary.ifShown"><a href="/admin/activities/wheel/summary"><i class="fa fa-circle-o"></i>数据统计</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.player.isActive }" v-show="isAdmin || shownMenu.player.ifShown">

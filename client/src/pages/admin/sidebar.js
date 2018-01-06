@@ -30,6 +30,18 @@ new Vue({
           isActive: false,
         },
       },
+      activities: {
+        isActive: false,
+        wheel: {
+          isActive: false,
+          edit: {
+            isActive: false,
+          },
+          summary: {
+            isActive: false,
+          },
+        },
+      },
       player: {
         isActive: false,
         list: {

@@ -113,6 +113,9 @@ Route::group([
     Route::get('gm/record', 'ViewController@gmRecord');
     Route::get('gm/room', 'ViewController@gmRoom');
 
+    Route::get('activities/wheel/edit', 'ViewController@activitiesWheelEdit');
+    Route::get('activities/wheel/summary', 'ViewController@activitiesWheelSummary');
+
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-list', 'ViewController@stockApplyList');
     Route::get('stock/apply-history', 'ViewController@stockApplyHistory');

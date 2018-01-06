@@ -23,6 +23,18 @@ export default {
       ifShown: false,
     },
   },
+  activities: {
+    ifShown: false,
+    wheel: {
+      ifShown: false,
+      edit: {
+        ifShown: false,
+      },
+      summary: {
+        ifShown: false,
+      },
+    },
+  },
   player: {
     ifShown: false,
     list: {
