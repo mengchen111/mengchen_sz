@@ -29,8 +29,10 @@ class AgentController extends Controller
         //查找用户名或昵称
         $data = User::with(['group', 'parent', 'inventorys.item', 'agentTopUpRecords', 'playerTopUpRecords'])
             ->when($request->has('filter'), function ($query) use ($request) {
-                return $query->where('account', 'like', "%{$request->filter}%")
+                return $query->whereIn('group_id', $this->agentGroups)
+                    ->where('account', 'like', "%{$request->filter}%")
                     ->where('name', 'like', "%{$request->filter}%", 'or');
+
             })
             ->whereIn('group_id', $this->agentGroups)
             ->orderBy($order[0], $order[1])
@@ -154,12 +156,13 @@ class AgentController extends Controller
                 throw new CustomException('指定的上级代理不存在, 请正确输入上级代理商的账号');
             }
 
-            if ($request->has('group_id')) {
+            if ($request->has('group_id')) {    //更改上级的同时也更改此代理商的代理级别的情况
                 if ($parent->group_id >= $request->input('group_id')) {
                     //throw new CustomException('新的上级代理商级别应高于此代理商更新之后的级别');
                     throw new CustomException('新的上级代理商级别应高于此代理商的级别');
                 }
             } else {
+                //如果未传group_id变量，那么就比较上级代理商的级别是否高于此代理商的现在代理级别
                 if ($parent->group_id >= $user->group_id) {
                     throw new CustomException('新的上级代理商级别应高于此代理商的级别');
                 }
@@ -169,8 +172,8 @@ class AgentController extends Controller
 
         $user->update($data);
 
-        OperationLogs::add($request->user()->id, $request->path(), $request->method(), '更新代理商信息',
-            $request->header('User-Agent'), json_encode($data));
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '更新代理商信息', $request->header('User-Agent'), json_encode($data));
 
         return [
             'message' => '更新信息成功'
