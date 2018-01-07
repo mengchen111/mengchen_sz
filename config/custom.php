@@ -45,4 +45,5 @@ return [
     'game_api_card_consumed' => 'card/consumed',    //房卡消耗数据（指定日期）
     'game_api_card_consumed_total' => 'card/consumed/total',    //房卡总消耗
     'game_api_currency_log' => 'currency/log',      //道具消耗记录
+    'game_api_activities_activities-list' => 'activities/activities-list', //获取活动列表
 ];

@@ -118,6 +118,7 @@ cd $codeDir
 | gm/room | POST | 创建游戏房间 |
 | gm/room/open | GET | 获取正在玩的房间 |
 | gm/room/history | GET | 获取房间历史 |
+| activities/activities-list | GET | 获取活动列表 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |

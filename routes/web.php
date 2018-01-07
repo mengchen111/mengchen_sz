@@ -61,6 +61,8 @@ Route::group([
     Route::get('gm/room/open', 'Game\RoomController@showOpenRoom');
     Route::get('gm/room/history', 'Game\RoomController@showRoomHistory');
 
+    Route::get('activities/activities-list', 'Game\ActivitiesController@getActivitiesList');
+
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');
     Route::get('stock/history', 'StockController@applyHistory');
