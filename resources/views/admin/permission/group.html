@@ -160,14 +160,20 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-3 col-xs-3 text-center">活动管理-转盘活动</div>
+                                    <div class="col-md-3 col-xs-3 text-center">活动管理</div>
                                     <div class="col-md-9 col-xs-9">
                                         <div class="row">
                                             <div class="col-md-4 col-xs-6">
-                                                <checkbox v-model="currentGroupPermission.activities.wheel.edit.ifShown">&nbsp;活动编辑</checkbox>
+                                                <checkbox v-model="currentGroupPermission.activities['activities-list'].ifShown">&nbsp;活动列表</checkbox>
                                             </div>
                                             <div class="col-md-4 col-xs-6">
-                                                <checkbox v-model="currentGroupPermission.activities.wheel.summary.ifShown">&nbsp;数据统计</checkbox>
+                                                <checkbox v-model="currentGroupPermission.activities['rewards-list'].ifShown">&nbsp;奖品列表</checkbox>
+                                            </div>
+                                            <div class="col-md-4 col-xs-6">
+                                                <checkbox v-model="currentGroupPermission.activities['tasks-list'].ifShown">&nbsp;任务列表</checkbox>
+                                            </div>
+                                            <div class="col-md-4 col-xs-6">
+                                                <checkbox v-model="currentGroupPermission.activities['statement'].ifShown">&nbsp;数据统计</checkbox>
                                             </div>
                                         </div>
                                     </div>

@@ -32,14 +32,17 @@ new Vue({
       },
       activities: {
         isActive: false,
-        wheel: {
+        'activities-list': {
           isActive: false,
-          edit: {
-            isActive: false,
-          },
-          summary: {
-            isActive: false,
-          },
+        },
+        'rewards-list': {
+          isActive: false,
+        },
+        'tasks-list': {
+          isActive: false,
+        },
+        statement: {
+          isActive: false,
         },
       },
       player: {

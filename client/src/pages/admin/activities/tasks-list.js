@@ -1,4 +1,4 @@
-import myTools from '../../index'
+import myTools from '../index.js'
 
 new Vue({
   el: '#app',
@@ -19,6 +19,6 @@ new Vue({
   },
 
   mounted: function () {
-    console.log('edit')
+    console.log('take list')
   },
 })

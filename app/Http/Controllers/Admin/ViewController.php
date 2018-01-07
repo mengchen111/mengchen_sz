@@ -43,14 +43,24 @@ class ViewController extends Controller
         return view('admin.gm.room');
     }
 
-    public function activitiesWheelEdit(Request $request)
+    public function activitiesActivitiesList(Request $request)
     {
-        return view('admin.activities.wheel.edit');
+        return view('admin.activities.activities-list');
     }
 
-    public function activitiesWheelSummary(Request $request)
+    public function activitiesRewardsList(Request $request)
     {
-        return view('admin.activities.wheel.summary');
+        return view('admin.activities.rewards-list');
+    }
+
+    public function activitiesTasksList(Request $request)
+    {
+        return view('admin.activities.tasks-list');
+    }
+
+    public function activitiesStatement(Request $request)
+    {
+        return view('admin.activities.statement');
     }
 
     public function playerList(Request $request)

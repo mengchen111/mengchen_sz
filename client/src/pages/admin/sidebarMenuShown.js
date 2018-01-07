@@ -25,14 +25,17 @@ export default {
   },
   activities: {
     ifShown: false,
-    wheel: {
+    'activities-list': {
       ifShown: false,
-      edit: {
-        ifShown: false,
-      },
-      summary: {
-        ifShown: false,
-      },
+    },
+    'rewards-list': {
+      ifShown: false,
+    },
+    'tasks-list': {
+      ifShown: false,
+    },
+    statement: {
+      ifShown: false,
     },
   },
   player: {
