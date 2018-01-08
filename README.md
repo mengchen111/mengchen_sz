@@ -123,6 +123,10 @@ cd $codeDir
 | activities/list/{aid} | DELETE | 删除活动列表 |
 | activities/list | POST | 添加活动列表 |
 | activities/reward-map | GET | 获取活动奖励id和name的map |
+| activities/reward | GET | 获取奖品列表 |
+| activities/reward | PUT | 编辑奖品 |
+| activities/reward/{pid} | DELETE | 删除奖品 |
+| activities/reward | POST | 添加奖品 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |

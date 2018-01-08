@@ -16,13 +16,13 @@ class ActivitiesController extends Controller
     public function getActivitiesList(AdminRequest $request)
     {
         $api = config('custom.game_api_activities_activities-list');
-        $records = GameApiService::request('GET', $api);
-        krsort($records);
+        $activities = GameApiService::request('GET', $api);
+        krsort($activities);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '查询活动列表', $request->header('User-Agent'), json_encode($request->all()));
 
-        return Paginator::paginate($records, $this->per_page, $this->page);
+        return Paginator::paginate($activities, $this->per_page, $this->page);
     }
 
     public function editActivitiesList(AdminRequest $request)

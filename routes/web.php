@@ -66,6 +66,10 @@ Route::group([
     Route::delete('activities/list/{aid}', 'Game\ActivitiesController@deleteActivitiesList')->where('aid', '[0-9]+');
     Route::post('activities/list', 'Game\ActivitiesController@addActivitiesList');
     Route::get('activities/reward-map', 'Game\ActivitiesRewardController@getActivitiesRewardMap');
+    Route::get('activities/reward', 'Game\ActivitiesRewardController@getActivitiesRewardList');
+    Route::put('activities/reward', 'Game\ActivitiesRewardController@editReward');
+    Route::delete('activities/reward/{pid}', 'Game\ActivitiesRewardController@deleteReward')->where('pid', '[0-9]+');
+    Route::post('activities/reward', 'Game\ActivitiesRewardController@addReward');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');

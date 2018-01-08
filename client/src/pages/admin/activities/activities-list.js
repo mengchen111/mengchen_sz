@@ -56,11 +56,10 @@ new Vue({
         title: '结束时间',
       },
       {
-        name: 'reward',
+        name: 'reward_model',
         title: '奖品',
         callback: 'transReward',
       },
-
       {
         name: '__component:table-actions',
         title: '操作',
@@ -90,7 +89,7 @@ new Vue({
   methods: {
     onEditActivities (data) {
       this.activitiesStateValue = this.activitiesStateMap[data.open]
-      this.activitiesRewardValue = _.map(data.reward, 'name')
+      this.activitiesRewardValue = _.map(data.reward_model, 'name')
       this.editActivitiesForm.aid = data.aid
       this.editActivitiesForm.name = data.name
       this.editActivitiesForm.open_time = data.open_time
@@ -155,8 +154,6 @@ new Vue({
     deleteActivities () {
       let _self = this
       let toastr = this.$refs.toastr
-
-      console.log(this.activatedRow)
 
       myTools.axiosInstance.delete(this.activitiesApi + '/' + this.activatedRow.aid)
         .then(function (res) {

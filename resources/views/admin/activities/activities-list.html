@@ -37,7 +37,7 @@
                                 <div class="col-md-3 col-xs-12">
                                     <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
                                             data-target="#add-activities-modal" :click="onCreateActivities">
-                                        新建活动
+                                        添加活动
                                     </button>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button class="close" type="button" data-dismiss="modal">x</button>
-                            <h3 class="text-center">新建活动</h3>
+                            <h3 class="text-center">添加活动</h3>
                         </div>
                         <div class="modal-body">
                             <form role="form" class="form-group" @submit.prevent="addActivities">
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>结束时间</label>
-                                    <my-date-picker requeired
+                                    <my-date-picker required
                                                     :date-format="dateFormat"
                                                     v-model="addActivitiesForm.end_time"
                                                     placeholder="结束时间"
@@ -132,7 +132,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>结束时间</label>
-                                    <my-date-picker requeired
+                                    <my-date-picker required
                                             :date-format="dateFormat"
                                             v-model="editActivitiesForm.end_time"
                                             placeholder="结束时间"
