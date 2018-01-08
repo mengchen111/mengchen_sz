@@ -33,14 +33,85 @@
                         </div>
 
                         <div class="box-body">
-                            活动列表
-
+                            <my-vuetable
+                                    :table-url="tableUrl"
+                                    :table-fields="tableFields"
+                                    :callbacks="callbacks"
+                            >
+                            </my-vuetable>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!--<my-toastr ref="toastr"></my-toastr>-->
+            <div id="edit-activities-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">编辑活动</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" @submit.prevent="editActivities">
+                                <div class="form-group">
+                                    <label>活动名称</label>
+                                    <input name="name" type="text" class="form-control" required
+                                           v-model.trim="activitiesForm.name" placeholder="活动名称">
+                                </div>
+                                <div class="form-group">
+                                    <label>状态</label>
+                                    <v-select :searchable="false" :options="activitiesStateMap" v-model="activitiesForm.state_value"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>开始时间</label>
+                                    <my-date-picker required
+                                            :date-format="dateFormat"
+                                            v-model="activitiesForm.open_time"
+                                            placeholder="开始时间"
+                                    ></my-date-picker>
+                                </div>
+                                <div class="form-group">
+                                    <label>结束时间</label>
+                                    <my-date-picker requeired
+                                            :date-format="dateFormat"
+                                            v-model="activitiesForm.end_time"
+                                            placeholder="结束时间"
+                                    ></my-date-picker>
+                                </div>
+                                <div class="form-group">
+                                    <label>奖品</label>
+                                    <input type="text" class="form-control" required v-model="activitiesForm.reward"/>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="delete-activities-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center text-danger">确定删除此活动？</h3>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-flat btn-danger btn-lg pull-left" @click="deleteActivities">
+                                删除
+                            </button>
+                            <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
+                                取消
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <my-toastr ref="toastr"></my-toastr>
         </section>
         <!-- /.content -->
 
