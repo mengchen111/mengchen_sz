@@ -64,7 +64,9 @@ class RecordController extends Controller
 
             $recordDetail = json_decode($record['infos']['rec_jstr'], true);
             $record['room_id'] = $recordDetail['room']['room_id'];
-            $record['owner_id'] = $recordDetail['room']['owner_uid'];
+            $record['owner_id'] = isset($recordDetail['room']['owner_uid'])
+                ? $recordDetail['room']['owner_uid']    //游戏后端数据更新，兼容新的数据格式
+                : $recordDetail['room']['creator']['uid'];
 
             unset($record['infos']);
         }
@@ -131,7 +133,9 @@ class RecordController extends Controller
     protected function getRanking($recordDetail)
     {
         $ranking = $recordDetail['players'];
-        $roomOwnerId = $recordDetail['room']['owner_uid'];
+        $roomOwnerId = isset($recordDetail['room']['owner_uid'])
+            ? $recordDetail['room']['owner_uid']    //游戏后端数据更新，兼容新的数据格式
+            : $recordDetail['room']['creator']['uid'];
         $roundsCount = count($recordDetail['rounds_info']);
         foreach ($ranking as &$player) {
             $player['is_root_owner'] = $player['uid'] === $roomOwnerId ?: false;
