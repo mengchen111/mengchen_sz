@@ -33,12 +33,72 @@
                         </div>
 
                         <div class="box-body">
-                            <my-vuetable
-                                    :table-url="tableUrl"
-                                    :table-fields="tableFields"
-                                    :callbacks="callbacks"
-                            >
-                            </my-vuetable>
+                            <div class="row">
+                                <div class="col-md-3 col-xs-12">
+                                    <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
+                                            data-target="#add-activities-modal" :click="onCreateActivities">
+                                        新建活动
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <my-vuetable
+                                            :table-url="tableUrl"
+                                            :table-fields="tableFields"
+                                            :callbacks="callbacks"
+                                    >
+                                    </my-vuetable>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="add-activities-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">新建活动</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" @submit.prevent="addActivities">
+                                <div class="form-group">
+                                    <label>活动名称</label>
+                                    <input name="name" type="text" class="form-control" required
+                                           v-model.trim="addActivitiesForm.name" placeholder="活动名称">
+                                </div>
+                                <div class="form-group">
+                                    <label>状态</label>
+                                    <v-select :searchable="false" :options="activitiesStateMap" v-model="activitiesStateValue"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>开始时间</label>
+                                    <my-date-picker required
+                                                    :date-format="dateFormat"
+                                                    v-model="addActivitiesForm.open_time"
+                                                    placeholder="开始时间"
+                                    ></my-date-picker>
+                                </div>
+                                <div class="form-group">
+                                    <label>结束时间</label>
+                                    <my-date-picker requeired
+                                                    :date-format="dateFormat"
+                                                    v-model="addActivitiesForm.end_time"
+                                                    placeholder="结束时间"
+                                    ></my-date-picker>
+                                </div>
+                                <div class="form-group">
+                                    <label>奖品</label>
+                                    <v-select :searchable="false" multiple :options="activitiesRewardOptions" v-model="activitiesRewardValue"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -56,17 +116,17 @@
                                 <div class="form-group">
                                     <label>活动名称</label>
                                     <input name="name" type="text" class="form-control" required
-                                           v-model.trim="activitiesForm.name" placeholder="活动名称">
+                                           v-model.trim="editActivitiesForm.name" placeholder="活动名称">
                                 </div>
                                 <div class="form-group">
                                     <label>状态</label>
-                                    <v-select :searchable="false" :options="activitiesStateMap" v-model="activitiesForm.state_value"></v-select>
+                                    <v-select :searchable="false" :options="activitiesStateMap" v-model="activitiesStateValue"></v-select>
                                 </div>
                                 <div class="form-group">
                                     <label>开始时间</label>
                                     <my-date-picker required
                                             :date-format="dateFormat"
-                                            v-model="activitiesForm.open_time"
+                                            v-model="editActivitiesForm.open_time"
                                             placeholder="开始时间"
                                     ></my-date-picker>
                                 </div>
@@ -74,13 +134,13 @@
                                     <label>结束时间</label>
                                     <my-date-picker requeired
                                             :date-format="dateFormat"
-                                            v-model="activitiesForm.end_time"
+                                            v-model="editActivitiesForm.end_time"
                                             placeholder="结束时间"
                                     ></my-date-picker>
                                 </div>
                                 <div class="form-group">
                                     <label>奖品</label>
-                                    <input type="text" class="form-control" required v-model="activitiesForm.reward"/>
+                                    <v-select :searchable="false" multiple :options="activitiesRewardOptions" v-model="activitiesRewardValue"></v-select>
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>

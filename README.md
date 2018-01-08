@@ -120,8 +120,9 @@ cd $codeDir
 | gm/room/history | GET | 获取房间历史 |
 | activities/list | GET | 获取活动列表 |
 | activities/list | PUT | 编辑活动列表 |
-| activities/list | DELETE | 删除活动列表 |
+| activities/list/{aid} | DELETE | 删除活动列表 |
 | activities/list | POST | 添加活动列表 |
+| activities/reward-map | GET | 获取活动奖励id和name的map |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |

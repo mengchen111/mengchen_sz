@@ -23,10 +23,14 @@ new Vue({
     activitiesStateMap: [
       '关闭', '开启'  //0为关闭，1为开启
     ],
-    activitiesForm: {
-      state_value: '开启',
-    },
+    activitiesRewardMap: {}, //活动奖品id和奖品名的映射
+    activitiesRewardOptions: [],  //活动奖品选项 for vSelect
+    activitiesRewardValue: [],    //活动奖品多选框，选定的值
+    activitiesStateValue: '开启', //活动状态的默认状态
+    editActivitiesForm: {},
+    addActivitiesForm: {},
     activitiesApi: '/admin/api/activities/list',
+    activitiesRewardMapApi: '/admin/api/activities/reward-map',
 
     tableUrl: '/admin/api/activities/list',
     tableFields: [
@@ -85,22 +89,30 @@ new Vue({
 
   methods: {
     onEditActivities (data) {
-      this.activitiesForm.aid = data.aid
-      this.activitiesForm.name = data.name
-      this.activitiesForm.state_value = this.activitiesStateMap[data.open]
-      this.activitiesForm.open_time = data.open_time
-      this.activitiesForm.end_time = data.end_time
-      this.activitiesForm.reward = 'rewards'
+      this.activitiesStateValue = this.activitiesStateMap[data.open]
+      this.activitiesRewardValue = _.map(data.reward, 'name')
+      this.editActivitiesForm.aid = data.aid
+      this.editActivitiesForm.name = data.name
+      this.editActivitiesForm.open_time = data.open_time
+      this.editActivitiesForm.end_time = data.end_time
     },
 
-    editActivities () {
+    //创建activities时，重置vselect的默认选项
+    onCreateActivities () {
+      this.activitiesStateValue = '开启'
+      this.activitiesRewardValue = []
+    },
+
+    addActivities () {
       let _self = this
       let toastr = this.$refs.toastr
 
       //开启状态
-      this.activitiesForm.open = _.findIndex(this.activitiesStateMap, v => v === this.activitiesForm.state_value)
+      this.addActivitiesForm.open = _.findIndex(this.activitiesStateMap, v => v === this.activitiesStateValue)
+      //将reward的名字组合成逗号分割的id的形式（后端存储在数据库中是以这种形式存储的）
+      this.addActivitiesForm.reward = this.transRewardValue2id(this.activitiesRewardValue)
 
-      myTools.axiosInstance.put(this.activitiesApi, this.activitiesForm)
+      myTools.axiosInstance.post(this.activitiesApi, this.addActivitiesForm)
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.$root.eventHub.$emit('MyVuetable:refresh')
@@ -110,13 +122,43 @@ new Vue({
         })
     },
 
+    editActivities () {
+      let _self = this
+      let toastr = this.$refs.toastr
+
+      //开启状态
+      this.editActivitiesForm.open = _.findIndex(this.activitiesStateMap, v => v === this.activitiesStateValue)
+      //将reward的名字组合成逗号分割的id的形式（后端存储在数据库中是以这种形式存储的）
+      this.editActivitiesForm.reward = this.transRewardValue2id(this.activitiesRewardValue)
+
+      myTools.axiosInstance.put(this.activitiesApi, this.editActivitiesForm)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+          _self.$root.eventHub.$emit('MyVuetable:refresh')
+        })
+        .catch(function (err) {
+          alert(err)
+        })
+    },
+
+    transRewardValue2id (rewardValue) {
+      let _self = this
+      let reward = ''
+
+      _.forEach(rewardValue, function (v) {
+        reward += _.findKey(_self.activitiesRewardMap, (mapValue) => mapValue === v) + ','
+      })
+
+      return _.trim(reward, ',')
+    },
+
     deleteActivities () {
       let _self = this
       let toastr = this.$refs.toastr
 
       console.log(this.activatedRow)
 
-      myTools.axiosInstance.delete(this.activitiesApi, this.activatedRow)
+      myTools.axiosInstance.delete(this.activitiesApi + '/' + this.activatedRow.aid)
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.$root.eventHub.$emit('MyVuetable:refresh')
@@ -128,7 +170,19 @@ new Vue({
   },
 
   created: function () {
-    //
+    let _self = this
+    let toastr = this.$refs.toastr
+
+    //获取活动奖品map
+    myTools.axiosInstance.get(this.activitiesRewardMapApi)
+      .then(function (res) {
+        myTools.msgResolver(res, toastr)
+        _self.activitiesRewardMap = res.data
+        _self.activitiesRewardOptions = _.values(res.data)
+      })
+      .catch(function (err) {
+        alert(err)
+      })
   },
 
   mounted: function () {

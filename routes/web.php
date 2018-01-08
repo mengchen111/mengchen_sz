@@ -63,8 +63,9 @@ Route::group([
 
     Route::get('activities/list', 'Game\ActivitiesController@getActivitiesList');
     Route::put('activities/list', 'Game\ActivitiesController@editActivitiesList');
-    Route::delete('activities/list', 'Game\ActivitiesController@deleteActivitiesList');
+    Route::delete('activities/list/{aid}', 'Game\ActivitiesController@deleteActivitiesList')->where('aid', '[0-9]+');
     Route::post('activities/list', 'Game\ActivitiesController@addActivitiesList');
+    Route::get('activities/reward-map', 'Game\ActivitiesRewardController@getActivitiesRewardMap');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');
