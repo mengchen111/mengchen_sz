@@ -20,7 +20,7 @@ class ActivitiesController extends Controller
         krsort($activities);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '查询活动列表', $request->header('User-Agent'), json_encode($request->all()));
+            '获取活动列表', $request->header('User-Agent'), json_encode($request->all()));
 
         return Paginator::paginate($activities, $this->per_page, $this->page);
     }
@@ -67,7 +67,7 @@ class ActivitiesController extends Controller
         $this->checkTime($request->input('open_time'), $request->input('end_time'));
     }
 
-    public function checkTime($startTime, $endTime)
+    protected function checkTime($startTime, $endTime)
     {
         $startTime = Carbon::parse($startTime);
         $endTime = Carbon::parse($endTime);

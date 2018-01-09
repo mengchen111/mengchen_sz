@@ -47,4 +47,7 @@ return [
     'game_api_currency_log' => 'currency/log',      //道具消耗记录
     'game_api_activities_activities-list' => 'activities/activities-list', //获取活动列表
     'game_api_activities_activities-reward' => 'activities/activities-reward', //获取活动奖品列表
+    'game_api_activities_activities-task' => 'activities/activities-task', //获取任务列表
+    'game_api_activities_activities-task-type' => 'activities/activities-task-type', //获取任务类型列表
+    'game_api_activities_activities-goods-type' => 'activities/activities-goods-type', //获取任务奖励类型列表
 ];

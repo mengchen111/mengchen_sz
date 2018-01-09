@@ -127,6 +127,11 @@ cd $codeDir
 | activities/reward | PUT | 编辑奖品 |
 | activities/reward/{pid} | DELETE | 删除奖品 |
 | activities/reward | POST | 添加奖品 |
+| activities/task | GET | 获取任务列表 |
+| activities/task | PUT | 编辑任务 |
+| activities/task/{taskId} | DELETE | 删除任务 |
+| activities/task | POST | 添加任务 |
+| activities/task-type-map | GET | 获取任务类型映射 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |

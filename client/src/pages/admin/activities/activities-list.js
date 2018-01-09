@@ -21,7 +21,7 @@ new Vue({
     dateFormat: 'YYYY-MM-DD HH:mm:ss',
 
     activitiesStateMap: [
-      '关闭', '开启'  //0为关闭，1为开启
+      '关闭', '开启',  //0为关闭，1为开启
     ],
     activitiesRewardMap: {}, //活动奖品id和奖品名的映射
     activitiesRewardOptions: [],  //活动奖品选项 for vSelect

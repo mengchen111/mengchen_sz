@@ -26,7 +26,7 @@ class ActivitiesRewardController extends Controller
         $reward = GameApiService::request('GET', $this->activitiesRewardApi);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '查询活动奖品id和奖品名映射关系', $request->header('User-Agent'), json_encode($request->all()));
+            '获取活动奖品id和奖品名映射关系', $request->header('User-Agent'), json_encode($request->all()));
 
         $rewardMap = [];
         array_walk($reward, function ($value) use (&$rewardMap) {
@@ -41,7 +41,7 @@ class ActivitiesRewardController extends Controller
         krsort($reward);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '查询活动奖品李彪', $request->header('User-Agent'), json_encode($request->all()));
+            '获取活动奖品列表', $request->header('User-Agent'), json_encode($request->all()));
 
         return Paginator::paginate($reward, $this->per_page, $this->page);
     }
