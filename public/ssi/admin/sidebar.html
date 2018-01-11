@@ -33,7 +33,8 @@
                 </a>
                 <ul class="treeview-menu">
                     <li :class="{ active: uri.activities['activities-list'].isActive }" v-show="isAdmin || shownMenu.activities['activities-list'].ifShown"><a href="/admin/activities/activities-list"><i class="fa fa-circle-o"></i>活动列表</a></li>
-                    <li :class="{ active: uri.activities['rewards-list'].isActive }" v-show="isAdmin || shownMenu.activities['rewards-list'].ifShown"><a href="/admin/activities/rewards-list"><i class="fa fa-circle-o"></i>奖品列表</a></li>
+                    <li :class="{ active: uri.activities['rewards-list'].isActive }" v-show="isAdmin || shownMenu.activities['rewards-list'].ifShown"><a href="/admin/activities/rewards-list"><i class="fa fa-circle-o"></i>奖励列表</a></li>
+                    <li :class="{ active: uri.activities['goods-list'].isActive }" v-show="isAdmin || shownMenu.activities['goods-list'].ifShown"><a href="/admin/activities/goods-list"><i class="fa fa-circle-o"></i>道具列表</a></li>
                     <li :class="{ active: uri.activities['tasks-list'].isActive }" v-show="isAdmin || shownMenu.activities['tasks-list'].ifShown"><a href="/admin/activities/tasks-list"><i class="fa fa-circle-o"></i>任务列表</a></li>
                     <li :class="{ active: uri.activities.statement.isActive }" v-show="isAdmin || shownMenu.activities.statement.ifShown"><a href="/admin/activities/statement"><i class="fa fa-circle-o"></i>数据统计</a></li>
                 </ul>

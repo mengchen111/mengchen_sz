@@ -53,6 +53,11 @@ class ViewController extends Controller
         return view('admin.activities.rewards-list');
     }
 
+    public function activitiesGoodsList(Request $request)
+    {
+        return view('admin.activities.goods-list');
+    }
+
     public function activitiesTasksList(Request $request)
     {
         return view('admin.activities.tasks-list');

@@ -37,6 +37,9 @@ trait AuthorizationMap
             'rewards-list' => [
                 'ifShown' => true,
             ],
+            'goods-list' => [
+                'ifShown' => true,
+            ],
             'tasks-list' => [
                 'ifShown' => true,
             ],

@@ -131,6 +131,7 @@ Route::group([
 
     Route::get('activities/activities-list', 'ViewController@activitiesActivitiesList');
     Route::get('activities/rewards-list', 'ViewController@activitiesRewardsList');
+    Route::get('activities/goods-list', 'ViewController@activitiesGoodsList');
     Route::get('activities/tasks-list', 'ViewController@activitiesTasksList');
     Route::get('activities/statement', 'ViewController@activitiesStatement');
 

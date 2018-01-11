@@ -31,6 +31,9 @@ export default {
     'rewards-list': {
       ifShown: false,
     },
+    'goods-list': {
+      ifShown: false,
+    },
     'tasks-list': {
       ifShown: false,
     },

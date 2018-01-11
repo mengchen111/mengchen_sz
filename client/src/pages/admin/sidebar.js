@@ -38,6 +38,9 @@ new Vue({
         'rewards-list': {
           isActive: false,
         },
+        'goods-list': {
+          isActive: false,
+        },
         'tasks-list': {
           isActive: false,
         },

@@ -54,6 +54,14 @@ new Vue({
         title: '已耗数量',
       },
       {
+        name: 'goods_type_model.goods_name',
+        title: '道具类型',
+      },
+      {
+        name: 'goods_count',
+        title: '道具数量',
+      },
+      {
         name: '__component:table-actions',
         title: '操作',
         titleClass: 'text-center',
