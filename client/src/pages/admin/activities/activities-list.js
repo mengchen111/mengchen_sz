@@ -77,11 +77,11 @@ new Vue({
         }
       },
       transReward: function (value) {
-        let rewards = ''
+        let activityReward = []
         value.forEach(function (item) {
-          rewards += item.name + ','
+          activityReward.push(item.show_text)
         })
-        return rewards
+        return activityReward.join()
       },
     },
   },
@@ -89,7 +89,7 @@ new Vue({
   methods: {
     onEditActivities (data) {
       this.activitiesStateValue = this.activitiesStateMap[data.open]
-      this.activitiesRewardValue = _.map(data.reward_model, 'name')
+      this.activitiesRewardValue = _.map(data.reward_model, 'show_text')
       this.editActivitiesForm.aid = data.aid
       this.editActivitiesForm.name = data.name
       this.editActivitiesForm.open_time = data.open_time
@@ -98,13 +98,21 @@ new Vue({
 
     //创建activities时，重置vselect的默认选项
     onCreateActivities () {
+      this.addActivitiesForm.name = ''
       this.activitiesStateValue = '开启'
+      this.addActivitiesForm.open_time = ''
+      this.addActivitiesForm.end_time = ''
       this.activitiesRewardValue = []
     },
 
     addActivities () {
       let _self = this
       let toastr = this.$refs.toastr
+
+      //如果添加的时候没有选择奖品
+      if (this.activitiesRewardValue.length === 0) {
+        return toastr.message('奖品不能为空', 'error')
+      }
 
       //开启状态
       this.addActivitiesForm.open = _.findIndex(this.activitiesStateMap, v => v === this.activitiesStateValue)
@@ -125,6 +133,12 @@ new Vue({
       let _self = this
       let toastr = this.$refs.toastr
 
+      console.log(this.activitiesRewardValue)
+      //如果编辑的时候没有选择奖品
+      if (this.activitiesRewardValue.length === 0) {
+        return toastr.message('奖品不能为空', 'error')
+      }
+
       //开启状态
       this.editActivitiesForm.open = _.findIndex(this.activitiesStateMap, v => v === this.activitiesStateValue)
       //将reward的名字组合成逗号分割的id的形式（后端存储在数据库中是以这种形式存储的）
@@ -142,13 +156,14 @@ new Vue({
 
     transRewardValue2id (rewardValue) {
       let _self = this
-      let reward = ''
+      let activityReward = []
 
       _.forEach(rewardValue, function (v) {
-        reward += _.findKey(_self.activitiesRewardMap, (mapValue) => mapValue === v) + ','
+        activityReward.push(_.findKey(_self.activitiesRewardMap, (mapValue) => mapValue === v))
       })
 
-      return _.trim(reward, ',')
+      activityReward.sort()
+      return activityReward.join(',')
     },
 
     deleteActivities () {

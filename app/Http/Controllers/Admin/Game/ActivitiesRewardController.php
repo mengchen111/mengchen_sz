@@ -30,7 +30,7 @@ class ActivitiesRewardController extends Controller
 
         $rewardMap = [];
         array_walk($reward, function ($value) use (&$rewardMap) {
-            $rewardMap[$value['pid']] = $value['name'];
+            $rewardMap[$value['pid']] = $value['show_text'];
         });
         return $rewardMap;
     }
