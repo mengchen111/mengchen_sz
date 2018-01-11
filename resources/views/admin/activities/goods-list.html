@@ -33,7 +33,24 @@
                         </div>
 
                         <div class="box-body">
-                            道具列表
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-3 col-xs-12">-->
+                                    <!--<button class="btn btn-primary btn-block btn-flat" data-toggle="modal"-->
+                                            <!--data-target="#add-goods-modal">-->
+                                        <!--添加道具-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12">
+                                    <my-vuetable
+                                            :table-url="tableUrl"
+                                            :table-fields="tableFields"
+                                    >
+                                    </my-vuetable>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
