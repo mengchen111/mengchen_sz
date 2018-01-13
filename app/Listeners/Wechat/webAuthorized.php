@@ -28,6 +28,11 @@ class webAuthorized
      */
     public function handle(WeChatUserAuthorized $event)
     {
+        //如果已经验证过的用户session还未过期，不执行后续操作
+        if (! $event->isNewSession) {
+            return;
+        }
+
         $user = $event->user->getOriginal();
         OperationLogs::add(0, 'event', 'event', '微信 - 网页授权事件', 'event', json_encode($user, JSON_UNESCAPED_UNICODE));
 
