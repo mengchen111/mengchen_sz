@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Wecaht;
+namespace App\Http\Controllers\Wechat;
 
 use App\Services\Game\GameApiService;
 use App\Services\WechatService;
@@ -28,12 +28,11 @@ class officialAccountController extends Controller
 
     public function callback(Request $request)
     {
-        return $request->echostr;
         $this->wechatServer->setMessageHandler(function ($message) use ($request) {
             // 注意，这里的 $message 不仅仅是用户发来的消息，也可能是事件
             // 当 $message->MsgType 为 event 时为事件
             if ($message->MsgType == 'event') {
-                OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+                OperationLogs::add(0, $request->path(), $request->method(),
                     '微信回调 - 事件:' . $message->Event . ' openid:' . $message->FromUserName,
                     $request->header('User-Agent'), json_encode($request->all()));
 
