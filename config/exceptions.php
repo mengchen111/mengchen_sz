@@ -12,4 +12,5 @@ return [
     'GameServerException' => 1001,
     'GameApiServiceException' => 2000,
     'RoomStatementServiceException' => 2001,
+    'WechatServiceException' => 2002,
 ];

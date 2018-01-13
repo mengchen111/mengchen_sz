@@ -35,6 +35,14 @@ Route::prefix('api')->middleware(['auth'])->group(function () {
     Route::get('game/player', 'PlayerController@searchPlayer');
 });
 
+//微信回调接口
+Route::group([
+    'prefix' => 'wechat',
+    'namespace' => 'Wechat',
+], function () {
+    Route::any('official-account/callback', 'officialAccountController@callback');
+});
+
 //管理员接口
 Route::group([
     'middleware' => ['auth'],

@@ -188,3 +188,8 @@ cd $codeDir
 | /api/content-header-h1 | GET | 获取页面的H1标题内容|
 | /api/game/room/type-map | GET | 获取游戏后端游戏类型id的映射关系 |
 | /api/game/player | GET | 查找玩家 |
+
+### 微信回调接口
+| URI   | Method  | Description |     
+| ----  | :-----: | ----------: |
+| /wechat/official-account/callback | ANY | 微信公众号事件回调 |

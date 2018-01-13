@@ -50,4 +50,6 @@ return [
     'game_api_activities_activities-task' => 'activities/activities-task', //获取任务列表
     'game_api_activities_activities-task-type' => 'activities/activities-task-type', //获取任务类型列表
     'game_api_activities_activities-goods-type' => 'activities/activities-goods-type', //获取任务奖励类型列表
+    'game_api_wechat_official-account_unionid-openid_create' => 'wechat/official-account/unionid-openid/create', //创建unionid和公众号openid记录
+    'game_api_wechat_official-account_unionid-openid_delete' => 'wechat/official-account/unionid-openid/delete', //
 ];
