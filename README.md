@@ -193,3 +193,4 @@ cd $codeDir
 | URI   | Method  | Description |     
 | ----  | :-----: | ----------: |
 | /wechat/official-account/callback | ANY | 微信公众号事件回调 |
+| /wechat/official-account/authorization | ANY | 微信公众号网页授权回调(使用路由，此回调暂未启用) |

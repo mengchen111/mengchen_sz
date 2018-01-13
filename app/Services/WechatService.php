@@ -24,7 +24,12 @@ class WechatService
             'access_token' => $token,
             'openid' => $openId,
         ];
-        $response = self::httpClient()->request('GET', $getUnionIdUri, [
+        return self::sendHttpRequest('GET', $getUnionIdUri, $params);
+    }
+
+    protected static function sendHttpRequest($requestType, $uri, $params = [])
+    {
+        $response = self::httpClient()->request($requestType, $uri, [
             'query' => $params,
         ])
             ->getBody()
@@ -36,7 +41,7 @@ class WechatService
 
     protected static function checkResponse($res)
     {
-        if (isset($res['errcode'])) {
+        if (isset($res['errcode']) && $res['errcode'] != 0) {
             throw new WechatServiceException('微信接口调用，返回结果错误：' . json_encode($res));
         }
         return true;

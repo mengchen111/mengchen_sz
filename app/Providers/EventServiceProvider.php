@@ -16,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
         'Illuminate\Notifications\Events\NotificationSent' => [
             'App\Listeners\LogNotification',
         ],
+        'Overtrue\LaravelWechat\Events\WeChatUserAuthorized' => [
+            'App\Listeners\Wechat\webAuthorized',
+        ],
     ];
 
     /**

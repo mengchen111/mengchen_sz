@@ -35,14 +35,6 @@ Route::prefix('api')->middleware(['auth'])->group(function () {
     Route::get('game/player', 'PlayerController@searchPlayer');
 });
 
-//微信回调接口
-Route::group([
-    'prefix' => 'wechat',
-    'namespace' => 'Wechat',
-], function () {
-    Route::any('official-account/callback', 'officialAccountController@callback');
-});
-
 //管理员接口
 Route::group([
     'middleware' => ['auth'],
@@ -207,4 +199,22 @@ Route::group([
     Route::get('top-up/player', 'ViewController@topUpPlayer');
 
     Route::get('info', 'ViewController@info');
+});
+
+//微信回调接口
+Route::group([
+    'prefix' => 'wechat',
+    'namespace' => 'Wechat',
+], function () {
+    Route::any('official-account/callback', 'officialAccountController@callback');  //微信公众号事件回调
+    //Route::any('official-account/authorization', 'webAuthController@callback');    //网页授权回调(使用路由不需要此回调)
+});
+
+//微信视图
+Route::group([
+    'middleware' => ['wechat.oauth'],
+    'prefix' => 'wechat',
+    'namespace' => 'Wechat',
+], function () {
+    Route::get('web-auth', 'ViewController@webAuth');
 });
