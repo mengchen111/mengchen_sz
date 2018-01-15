@@ -218,3 +218,5 @@ Route::group([
 ], function () {
     Route::get('web-auth', 'ViewController@webAuth');
 });
+
+Route::any('wechat/red-packet/test', 'Wechat\RedPacketController@sendRedPacket');   //测试微信红包
