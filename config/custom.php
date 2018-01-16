@@ -52,4 +52,6 @@ return [
     'game_api_activities_activities-goods-type' => 'activities/activities-goods-type', //获取任务奖励类型列表
     'game_api_wechat_official-account_unionid-openid_create' => 'wechat/official-account/unionid-openid/create', //创建unionid和公众号openid记录
     'game_api_wechat_official-account_unionid-openid_delete' => 'wechat/official-account/unionid-openid/delete', //
+    'game_api_wechat_red-packet_send-list' => 'wechat/red-packet/send-list', //获取待发送红包列表
+    'game_api_wechat_red-packet_update' => 'wechat/red-packet/update', //更新发送红包状态
 ];

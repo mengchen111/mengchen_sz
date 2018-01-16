@@ -10,7 +10,10 @@ return [
     //exception code
     'CustomException' => 1000,
     'GameServerException' => 1001,
+
     'GameApiServiceException' => 2000,
     'RoomStatementServiceException' => 2001,
     'WechatServiceException' => 2002,
+
+    'SendWxRedPacketCommandException' => 3000,
 ];

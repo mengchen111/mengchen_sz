@@ -16,4 +16,9 @@ class BaseCommand extends Command
     {
         return $this->info(substr(strrchr(static::class, '\\'), 1) . ' [' . Carbon::now()->toDateTimeString() . '] ' . $msg);
     }
+
+    public function logError($msg)
+    {
+        return $this->error(substr(strrchr(static::class, '\\'), 1) . ' [' . Carbon::now()->toDateTimeString() . '] ' . $msg);
+    }
 }
