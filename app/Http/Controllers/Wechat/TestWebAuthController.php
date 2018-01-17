@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
 
-class webAuthController extends Controller
+class TestWebAuthController extends Controller
 {
     //微信网页授权回调，返送code(用于申请access_token拿用户信息)和state参数过来
     //使用路由后此回调方法不需要了

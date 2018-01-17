@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 
-class RedPacketController extends Controller
+class TestRedPacketController extends Controller
 {
     public function sendRedPacket(Request $request)
     {

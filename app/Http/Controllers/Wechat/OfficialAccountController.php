@@ -9,7 +9,7 @@ use GuzzleHttp;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
 
-class officialAccountController extends Controller
+class OfficialAccountController extends Controller
 {
     protected $wechat;
     protected $wechatServer;

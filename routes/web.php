@@ -206,8 +206,8 @@ Route::group([
     'prefix' => 'wechat',
     'namespace' => 'Wechat',
 ], function () {
-    Route::any('official-account/callback', 'officialAccountController@callback');  //微信公众号事件回调
-    //Route::any('official-account/authorization', 'webAuthController@callback');    //网页授权回调(使用路由不需要此回调)
+    Route::any('official-account/callback', 'OfficialAccountController@callback');  //微信公众号事件回调
+    //Route::any('official-account/authorization', 'TestWebAuthController@callback');    //网页授权回调(使用路由不需要此回调)
 });
 
 //微信视图
@@ -219,4 +219,4 @@ Route::group([
     Route::get('web-auth', 'ViewController@webAuth');
 });
 
-Route::any('wechat/red-packet/test', 'Wechat\RedPacketController@sendRedPacket');   //测试微信红包
+//Route::any('wechat/red-packet/test', 'Wechat\RedPacketController@sendRedPacket');   //测试微信红包
