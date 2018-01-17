@@ -44,16 +44,16 @@ class SendWxRedPacket extends BaseCommand
         $redPacketSendList = $this->getRedPacketSendList();          //调用后端接口获取需要发送的openid列表
         foreach ($redPacketSendList as $item) {
             if ($item['player']['openid'] === null) {  //如果未找到此用户的openid，那么忽略之
-                $this->logError('id:' . $item['id'] . '未找到玩家' . $item['user_id'] . '的openid，跳过');
+                $this->logError('id:' . $item['id'] . ' 未找到玩家' . $item['user_id'] . '的openid，跳过');
                 continue;
             }
             if ($item['activity_reward']['name'] !== '红包') {
-                $this->logError('id:' . $item['id'] . '玩家' . $item['user_id'] . '的奖励不是红包，跳过');
+                $this->logError('id:' . $item['id'] . ' 玩家' . $item['user_id'] . '的奖励不是红包，跳过');
                 continue;
             }
             $redPacketData = $this->buildRedPacketData($item);  //构建发送红包需要的数据
             $redPacket = WxRedPacketLog::create($redPacketData);    //本地数据库创建红包记录
-            $this->sendRedPacket($redPacket);
+            $this->sendRedPacket($redPacket, $item);
         }
     }
 
@@ -93,7 +93,7 @@ class SendWxRedPacket extends BaseCommand
         return $no;
     }
 
-    protected function sendRedPacket($redPacket)
+    protected function sendRedPacket($redPacket, $sendItem)
     {
         $updateRedPacketApi = config('custom.game_api_wechat_red-packet_update');
         $paramsKey = ['mch_billno', 'send_name', 're_openid', 'total_num', 'total_amount',
@@ -112,7 +112,7 @@ class SendWxRedPacket extends BaseCommand
 
                 //更新游戏服务器的红包数据
                 GameApiService::request('POST', $updateRedPacketApi, [
-                    'id' => $redPacket->id,
+                    'id' => $sendItem->id,
                     'sent' => 1,
                     'sent_time' => Carbon::now()->toDateTimeString()
                 ]);
