@@ -15,6 +15,7 @@ class CreateWxRedPacketLogTable extends Migration
     {
         Schema::create('wx_red_packet_log', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('log_redbag_id')->comment('游戏端红包发送记录表的id');
             $table->integer('player_id')->comment('玩家id号');
             $table->string('nickname')->comment('玩家昵称');
             $table->string('unionid')->comment('unionid');

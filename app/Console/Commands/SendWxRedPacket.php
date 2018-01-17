@@ -44,16 +44,33 @@ class SendWxRedPacket extends BaseCommand
         $redPacketSendList = $this->getRedPacketSendList();          //调用后端接口获取需要发送的openid列表
         foreach ($redPacketSendList as $item) {
             if ($item['player']['openid'] === null) {  //如果未找到此用户的openid，那么忽略之
-                $this->logError('id:' . $item['id'] . ' 未找到玩家' . $item['user_id'] . '的openid，跳过');
+                $this->logError('log_redbag_id:' . $item['id'] . ' 未找到玩家' . $item['user_id'] . '的openid，跳过');
                 continue;
             }
             if ($item['activity_reward']['name'] !== '红包') {
-                $this->logError('id:' . $item['id'] . ' 玩家' . $item['user_id'] . '的奖励不是红包，跳过');
+                $this->logError('log_redbag_id:' . $item['id'] . ' 玩家' . $item['user_id'] . '的奖励不是红包，跳过');
                 continue;
             }
-            $redPacketData = $this->buildRedPacketData($item);  //构建发送红包需要的数据
+            //查找本地红包log，看是否已经存在此条目（某些原因，红包状态更新发到后端接口，未更新成功的情况）
+            if (! $this->checkExistLog($item)) {
+                continue;
+            }
+
+            $redPacketData = $this->buildRedPacketData($item);      //构建发送红包需要的数据
             $redPacket = WxRedPacketLog::create($redPacketData);    //本地数据库创建红包记录
             $this->sendRedPacket($redPacket, $item);
+        }
+    }
+
+    protected function checkExistLog($sendItem)
+    {
+        $redPacketLog = WxRedPacketLog::where('log_redbag_id', $sendItem->id)->first();
+        if (empty($redPacketLog)) {
+            return true;
+        } else {
+            //如果不为空则上一次此待发送红包已经入库过
+            $this->logError('log_redbag_id:' . $sendItem['id'] . '已存在本地库中，状态为' . $redPacketLog->send_status);
+            return false;
         }
     }
 
@@ -68,6 +85,7 @@ class SendWxRedPacket extends BaseCommand
     protected function buildRedPacketData($item)
     {
         $data = [];
+        $data['log_redbag_id'] = $item['id'];
         $data['player_id'] = $item['user_id'];
         $data['nickname'] = $item['player']['nickname'];
         $data['unionid'] = $item['player']['unionid'];
@@ -112,7 +130,7 @@ class SendWxRedPacket extends BaseCommand
 
                 //更新游戏服务器的红包数据
                 GameApiService::request('POST', $updateRedPacketApi, [
-                    'id' => $sendItem->id,
+                    'id' => $sendItem['id'],
                     'sent' => 1,
                     'sent_time' => Carbon::now()->toDateTimeString()
                 ]);
@@ -124,7 +142,7 @@ class SendWxRedPacket extends BaseCommand
                 $redPacket->save();
 
                 GameApiService::request('POST', $updateRedPacketApi, [
-                    'id' => $redPacket->id,
+                    'id' => $sendItem['id'],
                     'sent' => 2,
                     'sent_time' => Carbon::now()->toDateTimeString(),
                     'error' => $result->err_code_des,
@@ -138,7 +156,7 @@ class SendWxRedPacket extends BaseCommand
             $redPacket->save();
 
             GameApiService::request('POST', $updateRedPacketApi, [
-                'id' => $redPacket->id,
+                'id' => $sendItem['id'],
                 'sent' => 2,
                 'sent_time' => Carbon::now()->toDateTimeString(),
                 'error' => '未知错误，result_code不为SUCCESS',
