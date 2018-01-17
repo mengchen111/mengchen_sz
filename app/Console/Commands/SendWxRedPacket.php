@@ -64,7 +64,7 @@ class SendWxRedPacket extends BaseCommand
 
     protected function checkExistLog($sendItem)
     {
-        $redPacketLog = WxRedPacketLog::where('log_redbag_id', $sendItem->id)->first();
+        $redPacketLog = WxRedPacketLog::where('log_redbag_id', $sendItem['id'])->first();
         if (empty($redPacketLog)) {
             return true;
         } else {
