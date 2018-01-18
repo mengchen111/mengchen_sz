@@ -61,6 +61,10 @@ new Vue({
         callback: 'transReward',
       },
       {
+        name: 'reward_refresh_time',
+        title: '奖品刷新时间',
+      },
+      {
         name: '__component:table-actions',
         title: '操作',
         titleClass: 'text-center',
@@ -94,6 +98,7 @@ new Vue({
       this.editActivitiesForm.name = data.name
       this.editActivitiesForm.open_time = data.open_time
       this.editActivitiesForm.end_time = data.end_time
+      this.editActivitiesForm.reward_refresh_time = data.reward_refresh_time
     },
 
     //创建activities时，重置vselect的默认选项
@@ -103,6 +108,7 @@ new Vue({
       this.addActivitiesForm.open_time = ''
       this.addActivitiesForm.end_time = ''
       this.activitiesRewardValue = []
+      this.addActivitiesForm.reward_refresh_time = ''
     },
 
     addActivities () {
@@ -133,7 +139,6 @@ new Vue({
       let _self = this
       let toastr = this.$refs.toastr
 
-      console.log(this.activitiesRewardValue)
       //如果编辑的时候没有选择奖品
       if (this.activitiesRewardValue.length === 0) {
         return toastr.message('奖品不能为空', 'error')

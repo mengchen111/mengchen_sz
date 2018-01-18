@@ -18,7 +18,7 @@ class ActivitiesRewardController extends Controller
     {
         parent::__construct($request);
 
-        $this->activitiesRewardApi = config('custom.game_api_activities_activities-reward');
+        $this->activitiesRewardApi = config('custom.game_api_activities_reward');
     }
 
     public function getActivitiesRewardMap(AdminRequest $request)
@@ -85,7 +85,7 @@ class ActivitiesRewardController extends Controller
 
     protected function checkIfRewardInUse($pid)
     {
-        $activitiesApi = config('custom.game_api_activities_activities-list');
+        $activitiesApi = config('custom.game_api_activities_list');
         $activities = GameApiService::request('GET', $activitiesApi);
 
         $inUseRewardIds = collect();

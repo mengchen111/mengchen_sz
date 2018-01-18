@@ -45,8 +45,11 @@ return [
     'game_api_card_consumed' => 'card/consumed',    //房卡消耗数据（指定日期）
     'game_api_card_consumed_total' => 'card/consumed/total',    //房卡总消耗
     'game_api_currency_log' => 'currency/log',      //道具消耗记录
-    'game_api_activities_activities-list' => 'activities/activities-list', //获取活动列表
-    'game_api_activities_activities-reward' => 'activities/activities-reward', //获取活动奖品列表
+    'game_api_activities_list' => 'activities/list', //获取活动列表
+    'game_api_activities_add' => 'activities/add', //添加活动
+    'game_api_activities_modify' => 'activities/modify',
+    'game_api_activities_delete' => 'activities/delete',
+    'game_api_activities_reward' => 'activities/reward', //获取活动奖品列表
     'game_api_activities_activities-task' => 'activities/activities-task', //获取任务列表
     'game_api_activities_activities-task-type' => 'activities/activities-task-type', //获取任务类型列表
     'game_api_activities_activities-goods-type' => 'activities/activities-goods-type', //获取任务奖励类型列表

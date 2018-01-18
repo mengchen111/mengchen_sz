@@ -96,6 +96,11 @@
                                     <v-select :searchable="false" multiple :options="activitiesRewardOptions" v-model="activitiesRewardValue"></v-select>
                                 </div>
                                 <div class="form-group">
+                                    <label>奖品刷新时间</label>
+                                    <input name="reward_refresh_time" type="text" class="form-control" required
+                                           v-model.trim="addActivitiesForm.reward_refresh_time" placeholder="奖品刷新时间(0 9 * * *)">
+                                </div>
+                                <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
                                 </div>
                             </form>
@@ -141,6 +146,11 @@
                                 <div class="form-group">
                                     <label>奖品</label>
                                     <v-select :searchable="false" multiple :options="activitiesRewardOptions" v-model="activitiesRewardValue"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>奖品刷新时间</label>
+                                    <input name="reward_refresh_time" type="text" class="form-control" required
+                                           v-model.trim="editActivitiesForm.reward_refresh_time" placeholder="奖品刷新时间(0 9 * * *)">
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
