@@ -49,7 +49,10 @@ return [
     'game_api_activities_add' => 'activities/add', //添加活动
     'game_api_activities_modify' => 'activities/modify',
     'game_api_activities_delete' => 'activities/delete',
-    'game_api_activities_reward' => 'activities/reward', //获取活动奖品列表
+    'game_api_activities_reward_list' => 'activities/reward/list', //获取活动奖品列表
+    'game_api_activities_reward_add' => 'activities/reward/add',
+    'game_api_activities_reward_modify' => 'activities/reward/modify',
+    'game_api_activities_reward_delete' => 'activities/reward/delete',
     'game_api_activities_activities-task' => 'activities/activities-task', //获取任务列表
     'game_api_activities_activities-task-type' => 'activities/activities-task-type', //获取任务类型列表
     'game_api_activities_activities-goods-type' => 'activities/activities-goods-type', //获取任务奖励类型列表

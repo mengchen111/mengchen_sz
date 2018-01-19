@@ -2,6 +2,7 @@ import { myTools } from '../index.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import MyToastr from '../../../components/MyToastr.vue'
 import RewardTableActions from './components/RewardTableActions.vue'
+import vSelect from 'vue-select'
 
 Vue.component('table-actions', RewardTableActions)
 
@@ -10,13 +11,19 @@ new Vue({
   components: {
     MyVuetable,
     MyToastr,
+    vSelect,
   },
   data: {
     eventHub: new Vue(),
     activatedRow: {},
 
     addRewardForm: {},
+    editRewardForm: {},
+    goodsTypeMap: {},
+    goodsTypeOptions: [],
+    goodsTypeValue: null,
     rewardApi: '/admin/api/activities/reward',
+    goodsTypeMapApi: '/admin/api/activities/goods-type-map',
 
     tableUrl: '/admin/api/activities/reward',
     tableFields: [
@@ -80,9 +87,15 @@ new Vue({
   },
 
   methods: {
+    onAddReward () {
+      this.goodsTypeValue = ''   //重置奖品道具的值
+    },
+
     addReward () {
       let _self = this
       let toastr = this.$refs.toastr
+
+      this.addRewardForm.goods_type = _.findKey(this.goodsTypeMap, v => v === this.goodsTypeValue)
 
       myTools.axiosInstance.post(this.rewardApi, this.addRewardForm)
         .then(function (res) {
@@ -94,9 +107,16 @@ new Vue({
         })
     },
 
+    onEditReward (data) {
+      this.activatedRow = data
+      this.activatedRow.goodsTypeValue = data.goods_type_model.goods_name
+    },
+
     editReward () {
       let _self = this
       let toastr = this.$refs.toastr
+
+      this.activatedRow.goods_type = _.findKey(this.goodsTypeMap, v => v === this.activatedRow.goodsTypeValue)
 
       myTools.axiosInstance.put(this.rewardApi, this.activatedRow)
         .then(function (res) {
@@ -124,12 +144,24 @@ new Vue({
   },
 
   created: function () {
-    //
+    let _self = this
+    let toastr = this.$refs.toastr
+
+    //获取活动奖品道具map
+    myTools.axiosInstance.get(this.goodsTypeMapApi)
+      .then(function (res) {
+        myTools.msgResolver(res, toastr)
+        _self.goodsTypeMap = res.data
+        _self.goodsTypeOptions = _.values(res.data)
+      })
+      .catch(function (err) {
+        alert(err)
+      })
   },
 
   mounted: function () {
     let _self = this
-    this.$root.eventHub.$on('editRewardEvent', (data) => _self.activatedRow = data)
+    this.$root.eventHub.$on('editRewardEvent', this.onEditReward)
     this.$root.eventHub.$on('deleteRewardEvent', (data) => _self.activatedRow = data)
   },
 })

@@ -18,7 +18,7 @@ class ActivitiesRewardController extends Controller
     {
         parent::__construct($request);
 
-        $this->activitiesRewardApi = config('custom.game_api_activities_reward');
+        $this->activitiesRewardApi = config('custom.game_api_activities_reward_list');
     }
 
     public function getActivitiesRewardMap(AdminRequest $request)
@@ -48,13 +48,15 @@ class ActivitiesRewardController extends Controller
 
     public function editReward(AdminRequest $request)
     {
-        $this->validateEditRewardForm($request);
+        $formData = $this->validateEditRewardForm($request);
+
+        $api = config('custom.game_api_activities_reward_modify');
+        GameApiService::request('POST', $api, $formData);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '编辑活动奖品', $request->header('User-Agent'), json_encode($request->all()));
 
         return [
-            'data' => $request->all(),
             'message' => '编辑成功',
         ];
     }
@@ -70,6 +72,13 @@ class ActivitiesRewardController extends Controller
             'probability' => 'required|integer',
             'single_limit' => 'required|integer',
             'expend' => 'required|integer',
+            'goods_type' => 'required|integer',
+            'goods_count' => 'required|numeric',
+        ]);
+
+        return $request->only([
+            'pid', 'name', 'img', 'show_text', 'total_inventory', 'probability',
+            'single_limit', 'expend', 'goods_type', 'goods_count'
         ]);
     }
 
@@ -78,8 +87,14 @@ class ActivitiesRewardController extends Controller
         //查看此奖励是否有被活动使用
         $this->checkIfRewardInUse($pid);
 
+        $api = config('custom.game_api_activities_reward_delete');
+        GameApiService::request('POST', $api, ['pid' => $pid]);
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '删除活动奖励', $request->header('User-Agent'), json_encode($request->all()));
+
         return [
-            'data' => $pid,
+            'message' => '删除成功',
         ];
     }
 
@@ -102,13 +117,14 @@ class ActivitiesRewardController extends Controller
 
     public function addReward(AdminRequest $request)
     {
-        $this->validateAddRewardForm($request);
+        $formData = $this->validateAddRewardForm($request);
+        $api = config('custom.game_api_activities_reward_add');
+        GameApiService::request('POST', $api, $formData);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '添加活动奖品', $request->header('User-Agent'), json_encode($request->all()));
+            '添加活动奖励', $request->header('User-Agent'), json_encode($request->all()));
 
         return [
-            'data' => $request->all(),
             'message' => '添加成功',
         ];
     }
@@ -122,7 +138,13 @@ class ActivitiesRewardController extends Controller
             'total_inventory' => 'required|integer',
             'probability' => 'required|integer',
             'single_limit' => 'required|integer',
-            'expend' => 'required|integer',
+            'goods_type' => 'required|integer',
+            'goods_count' => 'required|numeric',
+        ]);
+
+        return $request->only([
+            'name', 'img', 'show_text', 'total_inventory', 'probability',
+            'single_limit', 'goods_type', 'goods_count'
         ]);
     }
 }

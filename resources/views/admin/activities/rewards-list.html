@@ -36,7 +36,7 @@
                             <div class="row">
                                 <div class="col-md-3 col-xs-12">
                                     <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
-                                            data-target="#add-reward-modal">
+                                            data-target="#add-reward-modal" @click="onAddReward">
                                         添加奖励
                                     </button>
                                 </div>
@@ -66,7 +66,45 @@
                         </div>
                         <div class="modal-body">
                             <form role="form" class="form-group" @submit.prevent="addReward">
-
+                                <div class="form-group">
+                                    <label>奖励名称</label>
+                                    <input name="name" type="text" class="form-control" required
+                                           v-model.trim="addRewardForm.name" placeholder="奖励名称">
+                                </div>
+                                <div class="form-group">
+                                    <label>奖励图标</label>
+                                    <input name="img" type="text" class="form-control" required
+                                           v-model.trim="addRewardForm.img" placeholder="奖励图标">
+                                </div>
+                                <div class="form-group">
+                                    <label>展示文字</label>
+                                    <input name="show_text" type="text" class="form-control" required
+                                           v-model.trim="addRewardForm.show_text" placeholder="展示文字">
+                                </div>
+                                <div class="form-group">
+                                    <label>总库存</label>
+                                    <input name="total_inventory" type="number" class="form-control" required
+                                           v-model.trim="addRewardForm.total_inventory" placeholder="总库存(-1为无限)">
+                                </div>
+                                <div class="form-group">
+                                    <label>概率</label>
+                                    <input name="probability" type="number" min="0" class="form-control" required
+                                           v-model.trim="addRewardForm.probability" placeholder="概率">
+                                </div>
+                                <div class="form-group">
+                                    <label>单人限制</label>
+                                    <input name="single_limit" type="number" class="form-control" required
+                                           v-model.trim="addRewardForm.single_limit" placeholder="每人领取限制(-1为无限)">
+                                </div>
+                                <div class="form-group">
+                                    <label>道具类型</label>
+                                    <v-select :searchable="false" :options="goodsTypeOptions" v-model="goodsTypeValue"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>道具数量</label>
+                                    <input name="goods_count" type="number" min="0" class="form-control" required
+                                           v-model.trim="addRewardForm.goods_count" placeholder="道具数量">
+                                </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
                                 </div>
@@ -85,7 +123,50 @@
                         </div>
                         <div class="modal-body">
                             <form role="form" class="form-group" @submit.prevent="editReward">
-
+                                <div class="form-group">
+                                    <label>奖励名称</label>
+                                    <input name="name" type="text" class="form-control" required
+                                           v-model.trim="activatedRow.name" placeholder="奖励名称">
+                                </div>
+                                <div class="form-group">
+                                    <label>奖励图标</label>
+                                    <input name="img" type="text" class="form-control" required
+                                           v-model.trim="activatedRow.img" placeholder="奖励图标">
+                                </div>
+                                <div class="form-group">
+                                    <label>展示文字</label>
+                                    <input name="show_text" type="text" class="form-control" required
+                                           v-model.trim="activatedRow.show_text" placeholder="展示文字">
+                                </div>
+                                <div class="form-group">
+                                    <label>总库存</label>
+                                    <input name="total_inventory" type="number" class="form-control" required
+                                           v-model.trim="activatedRow.total_inventory" placeholder="总库存(-1为无限)">
+                                </div>
+                                <div class="form-group">
+                                    <label>概率</label>
+                                    <input name="probability" type="number" min="0" class="form-control" required
+                                           v-model.trim="activatedRow.probability" placeholder="概率">
+                                </div>
+                                <div class="form-group">
+                                    <label>单人限制</label>
+                                    <input name="single_limit" type="number" class="form-control" required
+                                           v-model.trim="activatedRow.single_limit" placeholder="每人领取限制(-1为无限)">
+                                </div>
+                                <div class="form-group">
+                                    <label>以耗数量</label>
+                                    <input name="single_limit" type="number" min="0" class="form-control" required
+                                           v-model.trim="activatedRow.expend" placeholder="以耗数量">
+                                </div>
+                                <div class="form-group">
+                                    <label>道具类型</label>
+                                    <v-select :searchable="false" :options="goodsTypeOptions" v-model="activatedRow.goodsTypeValue"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>道具数量</label>
+                                    <input name="goods_count" type="number" min="0" class="form-control" required
+                                           v-model.trim="activatedRow.goods_count" placeholder="道具数量">
+                                </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
                                 </div>
