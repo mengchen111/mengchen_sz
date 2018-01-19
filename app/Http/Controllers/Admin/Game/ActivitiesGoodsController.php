@@ -82,9 +82,8 @@ class ActivitiesGoodsController extends Controller
         //查看此奖品道具是否有被activity_reward使用
         $this->checkIfGoodsTypeInUse($goodsId);
 
-        //todo 待后端接口测试完成
-//        $api = config('custom.game_api_activities_goods-type_delete');
-//        GameApiService::request('POST', $api, ['goods_id' => $goodsId]);
+        $api = config('custom.game_api_activities_goods-type_delete');
+        GameApiService::request('POST', $api, ['goods_id' => $goodsId]);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '删除活动奖品道具', $request->header('User-Agent'), json_encode($request->all()));
