@@ -124,7 +124,7 @@ class TaskController extends Controller
 
     public function getTaskGoodsType(AdminRequest $request)
     {
-        $taskGoodsTypeApi = config('custom.game_api_activities_activities-goods-type');
+        $taskGoodsTypeApi = config('custom.game_api_activities_goods-type_list');
         $taskGoodsTypes = GameApiService::request('GET', $taskGoodsTypeApi);
         $taskGoodsTypeMap = [];
 

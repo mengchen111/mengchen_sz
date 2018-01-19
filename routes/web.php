@@ -70,7 +70,10 @@ Route::group([
     Route::put('activities/reward', 'Game\ActivitiesRewardController@editReward');
     Route::delete('activities/reward/{pid}', 'Game\ActivitiesRewardController@deleteReward')->where('pid', '[0-9]+');
     Route::post('activities/reward', 'Game\ActivitiesRewardController@addReward');
-    Route::get('activities/goods', 'Game\ActivitiesGoodsController@getGoodsList');
+    Route::get('activities/goods-type', 'Game\ActivitiesGoodsController@getGoodsList');
+    Route::put('activities/goods-type', 'Game\ActivitiesGoodsController@editGoodsType');
+    Route::delete('activities/goods-type/{goodsId}', 'Game\ActivitiesGoodsController@deleteGoodsType')->where('goodsId', '[0-9]+');
+    Route::post('activities/goods-type', 'Game\ActivitiesGoodsController@addGoodsType');
     Route::get('activities/goods-type-map', 'Game\ActivitiesGoodsController@getGoodsTypeMap');
     Route::get('activities/task', 'Game\TaskController@getTaskList');
     Route::put('activities/task', 'Game\TaskController@editTask');

@@ -127,7 +127,10 @@ cd $codeDir
 | activities/reward | PUT | 编辑奖品 |
 | activities/reward/{pid} | DELETE | 删除奖品 |
 | activities/reward | POST | 添加奖品 |
-| activities/goods | GET | 获取活动奖励道具列表 |
+| activities/goods-type | GET | 获取活动奖励道具列表 |
+| activities/goods-type | PUT | 编辑活动奖励道具 |
+| activities/goods-type/{goodsId} | DELETE | 删除活动奖励道具 |
+| activities/goods-type | POST | 添加活动奖励道具 |
 | activities/goods-type-map | GET | 获取活动奖励道具列表映射 |
 | activities/task | GET | 获取任务列表 |
 | activities/task | PUT | 编辑任务 |
