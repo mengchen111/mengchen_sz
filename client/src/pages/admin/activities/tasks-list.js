@@ -24,7 +24,7 @@ new Vue({
 
     taskApi: '/admin/api/activities/task',
     taskTypeMapApi: '/admin/api/activities/task-type-map',
-    taskGoodsTypeMapApi: '/admin/api/activities/task-goods-type-map',
+    taskGoodsTypeMapApi: '/admin/api/activities/goods-type-map',
     editTaskForm: {},
     taskTypeMap: {},      //任务类型的id和comment的映射关系
     taskTypeComment: '',  //任务类型描述

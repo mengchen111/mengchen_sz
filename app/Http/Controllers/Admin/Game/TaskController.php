@@ -15,7 +15,7 @@ class TaskController extends Controller
 {
     public function getTaskList(AdminRequest $request)
     {
-        $taskApi = config('custom.game_api_activities_activities-task');
+        $taskApi = config('custom.game_api_activities_task_list');
         $taskList = GameApiService::request('GET', $taskApi);
         krsort($taskList);
 
@@ -27,13 +27,17 @@ class TaskController extends Controller
 
     public function editTask(AdminRequest $request)
     {
-        $this->validateEditTaskForm($request);
+        $formData = $this->validateEditTaskForm($request);
+        $formData['begin_time'] = Carbon::parse($formData['begin_time'])->timestamp;
+        $formData['end_time'] = Carbon::parse($formData['end_time'])->timestamp;
+
+        $api = config('custom.game_api_activities_task_modify');
+        GameApiService::request('POST', $api, $formData);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '编辑任务', $request->header('User-Agent'), json_encode($request->all()));
 
         return [
-            'data' => $request->all(),
             'message' => '编辑成功',
         ];
     }
@@ -54,6 +58,10 @@ class TaskController extends Controller
 
         //检查结束时间应该大于开始时间
         $this->checkTime($request->input('begin_time'), $request->input('end_time'));
+
+        return $request->only([
+            'id', 'name', 'type', 'begin_time', 'end_time', 'mission_time', 'target', 'reward', 'daily'
+        ]);
     }
 
     protected function checkTime($startTime, $endTime)
@@ -67,24 +75,30 @@ class TaskController extends Controller
 
     public function deleteTask(AdminRequest $request, $taskId)
     {
+        $api = config('custom.game_api_activities_task_delete');
+        GameApiService::request('POST', $api, ['id' => $taskId]);
+
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '删除任务', $request->header('User-Agent'), json_encode($request->all()));
 
         return [
-            'data' => $taskId,
             'message' => '删除成功',
         ];
     }
 
     public function addTask(AdminRequest $request)
     {
-        $this->validateAddTaskForm($request);
+        $formData = $this->validateAddTaskForm($request);
+        $formData['begin_time'] = Carbon::parse($formData['begin_time'])->timestamp;
+        $formData['end_time'] = Carbon::parse($formData['end_time'])->timestamp;
+
+        $api = config('custom.game_api_activities_task_add');
+        GameApiService::request('POST', $api, $formData);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '添加任务', $request->header('User-Agent'), json_encode($request->all()));
 
         return [
-            'data' => $request->all(),
             'message' => '添加成功',
         ];
     }
@@ -104,11 +118,15 @@ class TaskController extends Controller
 
         //检查结束时间应该大于开始时间
         $this->checkTime($request->input('begin_time'), $request->input('end_time'));
+
+        return $request->only([
+            'name', 'type', 'begin_time', 'end_time', 'mission_time', 'target', 'reward', 'daily'
+        ]);
     }
 
     public function getTaskTypeMap(AdminRequest $request)
     {
-        $taskTypeApi = config('custom.game_api_activities_activities-task-type');
+        $taskTypeApi = config('custom.game_api_activities_task-type_list');
         $taskType = GameApiService::request('GET', $taskTypeApi);
         $taskTypeMap = [];
 
@@ -120,21 +138,5 @@ class TaskController extends Controller
             '获取任务类型id和comment的映射表', $request->header('User-Agent'), json_encode($request->all()));
 
         return $taskTypeMap;
-    }
-
-    public function getTaskGoodsType(AdminRequest $request)
-    {
-        $taskGoodsTypeApi = config('custom.game_api_activities_goods-type_list');
-        $taskGoodsTypes = GameApiService::request('GET', $taskGoodsTypeApi);
-        $taskGoodsTypeMap = [];
-
-        array_walk($taskGoodsTypes, function ($item) use (&$taskGoodsTypeMap) {
-            $taskGoodsTypeMap[$item['goods_id']] = $item['goods_name'];
-        });
-
-        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '获取任务奖励类型的id和名称的映射表', $request->header('User-Agent'), json_encode($request->all()));
-
-        return $taskGoodsTypeMap;
     }
 }

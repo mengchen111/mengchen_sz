@@ -34,7 +34,7 @@ class ActivitiesGoodsController extends Controller
         });
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '获取活动道具列表', $request->header('User-Agent'), json_encode($request->all()));
+            '获取活动道具列表映射', $request->header('User-Agent'), json_encode($request->all()));
 
         return $goodsTypeMap;
     }
