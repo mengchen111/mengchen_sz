@@ -31,6 +31,15 @@ new Vue({
           isActive: false,
         },
       },
+      community: {
+        isActive: false,
+        list: {
+          isActive: false,
+        },
+        manage: {
+          isActive: false,
+        },
+      },
       'top-up': {
         isActive: false,
         child: {

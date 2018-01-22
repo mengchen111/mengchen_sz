@@ -180,6 +180,10 @@ Route::group([
     Route::delete('subagent/{user}', 'SubAgentController@destroy')->where('user', '[0-9]+');
     Route::put('subagent/{child}', 'SubAgentController@updateChild')->where('child', '[0-9]+');
 
+    Route::get('community', 'CommunityController@showCommunityList');
+    Route::post('community', 'CommunityController@createCommunity');
+    Route::delete('community/{communityId}', 'CommunityController@deleteCommunity')->where('communityId', '[0-9]+');
+
     Route::post('top-up/child/{receiver}/{type}/{amount}', 'TopUpController@topUp2Child')->where('amount', '[0-9]+');
     Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '[0-9]+');
     Route::get('top-up/child', 'TopUpController@topUp2ChildHistory');
@@ -201,6 +205,9 @@ Route::group([
 
     Route::get('subagent/list', 'ViewController@subagentList');
     Route::get('subagent/create', 'ViewController@subagentCreate');
+
+    Route::get('community/list', 'ViewController@communityList');
+    Route::get('community/manage', 'ViewController@communityManage');
 
     //给子代理商的充值记录
     Route::get('top-up/child', 'ViewController@topUpChild');

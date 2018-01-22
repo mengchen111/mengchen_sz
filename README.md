@@ -183,6 +183,9 @@ cd $codeDir
 | subagent | POST | 创建子代理商 |
 | subagent/{id} | DELETE | 删除子代理商 |
 | subagent/{id} | PUT | 更新子代理商信息(包括密码) |
+| community | GET | 获取社区列表 |
+| community | POST | 新增社区 |
+| community/{communityId} | DELETE | 删除社区 |
 | top-up/child/{receiver}/{type}/{amount} | POST | 给子代理商充值 |
 | top-up/player/{player}/{type}/{amount} | POST | 给玩家充值 |
 | top-up/child | GET | 给自代理商的充值记录 |

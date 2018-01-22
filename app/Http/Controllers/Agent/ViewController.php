@@ -43,6 +43,16 @@ class ViewController extends Controller
         return view('agent.subagent.create');
     }
 
+    public function communityList(Request $request)
+    {
+        return view('agent.community.list');
+    }
+
+    public function communityManage(Request $request)
+    {
+        return view('agent.community.manage');
+    }
+
     public function topUpChild(Request $request)
     {
         return view('agent.top-up.child');
