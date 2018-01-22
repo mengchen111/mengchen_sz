@@ -43,6 +43,9 @@ trait AuthorizationMap
             'tasks-list' => [
                 'ifShown' => true,
             ],
+            'user-goods' => [
+                'ifShown' => true,
+            ],
             'statement' => [
                 'ifShown' => true,
             ],

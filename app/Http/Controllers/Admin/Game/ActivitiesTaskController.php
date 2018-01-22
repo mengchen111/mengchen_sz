@@ -11,7 +11,7 @@ use App\Services\Paginator;
 use Carbon\Carbon;
 use App\Exceptions\CustomException;
 
-class TaskController extends Controller
+class ActivitiesTaskController extends Controller
 {
     public function getTaskList(AdminRequest $request)
     {

@@ -44,6 +44,9 @@ new Vue({
         'tasks-list': {
           isActive: false,
         },
+        'user-goods': {
+          isActive: false,
+        },
         statement: {
           isActive: false,
         },

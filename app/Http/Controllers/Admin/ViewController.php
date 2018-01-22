@@ -63,6 +63,11 @@ class ViewController extends Controller
         return view('admin.activities.tasks-list');
     }
 
+    public function activitiesUserGoods(Request $request)
+    {
+        return view('admin.activities.user-goods');
+    }
+
     public function activitiesStatement(Request $request)
     {
         return view('admin.activities.statement');

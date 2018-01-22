@@ -37,6 +37,9 @@ export default {
     'tasks-list': {
       ifShown: false,
     },
+    'user-goods': {
+      ifShown: false,
+    },
     statement: {
       ifShown: false,
     },

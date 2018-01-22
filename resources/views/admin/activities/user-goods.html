@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--#include virtual="/ssi/header.html"-->
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- Main Header -->
+    <!--#include virtual="/ssi/main-header.html"-->
+
+    <!-- Main sidebar -->
+    <!--#include virtual="/ssi/admin/sidebar.html"-->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <!--#include virtual="/ssi/content-header-h1.html"-->
+
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+                <li>活动管理</li>
+                <li class="active">玩家物品</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content" id="app">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">玩家物品</h3>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-3 col-xs-12">
+                                    <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
+                                            data-target="#add-user_goods-modal" @click="onAddUserGoods">
+                                        添加玩家物品
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row phone-scrollable">
+                                <div class="col-md-12 col-xs-12">
+                                    <my-vuetable
+                                            :table-url="tableUrl"
+                                            :table-fields="tableFields"
+                                    >
+                                    </my-vuetable>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="add-user_goods-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">添加玩家物品</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" @submit.prevent="addUserGoods">
+                                <div class="form-group">
+                                    <label>玩家id</label>
+                                    <input name="user_id" type="number" class="form-control" required
+                                           v-model.trim="addUserGoodsForm.user_id" placeholder="玩家id">
+                                </div>
+                                <div class="form-group">
+                                    <label>奖励物品</label>
+                                    <v-select :searchable="false" :options="goodsTypeOptions"
+                                              v-model="goodsTypeName"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>物品数量</label>
+                                    <input name="target" type="number" min="1" class="form-control" required
+                                           v-model.trim="addUserGoodsForm.goods_cnt" placeholder="物品数量">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="edit-user_goods-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">编辑玩家物品</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" @submit.prevent="editUserGoods">
+                                <div class="form-group">
+                                    <label>玩家id</label>
+                                    <input name="user_id" type="number" class="form-control" required disabled
+                                           v-model.trim="editUserGoodsForm.user_id" placeholder="玩家id">
+                                </div>
+                                <div class="form-group">
+                                    <label>奖励物品</label>
+                                    <v-select :searchable="false" :options="goodsTypeOptions" disabled
+                                              v-model="goodsTypeName"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>物品数量</label>
+                                    <input name="target" type="number" min="1" class="form-control" required
+                                           v-model.trim="editUserGoodsForm.goods_cnt" placeholder="物品数量">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="delete-user_goods-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center text-danger">确定删除此玩家物品？</h3>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-flat btn-danger btn-lg pull-left" @click="deleteUserGoods">
+                                删除
+                            </button>
+                            <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
+                                取消
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <my-toastr ref="toastr"></my-toastr>
+        </section>
+        <!-- /.content -->
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    <!--#include virtual="/ssi/main-footer.html"-->
+
+</div>
+<!-- ./wrapper -->
+
+<script src="/dist/webpack/admin/activities/user-goods.js"></script>
+</body>
+</html>

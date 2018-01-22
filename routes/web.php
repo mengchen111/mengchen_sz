@@ -75,11 +75,15 @@ Route::group([
     Route::delete('activities/goods-type/{goodsId}', 'Game\ActivitiesGoodsController@deleteGoodsType')->where('goodsId', '[0-9]+');
     Route::post('activities/goods-type', 'Game\ActivitiesGoodsController@addGoodsType');
     Route::get('activities/goods-type-map', 'Game\ActivitiesGoodsController@getGoodsTypeMap');
-    Route::get('activities/task', 'Game\TaskController@getTaskList');
-    Route::put('activities/task', 'Game\TaskController@editTask');
-    Route::delete('activities/task/{taskId}', 'Game\TaskController@deleteTask')->where('taskId', '[0-9]+');;
-    Route::post('activities/task', 'Game\TaskController@addTask');
-    Route::get('activities/task-type-map', 'Game\TaskController@getTaskTypeMap');
+    Route::get('activities/task', 'Game\ActivitiesTaskController@getTaskList');
+    Route::put('activities/task', 'Game\ActivitiesTaskController@editTask');
+    Route::delete('activities/task/{taskId}', 'Game\ActivitiesTaskController@deleteTask')->where('taskId', '[0-9]+');
+    Route::post('activities/task', 'Game\ActivitiesTaskController@addTask');
+    Route::get('activities/task-type-map', 'Game\ActivitiesTaskController@getTaskTypeMap');
+    Route::get('activities/user-goods', 'Game\ActivitiesUserGoodsController@getUserGoodsList');
+    Route::put('activities/user-goods', 'Game\ActivitiesUserGoodsController@editUserGoods');
+    Route::delete('activities/user-goods', 'Game\ActivitiesUserGoodsController@deleteUserGoods');
+    Route::post('activities/user-goods', 'Game\ActivitiesUserGoodsController@addUserGoods');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');
@@ -137,6 +141,7 @@ Route::group([
     Route::get('activities/rewards-list', 'ViewController@activitiesRewardsList');
     Route::get('activities/goods-list', 'ViewController@activitiesGoodsList');
     Route::get('activities/tasks-list', 'ViewController@activitiesTasksList');
+    Route::get('activities/user-goods', 'ViewController@activitiesUserGoods');
     Route::get('activities/statement', 'ViewController@activitiesStatement');
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
