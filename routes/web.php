@@ -182,7 +182,8 @@ Route::group([
 
     Route::get('community', 'CommunityController@showCommunityList');
     Route::post('community', 'CommunityController@createCommunity');
-    Route::delete('community/{communityId}', 'CommunityController@deleteCommunity')->where('communityId', '[0-9]+');
+    //代理商禁止删除社区
+    //Route::delete('community/{communityId}', 'CommunityController@deleteCommunity')->where('communityId', '[0-9]+');
 
     Route::post('top-up/child/{receiver}/{type}/{amount}', 'TopUpController@topUp2Child')->where('amount', '[0-9]+');
     Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '[0-9]+');

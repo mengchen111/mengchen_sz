@@ -34,7 +34,7 @@
     "vue-checkbox-radio": "^0.6.0",
     "vue-echarts": "^2.4.1",
     "vue-loader": "^13.0.4",
-    "vue-select": "^2.3.0",
+    "vue-select": "^2.4.0",
     "vue-toastr": "^2.0.9",
     "vuetable-2": "^1.7.0",
     "webpack": "^3.5.4",

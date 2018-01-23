@@ -18,10 +18,12 @@ class CreateCommunityListTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('owner_agent_id')->comment('社团长代理商id');
             $table->unsignedInteger('owner_player_id')->comment('社团长玩家id');
-            $table->string('name')->comment('社团名称');
+            $table->string('name')->unique()->comment('社团名称');
             $table->string('info')->nullable()->comment('社团简介');
             $table->integer('card_stock')->default(0)->comment('社团房卡库存');
+            $table->integer('card_frozen')->default(0)->comment('社团已冻结房卡');
             $table->text('members')->nullable()->comment('社团成员');
+            $table->unsignedTinyInteger('status')->default(0)->comment('申请状态(0-待审核,1-审核通过,2-审核不通过)');
             $table->timestamps();
             $table->foreign('owner_agent_id')->references('id')->on('users');
         });

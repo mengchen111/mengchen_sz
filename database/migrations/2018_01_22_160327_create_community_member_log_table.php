@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class CreateCommunityLogTable extends Migration
+class CreateCommunityMemberLogTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateCommunityLogTable extends Migration
      */
     public function up()
     {
-        Schema::create('community_log', function (Blueprint $table) {
+        Schema::create('community_member_log', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('community_id')->comment('社团id');
             $table->unsignedInteger('player_id')->comment('玩家id');
@@ -31,6 +31,6 @@ class CreateCommunityLogTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('community_log');
+        Schema::dropIfExists('community_member_log');
     }
 }

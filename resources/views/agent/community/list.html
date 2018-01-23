@@ -32,12 +32,17 @@
                 <!-- /.box-header -->
 
                 <div class="box-body">
-                    <div class="row">
+                    <div class="row" style="margin-bottom: 5px;">
                         <div class="col-md-3 col-xs-12">
                             <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
                                     data-target="#add-community-modal">
                                 创建牌艺馆
                             </button>
+                        </div>
+
+                        <div class="col-md-3 col-xs-12">
+                            <v-select :searchable="false" v-model="statusDefaultValue" :options="statusOptions"
+                                      :on-change="onSelectChange"></v-select>
                         </div>
                     </div>
 

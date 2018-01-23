@@ -2,6 +2,7 @@ import {myTools} from '../index.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import MyToastr from '../../../components/MyToastr.vue'
 import TableActions from './components/TableActions.vue'
+import vSelect from 'vue-select'
 
 Vue.component('table-actions', TableActions)
 
@@ -10,15 +11,20 @@ new Vue({
   components: {
     MyVuetable,
     MyToastr,
+    vSelect,
   },
   data: {
     eventHub: new Vue(),
     activatedRow: {},
 
+    statusOptions: [
+      '待审核', '已审核', '审核不通过', '全部',
+    ],
+    statusDefaultValue: '已审核',
     addCommunityForm: {},
     communityApi: '/agent/api/community',
 
-    tableUrl: '/agent/api/community',
+    tableUrl: '/agent/api/community?status=1',  //默认显示已审核
     tableFields: [
       {
         name: 'id',
@@ -66,6 +72,7 @@ new Vue({
       myTools.axiosInstance.post(this.communityApi, this.addCommunityForm)
         .then(function (res) {
           myTools.msgResolver(res, toastr)
+          _self.$root.eventHub.$emit('MyVuetable:refresh')
           _self.addCommunityForm.owner_player_id = ''
           _self.addCommunityForm.name = ''
           _self.addCommunityForm.info = ''
@@ -88,6 +95,11 @@ new Vue({
         .catch(function (err) {
           alert(err)
         })
+    },
+
+    onSelectChange (value) {
+      let status = _.findIndex(this.statusOptions, (v) => v === value)
+      this.tableUrl = '/agent/api/community?status=' + status
     },
   },
 
