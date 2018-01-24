@@ -27,18 +27,117 @@
         <section class="content" id="app">
 
             <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">牌艺馆</h3>
+                <div class="box-header" style="padding: 4px;">
+                    <a class="btn btn-app" style="margin: 0 0 2px 2px">
+                        <i class="fa fa-info"></i> 信息
+                    </a>
+                    <a class="btn btn-app" style="margin: 0 0 2px 2px">
+                        <i class="fa fa-trophy"></i> 战绩
+                    </a>
+                    <a class="btn btn-app" style="margin: 0 0 2px 2px">
+                        <i class="fa fa-users"></i> 成员
+                    </a>
+                    <a class="btn btn-app" style="margin: 0 0 2px 2px">
+                        <i class="fa fa-home"></i> 房间
+                    </a>
                 </div>
                 <!-- /.box-header -->
 
                 <div class="box-body">
+                    <div class="box box-default">
+                        <div class="box-header">
+                            牌艺馆信息
+                        </div>
+                        <div class="box-body">
+                            <div v-cloak>
+                                <p style="margin-bottom: 8px;">
+                                    <b>牌艺馆ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;</b><span class="text-red">{{ communityDetail.id }}</span>
+                                </p>
+                                <p style="margin-bottom: 8px;">
+                                    <b>牌艺馆房卡(可用): &nbsp;</b><span class="text-red">{{ communityDetail.card_stock }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a class="text-green" href="#" data-toggle="modal" data-target="#topup-community-card-modal">房卡充值</a>
+                                </p>
+                                <p style="margin-bottom: 8px;">
+                                    <b>牌艺馆房卡(冻结): &nbsp;</b><span class="text-red">{{ communityDetail.card_frozen }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </p>
+                                <p style="margin-bottom: 8px;">
+                                    牌艺馆名称: &nbsp;<span>{{communityDetail.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a class="text-green" href="#"
+                                       data-toggle="modal" data-target="#edit-community-modal">修改</a>
+                                </p>
+                                <p style="margin-bottom: 8px;">
+                                    牌艺馆简介: &nbsp;<span>{{communityDetail.info}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a class="text-green" href="#"
+                                       data-toggle="modal" data-target="#edit-community-modal">修改</a>
+                                </p>
+                                <p style="margin-bottom: 8px;">
+                                    牌艺馆成员: &nbsp;<span>{{communityDetail.members_count}}位</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a class="text-green" href="#">添加/管理成员</a>
+                                </p>
+                                <p style="margin-bottom: 8px;">
+                                    创建时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;<span>{{communityDetail.created_at}}</span>
+                                </p>
+                            </div>
 
+                        </div>
+                    </div>
                 </div>
                 <!-- /.box-body -->
             </div>
 
-            <!--<my-toastr ref="toastr"></my-toastr>-->
+            <div id="edit-community-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">牌艺馆名字/简介修改</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" @submit.prevent="editCommunity">
+                                <div class="form-group">
+                                    <label>名称</label>
+                                    <input name="name" type="text" class="form-control" required
+                                           v-model.trim="editCommunityForm.name" placeholder="牌艺馆名字(12字符之内)">
+                                </div>
+                                <div class="form-group">
+                                    <label>简介</label>
+                                    <input name="info" type="text" class="form-control" required
+                                           v-model.trim="editCommunityForm.info" placeholder="牌艺馆简介(12字符之内)">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="topup-community-card-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">牌艺馆房卡充值</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" @submit.prevent="topupCommunityCard">
+                                <div class="form-group">
+                                    <label>充值数量</label>
+                                    <input name="amount" type="number" min="1" class="form-control" required
+                                           v-model.trim="topupCommunityCardForm.amount" placeholder="充值数量">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <my-toastr ref="toastr"></my-toastr>
         </section>
         <!-- /.content -->
 

@@ -97,9 +97,11 @@ new Vue({
 
     onAddUserGoods () {
       this.goodsTypeName = ''
+      this.addUserGoodsForm.user_id = ''
+      this.addUserGoodsForm.goods_cnt = ''
     },
 
-    addUserGood () {
+    addUserGoods () {
       let _self = this
       let toastr = this.$refs.toastr
 

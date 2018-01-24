@@ -34,6 +34,8 @@ return [
     'game_api_records' => 'records',                //战绩列表和查询
     'game_api_record_info' => 'record-info',        //查询指定的战绩id的数据
     'game_api_players' => 'players',                //玩家列表和查询
+    'game_api_players_find' => 'players/find',                //通过uid精确查找玩家
+    'game_api_players_batch-find' => 'players/batch-find',                //通过uids批量查找玩家
     'game_api_players_online_amount' => 'players/online/amount', //获取实时在线玩家数量
     'game_api_players_online_peak' => 'players/online/peak',     //获取指定日期的当日玩家最高在线数量
     'game_api_players_in-game' => 'players/in-game',    //获取实时游戏中的玩家数量

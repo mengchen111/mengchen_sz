@@ -35,6 +35,22 @@ class PlayerService
         ]);
     }
 
+    //通过uid精确查找玩家
+    public static function findPlayer($uid)
+    {
+        return GameApiService::request('POST', self::findPlayerApi(), [
+            'uid' => $uid,
+        ]);
+    }
+
+    //通过10000,10002,10023的形式的数据批量获取玩家信息
+    public static function batchFindPlayer($uids)
+    {
+        return GameApiService::request('POST', self::batchFindPlayerAPi(), [
+            'uids' => $uids,
+        ]);
+    }
+
     public static function getNickName($uid)
     {
         $allPlayers = collect(self::getAllPlayers());
@@ -104,6 +120,12 @@ class PlayerService
         switch ($name) {
             case 'playersApi':
                 return config('custom.game_api_players');
+                break;
+            case 'findPlayerApi':
+                return config('custom.game_api_players_find');
+                break;
+            case 'batchFindPlayerAPi':
+                return config('custom.game_api_players_batch-find');
                 break;
             case 'playersOnlineAmountApi':
                 return config('custom.game_api_players_online_amount');
