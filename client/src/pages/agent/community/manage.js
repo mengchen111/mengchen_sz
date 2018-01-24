@@ -14,10 +14,13 @@ new Vue({
 
     communityDetail: '',  //社区信息数据
     editCommunityForm: {},  //编辑社区的名字和简介
-    topupCommunityCardForm: {}, //充值社区房卡
+    topupCommunityCardForm: {
+      item_type_id: 1,  //房卡类型id
+    }, //充值社区房卡
 
     communityDetailApiPrefix: '/agent/api/community/detail/',
     editCommunityInfoApiPrefix: '/agent/api/community/info/',
+    topUpCommunityCardApiPrefix: '/agent/api/community/card/',
   },
 
   methods: {
@@ -33,7 +36,7 @@ new Vue({
       myTools.axiosInstance.put(this.editCommunityInfoApiPrefix + this.communityDetail.id, this.editCommunityForm)
         .then(function (res) {
           myTools.msgResolver(res, toastr)
-          _self.getCommunityDetail()
+          _self.getCommunityDetail()  //刷新此页面的社区数据
         })
         .catch(function (err) {
           alert(err)
@@ -41,7 +44,17 @@ new Vue({
     },
 
     topupCommunityCard () {
-      console.log('充值社区房卡')
+      let _self = this
+      let toastr = this.$refs.toastr
+
+      myTools.axiosInstance.post(this.topUpCommunityCardApiPrefix + this.communityDetail.id, this.topupCommunityCardForm)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+          _self.getCommunityDetail()  //刷新此页面的社区数据
+        })
+        .catch(function (err) {
+          alert(err)
+        })
     },
 
     getCommunityDetail () {
@@ -59,7 +72,6 @@ new Vue({
   },
 
   created: function () {
-    let _self = this
     let communityId = myTools.getQueryString('community')
 
     if (! communityId) {

@@ -31,6 +31,10 @@ new Vue({
         title: 'id',
       },
       {
+        name: 'owner_player_id',
+        title: '玩家id',
+      },
+      {
         name: 'name',
         title: '名称',
       },
@@ -73,7 +77,7 @@ new Vue({
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.$root.eventHub.$emit('MyVuetable:refresh')
-          _self.addCommunityForm.owner_player_id = ''
+          // _self.addCommunityForm.owner_player_id = ''
           _self.addCommunityForm.name = ''
           _self.addCommunityForm.info = ''
         })

@@ -41,6 +41,9 @@ class CommunityList extends Model
 
         $returnData = [];
         $members = $this->attributes['members'];
+        if (empty($members)) {
+            return $returnData;
+        }
         $players = PlayerService::batchFindPlayer($members);
         foreach ($players as $player) {
             $player = collect($player)->only($remainedPlayerInfo)->toArray();

@@ -51,7 +51,10 @@
                         <div class="box-body">
                             <div v-cloak>
                                 <p style="margin-bottom: 8px;">
-                                    <b>牌艺馆ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;</b><span class="text-red">{{ communityDetail.id }}</span>
+                                    <b>牌艺馆ID: &nbsp;</b><span class="text-red">{{ communityDetail.id }}</span>
+                                </p>
+                                <p style="margin-bottom: 8px;">
+                                    <b>玩家ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;</b><span class="text-red">{{ communityDetail.owner_player_id }}</span>
                                 </p>
                                 <p style="margin-bottom: 8px;">
                                     <b>牌艺馆房卡(可用): &nbsp;</b><span class="text-red">{{ communityDetail.card_stock }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -124,8 +127,13 @@
                             <form role="form" class="form-group" @submit.prevent="topupCommunityCard">
                                 <div class="form-group">
                                     <label>充值数量</label>
-                                    <input name="amount" type="number" min="1" class="form-control" required
-                                           v-model.trim="topupCommunityCardForm.amount" placeholder="充值数量">
+                                    <input name="item_amount" type="number" min="1" class="form-control" required
+                                           v-model.trim="topupCommunityCardForm.item_amount" placeholder="充值数量">
+                                </div>
+                                <div class="form-group">
+                                    <label>备注</label>
+                                    <input name="remark" type="text" class="form-control"
+                                           v-model.trim="topupCommunityCardForm.remark" placeholder="备注(可留空)">
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
@@ -135,8 +143,7 @@
                     </div>
                 </div>
             </div>
-
-
+            
             <my-toastr ref="toastr"></my-toastr>
         </section>
         <!-- /.content -->

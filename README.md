@@ -188,6 +188,7 @@ cd $codeDir
 | community/{communityId} | DELETE | 删除牌艺馆(已关闭) |
 | community/detail/{communityId} | GET | 获取牌艺馆详细信息 |
 | community/info/{community} | PUT | 更新牌艺馆信息 |
+| community/card/{community} | POST | 充值牌艺馆房卡 |
 | top-up/child/{receiver}/{type}/{amount} | POST | 给子代理商充值 |
 | top-up/player/{player}/{type}/{amount} | POST | 给玩家充值 |
 | top-up/child | GET | 给自代理商的充值记录 |

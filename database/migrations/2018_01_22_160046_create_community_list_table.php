@@ -17,7 +17,7 @@ class CreateCommunityListTable extends Migration
         Schema::create('community_list', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('owner_agent_id')->comment('社团长代理商id');
-            $table->unsignedInteger('owner_player_id')->comment('社团长玩家id');
+            $table->unsignedInteger('owner_player_id')->nullable()->comment('社团长玩家id');
             $table->string('name')->unique()->comment('社团名称');
             $table->string('info')->nullable()->comment('社团简介');
             $table->integer('card_stock')->default(0)->comment('社团房卡库存');

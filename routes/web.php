@@ -186,6 +186,7 @@ Route::group([
     //Route::delete('community/{communityId}', 'CommunityController@deleteCommunity')->where('communityId', '[0-9]+');
     Route::get('community/detail/{communityId}', 'CommunityController@getCommunityDetail')->where('communityId', '[0-9]+');
     Route::put('community/info/{community}', 'CommunityController@updateCommunityInfo')->where('community', '[0-9]+');
+    Route::post('community/card/{community}', 'CommunityController@topUpCommunity')->where('community', '[0-9]+');
 
     Route::post('top-up/child/{receiver}/{type}/{amount}', 'TopUpController@topUp2Child')->where('amount', '[0-9]+');
     Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '[0-9]+');

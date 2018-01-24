@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CommunityLog extends Model
+class CommunityMemberLog extends Model
 {
     public $timestamps = false;
-    protected $table = 'community_log';
+    protected $table = 'community_member_log';
     protected $primaryKey = 'id';
 
     protected $guarded = [
