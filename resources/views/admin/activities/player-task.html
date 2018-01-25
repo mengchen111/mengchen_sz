@@ -33,8 +33,120 @@
                         </div>
 
                         <div class="box-body">
-                            玩家任务
+                            <div class="row">
+                                <div class="col-md-3 col-xs-12">
+                                    <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
+                                            data-target="#add-tasks_player-modal" @click="onAddTasksPlayer">
+                                        添加玩家任务
+                                    </button>
+                                </div>
+                            </div>
 
+                            <div class="row phone-scrollable">
+                                <div class="col-md-12 col-xs-12">
+                                    <my-vuetable
+                                            :table-url="tableUrl"
+                                            :table-fields="tableFields"
+                                    >
+                                    </my-vuetable>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="add-tasks_player-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">添加玩家任务</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" @submit.prevent="addTasksPlayer">
+                                <div class="form-group">
+                                    <label>任务</label>
+                                    <v-select :searchable="false" :options="taskMapOptions"
+                                              required v-model="taskValue"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>玩家id</label>
+                                    <input name="uid" type="number" min="1" class="form-control" required
+                                           v-model.trim="addTasksPlayerForm.uid" placeholder="玩家id">
+                                </div>
+                                <div class="form-group">
+                                    <label>进度</label>
+                                    <input name="process" type="number" min="0" class="form-control" required
+                                           v-model.trim="addTasksPlayerForm.process" placeholder="进度">
+                                </div>
+                                <div class="form-group">
+                                    <label>是否完成</label>
+                                    <v-select :searchable="false" :options="isCompletedOptions"
+                                              required v-model="isCompletedValue"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="edit-tasks_player-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">编辑玩家任务</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" @submit.prevent="editTasksPlayer">
+                                <div class="form-group">
+                                    <label>任务</label>
+                                    <v-select :searchable="false" :options="taskMapOptions" disabled
+                                              required v-model="taskValue"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>玩家id</label>
+                                    <input name="uid" type="number" min="1" class="form-control" required disabled
+                                           v-model.trim="editTasksPlayerForm.uid" placeholder="玩家id">
+                                </div>
+                                <div class="form-group">
+                                    <label>进度</label>
+                                    <input name="process" type="number" min="0" class="form-control" required
+                                           v-model.trim="editTasksPlayerForm.process" placeholder="进度">
+                                </div>
+                                <div class="form-group">
+                                    <label>是否完成</label>
+                                    <v-select :searchable="false" :options="isCompletedOptions"
+                                              required v-model="isCompletedValue"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="delete-tasks_player-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center text-danger">确定删除此玩家任务？</h3>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-flat btn-danger btn-lg pull-left" @click="deleteTasksPlayer">
+                                删除
+                            </button>
+                            <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
+                                取消
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -80,6 +80,7 @@ Route::group([
     Route::delete('activities/task/{taskId}', 'Game\ActivitiesTaskController@deleteTask')->where('taskId', '[0-9]+');
     Route::post('activities/task', 'Game\ActivitiesTaskController@addTask');
     Route::get('activities/task-type-map', 'Game\ActivitiesTaskController@getTaskTypeMap');
+    Route::get('activities/task-map', 'Game\ActivitiesTaskController@getTaskMap');
     Route::get('activities/user-goods', 'Game\ActivitiesUserGoodsController@getUserGoodsList');
     Route::put('activities/user-goods', 'Game\ActivitiesUserGoodsController@editUserGoods');
     Route::delete('activities/user-goods', 'Game\ActivitiesUserGoodsController@deleteUserGoods');

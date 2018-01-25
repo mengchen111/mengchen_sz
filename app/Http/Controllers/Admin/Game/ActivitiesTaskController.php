@@ -139,4 +139,21 @@ class ActivitiesTaskController extends Controller
 
         return $taskTypeMap;
     }
+
+    //获取任务id和任务name的map关系(前端options用到)
+    public function getTaskMap(AdminRequest $request)
+    {
+        $taskApi = config('custom.game_api_activities_task_list');
+        $taskList = GameApiService::request('GET', $taskApi);
+        $taskMap = [];
+
+        array_walk($taskList, function ($item) use (&$taskMap) {
+            $taskMap[$item['id']] = $item['name'];
+        });
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '获取任务id和name的映射表', $request->header('User-Agent'), json_encode($request->all()));
+
+        return $taskMap;
+    }
 }

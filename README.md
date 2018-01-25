@@ -139,6 +139,7 @@ cd $codeDir
 | activities/task/{taskId} | DELETE | 删除任务 |
 | activities/task | POST | 添加任务 |
 | activities/task-type-map | GET | 获取任务类型映射 |
+| activities/task-map | GET | 获取任务id和name的映射 |
 | activities/user-goods | GET | 获取玩家物品列表 |
 | activities/user-goods | PUT | 编辑玩家物品 |
 | activities/user-goods | DELETE | 删除玩家物品 |
