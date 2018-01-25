@@ -24,6 +24,7 @@ Route::prefix('dev')->group(function () {
     Route::get('hashed-pass/{pass}', 'DevToolsController@hashedPass');
     Route::post('base64-decode', 'DevToolsController@base64Decode');
     Route::get('exception', 'DevToolsController@showException');
+    Route::any('reply', 'DevToolsController@reply');   //返回post内容，for 文聪
 });
 
 //公共接口

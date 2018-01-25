@@ -49,4 +49,9 @@ class DevToolsController extends Controller
                 throw new CustomException('default custom exception');
         }
     }
+
+    public function reply(Request $request)
+    {
+        return $request->getContent();
+    }
 }
