@@ -40,15 +40,15 @@ class CommunityController extends Controller
     public function createCommunity(AgentRequest $request)
     {
         $this->validate($request, [
-            //'owner_player_id' => 'required|integer',  //管理员绑定，而不是代理商创建的时候绑
+            'owner_player_id' => 'required|integer',
             'name' => 'required|string|max:12|unique:community_list,name',
             'info' => 'required|string|max:12',
         ]);
 
         $agent = $request->user();
 
-        //检查社区数量是否达到上限
-        $communityConf = $this->getCommunityConf($request->input('community_id'));
+        //检查社区数量是否达到上限(根据代理商来查找配置)
+        $communityConf = $this->getCommunityConf($agent->id);
         $this->checkCommunityCreationLimit($agent, $communityConf);
 
         $formData = $request->intersect(['owner_player_id', 'name', 'info']);
@@ -65,21 +65,22 @@ class CommunityController extends Controller
 
     protected function checkCommunityCreationLimit($agent, CommunityConf $communityConf)
     {
-        $existCommunityCount = CommunityList::where('owner_agent_id', $agent->id)
-            ->where('status', '!=', 2)  //审批不通过的不算
+
+        $existPendingCommunityCount = CommunityList::where('owner_agent_id', $agent->id)
+            ->where('status', '=', 0)  //此代理商申请的待审批的社团数
             ->get()
             ->count();
-        $communityCountLimit = $communityConf->max_community_count;
-        if ($existCommunityCount >= $communityCountLimit) {
-            throw new CustomException('最多只允许创建(加入)' . $communityCountLimit . '个牌艺馆');
+        $communityPendingCountLimit = $communityConf->max_community_pending_count;
+        if ($existPendingCommunityCount >= $communityPendingCountLimit) {
+            throw new CustomException('每个代理商最多只允许创建' . $communityPendingCountLimit . '个待审核牌艺馆');
         }
     }
 
-    protected function getCommunityConf($communityId)
+    protected function getCommunityConf($agentId)
     {
-        $communityConf = CommunityConf::where('community_id', $communityId)->first();
+        $communityConf = CommunityConf::where('agent_id', $agentId)->first();
         if (empty($communityConf)) {
-            $communityConf = CommunityConf::where('community_id', 0)->firstOrFail();
+            $communityConf = CommunityConf::where('agent_id', 0)->firstOrFail();
         }
         return $communityConf;
     }

@@ -40,6 +40,9 @@ export default {
     'user-goods': {
       ifShown: false,
     },
+    'player-task': {
+      ifShown: false,
+    },
     statement: {
       ifShown: false,
     },

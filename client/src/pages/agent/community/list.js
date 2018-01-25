@@ -77,7 +77,7 @@ new Vue({
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.$root.eventHub.$emit('MyVuetable:refresh')
-          // _self.addCommunityForm.owner_player_id = ''
+          _self.addCommunityForm.owner_player_id = ''
           _self.addCommunityForm.name = ''
           _self.addCommunityForm.info = ''
         })

@@ -68,12 +68,11 @@
                         </div>
                         <div class="modal-body">
                             <form role="form" class="form-group" @submit.prevent="addCommunity">
-                                <!--管理员审核的时候绑定而不是创建的时候代理商自己绑定-->
-                                <!--<div class="form-group">-->
-                                    <!--<label>游戏id</label>-->
-                                    <!--<input name="owner_player_id" type="number" class="form-control" required-->
-                                           <!--v-model.trim="addCommunityForm.owner_player_id" placeholder="玩家id">-->
-                                <!--</div>-->
+                                <div class="form-group">
+                                    <label>游戏id</label>
+                                    <input name="owner_player_id" type="number" class="form-control" required
+                                           v-model.trim="addCommunityForm.owner_player_id" placeholder="玩家id">
+                                </div>
                                 <div class="form-group">
                                     <label>名称</label>
                                     <input name="name" type="text" class="form-control" required

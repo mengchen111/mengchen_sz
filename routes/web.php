@@ -84,6 +84,10 @@ Route::group([
     Route::put('activities/user-goods', 'Game\ActivitiesUserGoodsController@editUserGoods');
     Route::delete('activities/user-goods', 'Game\ActivitiesUserGoodsController@deleteUserGoods');
     Route::post('activities/user-goods', 'Game\ActivitiesUserGoodsController@addUserGoods');
+    Route::get('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@getTasksPlayerList');
+    Route::put('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@editTasksPlayer');
+    Route::delete('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@deleteTasksPlayer');
+    Route::post('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@addTasksPlayer');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');
@@ -142,6 +146,7 @@ Route::group([
     Route::get('activities/goods-list', 'ViewController@activitiesGoodsList');
     Route::get('activities/tasks-list', 'ViewController@activitiesTasksList');
     Route::get('activities/user-goods', 'ViewController@activitiesUserGoods');
+    Route::get('activities/player-task', 'ViewController@activitiesPlayerTask');
     Route::get('activities/statement', 'ViewController@activitiesStatement');
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');

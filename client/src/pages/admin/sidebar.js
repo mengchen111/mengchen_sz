@@ -47,6 +47,9 @@ new Vue({
         'user-goods': {
           isActive: false,
         },
+        'player-task': {
+          isActive: false,
+        },
         statement: {
           isActive: false,
         },
