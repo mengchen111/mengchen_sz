@@ -89,6 +89,9 @@ Route::group([
     Route::delete('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@deleteTasksPlayer');
     Route::post('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@addTasksPlayer');
 
+    Route::get('community', 'CommunityController@showCommunityList');
+    Route::post('community/application', 'CommunityController@approveCommunityApplication');
+
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');
     Route::get('stock/history', 'StockController@applyHistory');
