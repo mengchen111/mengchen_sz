@@ -7,6 +7,7 @@ use App\Http\Requests\AgentRequest;
 use App\Models\CommunityInvitationApplication;
 use App\Models\CommunityList;
 use App\Models\CommunityMemberLog;
+use App\Services\CommunityService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
@@ -54,7 +55,8 @@ class CommunityMembersController extends Controller
         }
         $agent = $request->user();
         $community = CommunityList::findOrFail($application->community_id);
-        $this->checkoutCommunityOwnership($community, $agent);    //检查此代理商是否拥有此群
+        $this->checkCommunityOwnership($community, $agent);    //检查此代理商是否拥有此群
+        $this->checkPlayerCommunityLimit($application->player_id, $application->community_id);
 
         OperationLogs::add($agent->id, $request->path(), $request->method(),
             '同意牌艺馆入馆申请', $request->header('User-Agent'));
@@ -74,7 +76,7 @@ class CommunityMembersController extends Controller
         }
         $agent = $request->user();
         $community = CommunityList::findOrFail($application->community_id);
-        $this->checkoutCommunityOwnership($community, $agent);    //检查此代理商是否拥有此群
+        $this->checkCommunityOwnership($community, $agent);    //检查此代理商是否拥有此群
 
         OperationLogs::add($agent->id, $request->path(), $request->method(),
             '拒绝牌艺馆入馆申请', $request->header('User-Agent'));
@@ -86,10 +88,20 @@ class CommunityMembersController extends Controller
         ];
     }
 
-    protected function checkoutCommunityOwnership($community, $agent)
+    protected function checkCommunityOwnership($community, $agent)
     {
         if ($community->owner_agent_id !== $agent->id) {
             throw new CustomException('您不是此牌艺馆的馆主，无法审批入馆请求');
+        }
+    }
+
+    protected function checkPlayerCommunityLimit($playerId, $communityId)
+    {
+        $communityConf = CommunityService::getCommunityConf($communityId);
+        $communityLimit = $communityConf->max_community_count;
+        $playerInvolvedCommunitiesCount = CommunityService::playerInvolvedCommunitiesTotalCount($playerId);
+        if ($playerInvolvedCommunitiesCount >= $communityLimit) {
+            throw new CustomException('每个玩家最多只可以加入(包括拥有)' . $communityLimit . '个牌艺馆');
         }
     }
 
@@ -110,6 +122,8 @@ class CommunityMembersController extends Controller
                 'player_id' => $application->player_id,
                 'action' => '加入',
             ]);
+
+            //todo 社区加入新的玩家需要通知游戏后端
         });
     }
 
@@ -131,7 +145,7 @@ class CommunityMembersController extends Controller
         $community = CommunityList::findOrFail($request->input('community_id'));
         $playerId = $request->input('player_id');
         $agent = $request->user();
-        $this->checkoutCommunityOwnership($community, $agent);
+        $this->checkCommunityOwnership($community, $agent);
 
         OperationLogs::add($agent->id, $request->path(), $request->method(),
             '从牌艺馆中踢出成员', $request->header('User-Agent'));
@@ -160,6 +174,8 @@ class CommunityMembersController extends Controller
                 'player_id' => $playerId,
                 'action' => '踢出',
             ]);
+
+            //todo 社区踢出玩家需要通知游戏后端
         });
     }
 }

@@ -90,6 +90,12 @@ class CommunityList extends Model
         return $memberLogs;
     }
 
+    //获取成员id的数组列表
+    public function getMemberIdsAttribute()
+    {
+        return explode(',', $this->attributes['members']);
+    }
+
     public function addMembers(Array $newMembers)
     {
         $existMembers = explode(',', $this->members);

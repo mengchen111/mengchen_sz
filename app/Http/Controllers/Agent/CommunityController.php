@@ -7,6 +7,7 @@ use App\Http\Requests\AgentRequest;
 use App\Models\CommunityCardTopupLog;
 use App\Models\CommunityConf;
 use App\Models\CommunityList;
+use App\Services\CommunityService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
@@ -48,8 +49,8 @@ class CommunityController extends Controller
         $agent = $request->user();
 
         //检查社区数量是否达到上限(根据代理商来查找配置)
-        $communityConf = $this->getCommunityConf($agent->id);
-        $this->checkCommunityCreationLimit($agent, $communityConf);
+        $communityConf = CommunityService::getCommunityConf();
+        $this->checkCommunityCreationLimit($agent->id, $request->input('owner_player_id'), $communityConf);
 
         $formData = $request->intersect(['owner_player_id', 'name', 'info']);
         $formData['owner_agent_id'] = $agent->id;
@@ -63,26 +64,23 @@ class CommunityController extends Controller
         ];
     }
 
-    protected function checkCommunityCreationLimit($agent, CommunityConf $communityConf)
+    protected function checkCommunityCreationLimit($agentId, $playerId, CommunityConf $communityConf)
     {
-
-        $existPendingCommunityCount = CommunityList::where('owner_agent_id', $agent->id)
+        $existPendingCommunityCount = CommunityList::where('owner_agent_id', $agentId)
             ->where('status', '=', 0)  //此代理商申请的待审批的社团数
             ->get()
             ->count();
+        //可申请的最大待审核牌艺馆数量
         $communityPendingCountLimit = $communityConf->max_community_pending_count;
         if ($existPendingCommunityCount >= $communityPendingCountLimit) {
             throw new CustomException('每个代理商最多只允许创建' . $communityPendingCountLimit . '个待审核牌艺馆');
         }
-    }
-
-    protected function getCommunityConf($agentId)
-    {
-        $communityConf = CommunityConf::where('agent_id', $agentId)->first();
-        if (empty($communityConf)) {
-            $communityConf = CommunityConf::where('agent_id', 0)->firstOrFail();
+        //玩家可加入的最大牌艺馆数量(包括创建和加入，审核的时候也需要执行此步骤(理论上不需要))
+        $communityLimit = $communityConf->max_community_count;
+        $playerInvolvedCommunitiesCount = CommunityService::playerInvolvedCommunitiesTotalCount($playerId);
+        if ($playerInvolvedCommunitiesCount >= $communityLimit) {
+            throw new CustomException('每个玩家最多只可以加入(包括拥有)' . $communityLimit . '个牌艺馆');
         }
-        return $communityConf;
     }
 
     public function deleteCommunity(AgentRequest $request, $communityId)
