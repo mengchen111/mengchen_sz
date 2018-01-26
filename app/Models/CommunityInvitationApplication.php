@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CommunityInvitationApplication extends Model
 {
-    public $timestamps = false;
+    public $timestamps = true;
     protected $table = 'community_invitation_application';
     protected $primaryKey = 'id';
 

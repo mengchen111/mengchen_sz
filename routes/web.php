@@ -33,7 +33,7 @@ Route::prefix('api')->middleware(['auth'])->group(function () {
     Route::get('content-header-h1', 'InfoController@getContentHeaderH1');
 
     Route::get('game/room/type-map', 'Admin\Game\RoomController@getRoomTypeMap');  //房间类型映射关系
-    Route::get('game/player', 'PlayerController@searchPlayer');
+    Route::get('game/player', 'PlayerController@searchPlayer');     //根据玩家id查找玩家
 });
 
 //管理员接口
@@ -197,6 +197,10 @@ Route::group([
     Route::get('community/detail/{communityId}', 'CommunityController@getCommunityDetail')->where('communityId', '[0-9]+');
     Route::put('community/info/{community}', 'CommunityController@updateCommunityInfo')->where('community', '[0-9]+');
     Route::post('community/card/{community}', 'CommunityController@topUpCommunity')->where('community', '[0-9]+');
+    Route::post('community/member/invitation', 'CommunityMembersController@inviteMember');
+    Route::put('community/member/approval-application', 'CommunityMembersController@approveApplication');
+    Route::put('community/member/decline-application', 'CommunityMembersController@declineApplication');
+    Route::put('community/member/kick-out', 'CommunityMembersController@kickOutMember');
 
     Route::post('top-up/child/{receiver}/{type}/{amount}', 'TopUpController@topUp2Child')->where('amount', '[0-9]+');
     Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '[0-9]+');

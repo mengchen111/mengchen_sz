@@ -17,10 +17,18 @@ new Vue({
     topupCommunityCardForm: {
       item_type_id: 1,  //房卡类型id
     }, //充值社区房卡
+    searchPlayerForm: {
+      player_id: '',
+    },   //查询玩家
+    searchPlayerData: {},
+    kickingOutMemberId: '',   //即将被踢出的成员id
 
     communityDetailApiPrefix: '/agent/api/community/detail/',
     editCommunityInfoApiPrefix: '/agent/api/community/info/',
     topUpCommunityCardApiPrefix: '/agent/api/community/card/',
+    searchPlayerApi: '/api/game/player',
+    invitePlayerApi: '/agent/api/community/member/invitation', //邀请玩家入群
+    kickOutPlayerApi: '/agent/api/community/member/kick-out',
   },
 
   methods: {
@@ -53,6 +61,61 @@ new Vue({
           _self.getCommunityDetail()  //刷新此页面的社区数据
         })
         .catch(function (err) {
+          alert(err)
+        })
+    },
+
+    //查找玩家
+    searchPlayer () {
+      let _self = this
+      let toastr = this.$refs.toastr
+
+      myTools.axiosInstance.get(this.searchPlayerApi, {
+        params: this.searchPlayerForm,
+      }).then(function (res) {
+        if (_.has(res.data, 'error')) {
+          myTools.msgResolver(res, toastr)
+          _self.searchPlayerForm.player_id = '' //清空搜索框
+        } else {
+          _self.searchPlayerData = res.data
+          _self.searchPlayerForm.player_id = '' //清空搜索框
+          jQuery('#search-player-pop_up-modal-button').click() //弹出玩家查找结果框
+        }
+      }).catch(function (err) {
+        alert(err)
+      })
+    },
+
+    //邀请玩家加入社区
+    inviteMember () {
+      let toastr = this.$refs.toastr
+      let invitePlayerForm = {
+        player_id: this.searchPlayerData.id,
+        community_id: this.communityDetail.id,
+      }
+
+      myTools.axiosInstance.post(this.invitePlayerApi, invitePlayerForm)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+        }).catch(function (err) {
+          alert(err)
+        })
+    },
+
+    //踢出社区
+    kickOutMember () {
+      let _self = this
+      let toastr = this.$refs.toastr
+      let kickOutPlayerForm = {
+        player_id: this.kickingOutMemberId,
+        community_id: this.communityDetail.id,
+      }
+
+      myTools.axiosInstance.put(this.kickOutPlayerApi, kickOutPlayerForm)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+          _self.getCommunityDetail()  //重新获取数据
+        }).catch(function (err) {
           alert(err)
         })
     },

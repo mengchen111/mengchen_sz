@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\Game\PlayerService;
 use Illuminate\Database\Eloquent\Model;
+use PhpParser\Node\Expr\Array_;
 
 class CommunityList extends Model
 {
@@ -50,5 +51,36 @@ class CommunityList extends Model
             array_push($returnData, $player);
         }
         return $returnData;
+    }
+
+    public function addMembers(Array $newMembers)
+    {
+        $existMembers = explode(',', $this->members);
+        foreach ($newMembers as $newMember) {
+            if (!in_array($newMembers, $existMembers)) {
+                array_push($existMembers, $newMember);
+            }
+        }
+        $this->members = implode(',', $existMembers);
+        $this->save();
+    }
+
+    public function deleteMembers(Array $abandonedMembers)
+    {
+        $existMembers = explode(',', $this->members);
+        foreach ($abandonedMembers as $abandonedMember) {
+            if (in_array($abandonedMember, $existMembers)) {
+                unset($existMembers[array_search($abandonedMember, $existMembers)]);
+            }
+        }
+        $this->members = implode(',', $existMembers);
+        $this->save();
+    }
+
+    //检查成员是否存在此群中
+    public function ifHasMember($playerId)
+    {
+        $existMembers = explode(',', $this->members);
+        return in_array($playerId, $existMembers);
     }
 }

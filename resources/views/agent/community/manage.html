@@ -44,7 +44,8 @@
                 <!-- /.box-header -->
 
                 <div class="box-body">
-                    <div class="box box-default">
+                    <!-- 信息 -->
+                    <div class="box box-default" v-cloak v-if="false">
                         <div class="box-header">
                             牌艺馆信息
                         </div>
@@ -84,8 +85,100 @@
 
                         </div>
                     </div>
+
+                    <!-- 成员 -->
+                    <div>
+                        <div class="box box-default">
+                            <div class="box-header">邀请成员</div>
+                            <div class="box-body">
+                                <div class="input-group input-group-sm">
+                                    <input type="number" class="form-control" v-model="searchPlayerForm.player_id" placeholder="输入玩家id查询">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-info btn-flat" @click="searchPlayer">查询</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box box-default">
+                            <div class="box-header">社团推广</div>
+                            <div class="box-body">
+                                社团推广(预留)
+                            </div>
+                        </div>
+                        <div class="box box-default">
+                            <div class="box-header">成员列表</div>
+                            <div class="box-body">
+                                <div class="nav-tabs-custom">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#member-list-tab_member" data-toggle="tab"><span>成员列表</span></a></li>
+                                        <li><a href="#member-list-tab_request" data-toggle="tab">
+                                            <span>请求列表</span>
+                                            <span class="pull-right-container">
+                                                <small class="label pull-right bg-red">2</small>
+                                            </span></a>
+                                        </li>
+                                        <li><a href="#member-list-tab_change" data-toggle="tab"><span>社团动态</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="active tab-pane phone-scrollable" id="member-list-tab_member">
+                                        <div class="box box-default box-body" v-for="member in communityDetail.members_info" style="padding: 5px; margin-bottom: 1px;">
+                                            <div class="row" >
+                                                <div class="col-xs-6">
+                                                    <div class="info-box" style="min-height: 50px; margin-bottom: 2px;">
+                                                        <div class="info-box-icon" style="height: 50px; width:50px; font-size: 14px;line-height: 50px;">
+                                                            <img style="vertical-align: top;" :src="member.headimg">
+                                                        </div>
+                                                        <div class="info-box-content" style="padding: 2px 4px;margin-left: 50px;">
+                                                            <span :title="member.nickname" class="info-box-text" style="font-size: 12px;">{{member.nickname}}</span>
+                                                            <span :title="member.id" class="info-box-number" style="font-size: 15px;">{{member.id}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    <button class="btn btn-info btn-flat">战绩</button>
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    <button class="btn btn-warning btn-flat" data-toggle="modal"
+                                                            data-target="#kick-out-member-confirmation-modal" @click="kickingOutMemberId = member.id">踢出</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="member-list-tab_request">
+                                        请求列表
+                                    </div>
+                                    <div class="tab-pane" id="member-list-tab_change">
+                                        社团动态
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
                 <!-- /.box-body -->
+            </div>
+
+            <div id="kick-out-member-confirmation-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">确定删除该成员？</h3>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-flat btn-danger btn-lg  pull-left" @click="kickOutMember">
+                                确定
+                            </button>
+                            <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
+                                取消
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="edit-community-modal" class="modal fade" tabindex="-1">
@@ -139,6 +232,44 @@
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="search-player-pop_up-modal-button" type="button"
+                    data-toggle="modal" data-target="#search-player-pop_up-modal" v-show="false"></button>
+            <div id="search-player-pop_up-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">提示</h3>
+                        </div>
+                        <div class="modal-body" >
+                            <div class="row">
+                                <div class="col-xs-offset-1">
+                                    <div class="info-box">
+                                <span class="info-box-icon">
+                                    <img :src="searchPlayerData.headimg" style="vertical-align: top;">
+                                </span>
+                                        <div class="info-box-content">
+                                            <span :title="searchPlayerData.nickname" class="info-box-text">{{searchPlayerData.nickname}}</span>
+                                            <span class="info-box-number">ID:&nbsp;{{searchPlayerData.id}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button class="btn btn-flat btn-info btn-lg pull-left" @click="inviteMember">
+                                        邀请
+                                    </button>
+                                    <button class="btn btn-flat btn-info btn-lg pull-right" data-dismiss="modal">
+                                        取消
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

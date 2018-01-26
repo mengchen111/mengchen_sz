@@ -149,6 +149,7 @@ cd $codeDir
 | activities/tasks-player | DELETE | 删除玩家任务 |
 | activities/tasks-player | POST | 添加玩家任务 |
 | community | GET | 获取牌艺馆列表 |
+| community/application | POST | 审核牌艺馆创建申请 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |
@@ -199,6 +200,10 @@ cd $codeDir
 | community/detail/{communityId} | GET | 获取牌艺馆详细信息 |
 | community/info/{community} | PUT | 更新牌艺馆信息 |
 | community/card/{community} | POST | 充值牌艺馆房卡 |
+| community/member/invitation | POST | 邀请玩家加入牌艺馆 |
+| community/member/approval-application | PUT | 同意玩家入馆申请 |
+| community/member/decline-application | PUT | 拒绝玩家入馆申请 |
+| community/member/kick-out | PUT | 从牌艺馆中踢出成员 |
 | top-up/child/{receiver}/{type}/{amount} | POST | 给子代理商充值 |
 | top-up/player/{player}/{type}/{amount} | POST | 给玩家充值 |
 | top-up/child | GET | 给自代理商的充值记录 |
