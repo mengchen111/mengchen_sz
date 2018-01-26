@@ -34,7 +34,7 @@
                     <a class="btn btn-app" style="margin: 0 0 2px 2px">
                         <i class="fa fa-trophy"></i> 战绩
                     </a>
-                    <a class="btn btn-app" style="margin: 0 0 2px 2px">
+                    <a class="btn btn-app active" style="margin: 0 0 2px 2px">
                         <i class="fa fa-users"></i> 成员
                     </a>
                     <a class="btn btn-app" style="margin: 0 0 2px 2px">
@@ -113,8 +113,8 @@
                                         <li class="active"><a href="#member-list-tab_member" data-toggle="tab"><span>成员列表</span></a></li>
                                         <li><a href="#member-list-tab_request" data-toggle="tab">
                                             <span>请求列表</span>
-                                            <span class="pull-right-container">
-                                                <small class="label pull-right bg-red">2</small>
+                                            <span class="pull-right-container" v-if="communityDetail.application_data.application_count > 0">
+                                                <small class="label pull-right bg-red">{{ communityDetail.application_data.application_count }}</small>
                                             </span></a>
                                         </li>
                                         <li><a href="#member-list-tab_change" data-toggle="tab"><span>社团动态</span></a></li>
@@ -145,8 +145,28 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane" id="member-list-tab_request">
-                                        请求列表
+                                    <div class="tab-pane phone-scrollable" id="member-list-tab_request">
+                                        <div class="box box-default box-body" v-for="application in communityDetail.application_data.applications" style="padding: 5px; margin-bottom: 1px;">
+                                            <div class="row" >
+                                                <div class="col-xs-6">
+                                                    <div class="info-box" style="min-height: 50px; margin-bottom: 2px;">
+                                                        <div class="info-box-icon" style="height: 50px; width:50px; font-size: 14px;line-height: 50px;">
+                                                            <img style="vertical-align: top;" :src="application.player.headimg">
+                                                        </div>
+                                                        <div class="info-box-content" style="padding: 2px 4px;margin-left: 50px;">
+                                                            <span :title="application.player.nickname" class="info-box-text" style="font-size: 12px;">{{application.player.nickname}}</span>
+                                                            <span :title="application.player.id" class="info-box-number" style="font-size: 15px;">{{application.player.id}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    <button class="btn btn-info btn-flat" @click="approveApplication(application.id)">同意</button>
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    <button class="btn btn-warning btn-flat" @click="declineApplication(application.id)">拒绝</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="tab-pane" id="member-list-tab_change">
                                         社团动态

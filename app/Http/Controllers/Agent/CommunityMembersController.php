@@ -47,20 +47,13 @@ class CommunityMembersController extends Controller
     }
 
     //群主同意入群申请
-    public function approveApplication(AgentRequest $request)
+    public function approveApplication(AgentRequest $request, CommunityInvitationApplication $application)
     {
-        $request->validate($request, [
-            'player_id' => 'required|integer',
-            'community_id' => 'required|integer',
-        ]);
-
-        $application = CommunityInvitationApplication::where('player_id', $request->input('player_id'))
-            ->where('community_id', $request->input('community_id'))
-            ->where('type', 0)  //类型为用户申请的入群请求（1为群主主动邀请）
-            ->where('status', 0)    //状态为pending的申请
-            ->firstOrFail();
+        if ((int)$application->status !== 0) {
+            throw new CustomException('此条申请已被审批');
+        }
         $agent = $request->user();
-        $community = CommunityList::findOrFail($request->input('community_id'));
+        $community = CommunityList::findOrFail($application->community_id);
         $this->checkoutCommunityOwnership($community, $agent);    //检查此代理商是否拥有此群
 
         OperationLogs::add($agent->id, $request->path(), $request->method(),
@@ -69,25 +62,18 @@ class CommunityMembersController extends Controller
         $this->doApproveApplication($community, $application);
 
         return [
-            'message' => '审批通过',
+            'message' => '申请通过',
         ];
     }
 
     //群主拒绝入群申请
-    public function declineApplication(AgentRequest $request)
+    public function declineApplication(AgentRequest $request, CommunityInvitationApplication $application)
     {
-        $request->validate($request, [
-            'player_id' => 'required|integer',
-            'community_id' => 'required|integer',
-        ]);
-
-        $application = CommunityInvitationApplication::where('player_id', $request->input('player_id'))
-            ->where('community_id', $request->input('community_id'))
-            ->where('type', 0)  //类型为用户申请的入群请求（1为群主主动邀请）
-            ->where('status', 0)    //状态为pending的申请
-            ->firstOrFail();
+        if ((int)$application->status !== 0) {
+            throw new CustomException('此条申请已被审批');
+        }
         $agent = $request->user();
-        $community = CommunityList::findOrFail($request->input('community_id'));
+        $community = CommunityList::findOrFail($application->community_id);
         $this->checkoutCommunityOwnership($community, $agent);    //检查此代理商是否拥有此群
 
         OperationLogs::add($agent->id, $request->path(), $request->method(),
@@ -96,7 +82,7 @@ class CommunityMembersController extends Controller
         $this->doDeclineApplication($application);
 
         return [
-            'message' => '拒绝审批完成',
+            'message' => '拒绝申请完成',
         ];
     }
 

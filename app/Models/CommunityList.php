@@ -53,6 +53,27 @@ class CommunityList extends Model
         return $returnData;
     }
 
+    //获取此社区的申请列表
+    public function getApplicationDataAttribute()
+    {
+        $applicationData = [];
+        $applications = CommunityInvitationApplication::where('community_id', $this->attributes['id'])
+            ->where('type', 0)  //类型为申请
+            ->where('status', 0)    //状态为pending
+            ->get();
+        $applicationData['application_count'] = $applications->count(); //申请数量
+
+        $remainedPlayerInfo = ['id', 'nickname', 'headimg'];    //只显示这些玩家信息
+        foreach ($applications as &$application) {
+            $player = PlayerService::findPlayer($application->player_id);
+            $player = collect($player)->only($remainedPlayerInfo)->toArray();
+            $application['player'] = $player;   //添加申请者的基本信息
+        }
+        $applicationData['applications'] = $applications;   //申请信息
+
+        return $applicationData;
+    }
+
     public function addMembers(Array $newMembers)
     {
         $existMembers = explode(',', $this->members);
@@ -83,4 +104,5 @@ class CommunityList extends Model
         $existMembers = explode(',', $this->members);
         return in_array($playerId, $existMembers);
     }
+
 }

@@ -12,7 +12,9 @@ new Vue({
     eventHub: new Vue(),
     activatedRow: {},
 
-    communityDetail: '',  //社区信息数据
+    communityDetail: {
+      application_data: {}, //提前给出key，防止前端报错
+    },  //社区信息数据
     editCommunityForm: {},  //编辑社区的名字和简介
     topupCommunityCardForm: {
       item_type_id: 1,  //房卡类型id
@@ -29,6 +31,8 @@ new Vue({
     searchPlayerApi: '/api/game/player',
     invitePlayerApi: '/agent/api/community/member/invitation', //邀请玩家入群
     kickOutPlayerApi: '/agent/api/community/member/kick-out',
+    approveApplicationApiPrefix: '/agent/api/community/member/approval-application/',
+    declineApplicationApiPrefix: '/agent/api/community/member/decline-application/',
   },
 
   methods: {
@@ -112,6 +116,34 @@ new Vue({
       }
 
       myTools.axiosInstance.put(this.kickOutPlayerApi, kickOutPlayerForm)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+          _self.getCommunityDetail()  //重新获取数据
+        }).catch(function (err) {
+          alert(err)
+        })
+    },
+
+    //同意入群申请
+    approveApplication (applicationId) {
+      let _self = this
+      let toastr = this.$refs.toastr
+
+      myTools.axiosInstance.put(this.approveApplicationApiPrefix + applicationId)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+          _self.getCommunityDetail()  //重新获取数据
+        }).catch(function (err) {
+          alert(err)
+        })
+    },
+
+    //拒绝入群申请
+    declineApplication (applicationId) {
+      let _self = this
+      let toastr = this.$refs.toastr
+
+      myTools.axiosInstance.put(this.declineApplicationApiPrefix + applicationId)
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.getCommunityDetail()  //重新获取数据

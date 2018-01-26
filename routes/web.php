@@ -198,8 +198,8 @@ Route::group([
     Route::put('community/info/{community}', 'CommunityController@updateCommunityInfo')->where('community', '[0-9]+');
     Route::post('community/card/{community}', 'CommunityController@topUpCommunity')->where('community', '[0-9]+');
     Route::post('community/member/invitation', 'CommunityMembersController@inviteMember');
-    Route::put('community/member/approval-application', 'CommunityMembersController@approveApplication');
-    Route::put('community/member/decline-application', 'CommunityMembersController@declineApplication');
+    Route::put('community/member/approval-application/{application}', 'CommunityMembersController@approveApplication')->where('application', '[0-9]+');
+    Route::put('community/member/decline-application/{application}', 'CommunityMembersController@declineApplication')->where('application', '[0-9]+');
     Route::put('community/member/kick-out', 'CommunityMembersController@kickOutMember');
 
     Route::post('top-up/child/{receiver}/{type}/{amount}', 'TopUpController@topUp2Child')->where('amount', '[0-9]+');
