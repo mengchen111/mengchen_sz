@@ -74,6 +74,22 @@ class CommunityList extends Model
         return $applicationData;
     }
 
+    //社区动态列表
+    public function getMemberLogAttribute()
+    {
+        $memberLogs = CommunityMemberLog::where('community_id', $this->attributes['id'])
+            ->orderBy('id', 'desc')
+            ->limit(10)     //只显示10条最新动态
+            ->get();
+        $remainedPlayerInfo = ['id', 'nickname'];    //只显示这些玩家信息
+        foreach ($memberLogs as $memberLog) {
+            $player = PlayerService::findPlayer($memberLog->player_id);
+            $player = collect($player)->only($remainedPlayerInfo)->toArray();
+            $memberLog['player'] = $player;
+        }
+        return $memberLogs;
+    }
+
     public function addMembers(Array $newMembers)
     {
         $existMembers = explode(',', $this->members);

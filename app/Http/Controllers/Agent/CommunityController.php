@@ -108,7 +108,8 @@ class CommunityController extends Controller
             ->where('status', 1)    //只能获取已审核通过的
             ->findOrFail($communityId)
             ->append('members_info')   //append成员信息
-            ->append('application_data');
+            ->append('application_data')
+            ->append('member_log');
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '获取牌艺馆详情', $request->header('User-Agent'));

@@ -87,7 +87,7 @@
                     </div>
 
                     <!-- 成员 -->
-                    <div>
+                    <div v-cloak v-if="false">
                         <div class="box box-default">
                             <div class="box-header">邀请成员</div>
                             <div class="box-body">
@@ -117,7 +117,7 @@
                                                 <small class="label pull-right bg-red">{{ communityDetail.application_data.application_count }}</small>
                                             </span></a>
                                         </li>
-                                        <li><a href="#member-list-tab_change" data-toggle="tab"><span>社团动态</span></a></li>
+                                        <li><a href="#member-list-tab_log" data-toggle="tab"><span>社团动态</span></a></li>
                                     </ul>
                                 </div>
                                 <div class="tab-content">
@@ -168,8 +168,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane" id="member-list-tab_change">
-                                        社团动态
+                                    <div class="tab-pane" id="member-list-tab_log">
+                                        <div class="row" v-for="log in communityDetail.member_log">
+                                            <div class="col-xs-12">
+                                                <p v-if="log.action != '踢出'">{{log.player.nickname}}<span class="text-red">{{log.action}}</span>牌艺馆&nbsp;&nbsp;&nbsp;{{log.created_at}}</p>
+                                                <p v-else>{{log.player.nickname}}被<span class="text-red">{{log.action}}</span>牌艺馆&nbsp;&nbsp;&nbsp;{{log.created_at}}</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
