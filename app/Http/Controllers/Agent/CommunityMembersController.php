@@ -23,6 +23,14 @@ class CommunityMembersController extends Controller
             //'type' => 'required|integer|in:0,1',
             'community_id' => 'required|integer',
         ]);
+        $playerId = $request->input('player_id');
+        $communityId = $request->input('community_id');
+
+        //检查玩家是否已经在群中
+        $this->checkIfInTheCommunity($playerId, $communityId);
+        //检查是否已经存在的邀请
+        $this->checkIfDuplicatedInvitation($playerId, $communityId);
+
         $formData = $request->only(['player_id', 'community_id']);
         $formData['status'] = 0;    //状态设置为pending
         $formData['type'] = 1;      //群主邀请
@@ -30,21 +38,34 @@ class CommunityMembersController extends Controller
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '邀请加入牌艺馆', $request->header('User-Agent'));
 
-        $invitation = CommunityInvitationApplication::where('player_id', $formData['player_id'])
-            ->where('community_id', $formData['community_id'])
-            ->where('status', 0)
-            ->first();
-
-        //已经存在的邀请
-        if (!empty($invitation)) {
-            throw new CustomException('已经邀请过此玩家');
-        }
-
         CommunityInvitationApplication::create($formData);
 
         return [
             'message' => '邀请成功',
         ];
+    }
+
+    protected function checkIfInTheCommunity($playerId, $communityId)
+    {
+        $community = CommunityList::findOrFail($communityId);
+        if ($community->ifHasMember($playerId)) {
+            throw new CustomException('此玩家已处于当前牌艺馆中');
+        }
+        return true;
+    }
+
+    protected function checkIfDuplicatedInvitation($playerId, $communityId)
+    {
+        $invitation = CommunityInvitationApplication::where('player_id', $playerId)
+            ->where('community_id', $communityId)
+            ->where('status', 0)
+            ->first();
+
+        if (!empty($invitation)) {
+            throw new CustomException('已经邀请过此玩家');
+        }
+
+        return true;
     }
 
     //群主同意入群申请
