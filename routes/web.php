@@ -154,6 +154,8 @@ Route::group([
     Route::get('activities/player-task', 'ViewController@activitiesPlayerTask');
     Route::get('activities/statement', 'ViewController@activitiesStatement');
 
+    Route::get('community/list', 'ViewController@communityList');
+
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-list', 'ViewController@stockApplyList');
     Route::get('stock/apply-history', 'ViewController@stockApplyHistory');

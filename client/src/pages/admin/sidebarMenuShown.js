@@ -47,6 +47,12 @@ export default {
       ifShown: false,
     },
   },
+  community: {
+    ifShown: false,
+    list: {
+      ifShown: false,
+    },
+  },
   player: {
     ifShown: false,
     list: {

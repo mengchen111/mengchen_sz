@@ -78,6 +78,11 @@ class ViewController extends Controller
         return view('admin.activities.statement');
     }
 
+    public function communityList(Request $request)
+    {
+        return view('admin.community.list');
+    }
+
     public function playerList(Request $request)
     {
         return view('admin.player.list');

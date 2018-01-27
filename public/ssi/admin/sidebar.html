@@ -41,6 +41,14 @@
                     <li :class="{ active: uri.activities.statement.isActive }" v-show="isAdmin || shownMenu.activities.statement.ifShown"><a href="/admin/activities/statement"><i class="fa fa-circle-o"></i>数据统计</a></li>
                 </ul>
             </li>
+            <li class="treeview" :class="{ active: uri.community.isActive }" v-show="isAdmin || shownMenu.community.ifShown">
+                <a href="#"><i class="fa fa-trophy"></i> <span>牌艺馆管理</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li :class="{ active: uri.community.list.isActive }" v-show="isAdmin || shownMenu.community.list.ifShown"><a href="/admin/community/list"><i class="fa fa-circle-o"></i>牌艺馆列表</a></li>
+                </ul>
+            </li>
             <li class="treeview" :class="{ active: uri.player.isActive }" v-show="isAdmin || shownMenu.player.ifShown">
                 <a href="#"><i class="fa fa-gamepad"></i> <span>玩家管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>

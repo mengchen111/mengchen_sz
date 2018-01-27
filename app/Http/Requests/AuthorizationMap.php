@@ -53,6 +53,12 @@ trait AuthorizationMap
                 'ifShown' => true,
             ],
         ],
+        'community' => [
+            'ifShown' => true,
+            'list' => [
+                'ifShown' => true,
+            ],
+        ],
         'player' => [
             'ifShown' => true,
             'list' => [

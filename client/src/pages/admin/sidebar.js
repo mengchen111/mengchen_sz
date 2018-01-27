@@ -54,6 +54,12 @@ new Vue({
           isActive: false,
         },
       },
+      community: {
+        isActive: false,
+        list: {
+          isActive: false,
+        },
+      },
       player: {
         isActive: false,
         list: {
