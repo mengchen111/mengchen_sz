@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\DB;
+use App\Services\Game\GameApiService;
 
 class CommunityMembersController extends Controller
 {
@@ -167,6 +168,7 @@ class CommunityMembersController extends Controller
         ]);
 
         //todo 踢成员之前需要先检查其是否在游戏中，要调用后端接口
+        $this->checkIfPlayerInGame($request->input('player_id'));
 
         $community = CommunityList::findOrFail($request->input('community_id'));
         $playerId = $request->input('player_id');
@@ -184,6 +186,25 @@ class CommunityMembersController extends Controller
         return [
             'message' => '踢出成员成功',
         ];
+    }
+
+    protected function checkIfPlayerInGame($playerId)
+    {
+        //获取正在玩的房间数据
+        $api = config('custom.game_api_room_open');
+        $openRooms = GameApiService::request('GET', $api);
+        $inGameUids = [];
+        foreach ($openRooms as $openRoom) {
+            $uids = collect($openRoom)
+                ->only(['creator_uid', 'uid_1', 'uid_2', 'uid_3', 'uid_4'])
+                ->flatten()
+                ->toArray();
+            $inGameUids = array_merge($inGameUids, $uids);
+        }
+        if (in_array($playerId, $inGameUids)) {
+            throw new CustomException('此玩家正在游戏中，禁止踢出操作');
+        }
+        return true;
     }
 
     protected function doKickOutMember($community, $playerId)
