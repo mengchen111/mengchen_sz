@@ -51,6 +51,9 @@ class CommunityMembersController extends Controller
         if ($community->ifHasMember($playerId)) {
             throw new CustomException('此玩家已处于当前牌艺馆中');
         }
+        if ((int)$community->owner_player_id === $playerId) {
+            throw new CustomException('您已经是此牌艺馆的馆主，不能邀请自己');
+        }
         return true;
     }
 
@@ -162,6 +165,8 @@ class CommunityMembersController extends Controller
             'community_id' => 'required|integer|exists:community_list,id',
             'player_id' => 'required|integer',
         ]);
+
+        //todo 踢成员之前需要先检查其是否在游戏中，要调用后端接口
 
         $community = CommunityList::findOrFail($request->input('community_id'));
         $playerId = $request->input('player_id');

@@ -49,4 +49,9 @@ class CommunityController extends Controller
             'message' => '操作成功'
         ];
     }
+
+    public function changeCommunityOwnership(AdminRequest $request)
+    {
+        //todo 更改牌艺馆馆长，查询members里面是否有馆长和新馆长，删除之
+    }
 }
