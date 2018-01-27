@@ -64,7 +64,7 @@ class CommunityController extends Controller
         ];
     }
 
-    protected function checkCommunityCreationLimit($agentId, $playerId, CommunityConf $communityConf)
+    protected function checkCommunityCreationLimit($agentId, $playerId, $communityConf)
     {
         $existPendingCommunityCount = CommunityList::where('owner_agent_id', $agentId)
             ->where('status', '=', 0)  //此代理商申请的待审批的社团数
@@ -83,14 +83,12 @@ class CommunityController extends Controller
         }
     }
 
-    public function deleteCommunity(AgentRequest $request, $communityId)
+    public function deleteCommunity(AgentRequest $request, CommunityList $community)
     {
-        $communityId = CommunityList::findOrFail($communityId);
-
-        if (!empty($communityId->members)) {
+        if (!empty($community->members)) {
             throw new CustomException('成员不为空，禁止删除');
         }
-        $communityId->delete();
+        $community->delete();
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '删除牌艺馆', $request->header('User-Agent'));

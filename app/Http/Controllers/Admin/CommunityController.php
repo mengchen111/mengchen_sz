@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
 use App\Models\CommunityList;
+use App\Exceptions\CustomException;
+use App\Services\CommunityService;
 
 class CommunityController extends Controller
 {
@@ -31,19 +33,77 @@ class CommunityController extends Controller
             ->paginate($this->per_page);
     }
 
-    public function approveCommunityApplication(AdminRequest $request)
+    public function createCommunity(AdminRequest $request)
     {
         $this->validate($request, [
-            'community_id' => 'required|integer|exists:community_list,id',
+            'owner_player_id' => 'required|integer',
+            'owner_agent_id' => 'required|integer|exists:users,id',
+            'name' => 'required|string|max:12|unique:community_list,name',
+            'info' => 'required|string|max:12',
+        ]);
+
+        //检查社区数量是否达到上限(根据代理商来查找配置)
+        $communityConf = CommunityService::getCommunityConf();
+        $this->checkCommunityCreationLimit($request->input('owner_agent_id'), $request->input('owner_player_id'), $communityConf);
+
+        $formData = $request->intersect(['owner_player_id', 'owner_agent_id', 'name', 'info']);
+        $community = CommunityList::create($formData);
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '创建牌艺馆', $request->header('User-Agent'));
+
+        return [
+            'message' => '创建牌艺馆' . $community->id . '成功, 等待管理员审核',
+        ];
+    }
+
+    public function deleteCommunity(AdminRequest $request, $communityId)
+    {
+        $communityId = CommunityList::findOrFail($communityId);
+
+        if (!empty($communityId->members)) {
+            throw new CustomException('成员不为空，禁止删除');
+        }
+        $communityId->delete();
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '删除牌艺馆', $request->header('User-Agent'));
+
+        return [
+            'message' => '删除成功',
+        ];
+    }
+
+    protected function checkCommunityCreationLimit($agentId, $playerId, $communityConf)
+    {
+        $existPendingCommunityCount = CommunityList::where('owner_agent_id', $agentId)
+            ->where('status', '=', 0)  //此代理商申请的待审批的社团数
+            ->get()
+            ->count();
+        //可申请的最大待审核牌艺馆数量
+        $communityPendingCountLimit = $communityConf->max_community_pending_count;
+        if ($existPendingCommunityCount >= $communityPendingCountLimit) {
+            throw new CustomException('每个代理商最多只允许创建' . $communityPendingCountLimit . '个待审核牌艺馆');
+        }
+        //玩家可加入的最大牌艺馆数量(包括创建和加入，审核的时候也需要执行此步骤(理论上不需要))
+        $communityLimit = $communityConf->max_community_count;
+        $playerInvolvedCommunitiesCount = CommunityService::playerInvolvedCommunitiesTotalCount($playerId);
+        if ($playerInvolvedCommunitiesCount >= $communityLimit) {
+            throw new CustomException('每个玩家最多只可以加入(包括拥有)' . $communityLimit . '个牌艺馆');
+        }
+    }
+
+    public function auditCommunityApplication(AdminRequest $request, CommunityList $community)
+    {
+        $this->validate($request, [
             'status' => 'required|integer|in:1,2',
         ]);
-        $formData = $request->only(['community_id', 'status']);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '审批牌艺馆', $request->header('User-Agent'));
 
-        CommunityList::where('id', $formData['community_id'])
-            ->update(['status' => $formData['status']]);
+        $community->status = $request->input('status');
+        $community->save();
 
         return [
             'message' => '操作成功'

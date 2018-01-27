@@ -1,6 +1,6 @@
 <template>
     <div class="table-actions">
-        <button class="btn btn-primary btn-block btn-flat" data-toggle="modal" data-target="#manage-community-modal"
+        <button class="btn btn-primary btn-block btn-flat"
                 @click="manageCommunityAction(rowData)" title="管理" v-if="rowData.status == 1">管理
         </button>
         <button class="btn btn-primary btn-block btn-flat" title="待审核" v-if="rowData.status == 0">待审核

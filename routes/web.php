@@ -92,7 +92,9 @@ Route::group([
     Route::post('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@addTasksPlayer');
 
     Route::get('community', 'CommunityController@showCommunityList');
-    Route::post('community/application', 'CommunityController@approveCommunityApplication');
+    Route::post('community', 'CommunityController@createCommunity');
+    Route::delete('community/{community}', 'CommunityController@deleteCommunity')->where('community', '[0-9]+');
+    Route::post('community/audit/{community}', 'CommunityController@auditCommunityApplication')->where('community', '[0-9]+');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');

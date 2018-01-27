@@ -149,6 +149,8 @@ cd $codeDir
 | activities/tasks-player | DELETE | 删除玩家任务 |
 | activities/tasks-player | POST | 添加玩家任务 |
 | community | GET | 获取牌艺馆列表 |
+| community | POST | 创建牌艺馆 |
+| community/{community} | DELETE | 删除牌艺馆 |
 | community/application | POST | 审核牌艺馆创建申请 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |

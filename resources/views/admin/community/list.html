@@ -25,22 +25,121 @@
 
         <!-- Main content -->
         <section class="content" id="app">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">牌艺馆列表</h3>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">牌艺馆列表</h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="row" style="margin-bottom: 5px;">
+                        <div class="col-md-3 col-xs-12">
+                            <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
+                                    data-target="#add-community-modal">
+                                创建牌艺馆
+                            </button>
                         </div>
 
-                        <div class="box-body">
-                            首页
+                        <div class="col-md-3 col-xs-12">
+                            <v-select :searchable="false" v-model="statusDefaultValue" :options="statusOptions"
+                                      :on-change="onSelectChange"></v-select>
+                        </div>
+                    </div>
 
+                    <div class="row phone-scrollable">
+                        <div class="col-md-12 col-xs-12">
+                            <my-vuetable
+                                    :table-url="tableUrl"
+                                    :table-fields="tableFields"
+                                    :callbacks="tableCallbacks"
+                            >
+                            </my-vuetable>
+                        </div>
+                    </div>
+                </div>
+                <!--box-body-->
+            </div>
+
+            <div id="add-community-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">创建牌艺馆</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" @submit.prevent="addCommunity">
+                                <div class="form-group">
+                                    <label>游戏id</label>
+                                    <input name="owner_player_id" type="number" class="form-control" required
+                                           v-model.trim="addCommunityForm.owner_player_id" placeholder="玩家id">
+                                </div>
+                                <div class="form-group">
+                                    <label>代理商id</label>
+                                    <input name="owner_agent_id" type="number" class="form-control" required
+                                           v-model.trim="addCommunityForm.owner_agent_id" placeholder="代理商id">
+                                </div>
+                                <div class="form-group">
+                                    <label>名称</label>
+                                    <input name="name" type="text" class="form-control" required
+                                           v-model.trim="addCommunityForm.name" placeholder="名称(12个字符之内)">
+                                </div>
+                                <div class="form-group">
+                                    <label>简介</label>
+                                    <input name="info" type="text" class="form-control"
+                                           v-model.trim="addCommunityForm.info" placeholder="简介(可留空,12个字符之内)">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!--<my-toastr ref="toastr"></my-toastr>-->
+            <div id="autdit-community-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">审核牌艺馆</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" @submit.prevent="auditCommunity">
+                                <div class="form-group">
+                                    <label>通过/拒绝</label>
+                                    <v-select :searchable="false" v-model="auditCommunityValue" :options="auditCommunityOptions"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="delete-community-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center text-danger">确定删除？</h3>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-flat btn-danger btn-lg pull-left" @click="deleteCommunity">
+                                删除
+                            </button>
+                            <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
+                                取消
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <my-toastr ref="toastr"></my-toastr>
         </section>
         <!-- /.content -->
 
