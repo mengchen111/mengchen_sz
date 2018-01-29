@@ -18,7 +18,7 @@ class CreateCommunityCardConsumptionLogTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('community_id')->comment('社团id');
             $table->unsignedInteger('player_id')->comment('玩家id');
-            $table->unsignedTinyInteger('operation')->comment('动作(0-消耗,1-退还)');
+            $table->unsignedTinyInteger('operation')->comment('动作(0-冻结,1-消耗冻结,2-退还冻结,3-直接耗卡)');
             $table->unsignedTinyInteger('count')->comment('房卡数量');
             $table->string('remark')->nullable()->comment('备注');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
