@@ -34,14 +34,14 @@
                     <li :class="{ active: uri.subagent.list.isActive }"><a href="/agent/subagent/list"><i class="fa fa-circle-o"></i>子代理商列表</a></li>
                 </ul>
             </li>
-            <!--<li class="treeview" :class="{ active: uri.community.isActive }">-->
-                <!--<a href="#"><i class="fa fa-trophy"></i> <span>牌艺馆</span>-->
-                    <!--<span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>-->
-                <!--</a>-->
-                <!--<ul class="treeview-menu">-->
-                    <!--<li :class="{ active: uri.community.list.isActive }"><a href="/agent/community/list"><i class="fa fa-circle-o"></i>牌艺馆列表</a></li>-->
-                <!--</ul>-->
-            <!--</li>-->
+            <li class="treeview" :class="{ active: uri.community.isActive }">
+                <a href="#"><i class="fa fa-trophy"></i> <span>牌艺馆</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li :class="{ active: uri.community.list.isActive }"><a href="/agent/community/list"><i class="fa fa-circle-o"></i>牌艺馆列表</a></li>
+                </ul>
+            </li>
             <li class="treeview" :class="{ active: uri['top-up'].isActive }">
                 <a href="#"><i class="fa fa-credit-card"></i> <span>充值记录</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
