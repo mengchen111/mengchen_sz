@@ -186,10 +186,34 @@
                         <div class="box box-default">
                             <div class="box-header">
                                 社团房间
-                                <a href="#" class="pull-right">刷新</a>
+                                <a href="#" class="pull-right" @click="getCommunityRooms">刷新</a>
                             </div>
-                            <div class="box-body">
-                               body
+                            <div class="box-body phone-scrollable" style="padding: 2px;">
+                                <div class="box box-default" v-for="communityRoom in communityRooms" style="margin-bottom: 5px;">
+                                    <div class="box-header" style="padding: 5px;font-size: 12px;">
+                                        <p><span>{{communityRoom.rtype}}</span>&nbsp;&nbsp;&nbsp;
+                                            <span>房号:{{communityRoom.rid}}</span>&nbsp;&nbsp;&nbsp;
+                                            <span>{{communityRoom.time}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="box-body" style="padding: 2px;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-3 col-xs-3" style="padding: 5px;" v-for="player in communityRoom.players">
+                                                    <div class="info-box" style="min-height: 40px;margin-bottom: 2px;">
+                                                    <span class="info-box-icon center-block" style="height: 40px;width: 40px;font-size: 14px;line-height: 40px;">
+                                                        <img style="vertical-align: top;" :src="player.headimg">
+                                                    </span>
+                                                        <div class="info-box-content" style="padding: 2px 4px;margin-left: 40px;">
+                                                            <span class="info-box-text" :title="player.nickname" style="font-size: 9px;">{{player.nickname}}</span>
+                                                            <span class="info-box-number" style="font-size: 10px;">{{player.uid ? player.uid : ''}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -15,6 +15,7 @@ new Vue({
     communityDetail: {
       application_data: {}, //提前给出key，防止前端报错
     },  //社区信息数据
+    communityRooms: {}, //社区房间信息
     editCommunityForm: {},  //编辑社区的名字和简介
     topupCommunityCardForm: {
       item_type_id: 1,  //房卡类型id
@@ -33,6 +34,7 @@ new Vue({
     kickOutPlayerApi: '/agent/api/community/member/kick-out',
     approveApplicationApiPrefix: '/agent/api/community/member/approval-application/',
     declineApplicationApiPrefix: '/agent/api/community/member/decline-application/',
+    communityRoomApiPrefix: '/agent/api/community/room/',
   },
 
   methods: {
@@ -164,6 +166,16 @@ new Vue({
           _self.editCommunityForm.info = _self.communityDetail.info
         })
     },
+
+    getCommunityRooms () {
+      let _self = this
+      let communityId = this.communityDetail.id
+
+      myTools.axiosInstance.get(this.communityRoomApiPrefix + communityId)
+        .then(function (res) {
+          _self.communityRooms = res.data
+        })
+    },
   },
 
   created: function () {
@@ -178,5 +190,6 @@ new Vue({
   },
 
   mounted: function () {
+    //
   },
 })
