@@ -87,7 +87,7 @@
                     </div>
 
                     <!-- 成员 -->
-                    <div v-cloak v-if="true">
+                    <div v-cloak v-if="false">
                         <div class="box box-default">
                             <div class="box-header">邀请成员</div>
                             <div class="box-body">
@@ -181,6 +181,18 @@
                         </div>
                     </div>
 
+                    <!-- 房间 -->
+                    <div v-cloak v-if="true">
+                        <div class="box box-default">
+                            <div class="box-header">
+                                社团房间
+                                <a href="#" class="pull-right">刷新</a>
+                            </div>
+                            <div class="box-body">
+                               body
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- /.box-body -->
@@ -262,8 +274,8 @@
                 </div>
             </div>
 
-            <button id="search-player-pop_up-modal-button" type="button"
-                    data-toggle="modal" data-target="#search-player-pop_up-modal" v-show="false"></button>
+            <button id="search-player-pop_up-modal-button" type="button" data-toggle="modal"
+                    data-target="#search-player-pop_up-modal" v-cloak v-if="false"></button>
             <div id="search-player-pop_up-modal" class="modal fade" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
