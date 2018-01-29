@@ -70,7 +70,7 @@
                             </form>
 
                             <div class="row">
-                                <div class="col-md-3 col-xs-6 col-md-offset-3 col-xs-offset-6">
+                                <div class="col-md-3 col-xs-6">
                                     <div class="small-box">
                                         <div class="inner">
                                             <h5>开房总次数</h5>
@@ -100,8 +100,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-3 col-xs-6">
                                     <div class="small-box">
                                         <div class="inner">
@@ -144,8 +142,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-3 col-xs-6">
                                     <div class="small-box">
                                         <div class="inner">
@@ -183,11 +179,23 @@
                                 <div class="col-md-3 col-xs-6">
                                     <div class="small-box">
                                         <div class="inner">
-                                            <h5>单局游戏时长(秒)</h5>
+                                            <h5>单局游戏时长(分)</h5>
                                             <h4 class="text-bold" v-cloak>
                                                 {{ ! roomStatementData.game_rounds_total_count ? 0
                                                     : _.floor(roomStatementData.total_room_game_duration
-                                                        / roomStatementData.game_rounds_total_count, 2) }}
+                                                        / roomStatementData.game_rounds_total_count / 60, 2) }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="small-box">
+                                        <div class="inner">
+                                            <h5>平均组局时间(分)</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ ! roomStatementData.room_played_total_count ? 0
+                                                : _.floor(roomStatementData.total_room_zuju_duration
+                                                / roomStatementData.room_played_total_count / 60, 2) }}
                                             </h4>
                                         </div>
                                     </div>

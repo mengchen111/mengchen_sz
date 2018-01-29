@@ -106,6 +106,9 @@ class RoomStatementController extends Controller
             $data['单局游戏时长(秒)'] = $statement['game_rounds_total_count'] != 0
                 ? sprintf('%.2f', $statement['total_room_game_duration'] / $statement['game_rounds_total_count'])
                 : 0;
+            $data['平均组局时间(秒)'] = $statement['room_played_total_count'] != 0
+                ? sprintf('%.2f', $statement['total_room_zuju_duration'] / $statement['room_played_total_count'])
+                : 0;
 
             $result[$gameType] = $data;
         }

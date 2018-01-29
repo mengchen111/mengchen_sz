@@ -16,6 +16,7 @@ class RoomStatementService
 
     public $data = [
         'room_total_count' => 0,                //全天的开房总次数
+        'room_played_total_count' => 0,         //有过游戏记录的房间总数（至少打过一局）
         'system_opened_room_count' => 0,        //系统开房，直接调用游戏后端接口开的房
         'player_opened_normal_room_count' => 0, //玩家开房，正常耗卡
         'player_opened_invalid_room_count' => 0,//玩家开房，无效房间
@@ -26,6 +27,7 @@ class RoomStatementService
         'game_players_total_count' => 0,             //游戏人数
         'total_player_game_duration' => 0,           //玩家游戏总时长（秒）
         'total_room_game_duration' => 0,             //房间游戏总时长（秒）
+        'total_room_zuju_duration' => 0,             //房间组局总时长(秒) 从房间创建到游戏开始的时间
     ];
 
     public function __construct($date, $gameKind = '')
@@ -51,6 +53,11 @@ class RoomStatementService
 //            throw new RoomStatementServiceException('指定日期的数据不存在');
 //        }
         $this->data['room_total_count'] = count($this->roomHistory);
+        $this->data['room_played_total_count'] = collect($this->roomHistory)
+            ->filter(function ($item) {
+                return $item['player_cnt'] > 0;
+            })
+            ->count();
         $this->computeOpenedRoomCountData();   //计算开房相关的数据
         return $this->data;
     }
@@ -67,6 +74,7 @@ class RoomStatementService
             $gamePlayers = $gamePlayers->merge($this->getGamePlayers($room));  //计算每一行房间历史中的参与的游戏的玩家，合并起来
             $this->data['total_player_game_duration'] += $this->getPlayerGameDuration($room);
             $this->data['total_room_game_duration'] += $this->getRoomGameDuration($room);
+            $this->data['total_room_zuju_duration'] += $this->getRoomZujuDuration($room);
 
             if (0 == $room['agent_uid']) {
                 if (0 == $room['creator_uid']) {
@@ -93,6 +101,7 @@ class RoomStatementService
         $this->data['game_players_total_count'] = $gamePlayers->unique()->count();  //将所有玩家去重，得到今天玩过游戏的玩家人数
     }
 
+    //有效耗卡的房间
     protected function isInvalidRoom($room)
     {
         if ($room['agent_uid'] == 0 && $room['creator_uid'] != 0 && $room['currency'] == 0) {
@@ -121,7 +130,7 @@ class RoomStatementService
             return 0;
         }
 
-        $startTime = Carbon::parse($room['time'])->timestamp;
+        $startTime = Carbon::parse($room['start_time'])->timestamp;   //回合开始时间
         $endTime = Carbon::parse($room['end_time'])->timestamp;
 
         if ($endTime < $startTime) {
@@ -142,6 +151,24 @@ class RoomStatementService
 
         $startTime = Carbon::parse($room['time'])->timestamp;
         $endTime = Carbon::parse($room['end_time'])->timestamp;
+
+        if ($endTime < $startTime) {
+            return 0;       //数据库中有些数据endtime为0，这些房间不计算
+        }
+
+        $duration = $endTime - $startTime;
+        return $duration;
+    }
+
+    //获取每个有效房间的组局时间
+    public function getRoomZujuDuration($room)
+    {
+        if (0 == $room['player_cnt']) {
+            return 0;
+        }
+
+        $startTime = Carbon::parse($room['time'])->timestamp;
+        $endTime = Carbon::parse($room['start_time'])->timestamp;
 
         if ($endTime < $startTime) {
             return 0;       //数据库中有些数据endtime为0，这些房间不计算
