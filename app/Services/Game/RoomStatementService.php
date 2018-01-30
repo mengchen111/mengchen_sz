@@ -149,7 +149,7 @@ class RoomStatementService
             return 0;
         }
 
-        $startTime = Carbon::parse($room['time'])->timestamp;
+        $startTime = Carbon::parse($room['start_time'])->timestamp;
         $endTime = Carbon::parse($room['end_time'])->timestamp;
 
         if ($endTime < $startTime) {
