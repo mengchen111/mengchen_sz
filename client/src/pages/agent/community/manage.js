@@ -1,12 +1,12 @@
 import {myTools} from '../index.js'
-import MyVuetable from '../../../components/MyVuetable.vue'
 import MyToastr from '../../../components/MyToastr.vue'
+import MyDatePicker from '../../../components/MyDatePicker.vue'
 
 new Vue({
   el: '#app',
   components: {
-    MyVuetable,
     MyToastr,
+    MyDatePicker,
   },
   data: {
     eventHub: new Vue(),
@@ -25,6 +25,10 @@ new Vue({
     },   //查询玩家
     searchPlayerData: {},
     kickingOutMemberId: '',   //即将被踢出的成员id
+    searchRecordForm: {},
+    dateFormat: 'YYYY-MM-DD HH:mm:ss',
+    ifDisplaySearchRecordResult: false, //是否显示战绩结果（查询战绩之后才设为true）
+    playerGameRecord: {}, //查询到的玩家战绩
 
     communityDetailApiPrefix: '/agent/api/community/detail/',
     editCommunityInfoApiPrefix: '/agent/api/community/info/',
@@ -35,6 +39,8 @@ new Vue({
     approveApplicationApiPrefix: '/agent/api/community/member/approval-application/',
     declineApplicationApiPrefix: '/agent/api/community/member/decline-application/',
     communityRoomApiPrefix: '/agent/api/community/room/',
+    searchRecordApiPrefix: '/agent/api/community/game-record/',
+    markRecordApiPrefix: '/agent/api/community/game-record/mark/',
   },
 
   methods: {
@@ -149,6 +155,58 @@ new Vue({
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.getCommunityDetail()  //重新获取数据
+        }).catch(function (err) {
+          alert(err)
+        })
+    },
+
+    //更新查询玩家战绩的开始结束时间
+    changeSearchRecordDate (date) {
+      switch (date) {
+        case 'today':
+          this.searchRecordForm.start_time = moment().startOf('day').format(this.dateFormat)
+          this.searchRecordForm.end_time = moment().endOf('day').format(this.dateFormat)
+          break
+        case 'yesterday':
+          this.searchRecordForm.start_time = moment().add(-1, 'days').startOf('day').format(this.dateFormat)
+          this.searchRecordForm.end_time = moment().endOf('day').format(this.dateFormat)
+          break
+        case '3days':
+          this.searchRecordForm.start_time = moment().add(-2, 'days').startOf('day').format(this.dateFormat)
+          this.searchRecordForm.end_time = moment().endOf('day').format(this.dateFormat)
+          break
+        case '1week':
+          this.searchRecordForm.start_time = moment().add(-6, 'days').startOf('day').format(this.dateFormat)
+          this.searchRecordForm.end_time = moment().endOf('day').format(this.dateFormat)
+          break
+      }
+    },
+
+    //查询玩家战绩
+    searchRecord () {
+      let _self = this
+
+      myTools.axiosInstance.get(this.searchRecordApiPrefix + this.communityDetail.id, {
+        params: this.searchRecordForm,
+      })
+        .then(function (res) {
+          _self.playerGameRecord = res.data
+          _self.ifDisplaySearchRecordResult = true
+        }).catch(function (err) {
+          alert(err)
+        })
+    },
+
+    //标记战绩为已查看
+    markRecord (uid) {
+      let _self = this
+      let toastr = this.$refs.toastr
+      let api = this.markRecordApiPrefix + uid
+
+      myTools.axiosInstance.put(api)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+          _self.searchRecord()  //刷新数据
         }).catch(function (err) {
           alert(err)
         })

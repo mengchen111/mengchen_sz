@@ -29,7 +29,7 @@ class CreateCommunityListTable extends Migration
         });
 
         //id从10000开始
-        DB::update("ALTER TABLE community_list AUTO_INCREMENT = 50000;");
+        DB::update("ALTER TABLE community_list AUTO_INCREMENT = 10000;");
     }
 
     /**

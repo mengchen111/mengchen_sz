@@ -76,4 +76,6 @@ return [
     'game_api_wechat_official-account_unionid-openid_delete' => 'wechat/official-account/unionid-openid/delete', //
     'game_api_wechat_red-packet_send-list' => 'wechat/red-packet/send-list', //获取待发送红包列表
     'game_api_wechat_red-packet_update' => 'wechat/red-packet/update', //更新发送红包状态
+    'game_api_community_record_search' => 'community/record/search',    //查询社区玩家战绩
+    'game_api_community_record_mark' => 'community/record/mark',    //标记战绩为已读/未读
 ];

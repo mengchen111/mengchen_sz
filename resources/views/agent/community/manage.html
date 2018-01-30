@@ -17,7 +17,7 @@
             <!--#include virtual="/ssi/content-header-h1.html"-->
 
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+                <li><a href="/agent/home"><i class="fa fa-dashboard"></i>首页</a></li>
                 <li>牌艺馆</li>
                 <li class="active">管理</li>
             </ol>
@@ -220,7 +220,95 @@
 
                     <!-- 战绩 -->
                     <div v-cloak v-if="true">
-
+                        <div class="box box-default">
+                            <div class="box-header">
+                                社团战绩
+                                <a class="pull-right">未查看房卡数：{{ playerGameRecord.unread_records ? playerGameRecord.unread_records : 0}}</a>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12">
+                                        <form class="form-horizontal" @submit.prevent="searchRecord">
+                                            <div class="form-group">
+                                                <label class="col-xs-4 control-label">玩家id</label>
+                                                <div class="col-xs-8">
+                                                    <input name="player_id" type="number" min="1" class="form-control"
+                                                           v-model.trim="searchRecordForm.player_id" placeholder="玩家id(留空显示所有玩家战绩)">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-4 control-label">开始时间</label>
+                                                <div class="col-xs-8">
+                                                    <my-date-picker required
+                                                                    :date-format="dateFormat"
+                                                                    v-model="searchRecordForm.start_time"
+                                                                    placeholder="开始时间"
+                                                    ></my-date-picker>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-xs-4 control-label">结束时间</label>
+                                                <div class="col-xs-8">
+                                                    <my-date-picker required
+                                                                    :date-format="dateFormat"
+                                                                    v-model="searchRecordForm.end_time"
+                                                                    placeholder="开始时间"
+                                                    ></my-date-picker>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-xs-3">
+                                                    <a @click="changeSearchRecordDate('today')">今天</a>
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    <a @click="changeSearchRecordDate('yesterday')">昨天</a>
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    <a @click="changeSearchRecordDate('3days')">三天内</a>
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    <a @click="changeSearchRecordDate('1week')">一周内</a>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-xs-12">
+                                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row" v-show="ifDisplaySearchRecordResult">
+                                    <div class="col-xs-12" style="padding: 5px;">
+                                        <div class="box box-default">
+                                            <div class="box-body phone-scrollable" style="padding: 2px;">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>日期</th>
+                                                            <th>房间结果</th>
+                                                            <th>耗卡</th>
+                                                            <th>操作</th>
+                                                        </tr>
+                                                        <tr v-for="record in playerGameRecord.records">
+                                                            <td>{{ record.time }}</td>
+                                                            <td>{{record.uid_1}}:&nbsp;{{record.score_1}}<br>
+                                                                {{record.uid_2}}:&nbsp;{{record.score_2}}<br>
+                                                                {{record.uid_3}}:&nbsp;{{record.score_3}}<br>
+                                                                {{record.uid_4}}:&nbsp;{{record.score_4}}<br>
+                                                            <td>{{record.currency}}</td>
+                                                            <td><a v-if="record.record_info ? record.record_info.if_read == 0 : false"
+                                                                    @click="markRecord(record.ruid)">查看</a>
+                                                                <a v-else>已查看</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

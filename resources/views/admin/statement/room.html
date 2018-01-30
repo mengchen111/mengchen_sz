@@ -179,11 +179,11 @@
                                 <div class="col-md-3 col-xs-6">
                                     <div class="small-box">
                                         <div class="inner">
-                                            <h5>单局游戏时长(分)</h5>
+                                            <h5>单局游戏时长(秒)</h5>
                                             <h4 class="text-bold" v-cloak>
                                                 {{ ! roomStatementData.game_rounds_total_count ? 0
                                                     : _.floor(roomStatementData.total_room_game_duration
-                                                        / roomStatementData.game_rounds_total_count / 60, 2) }}
+                                                        / roomStatementData.game_rounds_total_count, 2) }}
                                             </h4>
                                         </div>
                                     </div>
