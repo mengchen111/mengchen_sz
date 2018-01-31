@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: liudian
- * Date: 11/3/17
- * Time: 16:58
- */
 
 namespace App\Services\Game;
 

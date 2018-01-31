@@ -206,7 +206,7 @@ cd $codeDir
 | community/member/approval-application/{application} | PUT | 同意玩家入馆申请 |
 | community/member/decline-application/{application} | PUT | 拒绝玩家入馆申请 |
 | community/member/kick-out | PUT | 从牌艺馆中踢出成员 |
-| community/room/{communityId} | GET | 获取牌艺馆房间 |
+| community/room/{communityId} | GET | 获取牌艺馆房间(正在玩) |
 | community/game-record/{communityId} | GET | 查询社区玩家战绩 |
 | community/game-record/mark/{ruid} | PUT | 标记战绩为已读 |
 | top-up/child/{receiver}/{type}/{amount} | POST | 给子代理商充值 |

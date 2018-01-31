@@ -205,7 +205,7 @@ Route::group([
     Route::put('community/member/approval-application/{application}', 'CommunityMembersController@approveApplication')->where('application', '[0-9]+');
     Route::put('community/member/decline-application/{application}', 'CommunityMembersController@declineApplication')->where('application', '[0-9]+');
     Route::put('community/member/kick-out', 'CommunityMembersController@kickOutMember');
-    Route::get('community/room/{communityId}', 'CommunityRoomController@getCommunityRoom')->where('communityId', '[0-9]+');
+    Route::get('community/room/{communityId}', 'CommunityRoomController@getCommunityOpenRoom')->where('communityId', '[0-9]+');
     Route::get('community/game-record/{communityId}', 'CommunityGameRecordController@search')->where('communityId', '[0-9]+');
     Route::put('community/game-record/mark/{ruid}', 'CommunityGameRecordController@markRecord')->where('ruid', '[0-9]+');
 

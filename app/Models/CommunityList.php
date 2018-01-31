@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Services\Game\PlayerService;
 use Illuminate\Database\Eloquent\Model;
-use PhpParser\Node\Expr\Array_;
 
 class CommunityList extends Model
 {
