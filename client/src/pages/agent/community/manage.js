@@ -12,6 +12,12 @@ new Vue({
     eventHub: new Vue(),
     activatedRow: {},
 
+    displayMenu: {
+      info: true,    //显示简介
+      record: false, //显示战绩
+      member: false, //显示成员
+      room: false,   //显示房间
+    },
     communityDetail: {
       application_data: {}, //提前给出key，防止前端报错
     },  //社区信息数据
@@ -44,6 +50,16 @@ new Vue({
   },
 
   methods: {
+    changeDisplay (menu) {
+      this.displayMenu = _.mapValues(this.displayMenu, function (value, key) {
+        if (key === menu) {
+          return true
+        } else {
+          return false
+        }
+      })
+    },
+
     onEditCommunity () {
       this.editCommunityForm.name = this.communityDetail.name
       this.editCommunityForm.info = this.communityDetail.info
