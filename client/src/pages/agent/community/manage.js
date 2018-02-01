@@ -130,6 +130,14 @@ new Vue({
         })
     },
 
+    //成员列表点击战绩，跳转到战绩
+    jump2Record (memberId) {
+      this.changeSearchRecordDate('today')
+      this.searchRecordForm.player_id = memberId
+      this.searchRecord()
+      this.changeDisplay('record')
+    },
+
     //踢出社区
     kickOutMember () {
       let _self = this

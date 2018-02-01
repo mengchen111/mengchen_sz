@@ -136,7 +136,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-3">
-                                                    <button class="btn btn-info btn-flat">战绩</button>
+                                                    <button class="btn btn-info btn-flat" @click="jump2Record(member.id)">战绩</button>
                                                 </div>
                                                 <div class="col-xs-3">
                                                     <button class="btn btn-warning btn-flat" data-toggle="modal"
@@ -233,7 +233,7 @@
                                                 <label class="col-xs-4 control-label">玩家id</label>
                                                 <div class="col-xs-8">
                                                     <input name="player_id" type="number" min="1" class="form-control"
-                                                           v-model.trim="searchRecordForm.player_id" placeholder="玩家id(留空显示所有玩家战绩)">
+                                                           v-model.trim="searchRecordForm.player_id" placeholder="留空显示所有玩家战绩">
                                                 </div>
                                             </div>
                                             <div class="form-group">
