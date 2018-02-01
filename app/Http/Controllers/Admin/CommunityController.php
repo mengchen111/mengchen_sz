@@ -29,7 +29,7 @@ class CommunityController extends Controller
             ->when($request->has('community_id'), function ($query) use ($request) {
                 return $query->where('id', $request->input('community_id'));
             })
-            ->orderBy('id', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate($this->per_page);
     }
 
@@ -47,6 +47,7 @@ class CommunityController extends Controller
         $this->checkCommunityCreationLimit($request->input('owner_agent_id'), $request->input('owner_player_id'), $communityConf);
 
         $formData = $request->intersect(['owner_player_id', 'owner_agent_id', 'name', 'info']);
+        $formData['id'] = CommunityService::getRandomId();  ////获取随机社团id
         $community = CommunityList::create($formData);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),

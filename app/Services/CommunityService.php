@@ -48,4 +48,19 @@ class CommunityService
         }
         return $communityConf;
     }
+
+    //生成随机5位数的社团id
+    public static function getRandomId()
+    {
+        $existsIds = CommunityList::all()->pluck('id')->toArray();
+        $searchId = function () use ($existsIds, &$searchId) {
+            $id = mt_rand(10000, 99999);
+            if (in_array($id, $existsIds)) {
+                $searchId();
+            } else {
+                return $id;
+            }
+        };
+        return $searchId();
+    }
 }
