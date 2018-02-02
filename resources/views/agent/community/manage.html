@@ -285,17 +285,29 @@
                                                 <table class="table table-bordered">
                                                     <tbody>
                                                         <tr>
-                                                            <th>日期</th>
+                                                            <th class="text-center">日期</th>
                                                             <th>房间结果</th>
                                                             <th>耗卡</th>
                                                             <th>操作</th>
                                                         </tr>
                                                         <tr v-for="record in playerGameRecord.records">
-                                                            <td>{{ record.time }}</td>
-                                                            <td>{{record.uid_1}}:&nbsp;{{record.score_1}}<br>
-                                                                {{record.uid_2}}:&nbsp;{{record.score_2}}<br>
-                                                                {{record.uid_3}}:&nbsp;{{record.score_3}}<br>
-                                                                {{record.uid_4}}:&nbsp;{{record.score_4}}<br>
+                                                            <td class="text-center">{{ record.time.split(' ')[0] }}<br>
+                                                                {{ record.time.split(' ')[1] }}<br>
+                                                                <span class="text-red">房号:&nbsp;{{ record.id }}</span>
+                                                            </td>
+                                                            <td>
+                                                                <span :class="{ 'text-red': record.uid_1 == searchRecordForm.player_id }">
+                                                                    {{record.player1 ? record.player1.nickname + ':&nbsp;' + record.score_1 : null}}
+                                                                </span><br>
+                                                                <span :class="{ 'text-red': record.uid_2 == searchRecordForm.player_id }">
+                                                                    {{record.player2 ? record.player2.nickname + ':&nbsp;' + record.score_2 : null}}
+                                                                </span><br>
+                                                                <span :class="{ 'text-red': record.uid_3 == searchRecordForm.player_id }">
+                                                                    {{record.player3 ? record.player3.nickname + ':&nbsp;' + record.score_3 : null}}
+                                                                </span><br>
+                                                                <span :class="{ 'text-red': record.uid_4 == searchRecordForm.player_id }">
+                                                                    {{record.player4 ? record.player4.nickname + ':&nbsp;' + record.score_4 : null}}
+                                                                </span>
                                                             <td>{{record.currency}}</td>
                                                             <td><a v-if="record.record_info ? record.record_info.if_read == 0 : false"
                                                                     @click="markRecord(record.ruid)">查看</a>
