@@ -200,7 +200,8 @@ Route::group([
     //Route::delete('community/{communityId}', 'CommunityController@deleteCommunity')->where('communityId', '[0-9]+');
     Route::get('community/detail/{communityId}', 'CommunityController@getCommunityDetail')->where('communityId', '[0-9]+');
     Route::put('community/info/{community}', 'CommunityController@updateCommunityInfo')->where('community', '[0-9]+');
-    Route::post('community/card/{community}', 'CommunityController@topUpCommunity')->where('community', '[0-9]+');
+    Route::get('community/card/top-up-history', 'CommunityTopUpController@getTopUpHistory');
+    Route::post('community/card/{community}', 'CommunityTopUpController@topUpCommunity')->where('community', '[0-9]+');
     Route::post('community/member/invitation', 'CommunityMembersController@inviteMember');
     Route::put('community/member/approval-application/{application}', 'CommunityMembersController@approveApplication')->where('application', '[0-9]+');
     Route::put('community/member/decline-application/{application}', 'CommunityMembersController@declineApplication')->where('application', '[0-9]+');
@@ -237,6 +238,7 @@ Route::group([
     //给子代理商的充值记录
     Route::get('top-up/child', 'ViewController@topUpChild');
     Route::get('top-up/player', 'ViewController@topUpPlayer');
+    Route::get('top-up/community', 'ViewController@topUpCommunity');
 
     Route::get('info', 'ViewController@info');
 });

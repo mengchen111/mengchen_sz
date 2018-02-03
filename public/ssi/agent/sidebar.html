@@ -50,7 +50,12 @@
                     <li :class="{ active: uri['top-up'].child.isActive }" v-cloak v-if="isGoldAgent ? false : true">
                         <a href="/agent/top-up/child"><i class="fa fa-circle-o"></i>代理商充值记录</a>
                     </li>
-                    <li :class="{ active: uri['top-up'].player.isActive }"><a href="/agent/top-up/player"><i class="fa fa-circle-o"></i>玩家充值记录</a></li>
+                    <li :class="{ active: uri['top-up'].player.isActive }">
+                        <a href="/agent/top-up/player"><i class="fa fa-circle-o"></i>玩家充值记录</a>
+                    </li>
+                    <li :class="{ active: uri['top-up'].community.isActive }">
+                        <a href="/agent/top-up/community"><i class="fa fa-circle-o"></i>牌艺馆充值记录</a>
+                    </li>
                 </ul>
             </li>
             <li :class="{ active: uri.info.isActive }"><a href="/agent/info"><i class="fa fa-user"></i>个人信息</a></li>
