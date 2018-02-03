@@ -15,14 +15,15 @@ use App\Models\CommunityCardTopupLog;
 
 class CommunityTopUpController extends Controller
 {
-    public function topUpCommunity(AgentRequest $request, CommunityList $community)
+    public function topUpCommunity(AgentRequest $request)
     {
         $this->validate($request, [
+            'community_id' => 'required|integer',
             'item_type_id' => 'required|integer|exists:item_type,id',
             'item_amount' => 'required|integer',
             'remark' => 'string|max:255',
         ]);
-        $topUpForm = $request->only(['item_type_id', 'item_amount', 'remark']);
+        $topUpForm = $request->intersect(['community_id', 'item_type_id', 'item_amount', 'remark']);
         $agent = User::with(['inventory' => function ($query) use ($topUpForm) {
             $query->where('item_id', $topUpForm['item_type_id']);
         }])->find($request->user()->id);
@@ -30,6 +31,15 @@ class CommunityTopUpController extends Controller
         //检查库存是否足够
         if (empty($agent->inventory) or $agent->inventory->stock < $topUpForm['item_amount']) {
             throw new CustomException('库存不足无法充值');
+        }
+
+        //检查代理商是否拥有此牌艺馆
+        $community = CommunityList::find($topUpForm['community_id']);
+        if (empty($community)) {
+            throw new CustomException('此牌艺馆不存在');
+        }
+        if ($community->owner_agent_id != $agent->id) {
+            throw new CustomException('您不是此牌艺馆的馆主，无法为其充值');
         }
 
         $this->topUp4Community($agent, $community, $topUpForm);

@@ -13,7 +13,12 @@
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.player['top-up'].isActive }"><a href="/agent/player/top-up"><i class="fa fa-circle-o"></i>玩家充值</a></li>
+                    <li :class="{ active: uri.player['top-up'].isActive }">
+                        <a href="/agent/player/top-up"><i class="fa fa-circle-o"></i>玩家充值</a>
+                    </li>
+                    <li :class="{ active: uri.player['community-top-up'].isActive }">
+                        <a href="/agent/player/community-top-up"><i class="fa fa-circle-o"></i>牌艺馆充值</a>
+                    </li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.stock.isActive }" v-cloak v-if="isTopAgent">

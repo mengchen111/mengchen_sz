@@ -12,6 +12,9 @@ new Vue({
         'top-up': {
           isActive: false,
         },
+        'community-top-up': {
+          isActive: false,
+        },
       },
       stock: {
         isActive: false,

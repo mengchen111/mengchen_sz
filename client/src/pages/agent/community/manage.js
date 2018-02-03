@@ -38,7 +38,7 @@ new Vue({
 
     communityDetailApiPrefix: '/agent/api/community/detail/',
     editCommunityInfoApiPrefix: '/agent/api/community/info/',
-    topUpCommunityCardApiPrefix: '/agent/api/community/card/',
+    topUpCommunityCardApi: '/agent/api/community/card/top-up',
     searchPlayerApi: '/api/game/player',
     invitePlayerApi: '/agent/api/community/member/invitation', //邀请玩家入群
     kickOutPlayerApi: '/agent/api/community/member/kick-out',
@@ -82,8 +82,9 @@ new Vue({
     topupCommunityCard () {
       let _self = this
       let toastr = this.$refs.toastr
+      this.topupCommunityCardForm.community_id = this.communityDetail.id
 
-      myTools.axiosInstance.post(this.topUpCommunityCardApiPrefix + this.communityDetail.id, this.topupCommunityCardForm)
+      myTools.axiosInstance.post(this.topUpCommunityCardApi, this.topupCommunityCardForm)
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.getCommunityDetail()  //刷新此页面的社区数据

@@ -123,4 +123,12 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\User', 'parent_id', 'id');
     }
+
+    //此代理商所拥有的牌艺馆
+    public function communities($status = 1) //默认已审核的
+    {
+        return CommunityList::where('owner_agent_id', $this->id)
+            ->where('status', $status)
+            ->get();
+    }
 }

@@ -146,5 +146,21 @@ class CommunityController extends Controller
         return true;
     }
 
+    public function getAgentOwnerCommunities(AgentRequest $request)
+    {
+        $agent = $request->user();
+        $communities = $agent->communities();
 
+        OperationLogs::add($agent->id, $request->path(), $request->method(),
+            '代理商已审核过的牌艺馆(无分页)', $request->header('User-Agent'));
+
+        $result['community_ids'] = $communities
+            ->pluck('id')
+            ->map(function ($item) {
+                return (string) $item;  //将id改为string类型，不然js的vSelect插件报错
+            });
+        $result['communities'] = $communities;
+
+        return $result;
+    }
 }

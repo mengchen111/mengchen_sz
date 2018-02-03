@@ -197,11 +197,13 @@ cd $codeDir
 | subagent/{id} | DELETE | 删除子代理商 |
 | subagent/{id} | PUT | 更新子代理商信息(包括密码) |
 | community | GET | 获取牌艺馆列表 |
+| communities | GET | 获取代理商已审核过的牌艺馆(无分页) |
 | community | POST | 新增牌艺馆 |
 | community/{communityId} | DELETE | 删除牌艺馆(已关闭) |
 | community/detail/{communityId} | GET | 获取牌艺馆详细信息 |
 | community/info/{community} | PUT | 更新牌艺馆信息 |
-| community/card/{community} | POST | 充值牌艺馆房卡 |
+| community/card/top-up-history | GET | 牌艺馆充值记录 |
+| community/card/top-up | POST | 充值牌艺馆房卡 |
 | community/member/invitation | POST | 邀请玩家加入牌艺馆 |
 | community/member/approval-application/{application} | PUT | 同意玩家入馆申请 |
 | community/member/decline-application/{application} | PUT | 拒绝玩家入馆申请 |

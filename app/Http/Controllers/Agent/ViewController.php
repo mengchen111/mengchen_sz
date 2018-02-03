@@ -23,6 +23,11 @@ class ViewController extends Controller
         return view('agent.player.top-up');
     }
 
+    public function communityTopUp(Request $request)
+    {
+        return view('agent.player.community-top-up');
+    }
+
     public function stockApplyRequest(Request $request)
     {
         return view('agent.stock.apply-request');

@@ -195,13 +195,14 @@ Route::group([
     Route::put('subagent/{child}', 'SubAgentController@updateChild')->where('child', '[0-9]+');
 
     Route::get('community', 'CommunityController@showCommunityList');
+    Route::get('communities', 'CommunityController@getAgentOwnerCommunities');
     Route::post('community', 'CommunityController@createCommunity');
     //代理商禁止删除社区
     //Route::delete('community/{communityId}', 'CommunityController@deleteCommunity')->where('communityId', '[0-9]+');
     Route::get('community/detail/{communityId}', 'CommunityController@getCommunityDetail')->where('communityId', '[0-9]+');
     Route::put('community/info/{community}', 'CommunityController@updateCommunityInfo')->where('community', '[0-9]+');
     Route::get('community/card/top-up-history', 'CommunityTopUpController@getTopUpHistory');
-    Route::post('community/card/{community}', 'CommunityTopUpController@topUpCommunity')->where('community', '[0-9]+');
+    Route::post('community/card/top-up', 'CommunityTopUpController@topUpCommunity');
     Route::post('community/member/invitation', 'CommunityMembersController@inviteMember');
     Route::put('community/member/approval-application/{application}', 'CommunityMembersController@approveApplication')->where('application', '[0-9]+');
     Route::put('community/member/decline-application/{application}', 'CommunityMembersController@declineApplication')->where('application', '[0-9]+');
@@ -225,6 +226,7 @@ Route::group([
     Route::get('home', 'ViewController@home');
 
     Route::get('player/top-up', 'ViewController@playerTopUp');  //玩家充值页面
+    Route::get('player/community-top-up', 'ViewController@communityTopUp');  //玩家充值页面
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-history', 'ViewController@stockApplyHistory');

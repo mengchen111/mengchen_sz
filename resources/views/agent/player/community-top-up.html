@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--#include virtual="/ssi/header.html"-->
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- Main Header -->
+    <!--#include virtual="/ssi/main-header.html"-->
+
+    <!-- Main sidebar -->
+    <!--#include virtual="/ssi/agent/sidebar.html"-->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <!--#include virtual="/ssi/content-header-h1.html"-->
+
+            <ol class="breadcrumb">
+                <li><a href="/agent/home"><i class="fa fa-dashboard"></i>首页</a></li>
+                <li>玩家管理</li>
+                <li class="active">牌艺馆充值</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content" id="app">
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">牌艺馆充值</h3>
+                        </div>
+                        <!-- /.box-header -->
+
+                        <div class="box-body">
+                            <div class="form-group has-feedback">
+                                <label>牌艺馆ID</label>
+                                <v-select :searchable="false" required :options="communityIds" v-model="topUpData.community_id"></v-select>
+                            </div>
+                            <div class="form-group">
+                                <label>充值类型</label>
+                                <v-select :searchable="false" disabled :options="options" v-model="typeValue"></v-select>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>充值数量</label>
+                                <input name="amount" type="number" min="1" class="form-control" placeholder="充值数量"
+                                       v-model.trim="topUpData.item_amount">
+                                <span class="glyphicon glyphicon-yen form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label>备注</label>
+                                <input name="remark" type="text" class="form-control" placeholder="备注(可留空)"
+                                       v-model.trim="topUpData.remark">
+                                <span class="glyphicon glyphicon-info-sign form-control-feedback"></span>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
+                                        data-target="#community-top-up-confirmation-modal">提交</button>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 玩家充值确认模态框 -->
+            <div id="community-top-up-confirmation-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">
+                                是否给牌艺馆
+                                <span class="text-red">{{ topUpData.community_id }}</span>
+                                充值数量
+                                <span class="text-red">{{ topUpData.item_amount }}</span>
+                                的
+                                <span class="text-red">{{ itemType[topUpData.item_type_id] }}</span>
+                            </h3>
+                        </div>
+                        <div class="modal-footer">
+                            <form role="form" class="form-group" method="POST" action="#" @submit.prevent="topUpCommunity">
+                                <button class="btn btn-flat btn-primary btn-lg pull-left" data-dismiss="modal">
+                                    取消
+                                </button>
+                                <button class="btn btn-flat btn-primary btn-lg" type="submit">
+                                    充值
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <my-toastr ref="toastr"></my-toastr>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    <!--#include virtual="/ssi/main-footer.html"-->
+
+</div>
+<!-- ./wrapper -->
+
+<script src="/dist/webpack/agent/player/community-top-up.js"></script>
+</body>
+</html>
