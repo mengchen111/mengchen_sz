@@ -50,6 +50,11 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping()
             ->evenInMaintenanceMode()
             ->appendOutputTo(config('custom.cron_task_log'));
+        //转盘活动发送微信红包
+        $schedule->command('admin:send-wx-red-packet')
+            ->everyMinute()
+            ->withoutOverlapping()
+            ->appendOutputTo(config('custom.cron_task_log'));
     }
 
     /**
