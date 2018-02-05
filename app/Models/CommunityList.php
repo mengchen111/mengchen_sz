@@ -97,7 +97,11 @@ class CommunityList extends Model
 
     public function addMembers(Array $newMembers)
     {
-        $existMembers = explode(',', $this->members);
+        if (empty($this->members)) {
+            $existMembers = [];
+        } else {
+            $existMembers = explode(',', $this->members);
+        }
         foreach ($newMembers as $newMember) {
             if (!in_array($newMembers, $existMembers)) {
                 array_push($existMembers, $newMember);
@@ -109,7 +113,11 @@ class CommunityList extends Model
 
     public function deleteMembers(Array $abandonedMembers)
     {
-        $existMembers = explode(',', $this->members);
+        if (empty($this->members)) {
+            $existMembers = [];
+        } else {
+            $existMembers = explode(',', $this->members);
+        }
         foreach ($abandonedMembers as $abandonedMember) {
             if (in_array($abandonedMember, $existMembers)) {
                 unset($existMembers[array_search($abandonedMember, $existMembers)]);
