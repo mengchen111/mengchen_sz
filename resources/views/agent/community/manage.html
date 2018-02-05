@@ -53,6 +53,9 @@
                             <div v-cloak>
                                 <p style="margin-bottom: 8px;">
                                     <b>牌艺馆ID: &nbsp;</b><span class="text-red">{{ communityDetail.id }}</span>
+                                    <a href="#" data-toggle="modal" data-target="#community-id-prompt-modal">
+                                        <i class="fa fa-fw fa-question"></i>
+                                    </a>
                                 </p>
                                 <p style="margin-bottom: 8px;">
                                     <b>玩家ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;</b><span class="text-red">{{ communityDetail.owner_player_id }}</span>
@@ -99,7 +102,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="box box-default">
+                        <div class="box box-default" v-show="false">
                             <div class="box-header">社团推广</div>
                             <div class="box-body">
                                 社团推广(预留)
@@ -188,7 +191,7 @@
                                 社团房间
                                 <a href="#" class="pull-right" @click="getCommunityRooms">刷新</a>
                             </div>
-                            <div class="box-body phone-scrollable" style="padding: 2px;">
+                            <div class="box-body phone-scrollable" v-if="communityRooms.length > 0" style="padding: 2px;">
                                 <div class="box box-default" v-for="communityRoom in communityRooms" style="margin-bottom: 5px;">
                                     <div class="box-header" style="padding: 5px;font-size: 12px;">
                                         <p><span>{{communityRoom.rtype}}</span>&nbsp;&nbsp;&nbsp;
@@ -214,6 +217,9 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="box-body" v-else>
+                                <span class="text-green">暂无数据</span>
                             </div>
                         </div>
                     </div>
@@ -281,7 +287,7 @@
                                 <div class="row" v-show="ifDisplaySearchRecordResult">
                                     <div class="col-xs-12" style="padding: 5px;">
                                         <div class="box box-default">
-                                            <div class="box-body phone-scrollable" style="padding: 2px;">
+                                            <div class="box-body phone-scrollable" style="padding: 2px;"  v-if="playerGameRecord.records.length > 0">
                                                 <table class="table table-bordered">
                                                     <tbody>
                                                         <tr>
@@ -315,6 +321,9 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                            </div>
+                                            <div v-else class="box-body">
+                                                <span class="text-center text-green">暂无数据</span>
                                             </div>
                                         </div>
                                     </div>
@@ -370,6 +379,19 @@
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="community-id-prompt-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="text-center">提示</h3>
+                        </div>
+                        <div class="modal-body">
+                            <h4 class="text-center">此ID是牌艺馆的唯一ID，好友可通过在游戏内输入口令申请加入牌艺馆！</h4>
                         </div>
                     </div>
                 </div>

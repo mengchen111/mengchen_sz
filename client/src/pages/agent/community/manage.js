@@ -34,7 +34,9 @@ new Vue({
     searchRecordForm: {},
     dateFormat: 'YYYY-MM-DD HH:mm:ss',
     ifDisplaySearchRecordResult: false, //是否显示战绩结果（查询战绩之后才设为true）
-    playerGameRecord: {}, //查询到的玩家战绩
+    playerGameRecord: {
+      records: [],
+    }, //查询到的玩家战绩
 
     communityDetailApiPrefix: '/agent/api/community/detail/',
     editCommunityInfoApiPrefix: '/agent/api/community/info/',
@@ -51,8 +53,17 @@ new Vue({
 
   methods: {
     changeDisplay (menu) {
+      let _self = this
+
       this.displayMenu = _.mapValues(this.displayMenu, function (value, key) {
         if (key === menu) {
+          if (menu === 'record') { //点了"战绩"按钮，查看一周内数据
+            _self.changeSearchRecordDate('1week')
+            _self.searchRecord()
+          }
+          if (menu === 'room') {    //点了"房间"按钮，立马查询房间
+            _self.getCommunityRooms()
+          }
           return true
         } else {
           return false
