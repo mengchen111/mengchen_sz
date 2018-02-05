@@ -15,7 +15,7 @@ new Vue({
     tableFields: [
       {
         name: 'community_id',
-        title: '社区id',
+        title: '牌艺馆id',
       },
       {
         name: 'item_amount',

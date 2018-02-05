@@ -20,7 +20,7 @@ class CommunityTopUpController extends Controller
         $this->validate($request, [
             'community_id' => 'required|integer',
             'item_type_id' => 'required|integer|exists:item_type,id',
-            'item_amount' => 'required|integer',
+            'item_amount' => 'required|integer|min:1',
             'remark' => 'max:255',
         ]);
         $topUpForm = $request->only(['community_id', 'item_type_id', 'item_amount', 'remark']);

@@ -42,6 +42,10 @@ new Vue({
       let _self = this
       let toastr = this.$refs.toastr
 
+      if (this.topUpData.item_amount <= 0) {
+        return toastr.message('数量错误', 'error')
+      }
+
       myTools.axiosInstance.post(this.topUpApi, this.topUpData)
         .then(function (res) {
           myTools.msgResolver(res, toastr)

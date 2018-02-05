@@ -95,6 +95,10 @@ new Vue({
       let toastr = this.$refs.toastr
       this.topupCommunityCardForm.community_id = this.communityDetail.id
 
+      if (this.topupCommunityCardForm.item_amount <= 0) {
+        return toastr.message('数量错误', 'error')
+      }
+
       myTools.axiosInstance.post(this.topUpCommunityCardApi, this.topupCommunityCardForm)
         .then(function (res) {
           myTools.msgResolver(res, toastr)
