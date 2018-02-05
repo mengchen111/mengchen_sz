@@ -105,6 +105,7 @@
                         <div class="box box-default" v-show="false">
                             <div class="box-header">社团推广</div>
                             <div class="box-body">
+                                <!--todo-->
                                 社团推广(预留)
                             </div>
                         </div>
@@ -118,9 +119,14 @@
                                             <span>请求列表</span>
                                             <span class="pull-right-container" v-if="communityDetail.application_data.application_count > 0">
                                                 <small class="label pull-right bg-red">{{ communityDetail.application_data.application_count }}</small>
-                                            </span></a>
-                                        </li>
-                                        <li><a href="#member-list-tab_log" data-toggle="tab"><span>社团动态</span></a></li>
+                                            </span>
+                                        </a></li>
+                                        <li><a href="#member-list-tab_log" data-toggle="tab" @click="readMemberLog">
+                                            <span>社团动态</span>
+                                            <span class="pull-right-container" v-show="communityDetail.member_log.has_read === 0">
+                                                <small class="label pull-right bg-red">.</small>
+                                            </span>
+                                        </a></li>
                                     </ul>
                                 </div>
                                 <div class="tab-content">
@@ -172,7 +178,7 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="member-list-tab_log">
-                                        <div class="row" v-for="log in communityDetail.member_log">
+                                        <div class="row" v-for="log in communityDetail.member_log.member_logs">
                                             <div class="col-xs-12">
                                                 <p v-if="log.action != '踢出'">{{log.player.nickname}}<span class="text-red">{{log.action}}</span>牌艺馆&nbsp;&nbsp;&nbsp;{{log.created_at}}</p>
                                                 <p v-else>{{log.player.nickname}}被<span class="text-red">{{log.action}}</span>牌艺馆&nbsp;&nbsp;&nbsp;{{log.created_at}}</p>

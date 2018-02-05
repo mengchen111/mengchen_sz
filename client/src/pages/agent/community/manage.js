@@ -20,6 +20,7 @@ new Vue({
     },
     communityDetail: {
       application_data: {}, //提前给出key，防止前端报错
+      member_log: {},
     },  //社区信息数据
     communityRooms: {}, //社区房间信息
     editCommunityForm: {},  //编辑社区的名字和简介
@@ -49,6 +50,7 @@ new Vue({
     communityRoomApiPrefix: '/agent/api/community/room/',
     searchRecordApiPrefix: '/agent/api/community/game-record/',
     markRecordApiPrefix: '/agent/api/community/game-record/mark/',
+    readCommunityLogPrefix: '/agent/api/community/member/log/read/',
   },
 
   methods: {
@@ -247,6 +249,19 @@ new Vue({
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.searchRecord()  //刷新数据
+        }).catch(function (err) {
+          alert(err)
+        })
+    },
+
+    //将社区动态标记为已读
+    readMemberLog () {
+      let api = this.readCommunityLogPrefix + this.communityDetail.id
+      let toastr = this.$refs.toastr
+
+      myTools.axiosInstance.put(api)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
         }).catch(function (err) {
           alert(err)
         })

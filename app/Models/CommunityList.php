@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\Game\PlayerService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class CommunityList extends Model
 {
@@ -86,7 +87,40 @@ class CommunityList extends Model
             $player = collect($player)->only($remainedPlayerInfo)->toArray();
             $memberLog['player'] = $player;
         }
-        return $memberLogs;
+        $result = $this->buildMemberLog($memberLogs, $this->attributes['id']);
+        return $result;
+    }
+
+    //构建社区动态数据，添加是否已读的标识
+    protected function buildMemberLog($memberLogs, $communityId)
+    {
+        $data = [];
+        if ($memberLogs->isEmpty()) {
+            $data['has_read'] = 1;   //已读
+        } else {
+            $cacheKey = config('custom.cache_community_log') . $communityId;
+            $latestLogId = $memberLogs->first()->id;    //最新的社区动态日志id
+            $cacheData = Cache::rememberForever($cacheKey, function () use (&$data, $latestLogId) {
+                $data['has_read'] = 0;  //如果是第一次不存在此key，那么社区动态也标记未读
+                return [
+                    'has_read' => 0,    //未读
+                    'latest_log_id' => $latestLogId,
+                ];
+            });
+
+            //如果最新的log id大于缓存的id那么标记为未读
+            if ($latestLogId > $cacheData['latest_log_id']) {
+                $data['has_read'] = 0;
+                Cache::forever($cacheKey, [ //更新缓存数据
+                    'has_read' => 0,    //未读
+                    'latest_log_id' => $latestLogId,
+                ]);
+            } else {
+                $data['has_read'] = $cacheData['has_read'];
+            }
+        }
+        $data['member_logs'] = $memberLogs;
+        return $data;
     }
 
     //获取成员id的数组列表

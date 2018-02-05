@@ -11,6 +11,7 @@ use App\Services\CommunityService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\Services\Game\GameApiService;
 
@@ -224,5 +225,14 @@ class CommunityMembersController extends Controller
 
             //todo 社区踢出玩家需要通知游戏后端
         });
+    }
+
+    public function readCommunityLog(AgentRequest $request, CommunityList $community)
+    {
+        $communityId = $community->id;
+        $cacheKey = config('custom.cache_community_log') . $communityId;
+        $cacheData = Cache::get($cacheKey);
+        $cacheData['has_read'] = 1;
+        Cache::forever($cacheKey, $cacheData);
     }
 }

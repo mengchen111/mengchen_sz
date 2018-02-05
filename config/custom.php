@@ -24,6 +24,7 @@ return [
     'game_server_cache_valid_card_agent_log' => 'valid-card:agent',     //包含了有效耗卡数据的代理商给玩家充值记录
     'game_server_cache_valid_card_consumed_log' => 'valid-card:consumed',     //从后端返回的道具消耗日志中提取有效耗卡记录并缓存
     'cache_room_statement' => 'room:statement',     //房间数据报表
+    'cache_community_log' => 'community:log:',       //社区动态消息是否已读，缓存（prifix）
 
     //游戏后端数据交互接口信息
     'game_api_address' => env('GAME_API_ADDRESS'),
