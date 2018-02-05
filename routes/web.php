@@ -199,6 +199,7 @@ Route::group([
     Route::post('community', 'CommunityController@createCommunity');
     //代理商禁止删除社区
     //Route::delete('community/{communityId}', 'CommunityController@deleteCommunity')->where('communityId', '[0-9]+');
+    Route::get('community/info/{communityId}', 'CommunityController@getCommunityInfo')->where('communityId', '[0-9]+');
     Route::get('community/detail/{communityId}', 'CommunityController@getCommunityDetail')->where('communityId', '[0-9]+');
     Route::put('community/info/{community}', 'CommunityController@updateCommunityInfo')->where('community', '[0-9]+');
     Route::get('community/card/top-up-history', 'CommunityTopUpController@getTopUpHistory');

@@ -23,6 +23,8 @@ new Vue({
     communityIds: [],
     topUpApi: '/agent/api/community/card/top-up',
     communitiesApi: '/agent/api/communities',  //获取此代理商的所有牌艺馆
+    communityInfoApiPrefix: '/agent/api/community/info/',
+    communityBalance: null,
   },
 
   computed: {
@@ -51,6 +53,16 @@ new Vue({
           myTools.msgResolver(res, toastr)
           //_self.topUpData.item_type_amount = ''
           _self.topUpData.remark = ''
+        })
+    },
+
+    searchCommunityBalance (value) {
+      this.topUpData.community_id = value
+      let _self = this
+
+      myTools.axiosInstance.get(this.communityInfoApiPrefix + this.topUpData.community_id)
+        .then(function (res) {
+          _self.communityBalance = res.data.card_stock
         })
     },
   },

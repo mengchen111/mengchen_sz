@@ -36,7 +36,9 @@
                         <div class="box-body">
                             <div class="form-group has-feedback">
                                 <label>牌艺馆ID</label>
-                                <v-select :searchable="false" required :options="communityIds" v-model="topUpData.community_id"></v-select>
+                                <v-select :searchable="false" required :options="communityIds"
+                                          :on-change="searchCommunityBalance"></v-select>
+                                <span class="text-red" v-cloak v-show="communityBalance !== null">房卡余额：{{ communityBalance }}</span>
                             </div>
                             <div class="form-group">
                                 <label>充值类型</label>

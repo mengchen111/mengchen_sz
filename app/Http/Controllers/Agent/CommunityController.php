@@ -99,16 +99,32 @@ class CommunityController extends Controller
         ];
     }
 
+    public function getCommunityInfo(AgentRequest $request, $communityId)
+    {
+        $agent = $request->user();
+
+        $community = CommunityList::where('owner_agent_id', $agent->id) //只能获取他拥有的牌艺馆信息
+            ->find($communityId);
+
+        OperationLogs::add($agent->id, $request->path(), $request->method(),
+            '查看单个牌艺馆基本信息', $request->header('User-Agent'));
+
+        return $community;
+    }
+
     public function getCommunityDetail(AgentRequest $request, $communityId)
     {
+        $agent = $request->user();
+
         $community = CommunityList::with(['ownerAgent'])
+            ->where('owner_agent_id', $agent->id)   //只能获取他拥有的牌艺馆信息
             ->where('status', 1)    //只能获取已审核通过的
             ->findOrFail($communityId)
             ->append('members_info')        //成员信息
             ->append('application_data')    //此社区的申请列表
             ->append('member_log');         //社区动态
 
-        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+        OperationLogs::add($agent->id, $request->path(), $request->method(),
             '获取牌艺馆详情', $request->header('User-Agent'));
 
         return $community;

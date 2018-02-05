@@ -200,6 +200,7 @@ cd $codeDir
 | communities | GET | 获取代理商已审核过的牌艺馆(无分页) |
 | community | POST | 新增牌艺馆 |
 | community/{communityId} | DELETE | 删除牌艺馆(已关闭) |
+| community/info/{communityId} | GET | 获取单个牌艺馆基本信息 |
 | community/detail/{communityId} | GET | 获取牌艺馆详细信息 |
 | community/info/{community} | PUT | 更新牌艺馆信息 |
 | community/card/top-up-history | GET | 牌艺馆充值记录 |
