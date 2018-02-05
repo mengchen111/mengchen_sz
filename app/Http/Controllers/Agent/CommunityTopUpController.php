@@ -21,9 +21,9 @@ class CommunityTopUpController extends Controller
             'community_id' => 'required|integer',
             'item_type_id' => 'required|integer|exists:item_type,id',
             'item_amount' => 'required|integer',
-            'remark' => 'string|max:255',
+            'remark' => 'max:255',
         ]);
-        $topUpForm = $request->intersect(['community_id', 'item_type_id', 'item_amount', 'remark']);
+        $topUpForm = $request->only(['community_id', 'item_type_id', 'item_amount', 'remark']);
         $agent = User::with(['inventory' => function ($query) use ($topUpForm) {
             $query->where('item_id', $topUpForm['item_type_id']);
         }])->find($request->user()->id);

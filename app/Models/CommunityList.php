@@ -78,7 +78,7 @@ class CommunityList extends Model
     {
         $memberLogs = CommunityMemberLog::where('community_id', $this->attributes['id'])
             ->orderBy('id', 'desc')
-            ->limit(10)     //只显示10条最新动态
+            ->limit(30)     //只显示30条最新动态
             ->get();
         $remainedPlayerInfo = ['id', 'nickname'];    //只显示这些玩家信息
         foreach ($memberLogs as $memberLog) {
