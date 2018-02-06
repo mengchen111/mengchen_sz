@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 
 use App\Services\Game\GameApiService;
+use App\Services\Game\PlayerService;
 use App\Services\WechatService;
 
 class SyncWxUnionId extends BaseCommand
@@ -39,9 +40,8 @@ class SyncWxUnionId extends BaseCommand
      */
     public function handle()
     {
-        $playersApi = config('custom.game_api_players');    //所有玩家数据接口
         $wechatCreateUnionidOpenidApi = config('custom.game_api_wechat_official-account_unionid-openid_create');
-        $players = collect(GameApiService::request('POST', $playersApi));
+        $players = collect(PlayerService::getAllPlayers());
 
         $wxUserService = app('wechat')->user;
         $openids = WechatService::getUserList();
