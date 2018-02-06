@@ -46,4 +46,17 @@ class WechatService
         }
         return true;
     }
+
+    public static function getUserList($nextOpenid = null)
+    {
+        $wxUserService = app('wechat')->user;
+        $users = $wxUserService->lists($nextOpenid);
+        $openids = $users->data['openid'] ?: [];
+        $nextOpenid = $users->next_openid;
+        if (! empty($nextOpenid)) {
+            return array_merge($openids, self::getUserList($nextOpenid));
+        } else {
+            return $openids;
+        }
+    }
 }

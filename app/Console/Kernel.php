@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\CacheAgentValidCardLog;
 use App\Console\Commands\FetchOnlinePlayerCount;
 use App\Console\Commands\SendWxRedPacket;
+use App\Console\Commands\SyncWxUnionId;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Psy\Command\Command;
@@ -22,6 +23,7 @@ class Kernel extends ConsoleKernel
         FetchOnlinePlayerCount::class,
         CacheAgentValidCardLog::class,
         SendWxRedPacket::class,
+        SyncWxUnionId::class,
     ];
 
     /**
