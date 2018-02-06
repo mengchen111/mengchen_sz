@@ -305,7 +305,7 @@
                                                         <tr v-for="record in playerGameRecord.records">
                                                             <td class="text-center">{{ record.time.split(' ')[0] }}<br>
                                                                 {{ record.time.split(' ')[1] }}<br>
-                                                                <span class="text-red">房号:&nbsp;{{ record.id }}</span>
+                                                                <span class="text-red">房号:&nbsp;{{ record.rid }}</span>
                                                             </td>
                                                             <td>
                                                                 <span :class="{ 'text-red': record.uid_1 == searchRecordForm.player_id }">
