@@ -43,7 +43,7 @@ class CommunityController extends Controller
         $this->validate($request, [
             'owner_player_id' => 'required|integer',
             'name' => 'required|string|max:12|unique:community_list,name',
-            'info' => 'required|string|max:12',
+            'info' => 'max:12',
         ]);
 
         $agent = $request->user();

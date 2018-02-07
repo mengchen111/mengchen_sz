@@ -56,6 +56,6 @@ class SyncWxUnionId extends BaseCommand
                 $this->logInfo('玩家' . $player['id'] . '已关注公众号, openid为:' . $openid . ', 添加到unionid_openid表中');
             }
         }
-        $this->info('done');
+        $this->logInfo('done');
     }
 }
