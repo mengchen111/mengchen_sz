@@ -95,10 +95,15 @@ class CommunityList extends Model
     protected function buildMemberLog($memberLogs, $communityId)
     {
         $data = [];
-        if ($memberLogs->isEmpty()) {
+        $cacheKey = config('custom.cache_community_log') . $communityId;
+        if ($memberLogs->isEmpty()) {   //新建的牌艺馆log第一次为空，填充缓存数据进去
             $data['has_read'] = 1;   //已读
+
+            Cache::forever($cacheKey, [
+                'has_read' => 1,    //已读
+                'latest_log_id' => 0,
+            ]);
         } else {
-            $cacheKey = config('custom.cache_community_log') . $communityId;
             $latestLogId = $memberLogs->first()->id;    //最新的社区动态日志id
             $cacheData = Cache::rememberForever($cacheKey, function () use (&$data, $latestLogId) {
                 $data['has_read'] = 0;  //如果是第一次不存在此key，那么社区动态也标记未读
