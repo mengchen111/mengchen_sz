@@ -49,10 +49,10 @@ class CommunityGameRecordController extends Controller
         return $result;
     }
 
-    public function markRecord(AgentRequest $request, $ruid)
+    public function markRecord(AgentRequest $request, $recordInfoId)
     {
         $api = config('custom.game_api_community_record_mark');
-        $params['ruid'] = $ruid;
+        $params['record_info_id'] = $recordInfoId;
         $params['if_read'] = 1;
         GameApiService::request('POST', $api, $params);
 

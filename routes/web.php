@@ -211,7 +211,7 @@ Route::group([
     Route::put('community/member/log/read/{community}', 'CommunityMembersController@readCommunityLog')->where('community', '[0-9]+');
     Route::get('community/room/{communityId}', 'CommunityRoomController@getCommunityOpenRoom')->where('communityId', '[0-9]+');
     Route::get('community/game-record/{communityId}', 'CommunityGameRecordController@search')->where('communityId', '[0-9]+');
-    Route::put('community/game-record/mark/{ruid}', 'CommunityGameRecordController@markRecord')->where('ruid', '[0-9]+');
+    Route::put('community/game-record/mark/{recordInfoId}', 'CommunityGameRecordController@markRecord')->where('recordInfoId', '[0-9]+');
 
     Route::post('top-up/child/{receiver}/{type}/{amount}', 'TopUpController@topUp2Child')->where('amount', '[0-9]+');
     Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '[0-9]+');

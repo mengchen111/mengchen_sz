@@ -322,7 +322,7 @@
                                                                 </span>
                                                             <td>{{record.currency}}</td>
                                                             <td><a v-if="record.record_info ? record.record_info.if_read == 0 : false"
-                                                                    @click="markRecord(record.ruid)">查看</a>
+                                                                    @click="markRecord(record.record_info.id)">查看</a>
                                                                 <a v-else>已查看</a></td>
                                                         </tr>
                                                     </tbody>

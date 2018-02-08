@@ -240,10 +240,10 @@ new Vue({
     },
 
     //标记战绩为已查看
-    markRecord (uid) {
+    markRecord (recordInfoId) {
       let _self = this
       let toastr = this.$refs.toastr
-      let api = this.markRecordApiPrefix + uid
+      let api = this.markRecordApiPrefix + recordInfoId
 
       myTools.axiosInstance.put(api)
         .then(function (res) {
