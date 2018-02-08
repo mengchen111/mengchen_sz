@@ -27,7 +27,7 @@ class CommunityGameRecordController extends Controller
         $result = $this->formatRecords($records);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '查询牌艺馆玩家战绩', $request->header('User-Agent'));
+            '查询牌艺馆玩家战绩', $request->header('User-Agent'), json_encode($request->all()));
 
         return $result;
     }

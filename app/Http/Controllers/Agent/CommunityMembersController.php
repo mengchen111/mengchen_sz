@@ -38,7 +38,7 @@ class CommunityMembersController extends Controller
         $formData['type'] = 1;      //群主邀请
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '邀请加入牌艺馆', $request->header('User-Agent'));
+            '邀请加入牌艺馆', $request->header('User-Agent'), json_encode($request->all()));
 
         CommunityInvitationApplication::create($formData);
 
@@ -177,7 +177,7 @@ class CommunityMembersController extends Controller
         $this->checkCommunityOwnership($community, $agent);
 
         OperationLogs::add($agent->id, $request->path(), $request->method(),
-            '从牌艺馆中踢出成员', $request->header('User-Agent'));
+            '从牌艺馆中踢出成员', $request->header('User-Agent'), json_encode($request->all()));
 
         if (! $community->ifHasMember($playerId)) {
             throw new CustomException('此玩家不存在与该牌艺馆，无法踢出');

@@ -45,7 +45,7 @@ class CommunityTopUpController extends Controller
         $this->topUp4Community($agent, $community, $topUpForm);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '充值牌艺馆道具', $request->header('User-Agent'));
+            '充值牌艺馆道具', $request->header('User-Agent'), json_encode($request->all()));
 
         return [
             'message' => '充值成功',
@@ -83,7 +83,7 @@ class CommunityTopUpController extends Controller
         $agent = $request->user();
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '查看牌艺馆', $request->header('User-Agent'));
+            '查看牌艺馆充值历史', $request->header('User-Agent'), json_encode($request->all()));
 
          return CommunityCardTopupLog::where('agent_id', $agent->id)
             ->where('item_type_id', $request->input('item_type_id'))

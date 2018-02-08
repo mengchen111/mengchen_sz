@@ -41,7 +41,7 @@ class CommunityController extends Controller
     public function createCommunity(AgentRequest $request)
     {
         $this->validate($request, [
-            'owner_player_id' => 'required|integer',
+            'owner_player_id' => 'required|integer|between:10000,999999',
             'name' => 'required|string|max:12|unique:community_list,name',
             'info' => 'max:12',
         ]);
@@ -58,7 +58,7 @@ class CommunityController extends Controller
         $community = CommunityList::create($formData);
 
         OperationLogs::add($agent->id, $request->path(), $request->method(),
-            '创建牌艺馆', $request->header('User-Agent'));
+            '创建牌艺馆', $request->header('User-Agent'), json_encode($request->all()));
 
         return [
             'message' => '创建牌艺馆' . $community->id . '成功, 等待管理员审核',
@@ -146,7 +146,7 @@ class CommunityController extends Controller
         $community->update($formData);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '更新牌艺馆信息', $request->header('User-Agent'));
+            '更新牌艺馆信息', $request->header('User-Agent'), json_encode($request->all()));
 
         return [
             'message' => '更新牌艺馆信息成功',
