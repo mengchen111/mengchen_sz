@@ -17,6 +17,7 @@ new Vue({
     eventHub: new Vue(),
 
     tasksPlayerApi: '/admin/api/activities/tasks-player',
+    resetTasksPlayerApi: '/admin/api/activities/tasks-player/reset',
     taskMapApi: '/admin/api/activities/task-map',
     taskMap: {}, //任务id和名称映射关系
     taskMapOptions: [],
@@ -112,6 +113,10 @@ new Vue({
       let _self = this
       let toastr = this.$refs.toastr
 
+      if (! this.taskValue) {
+        return toastr.message('任务不能为空', 'error')
+      }
+
       this.addTasksPlayerForm.task_id = _.findKey(this.taskMap, (v) => v === this.taskValue)
       this.addTasksPlayerForm.is_completed = _.findIndex(this.isCompletedOptions, (v) => v === this.isCompletedValue)
 
@@ -119,6 +124,28 @@ new Vue({
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.$root.eventHub.$emit('MyVuetable:refresh')
+        })
+        .catch(function (err) {
+          alert(err)
+        })
+    },
+
+    resetTasksPlayer () {
+      let _self = this
+      let toastr = this.$refs.toastr
+
+      if (! this.taskValue) {
+        return toastr.message('请选择一个任务重置，不能为空', 'error')
+      }
+
+      let params = {
+        id: _.findKey(this.taskMap, (v) => v === this.taskValue),
+      }
+
+      myTools.axiosInstance.put(this.resetTasksPlayerApi, params)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+          _self.taskValue = ''  //调用完成之后重置选项的值
         })
         .catch(function (err) {
           alert(err)

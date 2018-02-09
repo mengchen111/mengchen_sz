@@ -18,6 +18,7 @@ new Vue({
     activatedRow: {},
 
     userGoodsApi: '/admin/api/activities/user-goods',
+    resetUserGoodsApi: '/admin/api/activities/user-goods/reset',
     goodsTypeMapApi: '/admin/api/activities/goods-type-map',
     goodsTypeMap: {}, //道具id和名称映射关系
     goodsTypeOptions: [],
@@ -115,6 +116,28 @@ new Vue({
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.$root.eventHub.$emit('MyVuetable:refresh')
+        })
+        .catch(function (err) {
+          alert(err)
+        })
+    },
+
+    resetUserGoods () {
+      let _self = this
+      let toastr = this.$refs.toastr
+
+      if (! this.goodsTypeName) {
+        return toastr.message('请选择一个物品重置，不能为空', 'error')
+      }
+
+      let params = {
+        goods_id: _.findKey(this.goodsTypeMap, (v) => v === this.goodsTypeName),
+      }
+
+      myTools.axiosInstance.put(this.resetUserGoodsApi, params)
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+          _self.goodsTypeName = ''
         })
         .catch(function (err) {
           alert(err)
