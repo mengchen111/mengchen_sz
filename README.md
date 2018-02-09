@@ -144,10 +144,12 @@ cd $codeDir
 | activities/user-goods | PUT | 编辑玩家物品 |
 | activities/user-goods | DELETE | 删除玩家物品 |
 | activities/user-goods | POST | 添加玩家物品 |
+| activities/user-goods/reset | PUT | 重置玩家物品 |
 | activities/tasks-player | GET | 获取玩家任务列表 |
 | activities/tasks-player | PUT | 编辑玩家任务 |
 | activities/tasks-player | DELETE | 删除玩家任务 |
 | activities/tasks-player | POST | 添加玩家任务 |
+| activities/tasks-player/reset | PUT | 重置玩家任务 |
 | community | GET | 获取牌艺馆列表 |
 | community | POST | 创建牌艺馆 |
 | community/{community} | DELETE | 删除牌艺馆 |

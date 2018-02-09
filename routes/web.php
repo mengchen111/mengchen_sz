@@ -86,10 +86,12 @@ Route::group([
     Route::put('activities/user-goods', 'Game\ActivitiesUserGoodsController@editUserGoods');
     Route::delete('activities/user-goods', 'Game\ActivitiesUserGoodsController@deleteUserGoods');
     Route::post('activities/user-goods', 'Game\ActivitiesUserGoodsController@addUserGoods');
+    Route::put('activities/user-goods/reset', 'Game\ActivitiesUserGoodsController@resetUserGoods');
     Route::get('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@getTasksPlayerList');
     Route::put('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@editTasksPlayer');
     Route::delete('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@deleteTasksPlayer');
     Route::post('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@addTasksPlayer');
+    Route::put('activities/tasks-player/reset', 'Game\ActivitiesTasksPlayerController@resetTasksPlayer');
 
     Route::get('community', 'CommunityController@showCommunityList');
     Route::post('community', 'CommunityController@createCommunity');

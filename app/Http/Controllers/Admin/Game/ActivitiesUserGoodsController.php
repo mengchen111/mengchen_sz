@@ -92,4 +92,22 @@ class ActivitiesUserGoodsController extends Controller
             'user_id', 'goods_id', 'goods_cnt',
         ]);
     }
+
+    public function resetUserGoods(AdminRequest $request)
+    {
+        $this->validate($request, [
+            'goods_id' => 'required|integer',
+        ]);
+        $params = $request->only(['goods_id']);
+
+        $api = config('custom.game_api_activities_user-goods_reset');
+        GameApiService::request('POST', $api, $params);
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '重置玩家物品', $request->header('User-Agent'), json_encode($request->all()));
+
+        return [
+            'message' => '重置成功',
+        ];
+    }
 }

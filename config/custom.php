@@ -69,10 +69,12 @@ return [
     'game_api_activities_user-goods_add' => 'activities/user-goods/add',
     'game_api_activities_user-goods_modify' => 'activities/user-goods/modify',
     'game_api_activities_user-goods_delete' => 'activities/user-goods/delete',
+    'game_api_activities_user-goods_reset' => 'activities/user-goods/reset',    //重置user_goods
     'game_api_activities_tasks-player_list' => 'activities/tasks-player/list', //获取tasks_player列表
     'game_api_activities_tasks-player_add' => 'activities/tasks-player/add',
     'game_api_activities_tasks-player_modify' => 'activities/tasks-player/modify',
     'game_api_activities_tasks-player_delete' => 'activities/tasks-player/delete',
+    'game_api_activities_tasks-player_reset' => 'activities/tasks-player/reset',    //重置玩家任务
     'game_api_wechat_official-account_unionid-openid_create' => 'wechat/official-account/unionid-openid/create', //创建unionid和公众号openid记录
     'game_api_wechat_official-account_unionid-openid_delete' => 'wechat/official-account/unionid-openid/delete', //
     'game_api_wechat_red-packet_send-list' => 'wechat/red-packet/send-list', //获取待发送红包列表

@@ -94,4 +94,22 @@ class ActivitiesTasksPlayerController extends Controller
             'uid', 'task_id', 'process', 'is_completed',
         ]);
     }
+
+    public function resetTasksPlayer(AdminRequest $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|integer',
+        ]);
+        $params = $request->only(['id']);
+
+        $api = config('custom.game_api_activities_tasks-player_reset');
+        GameApiService::request('POST', $api, $params);
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '重置玩家任务', $request->header('User-Agent'), json_encode($request->all()));
+
+        return [
+            'message' => '重置成功',
+        ];
+    }
 }
