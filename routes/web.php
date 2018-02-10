@@ -92,6 +92,7 @@ Route::group([
     Route::delete('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@deleteTasksPlayer');
     Route::post('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@addTasksPlayer');
     Route::put('activities/tasks-player/reset', 'Game\ActivitiesTasksPlayerController@resetTasksPlayer');
+    Route::get('activities/red-packet-log', 'Game\ActivitiesRedPacketLogController@getRedPacketLog');
 
     Route::get('community', 'CommunityController@showCommunityList');
     Route::post('community', 'CommunityController@createCommunity');

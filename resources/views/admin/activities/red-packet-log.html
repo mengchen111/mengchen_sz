@@ -33,8 +33,22 @@
                         </div>
 
                         <div class="box-body">
-                            红包发送记录
-
+                            <div class="row">
+                                <div class="col-md-4 col-xs-12 pull-right">
+                                    <filter-bar placeholder="查找玩家id或昵称..."></filter-bar>
+                                </div>
+                            </div>
+                            <div class="row phone-scrollable">
+                                <div class="col-md-12 ">
+                                    <my-vuetable
+                                            :table-url="tableUrl"
+                                            :table-fields="tableFields"
+                                            :callbacks="tableCallbacks"
+                                            detail-row-component="detail-row"
+                                    >
+                                    </my-vuetable>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
