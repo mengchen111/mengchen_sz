@@ -53,6 +53,9 @@ new Vue({
         statement: {
           isActive: false,
         },
+        'red-packet-log': {
+          isActive: false,
+        },
       },
       community: {
         isActive: false,

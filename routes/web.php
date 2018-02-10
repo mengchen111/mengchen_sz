@@ -157,6 +157,7 @@ Route::group([
     Route::get('activities/user-goods', 'ViewController@activitiesUserGoods');
     Route::get('activities/player-task', 'ViewController@activitiesPlayerTask');
     Route::get('activities/statement', 'ViewController@activitiesStatement');
+    Route::get('activities/red-packet-log', 'ViewController@activitiesRedPacketLog');
 
     Route::get('community/list', 'ViewController@communityList');
 

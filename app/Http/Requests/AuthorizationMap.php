@@ -52,6 +52,9 @@ trait AuthorizationMap
             'statement' => [
                 'ifShown' => true,
             ],
+            'red-packet-log' => [
+                'ifShown' => true,
+            ],
         ],
         'community' => [
             'ifShown' => true,

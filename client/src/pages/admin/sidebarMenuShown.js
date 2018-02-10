@@ -46,6 +46,9 @@ export default {
     statement: {
       ifShown: false,
     },
+    'red-packet-log': {
+      ifShown: false,
+    },
   },
   community: {
     ifShown: false,
