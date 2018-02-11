@@ -1,4 +1,4 @@
-import {myTools} from '../index.js'
+import '../index.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import MyToastr from '../../../components/MyToastr.vue'
 import FilterBar from '../../../components/MyFilterBar.vue'
@@ -39,6 +39,7 @@ new Vue({
       {
         name: 'send_status',
         title: '发送状态',
+        sortField: 'send_status',
         callback: 'convertSendStatus',
       },
       {
