@@ -48,18 +48,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" style="margin-bottom: 8px;">
+                            <div class="row" style="margin-bottom: 6px;">
                                 <div class="col-md-12 col-xs-12">
-                                    <button class="btn btn-flat btn-default btn-block">任务完成总数</button>
+                                    <button class="btn btn-flat btn-primary btn-block">任务完成总数</button>
                                 </div>
                             </div>
-                            <div class="row" style="margin-bottom: 5px;">
+                            <div class="row" style="margin-bottom: 8px;">
                                 <div class="col-md-3 col-xs-12">
                                     <div class="small-box white-small-box">
                                         <div class="inner">
-                                            <h5>每日首次有效创建房间</h5>
+                                            <h5>任务1</h5>
                                             <h4 class="text-bold" v-cloak>
-                                                12
+                                                0
                                             </h4>
                                         </div>
                                     </div>
@@ -67,20 +67,32 @@
                                 <div class="col-md-3 col-xs-12">
                                     <div class="small-box white-small-box">
                                         <div class="inner">
-                                            <h5>每日首次有效创建房间2</h5>
+                                            <h5>任务2</h5>
                                             <h4 class="text-bold" v-cloak>
-                                                12
+                                                0
                                             </h4>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" style="margin-bottom: 8px;">
+                            <div class="row" style="margin-bottom: 6px;">
                                 <div class="col-md-12 col-xs-12">
-                                    <button class="btn btn-flat btn-default btn-block">奖品</button>
+                                    <button class="btn btn-flat btn-primary btn-block">奖品</button>
                                 </div>
                             </div>
-
+                            <div class="row" style="margin-bottom: 8px;" v-cloak>
+                                <div class="col-md-3 col-xs-12" v-for="reward in statement.reward">
+                                    <div class="small-box white-small-box">
+                                        <div class="inner">
+                                            <h5>{{ reward.show_text + reward.name }}</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                {{ reward.log_activity_reward == null ? 0
+                                                : reward.log_activity_reward.total }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

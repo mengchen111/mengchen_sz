@@ -53,6 +53,7 @@ return [
     'game_api_activities_modify' => 'activities/modify',
     'game_api_activities_delete' => 'activities/delete',
     'game_api_activities_reward_list' => 'activities/reward/list', //获取活动奖品列表
+    'game_api_activities_reward_log' => 'activities/reward/log', //获取活动奖品抽取次数记录
     'game_api_activities_reward_add' => 'activities/reward/add',
     'game_api_activities_reward_modify' => 'activities/reward/modify',
     'game_api_activities_reward_delete' => 'activities/reward/delete',
