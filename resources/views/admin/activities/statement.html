@@ -27,13 +27,59 @@
         <section class="content" id="app">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="box box-primary">
+                    <div class="box box-primary bg-grey">
                         <div class="box-header with-border">
                             <h3 class="box-title">数据统计</h3>
                         </div>
 
                         <div class="box-body">
-                            数据统计
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12" style="margin-bottom: 8px;">
+                                    <div class="input-group">
+                                        <my-date-picker required v-model="date"
+                                                        placeholder="选择日期"
+                                                        :date-format="dateFormat">
+                                        </my-date-picker>
+                                        <span class="input-group-btn">
+                                              <button class="btn btn-flat btn-primary" @click="changeDate">
+                                                  查询
+                                              </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 8px;">
+                                <div class="col-md-12 col-xs-12">
+                                    <button class="btn btn-flat btn-default btn-block">任务完成总数</button>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 5px;">
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="small-box white-small-box">
+                                        <div class="inner">
+                                            <h5>每日首次有效创建房间</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                12
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="small-box white-small-box">
+                                        <div class="inner">
+                                            <h5>每日首次有效创建房间2</h5>
+                                            <h4 class="text-bold" v-cloak>
+                                                12
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 8px;">
+                                <div class="col-md-12 col-xs-12">
+                                    <button class="btn btn-flat btn-default btn-block">奖品</button>
+                                </div>
+                            </div>
 
                         </div>
                     </div>

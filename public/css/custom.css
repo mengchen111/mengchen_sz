@@ -22,3 +22,19 @@
         height: 26px;
     }
 }
+
+.bg-grey {
+    background-color: #ecf0f5;
+}
+
+.white-small-box {
+    background-color: #fff;
+}
+
+.white-small-box h4{
+    color: black;
+}
+
+.white-small-box h5{
+    color: black;
+}
