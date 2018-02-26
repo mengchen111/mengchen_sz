@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Game\GameApiService;
 use App\Models\OperationLogs;
-use App\Services\Paginator;
 
 class ActivitiesStatementController extends Controller
 {

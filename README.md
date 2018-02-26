@@ -150,6 +150,9 @@ cd $codeDir
 | activities/tasks-player | DELETE | 删除玩家任务 |
 | activities/tasks-player | POST | 添加玩家任务 |
 | activities/tasks-player/reset | PUT | 重置玩家任务 |
+| activities/red-packet-log | GET | 活动红包发送记录 |
+| activities/red-packet-log/status/{redPacketLog} | PUT | 更新活动红包发送状态 |
+| activities/statement | GET | 活动统计数据 |
 | community | GET | 获取牌艺馆列表 |
 | community | POST | 创建牌艺馆 |
 | community/{community} | DELETE | 删除牌艺馆 |

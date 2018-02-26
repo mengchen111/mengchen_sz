@@ -93,6 +93,7 @@ Route::group([
     Route::post('activities/tasks-player', 'Game\ActivitiesTasksPlayerController@addTasksPlayer');
     Route::put('activities/tasks-player/reset', 'Game\ActivitiesTasksPlayerController@resetTasksPlayer');
     Route::get('activities/red-packet-log', 'Game\ActivitiesRedPacketLogController@getRedPacketLog');
+    Route::put('activities/red-packet-log/status/{redPacketLog}', 'Game\ActivitiesRedPacketLogController@changeStatus')->where('redPacketLog', '[0-9]+');
     Route::get('activities/statement', 'Game\ActivitiesStatementController@getStatement');
 
     Route::get('community', 'CommunityController@showCommunityList');

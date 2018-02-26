@@ -28,7 +28,7 @@ class CreateWxRedPacketLogTable extends Migration
             $table->string('client_ip')->comment('调用接口的机器Ip地址');
             $table->string('act_name')->comment('活动名称');
             $table->string('remark')->comment('备注');
-            $table->tinyInteger('send_status')->default(0)->comment('红包发送状态(0-待发送,1-已发送,2－发送失败)');
+            $table->tinyInteger('send_status')->default(0)->comment('红包发送状态(0-待发送,1-已发送,2-发送失败,3-已补发)');
             $table->text('error_message')->nullable()->comment('错误消息');
             $table->timestamps();
         });
