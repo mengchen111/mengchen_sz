@@ -44,8 +44,12 @@ new Vue({
   },
   methods: {
     getCardSoldRecords () {
-      //道具类型为1，只查询房卡
-      this.tableUrl = this.cardSoldRecordsApi + '?item_type=1&account=' + this.agentAccount  //更改tableUrl之后vuetable会自动刷新数据
+      if (this.agentAccount) {
+        //道具类型为1，只查询房卡
+        this.tableUrl = this.cardSoldRecordsApi + '?item_type=1&account=' + this.agentAccount  //更改tableUrl之后vuetable会自动刷新数据
+      } else {
+        this.tableUrl = this.cardSoldRecordsApi + '?item_type=1&account=0'
+      }
     },
   },
 

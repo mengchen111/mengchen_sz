@@ -219,7 +219,7 @@ class AgentController extends Controller
         ]);
         $itemType = $request->input('item_type');
 
-        //打开页面vuetable第一次请求是，直接返回空数据
+        //打开页面vuetable第一次请求时，直接返回空数据
         if ($request->input('account') === '0') {
             return Paginator::paginate([]);
         }
@@ -261,10 +261,31 @@ class AgentController extends Controller
     public function getAgentValidCardConsumedRecord(AdminRequest $request)
     {
         $this->validate($request, [
-            'agent_id' => 'required|integer'
+            'account' => 'required'
         ]);
 
-        $agentId = $request->input('agent_id');
-        return ValidCardConsumedService::getSpecifiedAgentTopUpLog($agentId);
+        //打开页面vuetable第一次请求时，直接返回空数据
+        if ($request->input('account') === '0') {
+            return Paginator::paginate([]);
+        }
+
+        $agent = User::where('account', $request->input('account'))->first();
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '查询有效耗卡记录', $request->header('User-Agent'), $request->all());
+
+        if (empty($agent)) {
+            throw new CustomException('代理商不存在');
+        }
+
+        $data = ValidCardConsumedService::getSpecifiedAgentTopUpLog($agent->id);
+
+        //添加玩家的昵称数据
+        foreach ($data as &$item) {
+            $item['provider_account'] = $agent->account;
+            $item['provider_nickname'] = $agent->name;
+            $item['player_nickname'] = PlayerService::getNickName($item['player']);
+        }
+        return Paginator::paginate($data, $this->per_page, $this->page);
     }
 }

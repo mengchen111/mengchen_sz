@@ -91,6 +91,9 @@ trait AuthorizationMap
             'bills' => [
                 'ifShown' => true,
             ],
+            'valid-card' => [
+                'ifShown' => true,
+            ],
         ],
         'top-up' => [
             'ifShown' => true,

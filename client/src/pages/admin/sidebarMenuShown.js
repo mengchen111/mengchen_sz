@@ -85,6 +85,9 @@ export default {
     bills: {  //售卡记录
       ifShown: false,
     },
+    'valid-card': {
+      ifShown: false,
+    },
   },
   'top-up': {
     ifShown: false,
