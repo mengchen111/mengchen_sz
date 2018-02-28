@@ -48,7 +48,7 @@ class CacheAgentValidCardLog extends BaseCommand
             return $this->logInfo('未找到cache key for web，获取数据并永久缓存');
         }
 
-        //获取新的数据，缓存到新的key中（保存三分钟），同时刷新老的key的数据
+        //获取新的数据，缓存到新的key中（保存30分钟），同时刷新老的key的数据
         //这种机制防止缓存数据失效，而此command在运行时前端web刚好访问页面时获取数据超时
         $cacheKeyNew = config('custom.game_server_cache_valid_card_agent_log') . '_new';
         $cacheDuration = 30;   //最新的数据缓存30分钟(此脚本运行时间很长)
