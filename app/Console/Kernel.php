@@ -53,7 +53,7 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo(config('custom.cron_task_log'));
         //缓存代理商有效耗卡数据  （移除，单独在cron里面加入记录，因为此schedule是串行的）
         $schedule->command('admin:cache-agent-valid-card-log')
-            ->dailyAt('00:00')
+            ->dailyAt('05:00')
             ->withoutOverlapping()
             ->evenInMaintenanceMode()
             ->appendOutputTo(config('custom.cron_task_log'));
