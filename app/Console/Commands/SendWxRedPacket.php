@@ -41,6 +41,8 @@ class SendWxRedPacket extends BaseCommand
      */
     public function handle()
     {
+        $this->checkEnv();  //检查是否是生产环境是否可以发送红包
+
         $redPacketSendList = $this->getRedPacketSendList();          //调用后端接口获取需要发送的openid列表
         foreach ($redPacketSendList as $item) {
             if ($item['player']['openid'] === null) {  //如果未找到此用户的openid，那么忽略之
@@ -59,6 +61,16 @@ class SendWxRedPacket extends BaseCommand
             $redPacketData = $this->buildRedPacketData($item);      //构建发送红包需要的数据
             $redPacket = WxRedPacketLog::create($redPacketData);    //本地数据库创建红包记录
             $this->sendRedPacket($redPacket, $item);
+        }
+    }
+
+    protected function checkEnv()
+    {
+        if (env('APP_ENV') != 'production') {
+            $this->logInfo('非生产环境，禁止运行');
+            exit;
+        } else {
+            return true;
         }
     }
 
