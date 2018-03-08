@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AdminRequest;
+use App\Services\Game\GameApiService;
+use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
@@ -114,5 +116,39 @@ class CommunityController extends Controller
     public function changeCommunityOwnership(AdminRequest $request)
     {
         //todo 更改牌艺馆馆长，查询members里面是否有馆长和新馆长，删除之
+    }
+
+    public function getCommunityValidCardConsumedLog(AdminRequest $request)
+    {
+        $this->validate($request, [
+            'community_id' => 'nullable|integer',
+            'start_time' => 'nullable|required_with_all:end_time|date_format:"Y-m-d H:i:s"',
+            'end_time' => 'nullable|required_with_all:start_time|date_format:"Y-m-d H:i:s"',
+            'data_type' => 'required|string|in:detail,summary',
+        ]);
+        $params = $request->intersect(['community_id', 'start_time', 'end_time']);
+
+        if (empty($params)) {
+            $data['currency_log'] = [];
+            $data['summary'] = [
+                'total_consumed' => 0,
+            ];
+        } else {
+            $cardConsumedLogApi = config('custom.game_api_currency_log');
+            $currencyLog = GameApiService::request('GET', $cardConsumedLogApi, $params);
+            $data['currency_log'] = collect($currencyLog)->filter(function ($item) {
+                return $item['community_id'] != 0;
+            })->toArray();
+            $data['summary'] = [
+                'total_consumed' => collect($data['currency_log'])->sum('val'),
+            ];
+        }
+
+        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
+            '查看牌艺馆有效耗卡', $request->header('User-Agent'), json_encode($request->all()));
+
+        return $request->input('data_type') === 'detail'
+            ? Paginator::paginate($data['currency_log'], $this->per_page, $this->page)
+            : $data['summary'];
     }
 }

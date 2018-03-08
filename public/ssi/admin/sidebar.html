@@ -48,6 +48,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li :class="{ active: uri.community.list.isActive }" v-show="isAdmin || shownMenu.community.list.ifShown"><a href="/admin/community/list"><i class="fa fa-circle-o"></i>牌艺馆列表</a></li>
+                    <li :class="{ active: uri.community['valid-card'].isActive }" v-show="isAdmin || shownMenu.community['valid-card'].ifShown"><a href="/admin/community/valid-card"><i class="fa fa-circle-o"></i>牌艺馆有效耗卡记录</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.player.isActive }" v-show="isAdmin || shownMenu.player.ifShown">

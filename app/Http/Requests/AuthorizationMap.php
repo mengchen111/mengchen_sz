@@ -61,6 +61,9 @@ trait AuthorizationMap
             'list' => [
                 'ifShown' => true,
             ],
+            'valid-card' => [
+                'ifShown' => true,
+            ],
         ],
         'player' => [
             'ifShown' => true,

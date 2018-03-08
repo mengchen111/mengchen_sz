@@ -156,7 +156,8 @@ cd $codeDir
 | community | GET | 获取牌艺馆列表 |
 | community | POST | 创建牌艺馆 |
 | community/{community} | DELETE | 删除牌艺馆 |
-| community/application | POST | 审核牌艺馆创建申请 |
+| community/audit/{community} | POST | 审核牌艺馆创建申请 |
+| community/valid-card-consumed | GET | 获取牌艺馆有效耗卡数据 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |

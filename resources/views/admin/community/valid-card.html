@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--#include virtual="/ssi/header.html"-->
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- Main Header -->
+    <!--#include virtual="/ssi/main-header.html"-->
+
+    <!-- Main sidebar -->
+    <!--#include virtual="/ssi/admin/sidebar.html"-->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <!--#include virtual="/ssi/content-header-h1.html"-->
+
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+                <li>牌艺馆管理</li>
+                <li class="active">牌艺馆有效耗卡记录</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content" id="app">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">牌艺馆有效耗卡记录</h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form role="form" class="form-group" @submit.prevent="getValidCardConsumedRecords">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">牌艺馆id</span>
+                                                <input type="text" class="form-control" v-model.trim="formData.community_id" placeholder="查找牌艺馆id...">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="from-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">开始时间</span>
+                                                <my-date-picker v-model="formData.start_time"
+                                                                placeholder="开始时间"
+                                                                :date-format="dateFormat">
+                                                </my-date-picker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="from-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">结束时间</span>
+                                                <my-date-picker v-model="formData.end_time"
+                                                                placeholder="结束时间"
+                                                                :date-format="dateFormat">
+                                                </my-date-picker>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="from-group">
+                                                    <button class="btn btn-block btn-primary btn-flat" type="submit">查询</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 phone-scrollable">
+                            <div class="info-box" v-cloak>
+                                <span class="info-box-icon bg-aqua"><i class="fa fa-gamepad"></i></span>
+                                <div class="info-box-content"><span class="info-box-text">牌艺馆有效耗卡总数</span>
+                                    <span class="info-box-number">{{ totalConsumedCard }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 phone-scrollable">
+                            <my-vuetable
+                                :table-url="tableUrl"
+                                :table-fields="tableFields"
+                                ></my-vuetable>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <my-toastr ref="toastr"></my-toastr>
+        </section>
+        <!-- /.content -->
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    <!--#include virtual="/ssi/main-footer.html"-->
+
+</div>
+<!-- ./wrapper -->
+
+<script src="/dist/webpack/admin/community/valid-card.js"></script>
+</body>
+</html>

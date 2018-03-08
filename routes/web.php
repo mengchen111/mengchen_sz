@@ -100,6 +100,7 @@ Route::group([
     Route::post('community', 'CommunityController@createCommunity');
     Route::delete('community/{community}', 'CommunityController@deleteCommunity')->where('community', '[0-9]+');
     Route::post('community/audit/{community}', 'CommunityController@auditCommunityApplication')->where('community', '[0-9]+');
+    Route::get('community/valid-card-consumed', 'CommunityController@getCommunityValidCardConsumedLog');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');
@@ -163,6 +164,7 @@ Route::group([
     Route::get('activities/red-packet-log', 'ViewController@activitiesRedPacketLog');
 
     Route::get('community/list', 'ViewController@communityList');
+    Route::get('community/valid-card', 'ViewController@communityValidCard');
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-list', 'ViewController@stockApplyList');

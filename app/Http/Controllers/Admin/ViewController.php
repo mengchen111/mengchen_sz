@@ -87,6 +87,11 @@ class ViewController extends Controller
         return view('admin.community.list');
     }
 
+    public function communityValidCard(Request $request)
+    {
+        return view('admin.community.valid-card');
+    }
+
     public function playerList(Request $request)
     {
         return view('admin.player.list');

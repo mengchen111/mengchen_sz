@@ -62,6 +62,9 @@ new Vue({
         list: {
           isActive: false,
         },
+        'valid-card': {
+          isActive: false,
+        },
       },
       player: {
         isActive: false,

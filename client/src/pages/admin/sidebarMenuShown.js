@@ -55,6 +55,9 @@ export default {
     list: {
       ifShown: false,
     },
+    'valid-card': {
+      ifShown: false,
+    },
   },
   player: {
     ifShown: false,
