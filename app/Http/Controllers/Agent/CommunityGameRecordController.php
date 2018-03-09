@@ -35,7 +35,7 @@ class CommunityGameRecordController extends Controller
     protected function formatRecords($records)
     {
         $count = 0;
-        foreach ($records as &$record) {
+        foreach ($records['records'] as &$record) {
             unset($record['options_jstr']); //不显示玩法详情
             if (!empty($record['record_info'])) {
                 unset($record['record_info']['rec_jstr']);  //不现实战绩详情
@@ -43,9 +43,36 @@ class CommunityGameRecordController extends Controller
                     $count += 1;
                 }
             }
+            //大赢家（得分最高者）标识
+            array_reduce([2,3,4], function (Array $v1, $v2) use (&$record) {
+                //$record['player' . $v2]['is_winner'] = true;    //先将第一个玩家设置为赢家
+                if ($record['score_' . $v1[0]] < $record['score_' . $v2]) {
+                    //只有当第二个玩家的分数大于第一个玩家的时候才将第二个玩家设置为大赢家
+                    $record['player' . $v2]['is_winner'] = true;
+                    //将第一个玩家赢家标识取消(可能存在多个大赢家)
+                    array_walk($v1, function ($value) use (&$record) {
+                        $record['player' . $value]['is_winner'] = false;
+                    });
+                    return [$v2];
+                } elseif ($record['score_' . $v1[0]] === $record['score_' . $v2]) {
+                    $record['player' . $v2]['is_winner'] = true;
+                    array_walk($v1, function ($value) use (&$record) {
+                        $record['player' . $value]['is_winner'] = true;
+                    });
+                    array_push($v1, $v2);
+                    return $v1;
+                } else {
+                    $record['player' . $v2]['is_winner'] = false;
+                    array_walk($v1, function ($value) use (&$record) {
+                        $record['player' . $value]['is_winner'] = true;
+                    });
+                    return $v1;
+                }
+            }, [1]);
         }
         $result['unread_records'] = $count;
-        $result['records'] = $records;
+        $result['records'] = $records['records'];
+        $result['total_unread_record_cnt'] = $records['total_unread_record_cnt'];
         return $result;
     }
 

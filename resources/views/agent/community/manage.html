@@ -235,7 +235,8 @@
                         <div class="box box-default">
                             <div class="box-header">
                                 社团战绩
-                                <a class="pull-right">未查看房卡数：{{ playerGameRecord.unread_records ? playerGameRecord.unread_records : 0}}</a>
+                                <a class="pull-right">未查看房卡数：{{ playerGameRecord.total_unread_record_cnt ? playerGameRecord.total_unread_record_cnt : 0}}(所有)
+                                {{ playerGameRecord.unread_records ? playerGameRecord.unread_records : 0 }}(当前)</a>
                             </div>
                             <div class="box-body">
                                 <div class="row">
@@ -305,21 +306,16 @@
                                                         <tr v-for="record in playerGameRecord.records">
                                                             <td class="text-center">{{ record.time.split(' ')[0] }}<br>
                                                                 {{ record.time.split(' ')[1] }}<br>
-                                                                <span class="text-red">房号:&nbsp;{{ record.rid }}</span>
+                                                                <span class="text-red">房号:&nbsp;{{ record.rid }}</span><br>
+                                                                <span>局数：{{ record.cur_round + '/' + record.max_round}}</span>
                                                             </td>
                                                             <td>
-                                                                <span :class="{ 'text-red': record.uid_1 == searchRecordForm.player_id }">
-                                                                    {{record.player1 ? record.player1.nickname + ':&nbsp;' + record.score_1 : null}}
-                                                                </span><br>
-                                                                <span :class="{ 'text-red': record.uid_2 == searchRecordForm.player_id }">
-                                                                    {{record.player2 ? record.player2.nickname + ':&nbsp;' + record.score_2 : null}}
-                                                                </span><br>
-                                                                <span :class="{ 'text-red': record.uid_3 == searchRecordForm.player_id }">
-                                                                    {{record.player3 ? record.player3.nickname + ':&nbsp;' + record.score_3 : null}}
-                                                                </span><br>
-                                                                <span :class="{ 'text-red': record.uid_4 == searchRecordForm.player_id }">
-                                                                    {{record.player4 ? record.player4.nickname + ':&nbsp;' + record.score_4 : null}}
+                                                                <span v-for="v in [1,2,3,4]"  :class="{ 'text-red': record.uid_ + v == searchRecordForm.player_id }">
+                                                                    <span v-if="record['player'+v].nickname" :class="{ 'text-green': record['player'+v].is_winner }">{{ record['player'+v].nickname }}：
+                                                                        <span :class="{ 'text-red': record['player'+v].is_winner }">{{ record['score_'+v] }}</span>
+                                                                    </span><br>
                                                                 </span>
+                                                            </td>
                                                             <td>{{record.currency}}</td>
                                                             <td><a v-if="record.record_info ? record.record_info.if_read == 0 : false"
                                                                     @click="markRecord(record.record_info.id)">查看</a>

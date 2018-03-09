@@ -128,6 +128,7 @@ class CommunityController extends Controller
         ]);
         $params = $request->intersect(['community_id', 'start_time', 'end_time']);
 
+        //当搜索条件为空时，不查询
         if (empty($params)) {
             $data['currency_log'] = [];
             $data['summary'] = [
