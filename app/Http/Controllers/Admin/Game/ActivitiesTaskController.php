@@ -54,13 +54,15 @@ class ActivitiesTaskController extends Controller
             'target' => 'required|integer',     //任务次数
             'reward' => 'required|string',      //4_1奖励id（关联goods_type表）和奖励次数
             'daily' => 'required|integer|in:0,1',
+            'link' => 'required|string',
         ]);
 
         //检查结束时间应该大于开始时间
         $this->checkTime($request->input('begin_time'), $request->input('end_time'));
 
         return $request->only([
-            'id', 'name', 'type', 'begin_time', 'end_time', 'mission_time', 'target', 'reward', 'daily'
+            'id', 'name', 'type', 'begin_time', 'end_time',
+            'mission_time', 'target', 'reward', 'daily', 'link',
         ]);
     }
 
@@ -114,13 +116,15 @@ class ActivitiesTaskController extends Controller
             'target' => 'required|integer',     //任务次数
             'reward' => 'required|string',      //4_1奖励id（关联goods_type表）和奖励次数
             'daily' => 'required|integer|in:0,1',
+            'link' => 'required|string',
         ]);
 
         //检查结束时间应该大于开始时间
         $this->checkTime($request->input('begin_time'), $request->input('end_time'));
 
         return $request->only([
-            'name', 'type', 'begin_time', 'end_time', 'mission_time', 'target', 'reward', 'daily'
+            'name', 'type', 'begin_time', 'end_time', 'mission_time',
+            'target', 'reward', 'daily', 'link',
         ]);
     }
 

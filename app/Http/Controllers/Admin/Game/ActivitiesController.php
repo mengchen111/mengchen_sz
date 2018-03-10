@@ -52,13 +52,14 @@ class ActivitiesController extends Controller
             'end_time' => 'required|date_format:"Y-m-d H:i:s"',     //开始时间
             'reward' => 'required|string',                          //奖品
             'reward_refresh_time' => 'required|string',
+            'task' => 'required|string',
         ]);
 
         //检查结束时间应该大于开始时间
         $this->checkTime($request->input('open_time'), $request->input('end_time'));
 
         return $request->only([
-            'name', 'open', 'open_time', 'end_time', 'reward', 'reward_refresh_time',
+            'name', 'open', 'open_time', 'end_time', 'reward', 'reward_refresh_time', 'task',
         ]);
     }
 
@@ -71,13 +72,15 @@ class ActivitiesController extends Controller
             'open_time' => 'required|date_format:"Y-m-d H:i:s"',    //开始时间
             'end_time' => 'required|date_format:"Y-m-d H:i:s"',     //开始时间
             'reward' => 'required|string',                          //奖品
+            'reward_refresh_time' => 'required|string',
+            'task' => 'required|string',
         ]);
 
         //检查结束时间应该大于开始时间
         $this->checkTime($request->input('open_time'), $request->input('end_time'));
 
         return $request->only([
-            'aid', 'name', 'open', 'open_time', 'end_time', 'reward', 'reward_refresh_time',
+            'aid', 'name', 'open', 'open_time', 'end_time', 'reward', 'reward_refresh_time', 'task',
         ]);
     }
 

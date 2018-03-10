@@ -23,6 +23,9 @@ new Vue({
     activitiesStateMap: [
       '关闭', '开启',  //0为关闭，1为开启
     ],
+    taskMap: {}, //任务id和名称映射关系
+    taskMapOptions: [],
+    taskValue: '',
     activitiesRewardMap: {}, //活动奖品id和奖品名的映射
     activitiesRewardOptions: [],  //活动奖品选项 for vSelect
     activitiesRewardValue: [],    //活动奖品多选框，选定的值
@@ -31,6 +34,7 @@ new Vue({
     addActivitiesForm: {},
     activitiesApi: '/admin/api/activities/list',
     activitiesRewardMapApi: '/admin/api/activities/reward-map',
+    taskMapApi: '/admin/api/activities/task-map',
 
     tableUrl: '/admin/api/activities/list',
     tableFields: [
@@ -65,6 +69,11 @@ new Vue({
         title: '奖品刷新时间',
       },
       {
+        name: 'tasks_model',
+        title: '关联任务',
+        callback: 'transTasks',
+      },
+      {
         name: '__component:table-actions',
         title: '操作',
         titleClass: 'text-center',
@@ -87,6 +96,13 @@ new Vue({
         })
         return activityReward.join()
       },
+      transTasks: function (value) {
+        let tasks = []
+        value.forEach(function (item) {
+          tasks.push(item.name)
+        })
+        return tasks.join()
+      },
     },
   },
 
@@ -99,6 +115,7 @@ new Vue({
       this.editActivitiesForm.open_time = data.open_time
       this.editActivitiesForm.end_time = data.end_time
       this.editActivitiesForm.reward_refresh_time = data.reward_refresh_time
+      this.taskValue = _.map(data.tasks_model, 'name')
     },
 
     //创建activities时，重置vselect的默认选项
@@ -109,6 +126,7 @@ new Vue({
       this.addActivitiesForm.end_time = ''
       this.activitiesRewardValue = []
       this.addActivitiesForm.reward_refresh_time = ''
+      this.taskValue = []
     },
 
     addActivities () {
@@ -124,6 +142,8 @@ new Vue({
       this.addActivitiesForm.open = _.findIndex(this.activitiesStateMap, v => v === this.activitiesStateValue)
       //将reward的名字组合成逗号分割的id的形式（后端存储在数据库中是以这种形式存储的）
       this.addActivitiesForm.reward = this.transRewardValue2id(this.activitiesRewardValue)
+      //将task的名字组合成逗号分割的id的形式（后端存储在数据库中是以这种形式存储的）
+      this.addActivitiesForm.task = this.transTaskValue2id(this.taskValue)
 
       myTools.axiosInstance.post(this.activitiesApi, this.addActivitiesForm)
         .then(function (res) {
@@ -148,6 +168,8 @@ new Vue({
       this.editActivitiesForm.open = _.findIndex(this.activitiesStateMap, v => v === this.activitiesStateValue)
       //将reward的名字组合成逗号分割的id的形式（后端存储在数据库中是以这种形式存储的）
       this.editActivitiesForm.reward = this.transRewardValue2id(this.activitiesRewardValue)
+      //将task的名字组合成逗号分割的id的形式（后端存储在数据库中是以这种形式存储的）
+      this.editActivitiesForm.task = this.transTaskValue2id(this.taskValue)
 
       myTools.axiosInstance.put(this.activitiesApi, this.editActivitiesForm)
         .then(function (res) {
@@ -167,8 +189,19 @@ new Vue({
         activityReward.push(_.findKey(_self.activitiesRewardMap, (mapValue) => mapValue === v))
       })
 
-      activityReward.sort()
+      //activityReward.sort()   //不要排序
       return activityReward.join(',')
+    },
+
+    transTaskValue2id (taskValue) {
+      let _self = this
+      let tasks = []
+
+      _.forEach(taskValue, function (v) {
+        tasks.push(_.findKey(_self.taskMap, (mapValue) => mapValue === v))
+      })
+
+      return tasks.join(',')
     },
 
     deleteActivities () {
@@ -196,6 +229,17 @@ new Vue({
         myTools.msgResolver(res, toastr)
         _self.activitiesRewardMap = res.data
         _self.activitiesRewardOptions = _.values(res.data)
+      })
+      .catch(function (err) {
+        alert(err)
+      })
+
+    //获取task type map
+    myTools.axiosInstance.get(this.taskMapApi)
+      .then(function (res) {
+        myTools.msgResolver(res, toastr)
+        _self.taskMap = res.data
+        _self.taskMapOptions = _.values(res.data)
       })
       .catch(function (err) {
         alert(err)

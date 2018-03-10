@@ -77,6 +77,10 @@ new Vue({
         title: '奖励次数',
       },
       {
+        name: 'link',
+        title: '链接',
+      },
+      {
         name: '__component:table-actions',
         title: '操作',
         titleClass: 'text-center',

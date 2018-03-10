@@ -120,6 +120,11 @@
                                            placeholder="任务开房时间段(例：00:00:00-10:00:00,13:00:00-20:00:00)">
                                 </div>
                                 <div class="form-group">
+                                    <label>链接</label>
+                                    <input name="link" type="text" class="form-control" required
+                                           v-model.trim="addTaskForm.link" placeholder="链接">
+                                </div>
+                                <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
                                 </div>
                             </form>
@@ -188,6 +193,11 @@
                                     <input name="mission_time" type="text" class="form-control" required
                                            v-model.trim="editTaskForm.mission_time"
                                            placeholder="任务开房时间段(例：00:00:00-10:00:00,13:00:00-20:00:00)">
+                                </div>
+                                <div class="form-group">
+                                    <label>链接</label>
+                                    <input name="link" type="text" class="form-control" required
+                                           v-model.trim="editTaskForm.link" placeholder="链接">
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
