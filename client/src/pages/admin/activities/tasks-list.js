@@ -109,6 +109,7 @@ new Vue({
       this.editTaskForm.end_time = data.end_time
       this.editTaskForm.mission_time = data.mission_time
       this.editTaskForm.target = data.target
+      this.editTaskForm.link = data.link
 
       this.taskGoodsTypeName = data.reward_good
       this.taskGoodsCount = data.reward_count
