@@ -150,9 +150,19 @@ new Vue({
     setupMenu () {    //为不同的角色显示不同的menu菜单
       let _self = this
 
+      //自定义assignWith的处理函数
+      let customizer = function (objValue, srcValue) {
+        if (typeof objValue === 'object') {
+          return _.assignWith({}, objValue, srcValue, customizer)
+        } else {
+          return undefined
+          //assignWith的customizer函数返回undefined则使用assign默认规则替换，等同于return srcValue
+        }
+      }
+
       axios.get(this.viewAccessApi)
         .then(function (res) {
-          _self.shownMenu = _.assign({}, _self.shownMenu, res.data.view_access)  //merge
+          _self.shownMenu = _.assignWith({}, _self.shownMenu, res.data.view_access, customizer)  //merge
           _self.isAdmin = res.data.is_admin
         })
         .catch(function (err) {
