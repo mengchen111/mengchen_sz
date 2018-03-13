@@ -28,13 +28,15 @@ class AgentController extends Controller
 
         //查找用户名或昵称
         $data = User::with(['group', 'parent', 'inventorys.item', 'agentTopUpRecords', 'playerTopUpRecords'])
+            ->whereIn('group_id', $this->agentGroups)
             ->when($request->has('filter'), function ($query) use ($request) {
-                return $query->whereIn('group_id', $this->agentGroups)
-                    ->where('account', 'like', "%{$request->filter}%")
+                return $query->where('account', 'like', "%{$request->filter}%")
                     ->where('name', 'like', "%{$request->filter}%", 'or');
 
             })
-            ->whereIn('group_id', $this->agentGroups)
+            ->when($request->has('agent_id'), function ($query) use ($request) {
+                return $query->where('id', $request->input('agent_id'));
+            })
             ->orderBy($order[0], $order[1])
             ->paginate($per_page);
 

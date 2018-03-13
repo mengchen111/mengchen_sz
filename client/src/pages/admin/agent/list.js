@@ -224,4 +224,11 @@ new Vue({
     this.$root.eventHub.$on('changeAgentPasswordEvent', (data) => _self.activatedRow = data)
     this.$root.eventHub.$on('deleteAgentEvent', (data) => _self.activatedRow = data)
   },
+
+  created () {
+    let agentId = myTools.getQueryString('agent_id')
+    if (agentId) {   //从牌艺馆页面跳转过来时要查询一次，直接打开的就不查询
+      this.tableUrl += '?agent_id=' + agentId
+    }
+  },
 })

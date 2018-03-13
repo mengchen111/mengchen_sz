@@ -39,10 +39,12 @@ new Vue({
       {
         name: 'owner_player_id',
         title: '玩家id',
+        callback: 'convertPlayer',
       },
       {
-        name: 'owner_agent.account',
+        name: 'owner_agent',
         title: '代理商',
+        callback: 'convertAgent',
       },
       {
         name: 'name',
@@ -85,6 +87,16 @@ new Vue({
       transStatus (value) {
         let statusMap = ['待审核', '已审核', '审核不通过']
         return statusMap[value]
+      },
+
+      convertAgent (value) {
+        let agentListApi = '/admin/agent/list'
+        return `<a href="${agentListApi}?agent_id=${value.id}">${value.account}</a>`
+      },
+
+      convertPlayer (value) {
+        let playerListApi = '/admin/player/list'
+        return `<a href="${playerListApi}?player_id=${value}">${value}</a>`
       },
     },
   },

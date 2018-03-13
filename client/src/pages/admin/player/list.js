@@ -1,4 +1,4 @@
-import '../index.js'
+import {myTools} from '../index.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import FilterBar from '../../../components/MyFilterBar.vue'
 import MyToastr from '../../../components/MyToastr.vue'
@@ -106,8 +106,16 @@ new Vue({
 
   mounted: function () {
     let _self = this
+    let toastr = this.$refs.toastr
 
     this.$root.eventHub.$on('topUpPlayerEvent', (data) => _self.activatedRow = data)
-    this.$root.eventHub.$on('MyVuetable:error', (data) => alert(data.error))
+    this.$root.eventHub.$on('MyVuetable:error', (data) => toastr.message(data.error, 'error'))
+  },
+
+  created () {
+    let playerId = myTools.getQueryString('player_id')
+    if (playerId) {   //从牌艺馆页面跳转过来时要查询一次，直接打开的就不查询
+      this.tableUrl += '?player_id=' + playerId
+    }
   },
 })
