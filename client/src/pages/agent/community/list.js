@@ -20,7 +20,7 @@ new Vue({
     statusOptions: [
       '待审核', '已审核', '审核不通过', '全部',
     ],
-    statusDefaultValue: '已审核',
+    statusDefaultValue: '全部',
     addCommunityForm: {},
     communityApi: '/agent/api/community',
 
