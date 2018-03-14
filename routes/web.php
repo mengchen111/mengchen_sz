@@ -237,7 +237,6 @@ Route::group([
     Route::get('home', 'ViewController@home');
 
     Route::get('player/top-up', 'ViewController@playerTopUp');  //玩家充值页面
-    Route::get('player/community-top-up', 'ViewController@communityTopUp');  //玩家充值页面
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-history', 'ViewController@stockApplyHistory');
@@ -247,6 +246,7 @@ Route::group([
 
     Route::get('community/list', 'ViewController@communityList');
     Route::get('community/manage', 'ViewController@communityManage');
+    Route::get('community/community-top-up', 'ViewController@communityTopUp');  //玩家充值页面
 
     //给子代理商的充值记录
     Route::get('top-up/child', 'ViewController@topUpChild');

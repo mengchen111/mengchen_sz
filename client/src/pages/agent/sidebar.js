@@ -12,9 +12,6 @@ new Vue({
         'top-up': {
           isActive: false,
         },
-        'community-top-up': {
-          isActive: false,
-        },
       },
       stock: {
         isActive: false,
@@ -40,6 +37,9 @@ new Vue({
           isActive: false,
         },
         manage: {
+          isActive: false,
+        },
+        'community-top-up': {
           isActive: false,
         },
       },
