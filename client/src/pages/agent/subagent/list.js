@@ -75,6 +75,15 @@ new Vue({
       //   title: '金币',
       //   callback: 'getCoinsCount',
       // },
+      // {
+      //   name: 'item_sold_total',
+      //   title: '累计售卡',
+      //   callback: 'getCardSoldTotal',
+      // },
+      {
+        name: 'valid_card_consumed_num',
+        title: '有效耗卡',
+      },
       {
         name: '__component:table-actions',
         title: '操作',
@@ -102,6 +111,10 @@ new Vue({
             return inventory.stock
           }
         }
+      },
+      getCardSoldTotal (v) {
+        let cardTypeId = 1
+        return v[cardTypeId] ? v[cardTypeId] : 0
       },
     },
   },
