@@ -153,6 +153,7 @@ cd $codeDir
 | activities/red-packet-log | GET | 活动红包发送记录 |
 | activities/red-packet-log/status/{redPacketLog} | PUT | 更新活动红包发送状态 |
 | activities/statement | GET | 活动统计数据 |
+| activities/log-activity-reward | GET | 玩家中奖记录 |
 | community | GET | 获取牌艺馆列表 |
 | community | POST | 创建牌艺馆 |
 | community/{community} | DELETE | 删除牌艺馆 |

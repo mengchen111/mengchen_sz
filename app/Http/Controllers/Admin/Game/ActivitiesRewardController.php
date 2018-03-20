@@ -162,7 +162,7 @@ class ActivitiesRewardController extends Controller
             'single_limit', 'goods_type', 'goods_count', 'whitelist',
             'begin_time', 'end_time'
         ]);
-        
+
         if (!$data['whitelist']) {  //不然调用api接口报错
             unset($data['whitelist']);
         }

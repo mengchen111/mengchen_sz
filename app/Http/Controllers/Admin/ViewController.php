@@ -82,6 +82,11 @@ class ViewController extends Controller
         return view('admin.activities.red-packet-log');
     }
 
+    public function activitiesLogActivityReward(Request $request)
+    {
+        return view('admin.activities.log-activity-reward');
+    }
+
     public function communityList(Request $request)
     {
         return view('admin.community.list');
