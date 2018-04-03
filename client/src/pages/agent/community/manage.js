@@ -29,6 +29,7 @@ new Vue({
     }, //充值社区房卡
     searchPlayerForm: {
       player_id: '',
+      community_id: '',
     },   //查询玩家
     searchPlayerData: {},
     kickingOutMemberId: '',   //即将被踢出的成员id
@@ -127,9 +128,10 @@ new Vue({
           _self.searchPlayerForm.player_id = '' //清空搜索框
           jQuery('#search-player-pop_up-modal-button').click() //弹出玩家查找结果框
         }
-      }).catch(function (err) {
-        alert(err)
       })
+        .catch(function (err) {
+          alert(err)
+        })
     },
 
     //邀请玩家加入社区
@@ -143,7 +145,8 @@ new Vue({
       myTools.axiosInstance.post(this.invitePlayerApi, invitePlayerForm)
         .then(function (res) {
           myTools.msgResolver(res, toastr)
-        }).catch(function (err) {
+        })
+        .catch(function (err) {
           alert(err)
         })
     },
@@ -169,7 +172,8 @@ new Vue({
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.getCommunityDetail()  //重新获取数据
-        }).catch(function (err) {
+        })
+        .catch(function (err) {
           alert(err)
         })
     },
@@ -183,7 +187,8 @@ new Vue({
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.getCommunityDetail()  //重新获取数据
-        }).catch(function (err) {
+        })
+        .catch(function (err) {
           alert(err)
         })
     },
@@ -197,7 +202,8 @@ new Vue({
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.getCommunityDetail()  //重新获取数据
-        }).catch(function (err) {
+        })
+        .catch(function (err) {
           alert(err)
         })
     },
@@ -234,7 +240,8 @@ new Vue({
         .then(function (res) {
           _self.playerGameRecord = res.data
           _self.ifDisplaySearchRecordResult = true
-        }).catch(function (err) {
+        })
+        .catch(function (err) {
           alert(err)
         })
     },
@@ -249,7 +256,8 @@ new Vue({
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.searchRecord()  //刷新数据
-        }).catch(function (err) {
+        })
+        .catch(function (err) {
           alert(err)
         })
     },
@@ -262,7 +270,8 @@ new Vue({
       myTools.axiosInstance.put(api)
         .then(function (res) {
           myTools.msgResolver(res, toastr)
-        }).catch(function (err) {
+        })
+        .catch(function (err) {
           alert(err)
         })
     },
@@ -277,6 +286,7 @@ new Vue({
 
           _self.editCommunityForm.name = _self.communityDetail.name
           _self.editCommunityForm.info = _self.communityDetail.info
+          _self.searchPlayerForm.community_id = _self.communityDetail.id
         })
     },
 
@@ -294,7 +304,7 @@ new Vue({
   created: function () {
     let communityId = myTools.getQueryString('community')
 
-    if (! communityId) {
+    if (!communityId) {
       window.location.href = 'list' //如果社区id为空，则直接跳转回社区列表页面
     } else {
       //获取此社区的详细信息

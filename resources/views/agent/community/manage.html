@@ -202,7 +202,8 @@
                                     <div class="box-header" style="padding: 5px;font-size: 12px;">
                                         <p><span>{{communityRoom.rtype}}</span>&nbsp;&nbsp;&nbsp;
                                             <span>房号:{{communityRoom.rid}}</span>&nbsp;&nbsp;&nbsp;
-                                            <span>{{communityRoom.time}}</span>
+                                            <span>回合数：({{communityRoom.cur_round}} / {{communityRoom.max_round}})</span>
+                                            <span>时间：{{communityRoom.time}}</span>
                                         </p>
                                     </div>
                                     <div class="box-body" style="padding: 2px;">
@@ -338,26 +339,6 @@
                 <!-- /.box-body -->
             </div>
 
-            <div id="kick-out-member-confirmation-modal" class="modal fade" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" type="button" data-dismiss="modal">x</button>
-                            <h3 class="text-center">确定删除该成员？</h3>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button class="btn btn-flat btn-danger btn-lg  pull-left" @click="kickOutMember">
-                                确定
-                            </button>
-                            <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
-                                取消
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div id="edit-community-modal" class="modal fade" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -452,14 +433,37 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <button class="btn btn-flat btn-info btn-lg pull-left" @click="inviteMember">
+                                    <button v-if="!searchPlayerData.in_community" class="btn btn-flat btn-info btn-lg pull-left" @click="inviteMember">
                                         邀请
                                     </button>
+                                    <button v-else class="btn btn-warning btn-flat btn-lg pull-left" data-toggle="modal"
+                                            data-target="#kick-out-member-confirmation-modal" @click="kickingOutMemberId = searchPlayerData.id">踢出</button>
+
                                     <button class="btn btn-flat btn-info btn-lg pull-right" data-dismiss="modal">
                                         取消
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="kick-out-member-confirmation-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">确定删除该成员？</h3>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-flat btn-danger btn-lg  pull-left" @click="kickOutMember">
+                                确定
+                            </button>
+                            <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
+                                取消
+                            </button>
                         </div>
                     </div>
                 </div>
