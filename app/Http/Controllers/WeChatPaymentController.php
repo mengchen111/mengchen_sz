@@ -50,8 +50,7 @@ class WeChatPaymentController extends Controller
             //更新订单状态，将异常重新抛出
             $this->orderPreparationFailed($order, $exception->getMessage());
         }
-        OperationLogs::add(auth()->id(), $request->path(), $request->method(),
-            '创建微信支付订单', $request->header('User-Agent'));
+        $this->addLog('创建微信支付订单');
 
         //如果支付类型为扫码支付，那么额外返回二维码图片的base64编码字符串
         $trade_type = $result->trade_type;
@@ -164,8 +163,7 @@ class WeChatPaymentController extends Controller
     //微信支付结果通知回调函数
     public function getNotification(Request $request)
     {
-        OperationLogs::add(0, $request->path(), $request->method(),
-            '微信支付订单回调接口', $request->header('User-Agent'), $request->getContent());
+        $this->addLog('微信支付订单回调接口');
 
         $response = $this->orderApp->payment->handleNotify(function ($notify, $successful) {
             $order = WxOrder::find($notify->out_trade_no);

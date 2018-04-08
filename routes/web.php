@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-auth()->loginUsingId(11);
+auth()->loginUsingId(1);
 Route::get('/', 'HomeController@index');
 
 // Authentication Routes...
@@ -140,6 +140,18 @@ Route::group([
     Route::delete('role/{role}', 'RoleController@destroy')->where('role', '[0-9]+');
 
     Route::get('system/log', 'SystemController@showLog');
+
+    //微信充值规则
+    Route::get('wx-top-up-rules','WxTopUpRuleController@index');
+    Route::post('wx-top-up-rules','WxTopUpRuleController@store');
+    Route::put('wx-top-up-rules/{rule}','WxTopUpRuleController@update');
+    Route::delete('wx-top-up-rules/{rule}','WxTopUpRuleController@destroy');
+    //返利规则
+    Route::get('rebate-rules','RebateRuleController@index');
+    Route::post('rebate-rules','RebateRuleController@store');
+    Route::put('rebate-rules/{rule}','RebateRuleController@update');
+    Route::delete('rebate-rules/{rule}','RebateRuleController@destroy');
+
 });
 
 //管理员视图路由
@@ -187,9 +199,12 @@ Route::group([
     Route::get('permission/member', 'ViewController@permissionMember');
     Route::get('permission/group', 'ViewController@permissionGroup');
 
-    Route::get('order/wechat', 'ViewController@orderWechat');
-
     Route::get('system/log', 'ViewController@systemLog');
+
+    Route::get('order/wechat', 'ViewController@orderWechat');
+    //规则
+    Route::get('rules/wx-top-up','ViewController@wxTopUpRule');
+    Route::get('rules/rebate','ViewController@rebateRule');
 });
 
 //代理商接口

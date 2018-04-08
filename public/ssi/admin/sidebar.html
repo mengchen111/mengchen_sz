@@ -99,6 +99,15 @@
                     <li :class="{ active: uri.permission.group.isActive }" v-show="isAdmin || shownMenu.permission.group.ifShown"><a href="/admin/permission/group"><i class="fa fa-circle-o"></i>组列表</a></li>
                 </ul>
             </li>
+            <li class="treeview" :class="{ active: uri.rules.isActive }">
+                <a href="#"><i class="fa fa-certificate "></i> <span>选项规则</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li :class="{ active: uri.rules['wx_top_up'].isActive }"><a href="/admin/rules/wx-top-up"><i class="fa fa-circle-o"></i>微信充值规则</a></li>
+                    <li :class="{ active: uri.rules.rebate.isActive }"><a href="/admin/rules/rebate"><i class="fa fa-circle-o"></i>返利规则</a></li>
+                </ul>
+            </li>
             <li class="treeview" :class="{ active: uri.order.isActive }">
                 <a href="#"><i class="fa fa-wechat "></i> <span>订单管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>

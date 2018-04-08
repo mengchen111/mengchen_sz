@@ -126,6 +126,15 @@ new Vue({
           isActive: false,
         },
       },
+      rules: {
+        isActive: false,
+        'wx_top_up': {
+          isActive: false,
+        },
+        rebate: {
+          isActive: false,
+        },
+      },
       system: {
         isActive: false,
         log: {

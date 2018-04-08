@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OperationLogs;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -21,5 +22,15 @@ class Controller extends BaseController
         $this->per_page = $request->per_page ?: $this->per_page;
         $this->order = $request->sort ? explode('|', $request->sort) : $this->order;
         $this->page = $request->page ?: $this->page;
+    }
+
+    /**
+     * 添加操作日志
+     * @param string $message
+     */
+    public function addLog($message = '')
+    {
+        OperationLogs::add(request()->user()->id, request()->path(), request()->method(),
+            $message, request()->header('User-Agent'), json_encode(request()->all()));
     }
 }
