@@ -16,4 +16,8 @@ return [
     'WechatServiceException' => 2002,
 
     'SendWxRedPacketCommandException' => 3000,
+
+    'WeChatPaymentException' => 20000,
+    'InventoryServiceException' => 1002,
+
 ];

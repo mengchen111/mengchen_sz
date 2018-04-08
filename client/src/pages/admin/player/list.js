@@ -32,6 +32,7 @@ new Vue({
       {
         name: 'id',
         title: '玩家ID',
+        sortField: 'id',
       },
       {
         name: 'nickname',
@@ -40,6 +41,7 @@ new Vue({
       {
         name: 'ycoins',
         title: '房卡数量',
+        sortField: 'ycoins',
       },
       // {
       //   name: 'ypoints',

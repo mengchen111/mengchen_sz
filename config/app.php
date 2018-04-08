@@ -185,6 +185,7 @@ return [
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Overtrue\LaravelWechat\ServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
     ],
 
     /*
@@ -237,6 +238,7 @@ return [
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'EasyWeChat' => Overtrue\LaravelWechat\Facade::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     ],
 
 ];

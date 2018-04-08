@@ -161,4 +161,9 @@ class ViewController extends Controller
     {
         return view('admin.system.log');
     }
+
+    public function orderWechat(Request $request)
+    {
+        return view('admin.order.wechat');
+    }
 }

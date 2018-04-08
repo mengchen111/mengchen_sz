@@ -47,7 +47,13 @@ class PlayerController extends Controller
             $data = Cache::remember($cacheKey, $cacheDuration, function () {
                 return PlayerService::getAllPlayers();
             });
-            krsort($data);
+//            krsort($data);
+            $sort = explode('|', $request->get('sort', 'id|desc'));
+            $order = [];
+            foreach ($data as $v) {
+                $order[] = $v[$sort[0]];
+            }
+            array_multisort($order, $sort[1] == 'desc' ? SORT_DESC : SORT_ASC, $data);
         }
 
         $result = $this->paginateData($data);

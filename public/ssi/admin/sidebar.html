@@ -99,6 +99,14 @@
                     <li :class="{ active: uri.permission.group.isActive }" v-show="isAdmin || shownMenu.permission.group.ifShown"><a href="/admin/permission/group"><i class="fa fa-circle-o"></i>组列表</a></li>
                 </ul>
             </li>
+            <li class="treeview" :class="{ active: uri.order.isActive }">
+                <a href="#"><i class="fa fa-wechat "></i> <span>订单管理</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li :class="{ active: uri.order.wechat.isActive }"><a href="/admin/order/wechat"><i class="fa fa-circle-o"></i>微信订单列表</a></li>
+                </ul>
+            </li>
             <li class="treeview" :class="{ active: uri.system.isActive }" v-show="isAdmin || shownMenu.system.ifShown">
                 <a href="#"><i class="fa fa-gear"></i> <span>系统管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>

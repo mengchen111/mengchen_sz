@@ -131,4 +131,9 @@ class User extends Authenticatable
             ->where('status', $status)
             ->get();
     }
+
+    public function wxOrders()
+    {
+        return $this->hasMany(WxOrder::class);
+    }
 }

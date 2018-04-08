@@ -27,9 +27,10 @@ new Vue({
     statusDefaultValue: '待审核',
     auditCommunityValue: '通过',
     addCommunityForm: {},
+    type_id: '',
+
     communityApi: '/admin/api/community',
     auditCommunityApi: '/admin/api/community/audit',
-
     tableUrl: '/admin/api/community?status=0',  //默认显示待审核
     tableFields: [
       {
@@ -149,7 +150,8 @@ new Vue({
 
     onSelectChange (value) {
       let status = _.findIndex(this.statusOptions, (v) => v === value)
-      this.tableUrl = '/admin/api/community?status=' + status
+      let type_id = this.type_id
+      this.tableUrl = '/admin/api/community?status=' + status + '&type_id=' + type_id
     },
   },
 

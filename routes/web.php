@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+auth()->loginUsingId(11);
 Route::get('/', 'HomeController@index');
 
 // Authentication Routes...
@@ -31,6 +31,11 @@ Route::prefix('dev')->group(function () {
 Route::prefix('api')->middleware(['auth'])->group(function () {
     Route::get('info', 'InfoController@info');
     Route::get('content-header-h1', 'InfoController@getContentHeaderH1');
+
+    //微信订单
+    Route::get('wechat/order','WeChatPaymentController@index');
+    Route::post('wechat/order','WeChatPaymentController@store');
+    Route::any('wechat/order/notification','WeChatPaymentController@getNotification'); //通知
 
     Route::get('game/room/type-map', 'Admin\Game\RoomController@getRoomTypeMap');  //房间类型映射关系
     Route::get('game/player', 'PlayerController@searchPlayer');     //根据玩家id查找玩家
@@ -181,6 +186,8 @@ Route::group([
 
     Route::get('permission/member', 'ViewController@permissionMember');
     Route::get('permission/group', 'ViewController@permissionGroup');
+
+    Route::get('order/wechat', 'ViewController@orderWechat');
 
     Route::get('system/log', 'ViewController@systemLog');
 });

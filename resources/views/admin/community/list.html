@@ -43,6 +43,18 @@
                             <v-select :searchable="false" v-model="statusDefaultValue" :options="statusOptions"
                                       :on-change="onSelectChange"></v-select>
                         </div>
+                        <div class="col-md-3 col-xs-12">
+                            <div class="input-group">
+                                <form method="POST" action="#" @submit.prevent="onSelectChange" style="display: inherit;">
+                                    <input type="text" class="form-control" v-model.trim="type_id"
+                                           placeholder="查找对应id...">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary btn-flat" type="submit">提交</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
                     </div>
 
                     <div class="row phone-scrollable">
@@ -108,7 +120,8 @@
                             <form role="form" class="form-group" @submit.prevent="auditCommunity">
                                 <div class="form-group">
                                     <label>通过/拒绝</label>
-                                    <v-select :searchable="false" v-model="auditCommunityValue" :options="auditCommunityOptions"></v-select>
+                                    <v-select :searchable="false" v-model="auditCommunityValue"
+                                              :options="auditCommunityOptions"></v-select>
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>

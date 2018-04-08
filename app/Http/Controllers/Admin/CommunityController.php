@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AdminRequest;
+use App\Models\CommunityCardTopupLog;
 use App\Services\Game\GameApiService;
 use App\Services\Paginator;
 use Illuminate\Http\Request;
@@ -19,7 +20,6 @@ class CommunityController extends Controller
         $admin = $request->user();
         OperationLogs::add($admin->id, $request->path(), $request->method(),
             '查看牌艺馆列表', $request->header('User-Agent'));
-
         return CommunityList::with(['ownerAgent'])
             ->when($request->has('status'), function ($query) use ($request) {
                 if ((int)$request->input('status') === 3) {     //返回所有状态的社区列表
@@ -30,6 +30,12 @@ class CommunityController extends Controller
             //查找指定的社区
             ->when($request->has('community_id'), function ($query) use ($request) {
                 return $query->where('id', $request->input('community_id'));
+            })
+            //代理商ID、玩家游戏ID、牌艺馆ID查询
+            ->when($request->has('type_id'), function ($query) use ($request) {
+                return $query->orWhere('id', "{$request->get('type_id')}%")
+                    ->orWhere('owner_agent_id', "{$request->get('type_id')}%")
+                    ->orWhere('owner_player_id', "{$request->get('type_id')}%");
             })
             ->orderBy('created_at', 'desc')
             ->paginate($this->per_page);
@@ -62,25 +68,29 @@ class CommunityController extends Controller
 
     public function deleteCommunity(AdminRequest $request, $communityId)
     {
-        $communityId = CommunityList::findOrFail($communityId);
+        $community = CommunityList::findOrFail($communityId);
 
-        if (!empty($communityId->members)) {
+        if (!empty($community->members)) {
             throw new CustomException('成员不为空，禁止删除');
         }
-        $communityId->delete();
+        //外键约束，要删除 community_card_topup_log 中 community_id 相同的数据才可以成功
+        $result = CommunityCardTopupLog::query()->where('community_id', $communityId)->delete();
+        if ($result) {
+            $community->delete();
+        }
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '删除牌艺馆', $request->header('User-Agent'));
+            '删除牌艺馆' . $result ? '成功' : '失败', $request->header('User-Agent'));
 
         return [
-            'message' => '删除成功',
+            'message' => '删除' . $result ? '成功' : '失败',
         ];
     }
 
     protected function checkCommunityCreationLimit($agentId, $playerId, $communityConf)
     {
         $existPendingCommunityCount = CommunityList::where('owner_agent_id', $agentId)
-            ->where('status', '=', 0)  //此代理商申请的待审批的社团数
+            ->where('status', '=', 0)//此代理商申请的待审批的社团数
             ->get()
             ->count();
         //可申请的最大待审核牌艺馆数量

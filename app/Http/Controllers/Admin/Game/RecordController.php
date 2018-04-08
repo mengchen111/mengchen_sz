@@ -51,24 +51,50 @@ class RecordController extends Controller
         if ('0' === $searchUid) {
             return Paginator::paginate([]);
         }
+        //根据不同类型查询
+        switch ($request->get('type',0)){
+            //用户id
+            case 0:
+                $api = config('custom.game_api_records');
+                $records = GameApiService::request('POST', $api, [
+                    'uid' => $searchUid,
+                ]);         //$records为空时分页数据也为空，不会报错
+                krsort($records);
 
-        $api = config('custom.game_api_records');
-        $records = GameApiService::request('POST', $api, [
-            'uid' => $searchUid,
-        ]);         //$records为空时分页数据也为空，不会报错
-        krsort($records);
+                foreach ($records as &$record) {
+                    $record['game_type'] = $this->maJiangTypes[$record['kind']];
+                    $record['time'] = $record['ins_time'];
 
-        foreach ($records as &$record) {
-            $record['game_type'] = $this->maJiangTypes[$record['kind']];
-            $record['time'] = $record['ins_time'];
+                    $recordDetail = json_decode($record['infos']['rec_jstr'], true);
+                    $record['room_id'] = $recordDetail['room']['room_id'];
+                    $record['owner_id'] = isset($recordDetail['room']['owner_uid'])
+                        ? $recordDetail['room']['owner_uid']    //游戏后端数据更新，兼容新的数据格式
+                        : $recordDetail['room']['creator']['uid'];
 
-            $recordDetail = json_decode($record['infos']['rec_jstr'], true);
-            $record['room_id'] = $recordDetail['room']['room_id'];
-            $record['owner_id'] = isset($recordDetail['room']['owner_uid'])
-                ? $recordDetail['room']['owner_uid']    //游戏后端数据更新，兼容新的数据格式
-                : $recordDetail['room']['creator']['uid'];
+                    unset($record['infos']);
+                }
+                break;
+            case 1:
+                //房间id
+                $api = config('custom.game_api_record_room');
+                $records = GameApiService::request('POST', $api, [
+                    'rid' => $searchUid,
+                ]);         //$records为空时分页数据也为空，不会报错
+                krsort($records);
+                foreach ($records as &$record) {
+                    $record['game_type'] = $this->maJiangTypes[$record['kind']];
+                    $record['time'] = $record['ins_time'];
 
-            unset($record['infos']);
+                    $recordDetail = json_decode($record['infos']['rec_jstr'], true);
+                    $record['room_id'] = $recordDetail['room']['room_id'];
+                    $record['owner_id'] = $record['uid'];
+
+                    unset($record['infos']);
+                }
+                break;
+            default:
+                $records = [];
+                break;
         }
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),

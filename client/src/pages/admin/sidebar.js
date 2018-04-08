@@ -120,6 +120,12 @@ new Vue({
           isActive: false,
         },
       },
+      order: {
+        isActive: false,
+        wechat: {
+          isActive: false,
+        },
+      },
       system: {
         isActive: false,
         log: {

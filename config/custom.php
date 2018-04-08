@@ -33,6 +33,7 @@ return [
 
     //游戏后端接口
     'game_api_records' => 'records',                //战绩列表和查询
+    'game_api_record_room' => 'records-room',       //查询指定房间id
     'game_api_record_info' => 'record-info',        //查询指定的战绩id的数据
     'game_api_players' => 'players',                //玩家列表和查询
     'game_api_players_find' => 'players/find',                //通过uid精确查找玩家

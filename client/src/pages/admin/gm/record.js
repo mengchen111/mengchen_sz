@@ -20,6 +20,7 @@ new Vue({
       'gui_pai': '鬼牌',
       'ma_pai': '马牌',
     },
+    searchType: '0',
 
     recordApi: '/admin/api/gm/records',
     recordInfoApiPrefix: '/admin/api/gm/record-info',
@@ -35,7 +36,7 @@ new Vue({
       },
       {
         name: 'owner_id',
-        title: '房主id',
+        title: '房主/玩家 id',
       },
       {
         name: 'game_type',
@@ -51,7 +52,8 @@ new Vue({
   methods: {
     getRecord () {
       let uid = this.uid ? this.uid : 0
-      this.tableUrl = this.recordApi + '?uid=' + uid  //更改tableUrl之后vuetable会自动刷新数据
+      let type = this.searchType
+      this.tableUrl = this.recordApi + '?uid=' + uid + '&type=' + type //更改tableUrl之后vuetable会自动刷新数据
     },
 
     onCellClicked (data) {

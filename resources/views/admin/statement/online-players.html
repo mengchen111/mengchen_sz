@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <!--#include virtual="/ssi/header.html"-->
-
+<style>
+    .echarts {
+        width: 100% !important;
+    }
+</style>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
     <!-- Main Header -->
@@ -46,7 +50,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <my-chart
+                                    <my-chart :style=""
                                             :chart-options="chartOptions">
                                     </my-chart>
                                 </div>
