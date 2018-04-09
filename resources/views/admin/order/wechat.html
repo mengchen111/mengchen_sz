@@ -32,12 +32,8 @@
 
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-2">
-                                <button class="btn btn-block btn-primary btn-flat" data-toggle="modal"
-                                        data-target="#order-creation-modal">创建订单</button>
-                            </div>
-                            <div class="col-md-10">
-                                <my-filter-bar placeholder="查找玩家id或代理商账号..."></my-filter-bar>
+                            <div class="col-md-3">
+                                <my-filter-bar placeholder="查找代理商id..."></my-filter-bar>
                             </div>
                         </div>
 
@@ -53,75 +49,6 @@
                         </div>
                     </div>
                 </div>
-
-            <div id="order-creation-modal" class="modal fade" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" type="button" data-dismiss="modal">x</button>
-                            <h3 class="text-center">创建订单</h3>
-                        </div>
-                        <div class="modal-body">
-                            <form role="form" class="form-group" method="POST" action="#" @submit.prevent="createOrder">
-                                <div class="form-group">
-                                    <label>道具类型</label>
-                                    <v-select required v-model="item_type_name" :searchable="false" :options="_.values(itemTypeOptions)"></v-select>
-                                </div>
-                                <div class="form-group">
-                                    <label>道具数量</label>
-                                    <input class="form-control" type="number" min="1" required v-model.trim="item_amount">
-                                </div>
-                                <div class="form-group">
-                                    <label>总金额(元)</label>
-                                    <input class="form-control" type="number" disabled v-model.trim="totalFee">
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button id="order-payment-modal-button" style="display: none"
-                    data-toggle="modal" data-target="#order-payment-modal"></button>
-            <div id="order-payment-modal" class="modal fade" tabindex="-1">
-                <div class="modal-dialog" style="width: 380px;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" type="button" data-dismiss="modal">x</button>
-                            <h3 class="text-center">使用微信扫码支付</h3>
-                        </div>
-                        <div class="modal-body">
-                            <div class="text-center">
-                                <img v-if="activatedRow && activatedRow.order_qr_code"
-                                     :src="'data:image/png;base64,' + activatedRow.order_qr_code">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="order-cancellation-modal" class="modal fade" tabindex="-1">
-                <div class="modal-dialog" style="width: 380px;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" type="button" data-dismiss="modal">x</button>
-                            <h3 class="text-center">关闭订单</h3>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button class="btn btn-flat btn-danger btn-lg pull-left" @click="cancelOrder">
-                                关闭
-                            </button>
-                            <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
-                                取消
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <my-toastr ref="toastr"></my-toastr>
         </section>

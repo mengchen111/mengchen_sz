@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CacheAgentValidCardLog;
+use App\Console\Commands\CalcWxOrderRebate;
 use App\Console\Commands\FetchOnlinePlayerCount;
 use App\Console\Commands\SendWxRedPacket;
 use App\Console\Commands\SyncWxUnionId;
@@ -24,6 +25,7 @@ class Kernel extends ConsoleKernel
         CacheAgentValidCardLog::class,
         SendWxRedPacket::class,
         SyncWxUnionId::class,
+        CalcWxOrderRebate::class,
     ];
 
     /**
@@ -54,6 +56,12 @@ class Kernel extends ConsoleKernel
         //缓存代理商有效耗卡数据  （移除，单独在cron里面加入记录，因为此schedule是串行的）
         $schedule->command('admin:cache-agent-valid-card-log')
             ->dailyAt('05:00')
+            ->withoutOverlapping()
+            ->evenInMaintenanceMode()
+            ->appendOutputTo(config('custom.cron_task_log'));
+        //每月计算微信订单返利
+        $schedule->command('admin:calc-wx-order-rebate')
+            ->monthlyOn(1, '1:00')
             ->withoutOverlapping()
             ->evenInMaintenanceMode()
             ->appendOutputTo(config('custom.cron_task_log'));

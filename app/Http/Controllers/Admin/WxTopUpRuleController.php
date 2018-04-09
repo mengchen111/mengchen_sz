@@ -12,7 +12,7 @@ class WxTopUpRuleController extends Controller
     {
         $this->addLog('查看微信充值规则');
 
-        return WxTopUpRule::paginate();
+        return WxTopUpRule::paginate($this->per_page);
     }
 
     public function store(AdminRequest $request)

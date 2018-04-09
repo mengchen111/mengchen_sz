@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\WeChatPaymentException;
-use App\Models\OperationLogs;
 use App\Models\WxOrder;
 use App\Models\WxTopUpRule;
 use App\Services\InventoryService;
@@ -31,10 +30,13 @@ class WeChatPaymentController extends Controller
         parent::__construct($request);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-//        $order = WxOrder::find(7);
-//        return $this->deliveryItem($order);
+        $model = WxOrder::with(['rule']);
+        if ($request->has('filter')){
+            $model->where('user_id',$request->get('filter'));
+        }
+        return $model->paginate($this->per_page);
     }
 
     public function store(Request $request)
@@ -216,7 +218,7 @@ class WeChatPaymentController extends Controller
             if (!$order->item_delivery_status) {
                 $rule = $order->rule;
                 if ($order->is_first_order) {
-                    //首充
+                    //首充 房卡数 + 赠送 + (房卡数 * 首次赠送 % )
                     $amount = $rule->amount + $rule->give + ($rule->amount * ($rule->first_give / 100));
                 } else {
                     $amount = $rule->amount + $rule->give;

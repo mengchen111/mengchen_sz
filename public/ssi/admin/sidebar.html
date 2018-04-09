@@ -99,21 +99,21 @@
                     <li :class="{ active: uri.permission.group.isActive }" v-show="isAdmin || shownMenu.permission.group.ifShown"><a href="/admin/permission/group"><i class="fa fa-circle-o"></i>组列表</a></li>
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri.rules.isActive }">
-                <a href="#"><i class="fa fa-certificate "></i> <span>选项规则</span>
+            <li class="treeview" :class="{ active: uri.rules.isActive }" v-show="isAdmin || shownMenu.rules.ifShown">
+                <a href="#"><i class="fa fa-certificate "></i> <span>规则套餐</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.rules['wx_top_up'].isActive }"><a href="/admin/rules/wx-top-up"><i class="fa fa-circle-o"></i>微信充值规则</a></li>
-                    <li :class="{ active: uri.rules.rebate.isActive }"><a href="/admin/rules/rebate"><i class="fa fa-circle-o"></i>返利规则</a></li>
+                    <li :class="{ active: uri.rules['wx-top-up'].isActive }" v-show="isAdmin || shownMenu.rules['wx-top-up'].ifShown"><a href="/admin/rules/wx-top-up"><i class="fa fa-circle-o"></i>微信充值套餐</a></li>
+                    <li :class="{ active: uri.rules.rebate.isActive }" v-show="isAdmin || shownMenu.rules.rebate.ifShown"><a href="/admin/rules/rebate"><i class="fa fa-circle-o"></i>返利规则</a></li>
                 </ul>
             </li>
-            <li class="treeview" :class="{ active: uri.order.isActive }">
+            <li class="treeview" :class="{ active: uri.order.isActive }" v-show="isAdmin || shownMenu.order.ifShown">
                 <a href="#"><i class="fa fa-wechat "></i> <span>订单管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li :class="{ active: uri.order.wechat.isActive }"><a href="/admin/order/wechat"><i class="fa fa-circle-o"></i>微信订单列表</a></li>
+                    <li :class="{ active: uri.order.wechat.isActive }" v-show="isAdmin || shownMenu.order.wechat.ifShown"><a href="/admin/order/wechat"><i class="fa fa-circle-o"></i>微信订单列表</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.system.isActive }" v-show="isAdmin || shownMenu.system.ifShown">

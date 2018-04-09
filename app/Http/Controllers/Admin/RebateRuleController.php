@@ -12,7 +12,7 @@ class RebateRuleController extends Controller
     {
         $this->addLog('查看返利规则');
 
-        return RebateRule::paginate();
+        return RebateRule::paginate($this->per_page);
     }
 
     public function store(AdminRequest $request)

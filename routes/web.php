@@ -10,7 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-auth()->loginUsingId(1);
+//auth()->loginUsingId(1);
+Route::get('calc',function (\App\Services\CalcWxOrderRebate $server){
+    var_dump($server->syncCalcData());
+});
 Route::get('/', 'HomeController@index');
 
 // Authentication Routes...

@@ -128,7 +128,7 @@ new Vue({
       },
       rules: {
         isActive: false,
-        'wx_top_up': {
+        'wx-top-up': {
           isActive: false,
         },
         rebate: {

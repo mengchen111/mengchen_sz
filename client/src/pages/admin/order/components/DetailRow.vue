@@ -10,7 +10,7 @@
         </div>
         <div>
             <label>支付者openid:&nbsp;&nbsp;</label>
-            <span>{{rowData.openid}}</span>
+            <span>{{rowData.open_id}}</span>
         </div>
         <div>
             <label>微信交易id:&nbsp;&nbsp;</label>

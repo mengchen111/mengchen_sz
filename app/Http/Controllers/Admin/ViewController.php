@@ -166,4 +166,14 @@ class ViewController extends Controller
     {
         return view('admin.order.wechat');
     }
+
+    public function wxTopUpRule(Request $request)
+    {
+        return view('admin.rules.wx-top-up');
+    }
+
+    public function rebateRule(Request $request)
+    {
+        return view('admin.rules.rebate');
+    }
 }

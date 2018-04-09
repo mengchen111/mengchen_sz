@@ -119,6 +119,21 @@ trait AuthorizationMap
                 'ifShown' => true,
             ],
         ],
+        'rules' => [
+            'ifShown' => true,
+            'wx-top-up' => [
+                'ifShown' => true,
+            ],
+            'rebate' => [
+                'ifShown' => true,
+            ],
+        ],
+        'order' => [
+            'ifShown' => true,
+            'wechat' => [
+                'ifShown' => true,
+            ],
+        ],
         'system' => [
             'ifShown' => true,
             'log' => [

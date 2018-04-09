@@ -13,13 +13,14 @@ trait WeChatPaymentTrait
         6 => '取消订单成功',
         7 => '取消订单失败',
     ];
-    protected $orderCreatorTypeMap = [
-        1 => 'player',  //玩家
-        2 => 'user',    //代理商
-    ];
 
     protected $tradeTypeMap = [
         'NATIVE' => '扫码',
         'APP' => 'app',
+    ];
+
+    protected $itemDeliveryStatusMap = [
+        0 => '未发货',
+        1 => '已发货',
     ];
 }

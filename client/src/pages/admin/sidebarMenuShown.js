@@ -113,6 +113,22 @@ export default {
       ifShown: false,
     },
   },
+  rules: {
+    ifShown: false,
+    'wx-top-up': {
+      ifShown: false,
+    },
+    rebate: {
+      ifShown: false,
+    },
+  },
+  order: {
+    ifShown: false,
+    wechat: {
+      ifShown: false,
+    },
+  },
+
   system: {
     ifShown: false,
     log: {

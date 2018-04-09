@@ -33,3 +33,20 @@ $factory->define(App\Models\TopUpPlayer::class, function (Faker\Generator $faker
         'created_at' => \Carbon\Carbon::now(),
     ];
 });
+
+$factory->define(App\Models\WxOrder::class, function (Faker\Generator $faker) {
+    $userId = $faker->randomElement([10, 11, 12]);
+    $id = rand(1, 4);
+    $rule = \App\Models\WxTopUpRule::find($id);
+    $time = \Carbon\Carbon::parse('-1 month')->toDateTimeString();
+    return [
+        'user_id' => $userId,
+        'wx_top_up_rule_id' => $rule->id,
+        'out_trade_no' => str_random(),
+        'total_fee' => $rule->price * 100,
+        'body' => $rule->remark,
+        'order_status' => 2,
+        'item_delivery_status' => 1,
+        'paid_at' => $time,
+    ];
+});
