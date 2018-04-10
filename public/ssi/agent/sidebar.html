@@ -47,6 +47,17 @@
                     <li :class="{ active: uri.community.list.isActive }"><a href="/agent/community/list"><i class="fa fa-circle-o"></i>牌艺馆列表</a></li>
                 </ul>
             </li>
+            <li class="treeview" :class="{ active: uri.pay.isActive }">
+                <a href="#"><i class="fa fa-angellist"></i> <span>充值管理</span>
+                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                </a>
+                <ul class="treeview-menu">
+                    <li :class="{ active: uri.pay['wx-order'].isActive }"><a href="/agent/pay/wx-order"><i class="fa fa-circle-o"></i>微信订单管理</a></li>
+                    <li :class="{ active: uri.pay.rebates.isActive }"><a href="/agent/pay/rebates"><i class="fa fa-circle-o"></i>返利列表</a></li>
+                    <li :class="{ active: uri.pay.withdrawals.isActive }"><a href="/agent/pay/withdrawals"><i class="fa fa-circle-o"></i>申请提现列表</a></li>
+
+                </ul>
+            </li>
             <li class="treeview" :class="{ active: uri['top-up'].isActive }">
                 <a href="#"><i class="fa fa-credit-card"></i> <span>充值记录</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>

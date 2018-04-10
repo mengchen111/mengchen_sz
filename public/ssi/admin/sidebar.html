@@ -109,11 +109,12 @@
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.order.isActive }" v-show="isAdmin || shownMenu.order.ifShown">
-                <a href="#"><i class="fa fa-wechat "></i> <span>订单管理</span>
+                <a href="#"><i class="fa fa-wechat "></i> <span>订单提现管理</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
                     <li :class="{ active: uri.order.wechat.isActive }" v-show="isAdmin || shownMenu.order.wechat.ifShown"><a href="/admin/order/wechat"><i class="fa fa-circle-o"></i>微信订单列表</a></li>
+                    <li :class="{ active: uri.order.withdrawals.isActive }" v-show="isAdmin || shownMenu.order.withdrawals.ifShown"><a href="/admin/order/withdrawals"><i class="fa fa-circle-o"></i>提现列表</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.system.isActive }" v-show="isAdmin || shownMenu.system.ifShown">

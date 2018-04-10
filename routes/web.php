@@ -10,10 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-//auth()->loginUsingId(1);
-Route::get('calc',function (\App\Services\CalcWxOrderRebate $server){
-    var_dump($server->syncCalcData());
-});
+auth()->loginUsingId(1);
 Route::get('/', 'HomeController@index');
 
 // Authentication Routes...
@@ -36,7 +33,9 @@ Route::prefix('api')->middleware(['auth'])->group(function () {
     Route::get('content-header-h1', 'InfoController@getContentHeaderH1');
 
     //微信订单
-    Route::get('wechat/order','WeChatPaymentController@index');
+    Route::get('wechat/order','WeChatPaymentController@index'); //管理员查看
+    Route::get('wechat/order/agent','WeChatPaymentController@agentOrder'); //代理商查看列表
+    Route::get('wechat/order/agent/{order}','WeChatPaymentController@getAgentOrder'); //代理商查看
     Route::post('wechat/order','WeChatPaymentController@store');
     Route::any('wechat/order/notification','WeChatPaymentController@getNotification'); //通知
 
@@ -155,6 +154,10 @@ Route::group([
     Route::put('rebate-rules/{rule}','RebateRuleController@update');
     Route::delete('rebate-rules/{rule}','RebateRuleController@destroy');
 
+    //提现
+    Route::get('withdrawals','WithdrawalController@index');
+    Route::post('withdrawals/audit/{withdrawal}','WithdrawalController@audit');
+
 });
 
 //管理员视图路由
@@ -205,6 +208,8 @@ Route::group([
     Route::get('system/log', 'ViewController@systemLog');
 
     Route::get('order/wechat', 'ViewController@orderWechat');
+    //提现
+    Route::get('order/withdrawals','ViewController@withdrawals');
     //规则
     Route::get('rules/wx-top-up','ViewController@wxTopUpRule');
     Route::get('rules/rebate','ViewController@rebateRule');
@@ -251,6 +256,18 @@ Route::group([
     Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '[0-9]+');
     Route::get('top-up/child', 'TopUpController@topUp2ChildHistory');
     Route::get('top-up/player', 'TopUpController@topUp2PlayerHistory');
+
+    //返利
+    Route::get('rebates','RebateController@index');
+    Route::get('rebates/statistics','RebateController@statistics');
+    //提现
+    Route::get('withdrawals','WithdrawalController@index');
+    Route::get('withdrawals/amount-limit','WithdrawalController@amountLimit');
+    Route::post('withdrawals','WithdrawalController@store');
+
+    Route::get('wx-top-up-rules','WxTopUpRuleController@index');
+
+
 });
 
 //代理商视图
@@ -279,6 +296,13 @@ Route::group([
     Route::get('top-up/community', 'ViewController@topUpCommunity');
 
     Route::get('info', 'ViewController@info');
+
+    //返利管理
+    Route::get('pay/rebates','ViewController@rebates');
+    //提现申请
+    Route::get('pay/withdrawals','ViewController@withdrawals');
+    //微信订单
+    Route::get('pay/wx-order','ViewController@wxOrder');
 });
 
 //微信回调接口

@@ -125,6 +125,9 @@ new Vue({
         wechat: {
           isActive: false,
         },
+        withdrawals: {
+          isActive: false,
+        },
       },
       rules: {
         isActive: false,

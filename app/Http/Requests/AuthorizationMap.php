@@ -133,6 +133,9 @@ trait AuthorizationMap
             'wechat' => [
                 'ifShown' => true,
             ],
+            'withdrawals' => [
+                'ifShown' => true,
+            ],
         ],
         'system' => [
             'ifShown' => true,

@@ -77,4 +77,18 @@ class ViewController extends Controller
     {
         return view('agent.info');
     }
+
+    public function rebates(Request $request)
+    {
+        return view('agent.pay.rebates');
+    }
+    public function withdrawals(Request $request)
+    {
+        return view('agent.pay.withdrawals');
+    }
+
+    public function wxOrder(Request $request)
+    {
+        return view('agent.pay.wx-order');
+    }
 }

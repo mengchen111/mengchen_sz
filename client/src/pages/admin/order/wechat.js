@@ -30,8 +30,8 @@ new Vue({
         title: '代理商id',
       },
       {
-        name: 'rule.remark',
-        title: '套餐说明',
+        name: 'body',
+        title: '订单说明',
       },
       {
         name: 'total_fee_yuan',

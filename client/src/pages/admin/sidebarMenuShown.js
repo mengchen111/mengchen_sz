@@ -127,6 +127,9 @@ export default {
     wechat: {
       ifShown: false,
     },
+    withdrawals: {
+      isActive: false,
+    },
   },
 
   system: {

@@ -19,5 +19,4 @@ return [
 
     'WeChatPaymentException' => 20000,
     'InventoryServiceException' => 1002,
-
 ];

@@ -136,4 +136,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(WxOrder::class);
     }
+
+    public function rebates()
+    {
+        return $this->hasMany(Rebate::class);
+    }
+
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
 }

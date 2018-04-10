@@ -58,6 +58,20 @@ new Vue({
       info: {
         isActive: false,
       },
+      pay: {
+        isActive: false,
+        rebates: {
+          isActive: false,
+        },
+        withdrawals: {
+          isActive: false,
+        },
+        'wx-order': {
+          isActive: false,
+        },
+      },
+
+
     },
   },
 

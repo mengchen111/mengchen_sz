@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\WeChatPaymentException;
+use App\Http\Requests\AdminRequest;
+use App\Http\Requests\AgentRequest;
 use App\Models\WxOrder;
 use App\Models\WxTopUpRule;
 use App\Services\InventoryService;
@@ -19,7 +21,7 @@ class WeChatPaymentController extends Controller
     use WeChatPaymentTrait;
     protected $orderApp;
     protected $notifyUrl;
-    protected $orderBodyPrefix = '梦晨网络';
+    protected $orderBodyPrefix = '梦晨网络-';
     protected $itemType = 1; //房卡
 
     public function __construct(Request $request)
@@ -30,13 +32,23 @@ class WeChatPaymentController extends Controller
         parent::__construct($request);
     }
 
-    public function index(Request $request)
+    public function index(AdminRequest $request)
     {
-        $model = WxOrder::with(['rule']);
-        if ($request->has('filter')){
-            $model->where('user_id',$request->get('filter'));
+        $model = app(WxOrder::class);
+        if ($request->has('filter')) {
+            $model->where('user_id', $request->get('filter'));
         }
-        return $model->paginate($this->per_page);
+        return $model->latest()->paginate($this->per_page);
+    }
+
+    public function agentOrder(AgentRequest $request)
+    {
+        return auth()->user()->wxOrders()->latest()->paginate($this->per_page);
+    }
+
+    public function getAgentOrder(AgentRequest $request, WxOrder $order)
+    {
+        return $order->append('order_qr_code');
     }
 
     public function store(Request $request)
@@ -89,8 +101,8 @@ class WeChatPaymentController extends Controller
     {
         $rule = WxTopUpRule::find($data['wx_top_up_rule_id']);
         $data['out_trade_no'] = $this->createOutTradeNumber();
-        $data['total_fee'] = $rule->price;
-        $data['body'] = $rule->remark;
+        $data['total_fee'] = $rule->price * 100;
+        $data['body'] = $this->orderBodyPrefix . $rule->remark;
         $data['spbill_create_ip'] = $request->getClientIp();
         $data['user_id'] = auth()->id();
 
