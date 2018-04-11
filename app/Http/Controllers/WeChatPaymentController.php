@@ -9,6 +9,7 @@ use App\Models\WxOrder;
 use App\Models\WxTopUpRule;
 use App\Services\InventoryService;
 use App\Traits\WeChatPaymentTrait;
+use Carbon\Carbon;
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order;
 use Illuminate\Http\Request;
@@ -178,6 +179,15 @@ class WeChatPaymentController extends Controller
     public function getNotification(Request $request)
     {
         $this->addLog('微信支付订单回调接口');
+
+        //测试环境手动测试发货流程
+        if (env('APP_ENV') === 'local' or env('APP_ENV') === 'test)') {
+            $order = WxOrder::find($request->out_trade_no);
+            $notify = new \stdClass();
+            $notify->transaction_id = 'test';
+            $notify->time_end = Carbon::now()->timestamp;
+            $this->orderPaymentSucceed($order, $notify);
+        }
 
         $response = $this->orderApp->payment->handleNotify(function ($notify, $successful) {
             $order = WxOrder::find($notify->out_trade_no);
