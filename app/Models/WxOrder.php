@@ -54,6 +54,11 @@ class WxOrder extends Model
         return $this->itemDeliveryStatusMap[$this->attributes['item_delivery_status']];
     }
 
+    /**
+     * 支付成功，发货成功的订单
+     * @param $query
+     * @return mixed
+     */
     public function scopeFinishedOrder($query)
     {
         return $query->where('order_status',4)->where('item_delivery_status',1)->whereNotNull('paid_at');

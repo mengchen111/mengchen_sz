@@ -84,7 +84,7 @@ class CalcWxOrderRebate
                     'children_id' => $result['id'],
                     'total_amount' => $user['total'],
                     'rebate_at' => $date,
-                    'rebate_price' => $user['total'] * ($user['rebate'] / 100),
+                    'rebate_price' => $user['total'] * ($user['rebate_rate'] / 100),
                     'rebate_rule_id' => $user['rebate_rule_id'],
                 ];
                 $this->findAgent($result, $user, $date);
@@ -109,7 +109,7 @@ class CalcWxOrderRebate
                 'children_id' => $fdata['user_id'],
                 'total_amount' => $fdata['total'],
                 'rebate_at' => $date,
-                'rebate_price' => $fdata['total'] * ($fdata['rebate'] / 100),
+                'rebate_price' => $fdata['total'] * ($fdata['rebate_rate'] / 100),
                 'rebate_rule_id' => $fdata['rebate_rule_id'],
             ];
             $this->findAgent($result, $fdata, $date);
@@ -128,14 +128,14 @@ class CalcWxOrderRebate
         foreach ($orders as $k => $order) {
             foreach ($rules as $rule) {
                 if ($order['total'] >= $rule->price) {
-                    $orders[$k]['rebate'] = $rule->rate;
+                    $orders[$k]['rebate_rate'] = $rule->rate;
                     $orders[$k]['rebate_rule_id'] = $rule->id;
                 }
             }
         }
         //返回 达到返利规则 的用户
         return array_filter($orders, function ($val) {
-            return isset($val['rebate']) || isset($val['rebate_rule_id']);
+            return isset($val['rebate_rate']) || isset($val['rebate_rule_id']);
         });
     }
 
