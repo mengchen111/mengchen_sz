@@ -40,8 +40,6 @@ class AdminController extends Controller
             'password' => bcrypt($request->new_password)
         ]);
 
-        return [
-            'message' => '更新密码成功'
-        ];
+        return $this->res('更新密码成功');
     }
 }
