@@ -74,7 +74,7 @@ crontab -e
 | admin:generate-daily-statement | 每日00:00 | 统计上一天的数据报表并入库 |
 | admin:fetch-online-player-count | 每10分钟 | 统计在线和游戏中玩家数并入库 |
 | admin:cache-agent-valid-card-log | 每10分钟 | 缓存包含了有效耗卡数据的代理商给玩家充值记录的缓存 |
-
+| admin:calc-wx-order-rebate | 每月1号 1:00 | 计算上一个月的微信订单返利并入库 |
 ### 使用post-merge钩子脚本  
 ```
 #!/bin/sh
