@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-auth()->loginUsingId(1);
+//auth()->loginUsingId(1);
 Route::get('/', 'HomeController@index');
 
 // Authentication Routes...
@@ -32,15 +32,25 @@ Route::prefix('api')->middleware(['auth'])->group(function () {
     Route::get('info', 'InfoController@info');
     Route::get('content-header-h1', 'InfoController@getContentHeaderH1');
 
-    //微信订单
-    Route::get('wechat/order','WeChatPaymentController@index'); //管理员查看
-    Route::get('wechat/order/agent','WeChatPaymentController@agentOrder'); //代理商查看列表
-    Route::get('wechat/order/agent/{order}','WeChatPaymentController@getAgentOrder'); //代理商查看
-    Route::post('wechat/order','WeChatPaymentController@store');
-    Route::any('wechat/order/notification','WeChatPaymentController@getNotification'); //通知
-
     Route::get('game/room/type-map', 'Admin\Game\RoomController@getRoomTypeMap');  //房间类型映射关系
     Route::get('game/player', 'PlayerController@searchPlayer');     //根据玩家id查找玩家
+});
+
+//微信订单
+Route::group([
+    'prefix' => 'api/wechat',
+], function () {
+    Route::group([
+        'middleware' => ['auth'],
+    ],function (){
+        //微信订单
+        Route::get('order','WeChatPaymentController@index'); //管理员查看
+        Route::get('order/agent','WeChatPaymentController@agentOrder'); //代理商查看列表
+        Route::get('order/agent/{order}','WeChatPaymentController@getAgentOrder'); //代理商查看
+        Route::post('order','WeChatPaymentController@store');
+    });
+
+    Route::any('order/notification','WeChatPaymentController@getNotification'); //通知
 });
 
 //管理员接口
@@ -154,9 +164,13 @@ Route::group([
     Route::put('rebate-rules/{rule}','RebateRuleController@update');
     Route::delete('rebate-rules/{rule}','RebateRuleController@destroy');
 
-    //提现
+    //提现审核
     Route::get('withdrawals','WithdrawalController@index');
     Route::post('withdrawals/audit/{withdrawal}','WithdrawalController@audit');
+
+    //查看代理商返利
+    Route::get('rebates/user/{user?}','RebateController@showUserRebate');
+    Route::get('rebates/user/statistics/{user}','RebateController@statistics');
 
 });
 
@@ -210,9 +224,11 @@ Route::group([
     Route::get('order/wechat', 'ViewController@orderWechat');
     //提现
     Route::get('order/withdrawals','ViewController@withdrawals');
+    Route::get('order/rebates','ViewController@agentRebate');
     //规则
     Route::get('rules/wx-top-up','ViewController@wxTopUpRule');
     Route::get('rules/rebate','ViewController@rebateRule');
+
 });
 
 //代理商接口

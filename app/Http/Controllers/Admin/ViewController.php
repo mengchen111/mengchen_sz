@@ -171,6 +171,12 @@ class ViewController extends Controller
     {
         return view('admin.order.withdrawals');
     }
+
+    public function agentRebate(Request $request)
+    {
+        return view('admin.order.agent-rebate');
+    }
+
     public function wxTopUpRule(Request $request)
     {
         return view('admin.rules.wx-top-up');

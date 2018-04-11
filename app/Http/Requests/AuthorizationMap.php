@@ -136,6 +136,9 @@ trait AuthorizationMap
             'withdrawals' => [
                 'ifShown' => true,
             ],
+            'rebates' => [
+                'ifShown' => true,
+            ],
         ],
         'system' => [
             'ifShown' => true,

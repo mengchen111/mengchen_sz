@@ -1,4 +1,4 @@
-import { myTools } from '../index.js'
+import '../index.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import MyToastr from '../../../components/MyToastr.vue'
 import MyFilterBar from '../../../components/MyFilterBar.vue'

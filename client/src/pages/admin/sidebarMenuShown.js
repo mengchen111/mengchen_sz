@@ -130,6 +130,9 @@ export default {
     withdrawals: {
       isActive: false,
     },
+    rebates: {
+      isActive: false,
+    },
   },
 
   system: {

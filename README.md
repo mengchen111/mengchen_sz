@@ -187,6 +187,19 @@ cd $codeDir
 | role/{role} | PUT | 更新角色信息 |
 | role/{role} | DELETE | 删除角色 |
 | system/log | GET | 系统操作日志记录 | 
+| wx-top-up-rules | GET | 充值套餐规则列表 |
+| wx-top-up-rules | POST | 添加充值套餐规则 |
+| wx-top-up-rules/{rule} | PUT | 修改充值套餐规则 |
+| wx-top-up-rules/{rule} | DELETE | 删除充值套餐规则 |
+| rebate-rules | GET | 返利规则列表 |
+| rebate-rules | POST | 添加返利规则 |
+| rebate-rules/{rule} | PUT | 修改返利规则 |
+| rebate-rules/{rule} | DELETE | 删除返利规则 |
+| withdrawals | GET | 审核提现列表 |
+| withdrawals/audit/{withdrawal} | POST | 审核提现 |
+| rebates/user/{user?} | GET | 查看代理商返利 |
+| rebates/user/statistics/{user} | GET | 查看代理商返利统计 |
+
 
 ### 代理商接口
 > **前缀/agent/api/**  
@@ -223,6 +236,12 @@ cd $codeDir
 | top-up/player/{player}/{type}/{amount} | POST | 给玩家充值 |
 | top-up/child | GET | 给自代理商的充值记录 |
 | top-up/player | GET | 给玩家的充值记录 |
+| rebates | GET | 返利列表 |
+| rebates/statistics | GET | 返利统计 |
+| withdrawals | GET | 提现列表 |
+| withdrawals/amount-limit | GET | 提现金额限制 |
+| withdrawals | POST | 提现申请 |
+| wx-top-up-rules | GET | 充值套餐规则列表 |
 
 ### 公共接口
 | URI   | Method  | Description |     
@@ -237,3 +256,15 @@ cd $codeDir
 | ----  | :-----: | ----------: |
 | /wechat/official-account/callback | ANY | 微信公众号事件回调 |
 | /wechat/official-account/authorization | ANY | 微信公众号网页授权回调(使用路由，此回调暂未启用) |
+
+### 微信订单接口 
+> **前缀/api/wechat**  
+
+| URI   | Method  | Description |     
+| ----  | :-----: | ----------: |
+| order | GET | 管理员查看订单列表 |
+| order/agent | GET | 代理商查看订单列表 |
+| order/agent/{order} | GET | 代理商查看订单详情 |
+| order | POST | 创建微信订单 |
+| order/notification | ANY | 微信通知回调 |
+

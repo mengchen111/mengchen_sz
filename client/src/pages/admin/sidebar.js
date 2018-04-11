@@ -128,6 +128,9 @@ new Vue({
         withdrawals: {
           isActive: false,
         },
+        rebates: {
+          isActive: false,
+        },
       },
       rules: {
         isActive: false,

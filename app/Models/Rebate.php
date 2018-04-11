@@ -11,11 +11,17 @@ class Rebate extends Model
         'user_id', 'children_id', 'total_amount', 'rebate_at', 'rebate_price', 'rebate_rule_id', 'remark'
     ];
     protected $appends = [
-      'rebate_at'
+        'rebate_at'
     ];
+
     public function children()
     {
         return $this->belongsTo(User::class, 'children_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function rule()
