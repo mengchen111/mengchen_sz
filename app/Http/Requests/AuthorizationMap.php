@@ -55,6 +55,9 @@ trait AuthorizationMap
             'red-packet-log' => [
                 'ifShown' => true,
             ],
+            'log-activity-reward' => [
+                'ifShown' => true,
+            ],
         ],
         'community' => [
             'ifShown' => true,

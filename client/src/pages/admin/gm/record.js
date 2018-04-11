@@ -39,6 +39,10 @@ new Vue({
         title: '房主/玩家 id',
       },
       {
+        name: 'community_id',
+        title: '牌艺馆id',
+      },
+      {
         name: 'game_type',
         title: '游戏类型',
       },

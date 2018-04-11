@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Game;
 
 use App\Exceptions\CustomException;
 use App\Http\Requests\AdminRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Game\GameApiService;
@@ -74,12 +75,23 @@ class ActivitiesRewardController extends Controller
             'expend' => 'required|integer',
             'goods_type' => 'required|integer',
             'goods_count' => 'required|numeric',
+            'whitelist' => 'nullable|string',
+            'begin_time' => 'required|required_with_all:end_time|date_format:"Y-m-d H:i:s"',
+            'end_time' => 'required|required_with_all:begin_time|date_format:"Y-m-d H:i:s"',
         ]);
 
-        return $request->only([
+        $data = $request->only([
             'pid', 'name', 'img', 'show_text', 'total_inventory', 'probability',
-            'single_limit', 'expend', 'goods_type', 'goods_count'
+            'single_limit', 'expend', 'goods_type', 'goods_count', 'whitelist',
+            'begin_time', 'end_time'
         ]);
+        if (!$data['whitelist']) {  //不然调用api接口报错
+            unset($data['whitelist']);
+        }
+        //转换为时间戳形式
+        $data['begin_time'] = Carbon::parse($data['begin_time'])->timestamp;
+        $data['end_time'] = Carbon::parse($data['end_time'])->timestamp;
+        return $data;
     }
 
     public function deleteReward(AdminRequest $request, $pid)
@@ -140,11 +152,23 @@ class ActivitiesRewardController extends Controller
             'single_limit' => 'required|integer',
             'goods_type' => 'required|integer',
             'goods_count' => 'required|numeric',
+            'whitelist' => 'nullable|string',
+            'begin_time' => 'required|required_with_all:end_time|date_format:"Y-m-d H:i:s"',
+            'end_time' => 'required|required_with_all:begin_time|date_format:"Y-m-d H:i:s"',
         ]);
 
-        return $request->only([
+        $data = $request->only([
             'name', 'img', 'show_text', 'total_inventory', 'probability',
-            'single_limit', 'goods_type', 'goods_count'
+            'single_limit', 'goods_type', 'goods_count', 'whitelist',
+            'begin_time', 'end_time'
         ]);
+
+        if (!$data['whitelist']) {  //不然调用api接口报错
+            unset($data['whitelist']);
+        }
+        //转换为时间戳形式
+        $data['begin_time'] = Carbon::parse($data['begin_time'])->timestamp;
+        $data['end_time'] = Carbon::parse($data['end_time'])->timestamp;
+        return $data;
     }
 }

@@ -19,24 +19,23 @@ class AgentController extends Controller
 
     public function showAll(AdminRequest $request)
     {
-        //给per_page设定默认值，比起参数默认值这样子可以兼容uri传参和变量名传参，变量名传递过来的参数优先
-        $per_page = $request->per_page ?: 15;
-        $order = $request->sort ? explode('|', $request->sort) : ['id', 'desc'];
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '查看代理商列表', $request->header('User-Agent'));
+            '查看代理商列表', $request->header('User-Agent'), json_encode($request->all()));
 
         //查找用户名或昵称
         $data = User::with(['group', 'parent', 'inventorys.item', 'agentTopUpRecords', 'playerTopUpRecords'])
+            ->whereIn('group_id', $this->agentGroups)
             ->when($request->has('filter'), function ($query) use ($request) {
-                return $query->whereIn('group_id', $this->agentGroups)
-                    ->where('account', 'like', "%{$request->filter}%")
+                return $query->where('account', 'like', "%{$request->filter}%")
                     ->where('name', 'like', "%{$request->filter}%", 'or');
 
             })
-            ->whereIn('group_id', $this->agentGroups)
-            ->orderBy($order[0], $order[1])
-            ->paginate($per_page);
+            ->when($request->has('agent_id'), function ($query) use ($request) {
+                return $query->where('id', $request->input('agent_id'));
+            })
+            ->orderBy($this->order[0], $this->order[1])
+            ->paginate($this->per_page);
 
         $data = $this->addDataOnAgent($data);   //添加额外的数据
         return $data;

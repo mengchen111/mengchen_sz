@@ -106,6 +106,27 @@
                                            v-model.trim="addRewardForm.goods_count" placeholder="道具数量">
                                 </div>
                                 <div class="form-group">
+                                    <label>白名单</label>
+                                    <input name="whitelist" type="text" class="form-control"
+                                           v-model.trim="addRewardForm.whitelist" placeholder="用户id白名单，以,分隔">
+                                </div>
+                                <div class="form-group">
+                                    <label>开始时间</label>
+                                    <my-date-picker required
+                                                    :date-format="dateFormat"
+                                                    v-model="addRewardForm.begin_time"
+                                                    placeholder="开始时间"
+                                    ></my-date-picker>
+                                </div>
+                                <div class="form-group">
+                                    <label>结束时间</label>
+                                    <my-date-picker required
+                                                    :date-format="dateFormat"
+                                                    v-model="addRewardForm.end_time"
+                                                    placeholder="结束时间"
+                                    ></my-date-picker>
+                                </div>
+                                <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
                                 </div>
                             </form>
@@ -166,6 +187,27 @@
                                     <label>道具数量</label>
                                     <input name="goods_count" type="text" class="form-control" required
                                            v-model.trim="activatedRow.goods_count" placeholder="道具数量">
+                                </div>
+                                <div class="form-group">
+                                    <label>白名单</label>
+                                    <input name="whitelist" type="text" class="form-control"
+                                           v-model.trim="activatedRow.whitelist" placeholder="用户id白名单，以,分隔">
+                                </div>
+                                <div class="form-group">
+                                    <label>开始时间</label>
+                                    <my-date-picker required
+                                                    :date-format="dateFormat"
+                                                    v-model="activatedRow.begin_time"
+                                                    placeholder="开始时间"
+                                    ></my-date-picker>
+                                </div>
+                                <div class="form-group">
+                                    <label>结束时间</label>
+                                    <my-date-picker required
+                                                    :date-format="dateFormat"
+                                                    v-model="activatedRow.end_time"
+                                                    placeholder="结束时间"
+                                    ></my-date-picker>
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>

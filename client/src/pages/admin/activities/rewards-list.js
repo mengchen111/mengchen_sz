@@ -1,5 +1,6 @@
 import { myTools } from '../index.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
+import MyDatePicker from '../../../components/MyDatePicker.vue'
 import MyToastr from '../../../components/MyToastr.vue'
 import RewardTableActions from './components/RewardTableActions.vue'
 import vSelect from 'vue-select'
@@ -12,10 +13,12 @@ new Vue({
     MyVuetable,
     MyToastr,
     vSelect,
+    MyDatePicker,
   },
   data: {
     eventHub: new Vue(),
     activatedRow: {},
+    dateFormat: 'YYYY-MM-DD HH:mm:ss',
 
     addRewardForm: {},
     editRewardForm: {},
@@ -67,6 +70,18 @@ new Vue({
       {
         name: 'goods_count',
         title: '道具数量',
+      },
+      {
+        name: 'whitelist',
+        title: '白名单',
+      },
+      {
+        name: 'begin_time',
+        title: '开始时间',
+      },
+      {
+        name: 'end_time',
+        title: '结束时间',
       },
       {
         name: '__component:table-actions',

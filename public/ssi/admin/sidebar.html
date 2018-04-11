@@ -38,7 +38,8 @@
                     <li :class="{ active: uri.activities['tasks-list'].isActive }" v-show="isAdmin || shownMenu.activities['tasks-list'].ifShown"><a href="/admin/activities/tasks-list"><i class="fa fa-circle-o"></i>任务列表</a></li>
                     <li :class="{ active: uri.activities['user-goods'].isActive }" v-show="isAdmin || shownMenu.activities['user-goods'].ifShown"><a href="/admin/activities/user-goods"><i class="fa fa-circle-o"></i>玩家物品</a></li>
                     <li :class="{ active: uri.activities['player-task'].isActive }" v-show="isAdmin || shownMenu.activities['player-task'].ifShown"><a href="/admin/activities/player-task"><i class="fa fa-circle-o"></i>玩家任务</a></li>
-                    <li :class="{ active: uri.activities.statement.isActive }" v-show="isAdmin || shownMenu.activities.statement.ifShown"><a href="/admin/activities/statement"><i class="fa fa-circle-o"></i>数据统计</a></li>
+                    <!--<li :class="{ active: uri.activities.statement.isActive }" v-show="isAdmin || shownMenu.activities.statement.ifShown"><a href="/admin/activities/statement"><i class="fa fa-circle-o"></i>数据统计</a></li>-->
+                    <li :class="{ active: uri.activities['log-activity-reward'].isActive }" v-show="isAdmin || shownMenu.activities['log-activity-reward'].ifShown"><a href="/admin/activities/log-activity-reward"><i class="fa fa-circle-o"></i>奖品记录</a></li>
                     <li :class="{ active: uri.activities['red-packet-log'].isActive }" v-show="isAdmin || shownMenu.activities['red-packet-log'].ifShown"><a href="/admin/activities/red-packet-log"><i class="fa fa-circle-o"></i>红包记录</a></li>
                 </ul>
             </li>

@@ -39,6 +39,15 @@ class PlayerController extends Controller
         if ($request->has('filter')) {
             //$this->validateUid($request);
             $data = PlayerService::searchPlayers($request->filter, $request->filter);
+        } elseif ($request->has('player_id')) {
+            $player = PlayerService::findPlayer($request->input('player_id'));
+            if (empty($player)) {
+                return [
+                    'error' => '玩家' . $request->input('player_id') . '不存在',
+                ];
+            } else {
+                $data = [$player];
+            }
         } else {
             $cacheKey = config('custom.game_server_cache_players');
             $cacheDuration = config('custom.game_server_cache_duration');

@@ -46,6 +46,9 @@ export default {
     statement: {
       ifShown: false,
     },
+    'log-activity-reward': {
+      ifShown: false,
+    },
     'red-packet-log': {
       ifShown: false,
     },

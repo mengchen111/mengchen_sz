@@ -5,35 +5,68 @@ namespace App\Http\Controllers\Agent;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AgentRequest;
+use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\OperationLogs;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Game\ValidCardConsumedService;
 
 class SubAgentController extends Controller
 {
+    protected $agentGroups = [2, 3, 4];     //agent代理商的组id号
+
     //查看下级代理商列表
     public function show(AgentRequest $request)
     {
-        $per_page = $request->per_page ?: 10;
-        $order = $request->sort ? explode('|', $request->sort) : ['id', 'desc'];
-
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '查看子代理商列表', $request->header('User-Agent'));
+            '查看子代理商列表', $request->header('User-Agent'), json_encode($request->all()));
 
-        if ($request->has('filter')) {
-            $filterText = $request->filter;
-            return User::with(['group', 'parent', 'inventorys.item'])
-                ->where('account', 'like', "%{$filterText}%")
-                ->where('parent_id', $request->user()->id)
-                ->orderBy($order[0], $order[1])
-                ->paginate($per_page);
-        }
-        return User::with(['group', 'parent', 'inventorys.item'])
+        $data = User::with(['group', 'parent', 'inventorys.item', 'agentTopUpRecords', 'playerTopUpRecords'])
+            ->whereIn('group_id', $this->agentGroups)
             ->where('parent_id', $request->user()->id)
-            ->orderBy($order[0], $order[1])
-            ->paginate($per_page);
+            ->when($request->has('filter'), function ($query) use ($request) {
+                $filterText = $request->filter;
+                return $query->where('account', 'like', "%${filterText}%");
+            })
+            ->orderBy($this->order[0], $this->order[1])
+            ->paginate($this->per_page);
+
+        $data = $this->addDataOnAgent($data);   //添加额外的数据
+        return $data;
+    }
+
+    //输出的代理商列表数据，添加额外的数据
+    protected function addDataOnAgent($data)
+    {
+        foreach ($data->items() as $user) {
+            //每个代理商添加累计售卡数
+            $itemSoldTotal = [];
+            $agentSoldCount = $user->agentTopUpRecords->groupBy('type')->map(function ($v) {
+                return $v->sum('amount');
+            });
+            $playerSoldCount = $user->playerTopUpRecords->groupBy('type')->map(function ($v) {
+                return $v->sum('amount');
+            });
+            foreach ($agentSoldCount as $k => $v) {
+                $itemSoldTotal[$k] = $v;
+            }
+            foreach ($playerSoldCount as $k => $v) {
+                if (array_key_exists($k, $itemSoldTotal)) {
+                    $itemSoldTotal[$k] += $v;
+                } else {
+                    $itemSoldTotal[$k] = $v;
+                }
+            }
+            $user['item_sold_total'] = $itemSoldTotal;
+            unset($user->agentTopUpRecords);
+            unset($user->playerTopUpRecords);
+
+            //添加有效耗卡数
+            $user['valid_card_consumed_num'] = ValidCardConsumedService::getAgentValidCardConsumedNum($user->id);
+        }
+        return $data;
     }
 
     //创建下级代理商

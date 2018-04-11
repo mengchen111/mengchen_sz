@@ -112,6 +112,7 @@ Route::group([
     Route::get('activities/red-packet-log', 'Game\ActivitiesRedPacketLogController@getRedPacketLog');
     Route::put('activities/red-packet-log/status/{redPacketLog}', 'Game\ActivitiesRedPacketLogController@changeStatus')->where('redPacketLog', '[0-9]+');
     Route::get('activities/statement', 'Game\ActivitiesStatementController@getStatement');
+    Route::get('activities/log-activity-reward', 'Game\ActivitiesRewardLogController@show');
 
     Route::get('community', 'CommunityController@showCommunityList');
     Route::post('community', 'CommunityController@createCommunity');
@@ -199,6 +200,7 @@ Route::group([
     Route::get('activities/player-task', 'ViewController@activitiesPlayerTask');
     Route::get('activities/statement', 'ViewController@activitiesStatement');
     Route::get('activities/red-packet-log', 'ViewController@activitiesRedPacketLog');
+    Route::get('activities/log-activity-reward', 'ViewController@activitiesLogActivityReward');
 
     Route::get('community/list', 'ViewController@communityList');
     Route::get('community/valid-card', 'ViewController@communityValidCard');
@@ -295,7 +297,6 @@ Route::group([
     Route::get('home', 'ViewController@home');
 
     Route::get('player/top-up', 'ViewController@playerTopUp');  //玩家充值页面
-    Route::get('player/community-top-up', 'ViewController@communityTopUp');  //玩家充值页面
 
     Route::get('stock/apply-request', 'ViewController@stockApplyRequest');
     Route::get('stock/apply-history', 'ViewController@stockApplyHistory');
@@ -305,6 +306,7 @@ Route::group([
 
     Route::get('community/list', 'ViewController@communityList');
     Route::get('community/manage', 'ViewController@communityManage');
+    Route::get('community/community-top-up', 'ViewController@communityTopUp');  //玩家充值页面
 
     //给子代理商的充值记录
     Route::get('top-up/child', 'ViewController@topUpChild');
