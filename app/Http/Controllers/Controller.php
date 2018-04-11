@@ -33,4 +33,12 @@ class Controller extends BaseController
         OperationLogs::add(request()->user()->id, request()->path(), request()->method(),
             $message, request()->header('User-Agent'), json_encode(request()->all()));
     }
+
+    public function res($msg)
+    {
+        return [
+            //'code' => -1,
+            'message' => $msg,
+        ];
+    }
 }
