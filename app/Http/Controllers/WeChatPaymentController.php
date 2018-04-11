@@ -185,8 +185,9 @@ class WeChatPaymentController extends Controller
             $order = WxOrder::find($request->out_trade_no);
             $notify = new \stdClass();
             $notify->transaction_id = 'test';
+
             $notify->time_end = Carbon::now()->toDateTimeString();
-            $this->orderPaymentSucceed($order, $notify);
+            return $this->orderPaymentSucceed($order, $notify);
         }
 
         $response = $this->orderApp->payment->handleNotify(function ($notify, $successful) {
