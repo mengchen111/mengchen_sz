@@ -10,11 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-//auth()->loginUsingId(1);
+//auth()->loginUsingId(11);
 Route::get('/', 'HomeController@index');
-Route::get('calc', function (\App\Services\CalcWxOrderRebate $orderRebate){
-    $orderRebate->syncCalcData('2018-4');
-});
+//Route::get('calc', function (\App\Services\CalcWxOrderRebate $orderRebate){
+//    $orderRebate->syncCalcData('2018-4');
+//});
 
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');

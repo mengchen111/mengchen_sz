@@ -59,9 +59,9 @@
 
 
                     <div class="row">
-                        <div class="col-xs-3">
+                        <div class="col-md-3 col-xs-6">
                             <div class="info-box">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
+                                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">累计返利总额</span>
                                     <span class="info-box-number">
@@ -70,9 +70,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-md-3 col-xs-6">
                             <div class="info-box">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
+                                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">已提现总额</span>
                                     <span class="info-box-number">
@@ -81,9 +81,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-md-3 col-xs-6">
                             <div class="info-box">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
+                                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">等待提现总额</span>
                                     <span class="info-box-number">
@@ -92,9 +92,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-md-3 col-xs-6">
                             <div class="info-box">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
+                                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">提现余额</span>
                                     <span class="info-box-number">
@@ -106,7 +106,7 @@
 
                     </div>
                     <div class="row">
-                        <div class="col-md-12 col-xs-12">
+                        <div class="col-md-12 col-xs-12 vue-table">
                             <my-vuetable
                                     :table-url="tableUrl"
                                     :table-fields="tableFields"
@@ -129,7 +129,7 @@
 
 </div>
 <!-- ./wrapper -->
-
+<link rel="stylesheet" type="text/css" href="/css/admin/order/rebates.css" />
 <script src="/dist/webpack/agent/pay/rebates.js"></script>
 </body>
 </html>
