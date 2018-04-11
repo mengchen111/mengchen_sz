@@ -56,6 +56,6 @@ class WxOrder extends Model
 
     public function scopeFinishedOrder($query)
     {
-        return $query->where('order_status',2)->where('item_delivery_status',1)->whereNotNull('paid_at');
+        return $query->where('order_status',4)->where('item_delivery_status',1)->whereNotNull('paid_at');
     }
 }

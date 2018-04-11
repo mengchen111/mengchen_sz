@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Agent;
 
+use App\Exceptions\CustomException;
 use App\Exceptions\WithdrawalException;
 use App\Http\Requests\AgentRequest;
 use App\Http\Controllers\Controller;
@@ -35,23 +36,18 @@ class WithdrawalController extends Controller
         $rebate_balance = $rebate_count - $has_withdrawal - $wait_withdrawal;
         $amount = $request->get('amount');
         if ($rebate_balance < $amount) {
-            return [
-                'error' => '你的余额不足,剩余提现余额为：' . $rebate_balance
-            ];
+            throw new CustomException('你的余额不足,剩余提现余额为：' . $rebate_balance);
         }
         if (!in_array($amount, $this->amountLimit)) {
-            return [
-                'error' => '提现金额不在规定范围'
-            ];
+            throw new CustomException('提现金额不在规定范围');
         }
         $contact_type = $request->get('contact_type', 0);
         $data = $request->all();
         $data[$this->contactType[$contact_type]] = $data['contact'];
 
         $result = auth()->user()->withdrawals()->create($data);
-        return [
-            'message' => '提交申请' . ($result ? '成功' : '失败')
-        ];
+
+        return $this->res('提交申请' . ($result ? '成功' : '失败'));
     }
 
     public function amountLimit(AgentRequest $request)

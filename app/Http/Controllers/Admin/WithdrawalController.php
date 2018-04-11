@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\CustomException;
 use App\Http\Requests\AdminRequest;
 use App\Models\Withdrawal;
 use App\Services\WithdrawalStatisticsService;
@@ -32,9 +33,7 @@ class WithdrawalController extends Controller
         //审核拒绝 直接改数据库
         if ($request->get('status') == 3) {
             $result = $withdrawal->update($request->all());
-            return [
-                'message' => '操作' . ($result ? '成功' : '失败')
-            ];
+            return $this->res('操作' . ($result ? '成功' : '失败'));
         }
         $user = $withdrawal->user;
         if ($user) {
@@ -43,17 +42,12 @@ class WithdrawalController extends Controller
             $amount = $rebate_count - $has_withdrawal;
             //管理员审核 ：总返利 – 已提现金额 >= 提现金额
             if ($amount < $withdrawal->amount) {
-                return [
-                    'error' => '该用户提现金额不足'
-                ];
+                throw new CustomException('该用户提现金额不足');
             }
             $result = $withdrawal->update($request->all());
-            return [
-                'message' => '操作' . ($result ? '成功' : '失败')
-            ];
+
+            return $this->res('操作' . ($result ? '成功' : '失败'));
         }
-        return [
-            'error' => '用户不存在'
-        ];
+        throw new CustomException('用户不存在');
     }
 }

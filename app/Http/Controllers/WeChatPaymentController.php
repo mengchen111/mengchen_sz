@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\WeChatPaymentException;
+use App\Exceptions\CustomException;
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\AgentRequest;
 use App\Models\WxOrder;
@@ -22,7 +22,7 @@ class WeChatPaymentController extends Controller
     use WeChatPaymentTrait;
     protected $orderApp;
     protected $notifyUrl;
-    protected $orderBodyPrefix = '梦晨网络-';
+    protected $orderBodyPrefix = '壹壹棋牌-';
     protected $itemType = 1; //房卡
 
     public function __construct(Request $request)
@@ -161,7 +161,7 @@ class WeChatPaymentController extends Controller
         $order->order_err_msg = $msg;
         $order->save();
 
-        throw new WeChatPaymentException($msg);
+        throw new CustomException($msg);
     }
 
     protected function orderPreparationSucceed($order, $result)
@@ -185,7 +185,7 @@ class WeChatPaymentController extends Controller
             $order = WxOrder::find($request->out_trade_no);
             $notify = new \stdClass();
             $notify->transaction_id = 'test';
-            $notify->time_end = Carbon::now()->timestamp;
+            $notify->time_end = Carbon::now()->toDateTimeString();
             $this->orderPaymentSucceed($order, $notify);
         }
 

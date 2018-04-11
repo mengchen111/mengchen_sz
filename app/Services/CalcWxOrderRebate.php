@@ -31,7 +31,7 @@ class CalcWxOrderRebate
     {
         //跑订单表，求当月或上月金额总和
         $orders = $this->getDateOrders($date);
-        if (!$orders){
+        if (!$orders) {
             return false;
         }
         //获取返利规则表数据
@@ -57,7 +57,7 @@ class CalcWxOrderRebate
 
         $model = $model->whereYear('paid_at', $year)->whereMonth('paid_at', $month)->groupBy('user_id')->get();
         $orders = [];
-        if ($model){
+        if ($model) {
             foreach ($model as $val) {
                 $orders[] = [
                     'user_id' => $val->user_id,
@@ -79,19 +79,15 @@ class CalcWxOrderRebate
 
         foreach ($users as $user) {
             if ($result = $this->user->find($user['user_id'])->toArray()) {
-                if ($result['parent_id'] <= 1) {
-                    continue;
-                } else {
-                    $this->rebate[] = [
-                        'user_id' => $result['id'],
-                        'children_id' => $result['id'],
-                        'total_amount' => $user['total'],
-                        'rebate_at' => $date,
-                        'rebate_price' => $user['total'] * ($user['rebate'] / 100),
-                        'rebate_rule_id' => $user['rebate_rule_id'],
-                    ];
-                    $this->findAgent($result, $user, $date);
-                }
+                $this->rebate[] = [
+                    'user_id' => $result['id'],
+                    'children_id' => $result['id'],
+                    'total_amount' => $user['total'],
+                    'rebate_at' => $date,
+                    'rebate_price' => $user['total'] * ($user['rebate'] / 100),
+                    'rebate_rule_id' => $user['rebate_rule_id'],
+                ];
+                $this->findAgent($result, $user, $date);
             }
         }
     }
@@ -170,9 +166,10 @@ class CalcWxOrderRebate
     {
         $rebates = $this->rebate;
         foreach ($rebates as $rebate) {
+            list($year, $month, $day) = explode('-', $rebate['rebate_at']);
             $result = Rebate::where('user_id', $rebate['user_id'])
                 ->where('children_id', $rebate['children_id'])
-                ->where('rebate_at', $rebate['rebate_at'])->first();
+                ->whereYear('rebate_at', $year)->whereMonth('rebate_at', $month)->first();
             if ($result) {
                 $result->update($rebate);
             } else {

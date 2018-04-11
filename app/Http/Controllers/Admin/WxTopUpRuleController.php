@@ -21,9 +21,7 @@ class WxTopUpRuleController extends Controller
         $this->addLog('添加微信充值规则');
 
         $result = WxTopUpRule::create($request->all());
-        return [
-            'message' => '添加微信充值规则' . ($result ? '成功' : '失败'),
-        ];
+        return $this->res('添加微信充值规则' . ($result ? '成功' : '失败'));
     }
 
     public function update(AdminRequest $request, WxTopUpRule $rule)
@@ -32,9 +30,7 @@ class WxTopUpRuleController extends Controller
         $this->addLog('修改微信充值规则');
 
         $result = $rule->update($request->all());
-        return [
-             'message' => '修改微信充值规则' . ($result ? '成功' : '失败'),
-        ];
+        return $this->res('修改微信充值规则' . ($result ? '成功' : '失败'));
     }
 
     public function destroy(AdminRequest $request, WxTopUpRule $rule)
@@ -42,9 +38,8 @@ class WxTopUpRuleController extends Controller
         $this->addLog('删除微信充值规则');
 
         $result = $rule->delete();
-        return [
-            'message' => '删除微信充值规则' . ($result ? '成功' : '失败'),
-        ];
+
+        return $this->res('删除微信充值规则' . ($result ? '成功' : '失败'));
     }
 
     protected function validator(AdminRequest $request)
