@@ -27,6 +27,11 @@ class CalcWxOrderRebate
         $this->user = $user;
     }
 
+    /**
+     * 可传入时间 指定具体某个月
+     * @param string $date
+     * @return bool
+     */
     public function syncCalcData($date = '')
     {
         //跑订单表，求当月或上月金额总和
@@ -41,8 +46,8 @@ class CalcWxOrderRebate
         //用户上级代理商 调用$this->rebate
         $this->getHigherAgent($users, $date);
         //入库返利
+        $this->saveRebate();
         return $this->rebate;
-//        $this->saveRebate();
     }
 
     /**
