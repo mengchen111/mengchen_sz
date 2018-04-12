@@ -11,11 +11,11 @@
 |
 */
 //auth()->loginUsingId(11);
-Route::get('/', 'HomeController@index');
 //Route::get('calc', function (\App\Services\CalcWxOrderRebate $orderRebate){
-//    $orderRebate->syncCalcData('2018-4');
+//    var_dump($orderRebate->syncCalcData());
 //});
 
+Route::get('/', 'HomeController@index');
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');

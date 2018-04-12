@@ -41,7 +41,8 @@ class CalcWxOrderRebate
         //用户上级代理商 调用$this->rebate
         $this->getHigherAgent($users, $date);
         //入库返利
-        $this->saveRebate();
+        return $this->rebate;
+//        $this->saveRebate();
     }
 
     /**
@@ -100,7 +101,8 @@ class CalcWxOrderRebate
      */
     protected function findAgent($user, $fdata, $date)
     {
-        if ($user['parent_id'] <= 1) {
+        //当 父类id <= 1(也就是管理员) || 异常情况 id == parent_id 跳出
+        if ($user['parent_id'] <= 1 || $user['id'] == $user['parent_id']) {
             return;
         } else {
             $result = $this->user->find($user['parent_id'])->toArray();
@@ -160,7 +162,7 @@ class CalcWxOrderRebate
     }
 
     /**
-     * 为防止 入库多条重复的数据，所以判断一下是否存在
+     * 为防止重复调用 入库多条重复的数据，所以判断一下是否存在
      */
     protected function saveRebate()
     {

@@ -45,7 +45,7 @@ $factory->define(App\Models\WxOrder::class, function (Faker\Generator $faker) {
         'out_trade_no' => str_random(),
         'total_fee' => $rule->price * 100,
         'body' => $rule->remark,
-        'order_status' => 2,
+        'order_status' => 4,
         'item_delivery_status' => 1,
         'paid_at' => $time,
     ];
