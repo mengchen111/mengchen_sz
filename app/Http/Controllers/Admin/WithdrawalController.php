@@ -35,6 +35,7 @@ class WithdrawalController extends Controller
             $result = $withdrawal->update($request->all());
             return $this->res('操作' . ($result ? '成功' : '失败'));
         }
+        //提现用户
         $user = $withdrawal->user;
         if ($user) {
             $rebate_count = $statisticsService->rebateCount($user);

@@ -34,6 +34,8 @@ class CalcWxOrderRebate
      */
     public function syncCalcData($date = '')
     {
+        $date = $this->transDate($date);
+
         //跑订单表，求当月或上月金额总和
         $orders = $this->getDateOrders($date);
         if (!$orders) {
@@ -55,10 +57,9 @@ class CalcWxOrderRebate
      * @param string $date
      * @return array
      */
-    protected function getDateOrders($date = '')
+    protected function getDateOrders($date)
     {
         $model = $this->order->select('user_id', DB::raw('sum(total_fee) as total'))->finishedOrder();
-        $date = $this->transDate($date);
         list($year, $month, $day) = explode('-', $date);
 
         $model = $model->whereYear('paid_at', $year)->whereMonth('paid_at', $month)->groupBy('user_id')->get();
@@ -81,8 +82,6 @@ class CalcWxOrderRebate
      */
     protected function getHigherAgent($users, $date)
     {
-        $date = $this->transDate($date);
-
         foreach ($users as $user) {
             if ($result = $this->user->find($user['user_id'])->toArray()) {
                 $this->rebate[] = [
@@ -142,7 +141,7 @@ class CalcWxOrderRebate
         }
         //返回 达到返利规则 的用户
         return array_filter($orders, function ($val) {
-            return isset($val['rebate_rate']) || isset($val['rebate_rule_id']);
+            return isset($val['rebate_rate']) && isset($val['rebate_rule_id']);
         });
     }
 
