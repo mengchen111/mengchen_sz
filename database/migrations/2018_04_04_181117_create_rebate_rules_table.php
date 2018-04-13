@@ -15,7 +15,7 @@ class CreateRebateRulesTable extends Migration
     {
         Schema::create('rebate_rules', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('price')->comment('金额(单位分)');
+            $table->unsignedInteger('price')->comment('金额(单位元)');
             $table->unsignedDecimal('rate')->comment('返利比例单位 %');
             $table->string('remark')->nullable();
             $table->timestamps();

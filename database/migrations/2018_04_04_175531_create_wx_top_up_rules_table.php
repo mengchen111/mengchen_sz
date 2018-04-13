@@ -18,7 +18,7 @@ class CreateWxTopUpRulesTable extends Migration
             $table->unsignedInteger('amount')->default(0)->comment('购买数量');
             $table->unsignedInteger('give')->default(0)->comment('赠送数量');
             $table->unsignedInteger('first_give')->default(0)->comment('首次赠送(百分比%)');
-            $table->unsignedInteger('price')->comment('价格');
+            $table->unsignedInteger('price')->comment('价格(单位分)');
             $table->string('remark')->nullable()->comment('备注');
             $table->timestamps();
         });
