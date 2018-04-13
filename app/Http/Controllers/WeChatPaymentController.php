@@ -77,8 +77,18 @@ class WeChatPaymentController extends Controller
                 'qr_code' => $this->generateQrCodeStr($result->code_url),
             ];
         }
-        return json_encode($returnResult, JSON_UNESCAPED_SLASHES);
 
+        //测试环境无需等待回调，直接发货
+        $this->doWxCallbackInTestEnv($request, $order);
+        return json_encode($returnResult, JSON_UNESCAPED_SLASHES);
+    }
+
+    protected function doWxCallbackInTestEnv(Request $request, WxOrder $order)
+    {
+        if (env('APP_ENV') === 'local' or env('APP_ENV') === 'test)') {
+            $request->merge(['out_trade_no' => $order->out_trade_no]);
+            $this->getNotification($request);
+        }
     }
 
     protected function generateQrCodeStr($code_url)
