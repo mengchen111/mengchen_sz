@@ -111,7 +111,7 @@ new Vue({
   watch: {
     rule_price: function (val) {
       let rule = _.find(this.wxTopUpRuleData, (v) => v.id === val)
-      this.totalFee = rule.price
+      this.totalFee = rule.price_yuan
       this.createOrderData.wx_top_up_rule_id = val
 
     },

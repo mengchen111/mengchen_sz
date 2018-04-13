@@ -44,8 +44,8 @@ new Vue({
         callback: 'transFirstGive',
       },
       {
-        name: 'price',
-        title: '价格',
+        name: 'price_yuan',
+        title: '价格(元)',
       },
       {
         name: 'created_at',
@@ -72,7 +72,7 @@ new Vue({
       this.editedForm.amount = data.amount
       this.editedForm.give = data.give
       this.editedForm.first_give = data.first_give
-      this.editedForm.price = data.price
+      this.editedForm.price = data.price_yuan
       this.editedForm.remark = data.remark
     },
 

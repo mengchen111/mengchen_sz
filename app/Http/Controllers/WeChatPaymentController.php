@@ -102,7 +102,7 @@ class WeChatPaymentController extends Controller
     {
         $rule = WxTopUpRule::find($data['wx_top_up_rule_id']);
         $data['out_trade_no'] = $this->createOutTradeNumber();
-        $data['total_fee'] = $rule->price * 100;
+        $data['total_fee'] = $rule->price;
         $data['body'] = $this->orderBodyPrefix . $rule->remark;
         $data['spbill_create_ip'] = $request->getClientIp();
         $data['user_id'] = auth()->id();
