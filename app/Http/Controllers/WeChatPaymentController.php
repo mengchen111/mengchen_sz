@@ -85,7 +85,7 @@ class WeChatPaymentController extends Controller
 
     protected function doWxCallbackInTestEnv(Request $request, WxOrder $order)
     {
-        if (env('APP_ENV') === 'local' or env('APP_ENV') === 'test)') {
+        if (env('APP_ENV') === 'local' or env('APP_ENV') === 'test') {
             $request->merge(['out_trade_no' => $order->out_trade_no]);
             $this->getNotification($request);
         }
@@ -191,7 +191,7 @@ class WeChatPaymentController extends Controller
         $this->addLog('微信支付订单回调接口');
 
         //测试环境手动测试发货流程
-        if (env('APP_ENV') === 'local' or env('APP_ENV') === 'test)') {
+        if (env('APP_ENV') === 'local' or env('APP_ENV') === 'test') {
             $order = WxOrder::where('out_trade_no', ($request->out_trade_no))->first();
             $notify = new \stdClass();
             $notify->transaction_id = 'test';
