@@ -78,6 +78,12 @@ new Vue({
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.$root.eventHub.$emit('MyVuetable:refresh')
+
+          //删除模态框 显示支付二维码
+          jQuery('#order-creation-modal').hide()
+          jQuery('.modal-backdrop').remove()
+          _self.activatedRow = res.data
+          jQuery('#order-payment-modal-button').click()
         })
         .catch(function (err) {
           alert(err)
