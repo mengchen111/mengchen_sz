@@ -192,7 +192,7 @@ class WeChatPaymentController extends Controller
 
         //测试环境手动测试发货流程
         if (env('APP_ENV') === 'local' or env('APP_ENV') === 'test)') {
-            $order = WxOrder::find($request->out_trade_no);
+            $order = WxOrder::where('out_trade_no', ($request->out_trade_no))->first();
             $notify = new \stdClass();
             $notify->transaction_id = 'test';
 
@@ -201,7 +201,7 @@ class WeChatPaymentController extends Controller
         }
 
         $response = $this->orderApp->payment->handleNotify(function ($notify, $successful) {
-            $order = WxOrder::find($notify->out_trade_no);
+            $order = WxOrder::where('out_trade_no', ($notify->out_trade_no))->first();
 
             if (!$order) {
                 return 'Order not exist';
