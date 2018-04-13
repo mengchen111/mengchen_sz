@@ -48,7 +48,7 @@ class WxTopUpRuleController extends Controller
             'amount' => 'required|integer',
             'give' => 'required|integer',
             'first_give' => 'required',
-            'price' => 'required|integer',
+            'price' => 'required',
             'remark' => 'required',
         ]);
     }
