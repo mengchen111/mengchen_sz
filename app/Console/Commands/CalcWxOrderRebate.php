@@ -3,10 +3,9 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
-use Illuminate\Console\Command;
 use App\Services\CalcWxOrderRebate as WxOrderRebate;
 
-class CalcWxOrderRebate extends Command
+class CalcWxOrderRebate extends BaseCommand
 {
     /**
      * The name and signature of the console command.
@@ -38,7 +37,7 @@ class CalcWxOrderRebate extends Command
         $options = $this->options();
         $date = $this->transDate($options['date']);
         $orderRebate->syncCalcData($date);
-        $this->info('计算微信订单返利成功');
+        $this->logInfo('计算微信订单返利成功');
     }
     protected function transDate($date)
     {
