@@ -11,9 +11,9 @@
 |
 */
 //auth()->loginUsingId(11);
-Route::get('calc', function (\App\Services\CalcWxOrderRebate $orderRebate){
-    var_dump($orderRebate->syncCalcData('2018-04'));
-});
+//Route::get('calc', function (\App\Services\CalcWxOrderRebate $orderRebate){
+//    var_dump($orderRebate->syncCalcData('2018-04'));
+//});
 
 Route::get('/', 'HomeController@index');
 // Authentication Routes...
