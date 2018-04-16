@@ -171,16 +171,18 @@ class CalcWxOrderRebate
     protected function saveRebate()
     {
         $rebates = $this->rebate;
-        foreach ($rebates as $rebate) {
-            list($year, $month, $day) = explode('-', $rebate['rebate_at']);
-            //相同年月的 更新，否则 新增
-            $result = Rebate::where('user_id', $rebate['user_id'])
-                ->where('children_id', $rebate['children_id'])
-                ->whereYear('rebate_at', $year)->whereMonth('rebate_at', $month)->first();
-            if ($result) {
-                $result->update($rebate);
-            } else {
-                Rebate::create($rebate);
+        if ($rebates) {
+            foreach ($rebates as $rebate) {
+                list($year, $month, $day) = explode('-', $rebate['rebate_at']);
+                //相同年月的 更新，否则 新增
+                $result = Rebate::where('user_id', $rebate['user_id'])
+                    ->where('children_id', $rebate['children_id'])
+                    ->whereYear('rebate_at', $year)->whereMonth('rebate_at', $month)->first();
+                if ($result) {
+                    $result->update($rebate);
+                } else {
+                    Rebate::create($rebate);
+                }
             }
         }
     }
