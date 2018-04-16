@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Services\CalcWxOrderRebate as WxOrderRebate;
 
@@ -12,7 +13,7 @@ class CalcWxOrderRebate extends Command
      *
      * @var string
      */
-    protected $signature = 'admin:calc-wx-order-rebate';
+    protected $signature = 'admin:calc-wx-order-rebate {--date= : date time}';
 
     /**
      * The console command description.
@@ -34,7 +35,19 @@ class CalcWxOrderRebate extends Command
 
     public function handle(WxOrderRebate $orderRebate)
     {
-        $orderRebate->syncCalcData();
+        $options = $this->options();
+        $date = $this->transDate($options['date']);
+        $orderRebate->syncCalcData($date);
         $this->info('计算微信订单返利成功');
+    }
+    protected function transDate($date)
+    {
+        //如果为空则 找上个月的数据
+        if (empty($date)) {
+            $date = Carbon::parse('-1 month')->format('Y-m-d');
+        } else {
+            $date = Carbon::parse($date)->format('Y-m-d');
+        }
+        return $date;
     }
 }
