@@ -78,7 +78,7 @@ class AgentController extends Controller
     {
         Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'account' => 'required|string|max:255|unique:users',
+            'account' => 'required|string|max:190|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'email' => 'string|email|max:255',
             'phone' => 'integer|digits:11',
