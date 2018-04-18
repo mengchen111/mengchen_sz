@@ -135,14 +135,16 @@ class AgentController extends Controller
             'group_id' => 'integer|not_in:1|exists:groups,id',   //不能将代理商改成管理员
             'parent_account' => 'string',
         ])->validate();
-
-        $data = $request->intersect(
-            'name', 'account', 'email', 'phone', 'group_id'
+        $data = $request->only(
+            'name', 'account', 'email', 'phone', 'group_id', 'active'
         );
-
+        // 过滤掉为 null 的值， 0 不过滤
+        $data = array_filter($data,function ($val){
+            return $val !== null;
+        });
         //更改代理商级别
         if ($request->has('group_id')) {
-            if (! $this->ifCanChangeGroup($user, $request->input('group_id'))) {
+            if (!$this->ifCanChangeGroup($user, $request->input('group_id'))) {
                 throw new CustomException('新的代理商级别不能等于或低于其下级代理商的级别');
             }
             $data = array_merge($data, ['group_id' => $request->input('group_id')]);
@@ -168,7 +170,6 @@ class AgentController extends Controller
             }
             $data = array_merge($data, ['parent_id' => $parent->id]);
         }
-
         $user->update($data);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
@@ -197,7 +198,7 @@ class AgentController extends Controller
             'password' => 'required|min:6'
         ])->validate();
 
-        $data = ['password' => bcrypt($request->get('password')) ];
+        $data = ['password' => bcrypt($request->get('password'))];
 
         $user->update($data);
 
@@ -287,4 +288,5 @@ class AgentController extends Controller
         }
         return Paginator::paginate($data, $this->per_page, $this->page);
     }
+
 }

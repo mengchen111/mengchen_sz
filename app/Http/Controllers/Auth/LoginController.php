@@ -61,8 +61,8 @@ class LoginController extends Controller
     /**
      * The user has been authenticated.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
+     * @param  \Illuminate\Http\Request $request
+     * @param  mixed $user
      * @return mixed
      */
     protected function authenticated(Request $request, $user)
@@ -75,5 +75,10 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         return Auth::user()->is_agent ? $this->agentHomePath : $this->adminHomePath;
+    }
+
+    protected function credentials(Request $request)
+    {
+        return array_merge($request->only($this->username(), 'password'), ['active' => 1]);
     }
 }

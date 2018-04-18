@@ -136,6 +136,7 @@ Route::group([
     Route::put('agent/pass/{user}', 'AgentController@updatePass')->where('user', '[0-9]+');
     Route::get('agent/bills', 'AgentController@getItemSoldRecords');
     Route::get('agent/card/valid-consumed-list', 'AgentController@getAgentValidCardConsumedRecord');
+    Route::patch('agent/banned/{user}','AgentController@banned'); //禁止代理商
 
     Route::get('top-up/admin', 'TopUpController@admin2AgentHistory');
     Route::get('top-up/agent', 'TopUpController@agent2AgentHistory');
@@ -238,7 +239,7 @@ Route::group([
 
 //代理商接口
 Route::group([
-    'middleware' => ['auth'],
+    'middleware' => ['auth','agent.active'],
     'prefix' => 'agent/api',
     'namespace' => 'Agent'
 ], function () {
@@ -293,7 +294,7 @@ Route::group([
 
 //代理商视图
 Route::group([
-    'middleware' => ['auth'],
+    'middleware' => ['auth','agent.active'],
     'prefix' => 'agent',
     'namespace' => 'Agent'
 ], function () {

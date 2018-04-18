@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'account', 'password', 'email', 'phone', 'group_id', 'parent_id', 'created_at'
+        'id', 'name', 'account', 'password', 'email', 'phone', 'group_id', 'parent_id', 'created_at', 'active'
     ];
 
     /**
@@ -74,7 +74,7 @@ class User extends Authenticatable
 
     public function getIsAdminAttribute()
     {
-        return (string) $this->attributes['group_id'] === $this->adminGid;
+        return (string)$this->attributes['group_id'] === $this->adminGid;
     }
 
     public function getIsAgentAttribute()
@@ -146,4 +146,5 @@ class User extends Authenticatable
     {
         return $this->hasMany(Withdrawal::class);
     }
+
 }

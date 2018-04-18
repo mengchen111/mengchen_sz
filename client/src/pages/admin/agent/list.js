@@ -23,6 +23,7 @@ new Vue({
       group: '',
       parent: '',
       topUpType: 1,
+      active: 0,
     },       //待编辑的行
     agentType: {
       2: '总代',
@@ -35,6 +36,10 @@ new Vue({
       //2: '金币',
     },
     itemTypeValue: '房卡',
+    isBanned: [
+      '禁止',
+      '正常',
+    ],
     topUpData: {
       typeId: 1,
       amount: null,
@@ -47,6 +52,7 @@ new Vue({
     editApiPrefix: '/admin/api/agent',
     updatePassApiPrefix: '/admin/api/agent/pass',
     deleteApiPrefix: '/admin/api/agent',
+    bannedApiPrefix: '/admin/api/agent/banned',
 
     tableUrl: '/admin/api/agent',
     tableFields: [
@@ -93,6 +99,12 @@ new Vue({
         title: '有效耗卡',
       },
       {
+        name: 'active',
+        title: '是否禁止',
+        callback: 'transActive',
+
+      },
+      {
         name: '__component:table-actions',
         title: '操作',
         titleClass: 'text-center',
@@ -109,6 +121,9 @@ new Vue({
             return inventory.stock
           }
         }
+      },
+      transActive (val){
+        return this.$root.isBanned[val]
       },
       getCoinsCount (inventorys) {
         if (0 === inventorys.length) {
@@ -170,6 +185,7 @@ new Vue({
         account: this.activatedRow.account,
         group_id: _.findKey(this.agentType, (o) => o === this.agentTypeValue),
         parent_account: this.activatedRow.parent.account,
+        active: this.activatedRow.active,
       }
 
       myTools.axiosInstance.put(api, formData)
@@ -211,6 +227,7 @@ new Vue({
           alert(err)
         })
     },
+
   },
 
   mounted: function () {
