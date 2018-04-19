@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\StatisticOnlinePlayer;
 use App\Services\Game\PlayerService;
 use Carbon\Carbon;
+use App\Console\BaseCommand;
 
 class FetchOnlinePlayerCount extends BaseCommand
 {
