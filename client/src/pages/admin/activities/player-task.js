@@ -53,10 +53,6 @@ new Vue({
         title: '是否完成',
       },
       {
-        name: 'is_completed',
-        title: '是否完成',
-      },
-      {
         name: 'count',
         title: '剩余可完成次数',
       },
