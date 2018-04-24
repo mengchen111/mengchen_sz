@@ -33,7 +33,7 @@ class CreateWxTopUpRulesTable extends Migration
                 'amount' => 100,
                 'give' => 0,
                 'first_give' => 50,
-                'price' => 80,
+                'price' => 8000,
                 'remark' => '100张',
                 'created_at' => $time
             ],
@@ -41,7 +41,7 @@ class CreateWxTopUpRulesTable extends Migration
                 'amount' => 300,
                 'give' => 50,
                 'first_give' => 50,
-                'price' => 240,
+                'price' => 24000,
                 'remark' => '300张+赠送50张',
                 'created_at' => $time
             ],
@@ -49,7 +49,7 @@ class CreateWxTopUpRulesTable extends Migration
                 'amount' => 1000,
                 'give' => 200,
                 'first_give' => 50,
-                'price' => 800,
+                'price' => 80000,
                 'remark' => '1000张+赠送200张',
                 'created_at' => $time
             ],
@@ -57,7 +57,7 @@ class CreateWxTopUpRulesTable extends Migration
                 'amount' => 2000,
                 'give' => 500,
                 'first_give' => 50,
-                'price' => 1600,
+                'price' => 160000,
                 'remark' => '2000张+赠送500张',
                 'created_at' => $time
             ],
