@@ -58,7 +58,7 @@ new Vue({
       },
       {
         name: 'count',
-        title: '完成数',
+        title: '剩余可完成次数',
       },
       {
         name: '__component:table-actions',
