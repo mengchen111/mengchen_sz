@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Services\Game\ValidCardConsumedService;
 use Carbon\Carbon;
-use Illuminate\Console\Command;
+use App\Console\BaseCommand;
 use Illuminate\Support\Facades\Cache;
 
 class CacheAgentValidCardLog extends BaseCommand

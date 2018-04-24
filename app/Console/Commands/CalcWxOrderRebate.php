@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Carbon\Carbon;
 use App\Services\CalcWxOrderRebate as WxOrderRebate;
+use App\Console\BaseCommand;
 
 class CalcWxOrderRebate extends BaseCommand
 {

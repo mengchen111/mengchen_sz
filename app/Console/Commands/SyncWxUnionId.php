@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 use App\Services\Game\GameApiService;
 use App\Services\Game\PlayerService;
 use App\Services\WechatService;
+use App\Console\BaseCommand;
 
 class SyncWxUnionId extends BaseCommand
 {

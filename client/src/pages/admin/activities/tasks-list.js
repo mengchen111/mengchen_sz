@@ -75,7 +75,7 @@ new Vue({
       },
       {
         name: 'reward_count',
-        title: '奖励次数',
+        title: '奖励数量',
       },
       {
         name: 'link',

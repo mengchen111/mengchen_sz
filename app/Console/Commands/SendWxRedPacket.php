@@ -7,6 +7,7 @@ use App\Services\Game\GameApiService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use App\Console\BaseCommand;
 
 class SendWxRedPacket extends BaseCommand
 {

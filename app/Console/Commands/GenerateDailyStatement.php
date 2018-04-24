@@ -6,6 +6,7 @@ use App\Models\StatementDaily;
 use App\Services\Game\PlayerService;
 use App\Services\Game\StatementDailyService;
 use Carbon\Carbon;
+use App\Console\BaseCommand;
 
 class GenerateDailyStatement extends BaseCommand
 {
