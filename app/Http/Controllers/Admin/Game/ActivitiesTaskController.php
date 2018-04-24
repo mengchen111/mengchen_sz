@@ -55,6 +55,7 @@ class ActivitiesTaskController extends Controller
             'reward' => 'required|string',      //4_1奖励id（关联goods_type表）和奖励次数
             'daily' => 'required|integer|in:0,1',
             'link' => 'required|string',
+            'count' => 'required|integer'
         ]);
 
         //检查结束时间应该大于开始时间
@@ -62,7 +63,7 @@ class ActivitiesTaskController extends Controller
 
         return $request->only([
             'id', 'name', 'type', 'begin_time', 'end_time',
-            'mission_time', 'target', 'reward', 'daily', 'link',
+            'mission_time', 'target', 'reward', 'daily', 'link', 'count'
         ]);
     }
 
@@ -117,6 +118,7 @@ class ActivitiesTaskController extends Controller
             'reward' => 'required|string',      //4_1奖励id（关联goods_type表）和奖励次数
             'daily' => 'required|integer|in:0,1',
             'link' => 'required|string',
+            'count' => 'required|integer'
         ]);
 
         //检查结束时间应该大于开始时间
@@ -124,7 +126,7 @@ class ActivitiesTaskController extends Controller
 
         return $request->only([
             'name', 'type', 'begin_time', 'end_time', 'mission_time',
-            'target', 'reward', 'daily', 'link',
+            'target', 'reward', 'daily', 'link', 'count'
         ]);
     }
 

@@ -45,10 +45,11 @@ class ActivitiesTasksPlayerController extends Controller
             'task_id' => 'required|integer',
             'process' => 'required|integer',
             'is_completed' => 'required|integer|in:0,1',
+            'count' => 'required|integer'
         ]);
 
         return $request->only([
-            'uid', 'task_id', 'process', 'is_completed',
+            'uid', 'task_id', 'process', 'is_completed', 'count'
         ]);
     }
 
@@ -88,10 +89,11 @@ class ActivitiesTasksPlayerController extends Controller
             'task_id' => 'required|integer',
             'process' => 'required|integer',
             'is_completed' => 'required|integer|in:0,1',
+            'count' => 'required|integer'
         ]);
 
         return $request->only([
-            'uid', 'task_id', 'process', 'is_completed',
+            'uid', 'task_id', 'process', 'is_completed', 'count'
         ]);
     }
 

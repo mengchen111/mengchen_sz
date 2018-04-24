@@ -136,7 +136,6 @@ Route::group([
     Route::put('agent/pass/{user}', 'AgentController@updatePass')->where('user', '[0-9]+');
     Route::get('agent/bills', 'AgentController@getItemSoldRecords');
     Route::get('agent/card/valid-consumed-list', 'AgentController@getAgentValidCardConsumedRecord');
-    Route::patch('agent/banned/{user}','AgentController@banned'); //禁止代理商
 
     Route::get('top-up/admin', 'TopUpController@admin2AgentHistory');
     Route::get('top-up/agent', 'TopUpController@agent2AgentHistory');

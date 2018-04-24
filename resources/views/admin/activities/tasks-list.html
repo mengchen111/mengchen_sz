@@ -125,6 +125,11 @@
                                            v-model.trim="addTaskForm.link" placeholder="链接">
                                 </div>
                                 <div class="form-group">
+                                    <label>可完成次数</label>
+                                    <input name="count" type="number" min="1" class="form-control" required
+                                           v-model.trim="count" placeholder="可完成次数">
+                                </div>
+                                <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
                                 </div>
                             </form>
@@ -198,6 +203,11 @@
                                     <label>链接</label>
                                     <input name="link" type="text" class="form-control" required
                                            v-model.trim="editTaskForm.link" placeholder="链接">
+                                </div>
+                                <div class="form-group">
+                                    <label>可完成次数</label>
+                                    <input name="count" type="number" min="1" class="form-control" required
+                                           v-model.trim="count" placeholder="可完成次数">
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>

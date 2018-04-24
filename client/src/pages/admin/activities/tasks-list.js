@@ -1,4 +1,4 @@
-import { myTools } from '../index.js'
+import {myTools} from '../index.js'
 import MyVuetable from '../../../components/MyVuetable.vue'
 import MyDatePicker from '../../../components/MyDatePicker.vue'
 import MyToastr from '../../../components/MyToastr.vue'
@@ -36,6 +36,7 @@ new Vue({
     taskGoodsTypeName: '',
     taskGoodsCount: 0,
     addTaskForm: {},
+    count: 1,
 
     tableUrl: '/admin/api/activities/task',
     tableFields: [
@@ -81,6 +82,10 @@ new Vue({
         title: '链接',
       },
       {
+        name: 'count',
+        title: '可完成次数',
+      },
+      {
         name: '__component:table-actions',
         title: '操作',
         titleClass: 'text-center',
@@ -110,6 +115,7 @@ new Vue({
       this.editTaskForm.mission_time = data.mission_time
       this.editTaskForm.target = data.target
       this.editTaskForm.link = data.link
+      this.count = data.count
 
       this.taskGoodsTypeName = data.reward_good
       this.taskGoodsCount = data.reward_count
@@ -119,13 +125,14 @@ new Vue({
       let _self = this
       let toastr = this.$refs.toastr
 
-      if (! this.taskGoodsTypeName) {
+      if (!this.taskGoodsTypeName) {
         return toastr.message('奖励不能为空', 'error')
       }
 
       this.editTaskForm.reward = this.formatRewardValue(this.taskGoodsTypeName, this.taskGoodsCount)
       this.editTaskForm.type = _.findKey(this.taskTypeMap, (v) => v === this.taskTypeComment)
       this.editTaskForm.daily = _.findKey(this.ifDailyOptions, (v) => v === this.dailyValue)
+      this.editTaskForm.count = this.count
 
       myTools.axiosInstance.put(this.taskApi, this.editTaskForm)
         .then(function (res) {
@@ -143,19 +150,22 @@ new Vue({
       this.taskGoodsCount = 1
       this.dailyValue = '是'
       this.addTaskForm.mission_time = '00:00:00-23:59:59'
+      this.count = 1
+
     },
 
     addTask () {
       let _self = this
       let toastr = this.$refs.toastr
 
-      if (! this.taskGoodsTypeName) {
+      if (!this.taskGoodsTypeName) {
         return toastr.message('奖励不能为空', 'error')
       }
 
       this.addTaskForm.reward = this.formatRewardValue(this.taskGoodsTypeName, this.taskGoodsCount)
       this.addTaskForm.type = _.findKey(this.taskTypeMap, (v) => v === this.taskTypeComment)
       this.addTaskForm.daily = _.findKey(this.ifDailyOptions, (v) => v === this.dailyValue)
+      this.addTaskForm.count = this.count
 
       myTools.axiosInstance.post(this.taskApi, this.addTaskForm)
         .then(function (res) {

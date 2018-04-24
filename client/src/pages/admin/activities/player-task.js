@@ -28,6 +28,7 @@ new Vue({
     isCompletedValue: '否',
     editTasksPlayerForm: {},
     addTasksPlayerForm: {},
+    count: 0,
 
     tableUrl: '/admin/api/activities/tasks-player',
     tableFields: [
@@ -52,6 +53,14 @@ new Vue({
         title: '是否完成',
       },
       {
+        name: 'is_completed',
+        title: '是否完成',
+      },
+      {
+        name: 'count',
+        title: '完成数',
+      },
+      {
         name: '__component:table-actions',
         title: '操作',
         titleClass: 'text-center',
@@ -67,6 +76,7 @@ new Vue({
       this.editTasksPlayerForm.task_id = data.task.id //编辑玩家任务，不允许编辑任务，不然就等于是创建新的了
       this.editTasksPlayerForm.process = data.process
       this.isCompletedValue = this.isCompletedOptions[data.is_completed]
+      this.count = data.count
     },
 
     editTasksPlayer () {
@@ -75,6 +85,7 @@ new Vue({
 
       //this.editTasksPlayerForm.task_id = _.findKey(this.taskMap, (v) => v === this.taskValue)
       this.editTasksPlayerForm.is_completed = _.findIndex(this.isCompletedOptions, (v) => v === this.isCompletedValue)
+      this.editTasksPlayerForm.count = this.count
 
       myTools.axiosInstance.put(this.tasksPlayerApi, this.editTasksPlayerForm)
         .then(function (res) {
@@ -107,13 +118,14 @@ new Vue({
       this.addTasksPlayerForm.uid = ''
       this.addTasksPlayerForm.process = 0
       this.isCompletedValue = '否'
+      this.count = 0
     },
 
     addTasksPlayer () {
       let _self = this
       let toastr = this.$refs.toastr
 
-      if (! this.taskValue) {
+      if (!this.taskValue) {
         return toastr.message('任务不能为空', 'error')
       }
 
@@ -134,7 +146,7 @@ new Vue({
       let _self = this
       let toastr = this.$refs.toastr
 
-      if (! this.taskValue) {
+      if (!this.taskValue) {
         return toastr.message('请选择一个任务重置，不能为空', 'error')
       }
 
