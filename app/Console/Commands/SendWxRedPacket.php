@@ -44,6 +44,7 @@ class SendWxRedPacket extends BaseCommand
     {
         $this->checkEnv();  //检查是否是生产环境是否可以发送红包
 
+        $this->logInfo('获取红包条目');
         $redPacketSendList = $this->getRedPacketSendList();          //调用后端接口获取需要发送的openid列表
         foreach ($redPacketSendList as $item) {
             if ($item['player']['openid'] === null) {  //如果未找到此用户的openid，那么忽略之
