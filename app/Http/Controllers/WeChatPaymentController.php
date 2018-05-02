@@ -37,7 +37,7 @@ class WeChatPaymentController extends Controller
     {
         $model = app(WxOrder::class);
         if ($request->has('filter')) {
-            $model->where('user_id', $request->get('filter'));
+            $model = $model->where('user_id', $request->get('filter'));
         }
         return $model->latest()->paginate($this->per_page);
     }
@@ -117,10 +117,6 @@ class WeChatPaymentController extends Controller
         $data['spbill_create_ip'] = $request->getClientIp();
         $data['user_id'] = auth()->id();
 
-        $orders = auth()->user()->wxOrders;
-        if ($orders->isEmpty()) {
-            $data['is_first_order'] = 1;
-        }
         return WxOrder::create($data);
     }
 
@@ -230,6 +226,11 @@ class WeChatPaymentController extends Controller
         $order->transaction_id = $notify->transaction_id;
         $order->paid_at = $notify->time_end;
 
+        // 判断用户是否是首次充值成功
+        $userOrders = $order->user->hasOrders()->get();
+        if ($userOrders->isEmpty()) {
+            $order->is_first_order = 1;
+        }
         $order->save();
 
         //库存增加
@@ -265,4 +266,76 @@ class WeChatPaymentController extends Controller
             }
         }, 5);
     }
+
+    public function search(AdminRequest $request, $orderNo = '')
+    {
+        if (empty($orderNo)){
+            return $this->transSearch();
+        }
+        return $this->transSearch($this->searchQuery($orderNo, 'out_trade_no', 'query', false));
+    }
+
+    public function transSearch($data = '')
+    {
+        return [
+            'data' => [$data]
+        ];
+    }
+
+    /**
+     * 查询微信订单
+     * @param $orderNo string 订单号
+     * @param string $condition string 内部订单号查询 / 微信订单号查询
+     */
+    public function searchOrder($orderNo, $condition = 'out_trade_no')
+    {
+        switch ($condition) {
+            case 'out_trade_no':
+                $data = $this->searchQuery($orderNo, $condition, 'query');
+                break;
+            case 'transaction_id':
+                $data = $this->searchQuery($orderNo, $condition, 'queryByTransactionId');
+                break;
+            default:
+                $data = $this->searchQuery($orderNo, 'out_trade_no', 'query');
+        }
+        return $data;
+    }
+
+    /**
+     * 查询微信订单
+     * @param $orderNo string 订单号
+     * @param $field string 微信订单号 / 系统订单号
+     * @param $method string 不同查询方法
+     * @param $delivery bool 是否发货
+     * @throws CustomException
+     */
+    public function searchQuery($orderNo, $field, $method, $delivery = true)
+    {
+        $this->addLog('查询微信支付订单');
+
+        $order = WxOrder::where($field, $orderNo)->first();
+        if (!$order) {
+            throw new CustomException('订单不存在');
+        }
+
+        if ($delivery && $order->isFinished()) {
+            throw new CustomException('订单已经支付成功，并发货');
+        }
+
+        $result = $this->orderApp->payment->{$method}($orderNo);
+
+        if ($result->return_code == 'SUCCESS' && $result->trade_state == 'SUCCESS') {
+            //金额相同 发货
+            if ($result->total_fee == $order->total_fee) {
+                if ($delivery) {
+                    return $this->orderPaymentSucceed($order, $result);
+                }
+                return $result;
+            }
+            throw new CustomException('内部订单金额与微信订单比对不一致，检查订单号是否有误');
+        }
+        throw new CustomException($result->return_msg);
+    }
+
 }

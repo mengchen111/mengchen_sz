@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\CacheAgentValidCardLog;
 use App\Console\Commands\CalcWxOrderRebate;
 use App\Console\Commands\FetchOnlinePlayerCount;
+use App\Console\Commands\SearchWxOrder;
 use App\Console\Commands\SendWxRedPacket;
 use App\Console\Commands\SyncWxUnionId;
 use Illuminate\Console\Scheduling\Schedule;
@@ -26,12 +27,13 @@ class Kernel extends ConsoleKernel
         SendWxRedPacket::class,
         SyncWxUnionId::class,
         CalcWxOrderRebate::class,
+        SearchWxOrder::class,
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)

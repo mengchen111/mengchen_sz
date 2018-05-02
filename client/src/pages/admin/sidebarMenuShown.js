@@ -136,6 +136,9 @@ export default {
     rebates: {
       isActive: false,
     },
+    search: {
+      isActive: false,
+    },
   },
 
   system: {

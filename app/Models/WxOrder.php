@@ -63,4 +63,9 @@ class WxOrder extends Model
     {
         return $query->where('order_status',4)->where('item_delivery_status',1)->whereNotNull('paid_at');
     }
+
+    public function isFinished()
+    {
+        return $this->order_status == 4 && $this->item_delivery_status == 1 && $this->paid_at != '';
+    }
 }

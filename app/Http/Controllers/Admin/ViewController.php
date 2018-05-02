@@ -191,4 +191,9 @@ class ViewController extends Controller
     {
         return view('admin.rules.rebate');
     }
+
+    public function searchWxOrder(Request $request)
+    {
+        return view('admin.order.search');
+    }
 }

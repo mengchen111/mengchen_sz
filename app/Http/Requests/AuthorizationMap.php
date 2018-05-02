@@ -142,6 +142,9 @@ trait AuthorizationMap
             'rebates' => [
                 'ifShown' => true,
             ],
+            'search' => [
+                'ifShown' => true,
+            ],
         ],
         'system' => [
             'ifShown' => true,

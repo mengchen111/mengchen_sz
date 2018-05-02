@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-//auth()->loginUsingId(11);
+//auth()->loginUsingId(13);
 //Route::get('calc', function (\App\Services\CalcWxOrderRebate $orderRebate){
 //    var_dump($orderRebate->syncCalcData('2018-04'));
 //});
@@ -51,6 +51,8 @@ Route::group([
         Route::get('order/agent','WeChatPaymentController@agentOrder'); //代理商查看列表
         Route::get('order/agent/{order}','WeChatPaymentController@getAgentOrder'); //代理商查看
         Route::post('order','WeChatPaymentController@store');
+
+        Route::get('order/search/{orderNo?}','WeChatPaymentController@search'); // 微信订单查询
     });
 
     Route::any('order/notification','WeChatPaymentController@getNotification'); //通知
@@ -233,6 +235,9 @@ Route::group([
     //规则
     Route::get('rules/wx-top-up','ViewController@wxTopUpRule');
     Route::get('rules/rebate','ViewController@rebateRule');
+
+    // 微信订单
+    Route::get('order/search','ViewController@searchWxOrder');
 
 });
 

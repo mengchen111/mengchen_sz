@@ -137,6 +137,15 @@ class User extends Authenticatable
         return $this->hasMany(WxOrder::class);
     }
 
+    /**
+     * 判断订单是否完成支付
+     * @return mixed
+     */
+    public function hasOrders()
+    {
+        return $this->wxOrders()->finishedOrder();
+    }
+
     public function rebates()
     {
         return $this->hasMany(Rebate::class);

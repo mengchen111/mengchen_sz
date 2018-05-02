@@ -117,6 +117,7 @@
                     <li :class="{ active: uri.order.wechat.isActive }" v-show="isAdmin || shownMenu.order.wechat.ifShown"><a href="/admin/order/wechat"><i class="fa fa-circle-o"></i>微信订单列表</a></li>
                     <li :class="{ active: uri.order.withdrawals.isActive }" v-show="isAdmin || shownMenu.order.withdrawals.ifShown"><a href="/admin/order/withdrawals"><i class="fa fa-circle-o"></i>提现列表</a></li>
                     <li :class="{ active: uri.order.rebates.isActive }" v-show="isAdmin || shownMenu.order.rebates.ifShown"><a href="/admin/order/rebates"><i class="fa fa-circle-o"></i>代理商返现管理</a></li>
+                    <li :class="{ active: uri.order.search.isActive }" v-show="isAdmin || shownMenu.order.search.ifShown"><a href="/admin/order/search"><i class="fa fa-circle-o"></i>微信订单查询</a></li>
                 </ul>
             </li>
             <li class="treeview" :class="{ active: uri.system.isActive }" v-show="isAdmin || shownMenu.system.ifShown">

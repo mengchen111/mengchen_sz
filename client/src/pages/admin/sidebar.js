@@ -134,6 +134,9 @@ new Vue({
         rebates: {
           isActive: false,
         },
+        search: {
+          isActive: false,
+        },
       },
       rules: {
         isActive: false,
