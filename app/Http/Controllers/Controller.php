@@ -30,7 +30,8 @@ class Controller extends BaseController
      */
     public function addLog($message = '')
     {
-        OperationLogs::add(request()->user()->id, request()->path(), request()->method(),
+        $userId = empty(request()->user()) ? 0 : request()->user()->id;
+        OperationLogs::add($userId, request()->path(), request()->method(),
             $message, request()->header('User-Agent'), json_encode(request()->all()));
     }
 

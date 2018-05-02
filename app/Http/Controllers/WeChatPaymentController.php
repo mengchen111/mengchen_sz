@@ -257,7 +257,7 @@ class WeChatPaymentController extends Controller
                     $amount = $rule->amount + $rule->give;
                 }
                 //充值
-                InventoryService::addStock(auth()->id(), $this->itemType, $amount);
+                InventoryService::addStock($order->user_id, $this->itemType, $amount);
 
                 //更新发货状态
                 $order->item_delivery_status = 1;

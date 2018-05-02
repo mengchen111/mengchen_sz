@@ -22,7 +22,7 @@ return [
     'aes_key' => env('WECHAT_AES_KEY', ''),                    // EncodingAESKey
 
     //支付回调地址
-    'notify_url' => env('APP_URL') . '/api/wechat/order/notification',
+    'notify_url' => env('APP_URL') . 'api/wechat/order/notification',
     /**
      * 开放平台第三方平台配置信息
      */
