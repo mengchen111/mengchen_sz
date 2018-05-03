@@ -62,7 +62,7 @@ npm run build   #编译js代码
 ### cron计划任务
 ```
 crontab -e
-* * * * * runuser -u nginx php /data/www/{code_ducument_root}/artisan schedule:run >> /dev/null 2>&1  
+* * * * * sudo -u nginx /usr/bin/php /data/www/{code_ducument_root}/artisan schedule:run >> /dev/null 2>&1  
 
 #注意：.env里面正确配置好日志输出文件"CRON_TASK_LOG"
 ```  

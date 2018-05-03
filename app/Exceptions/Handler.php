@@ -55,6 +55,7 @@ class Handler extends ExceptionHandler
         //自定义异常类，输出错误信息给前端
         if ($exception instanceof CustomException) {
             return response()->json([
+                'code' => $exception->getCode(),
                 'error' => $exception->getMessage()
             ], 200, [], JSON_UNESCAPED_UNICODE);
         }
@@ -62,6 +63,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof GameApiServiceException) {
             return response()->json([
                 'result' => false,
+                'code' => $exception->getCode(),
                 'error' => $exception->getMessage(),
             ], 200, [], JSON_UNESCAPED_UNICODE);
         }
