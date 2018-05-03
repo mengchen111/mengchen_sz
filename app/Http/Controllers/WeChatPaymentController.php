@@ -270,7 +270,7 @@ class WeChatPaymentController extends Controller
     public function search(AdminRequest $request, $orderNo = '')
     {
         if (empty($orderNo)){
-            return $this->transSearch();
+            return [];
         }
         return $this->transSearch($this->searchQuery($orderNo, 'out_trade_no', 'query', false));
     }
@@ -316,7 +316,7 @@ class WeChatPaymentController extends Controller
 
         $order = WxOrder::where($field, $orderNo)->first();
         if (!$order) {
-            throw new CustomException('订单不存在');
+            throw new CustomException('内部订单不存在');
         }
 
         if ($delivery && $order->isFinished()) {

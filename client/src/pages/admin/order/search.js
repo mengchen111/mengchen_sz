@@ -12,7 +12,8 @@ new Vue({
   data: {
     eventHub: new Vue(),
     orderNo: null,
-    userPrefixApi: '/api/wechat/order/search',
+    orderPrefixApi: '/api/wechat/order/search',
+    activatedRow: {},
 
     tableUrl: '/api/wechat/order/search',
     tableFields: [
@@ -42,16 +43,29 @@ new Vue({
       },
       {
         name: 'total_fee',
-        title: '标价金额',
+        title: '标价金额( 单位分 )',
+        // callback: 'transYuan',
       },
     ],
+    callbacks: {
+      transYuan (val) {
+        return val / 100
+      },
+    },
+
   },
   methods: {
     getRecord () {
       let orderNo = this.orderNo ? this.orderNo : 0
-      this.tableUrl = this.userPrefixApi + '/' + orderNo  //更改tableUrl之后vuetable会自动刷新数据
+      this.tableUrl = this.orderPrefixApi + '/' + orderNo  //更改tableUrl之后vuetable会自动刷新数据
 
     },
+  },
+
+  mounted: function () {
+    let toastr = this.$refs.toastr
+
+    this.$root.eventHub.$on('MyVuetable:error', (data) => toastr.message(data.error, 'error'))
   },
 
 })
