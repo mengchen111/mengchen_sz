@@ -131,7 +131,11 @@ class CommunityList extends Model
     //获取成员id的数组列表
     public function getMemberIdsAttribute()
     {
-        return explode(',', $this->attributes['members']);
+        if (empty($this->attributes['members'])) {
+            return [];
+        } else {
+            return explode(',', $this->attributes['members']);
+        }
     }
 
     public function addMembers(Array $newMembers)
