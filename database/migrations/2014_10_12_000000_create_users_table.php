@@ -33,6 +33,7 @@ class CreateUsersTable extends Migration
             $table->integer('parent_id')->default(0)->comment('上级代理');
             $table->rememberToken();
             $table->timestamps();
+            $table->tinyInteger('active')->default(1)->comment('是否禁止');
         });
         
         DB::table('users')->insert($this->defaultUser);
