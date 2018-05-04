@@ -53,7 +53,7 @@ class CommunityMembersController extends Controller
         if ($community->ifHasMember($playerId)) {
             throw new CustomException('此玩家已处于当前牌艺馆中');
         }
-        if ((int)$community->owner_player_id === $playerId) {
+        if ((int)$community->owner_player_id === (int) $playerId) {
             throw new CustomException('您已经是此牌艺馆的馆主，不能邀请自己');
         }
         return true;
