@@ -18,10 +18,6 @@ new Vue({
     tableUrl: '/api/wechat/order/search',
     tableFields: [
       {
-        name: 'id',
-        title: 'id',
-      },
-      {
         name: 'openid',
         title: 'openid',
       },
