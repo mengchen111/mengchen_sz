@@ -65,6 +65,9 @@ crontab -e
 * * * * * sudo -u nginx /usr/bin/php /data/www/{code_ducument_root}/artisan schedule:run >> /dev/null 2>&1  
 
 #注意：.env里面正确配置好日志输出文件"CRON_TASK_LOG"
+
+运行容器时命令：
+* * * * * /usr/local/bin/docker-compose -f /data/docker/docker-compose.yml exec php /bin/bash -c "runuser -u www-data php /data/www/mengchen_sz/artisan schedule:run" >> /dev/null 2>&1
 ```  
 
 **任务列表**  
