@@ -21,6 +21,21 @@ redirect_stderr=true
 stdout_logfile=/data/log/supervisor/%(program_name)s.log
 stdout_logfile_maxbytes=100MB
 stdout_logfile_backups=10
+
+容器环境模版：
+[program:laravel-queue-worker]
+#process_name=%(program_name)s_%(process_num)02d
+#directory=
+command=/usr/local/bin/docker-compose -f /data/docker/docker-compose.yml exec -T php /bin/bash -c "runuser -u www-data -- php /data/www/mengchen_sz/artisan queue:work --delay=3 --sleep=1 --tries=3 --timeout=60"
+autostart=true
+autorestart=true
+startretries=3
+user=root
+#numprocs=1
+redirect_stderr=true
+stdout_logfile=/data/log/supervisor/%(program_name)s.log
+stdout_logfile_maxbytes=100MB
+stdout_logfile_backups=10
 ```  
 - node & npm
 
@@ -67,7 +82,7 @@ crontab -e
 #注意：.env里面正确配置好日志输出文件"CRON_TASK_LOG"
 
 运行容器时命令：
-* * * * * /usr/local/bin/docker-compose -f /data/docker/docker-compose.yml exec php /bin/bash -c "runuser -u www-data php /data/www/mengchen_sz/artisan schedule:run" >> /dev/null 2>&1
+* * * * * /usr/local/bin/docker-compose -f /data/docker/docker-compose.yml exec -T php /bin/bash -c "runuser -u www-data php /data/www/mengchen_sz/artisan schedule:run" >> /dev/null 2>&1
 ```  
 
 **任务列表**  
@@ -78,16 +93,20 @@ crontab -e
 | admin:fetch-online-player-count | 每10分钟 | 统计在线和游戏中玩家数并入库 |
 | admin:cache-agent-valid-card-log | 每10分钟 | 缓存包含了有效耗卡数据的代理商给玩家充值记录的缓存 |
 | admin:calc-wx-order-rebate | 每月1号 1:00 | 计算上一个月的微信订单返利并入库 |
+
 ### 使用post-merge钩子脚本  
 ```
 #!/bin/sh
 
 codeDir=$(cd $(dirname $0); pwd)'/../../'
+queueName="laravel-queue-worker"
 
-service supervisord restart     #重启队列
+supervisorctl restart $queueName #重启队列
 
 cd $codeDir
 composer install
+#docker环境
+#/usr/local/bin/docker-compose -f /data/docker/docker-compose.yml exec -T php /bin/bash -c "cd ${codeDir}; composer install"
 
 cd client
 npm install
