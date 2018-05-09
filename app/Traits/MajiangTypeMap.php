@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Game;
+namespace App\Traits;
 
 
 trait MajiangTypeMap
 {
-    //麻将类型映射
+    //麻将类型映射(广东麻将里面的玩法类型，不是kind，对应的是options里面的key1(房间类型))
     protected $maJiangTypes = [
         1 => '推到胡',     //广东庄
         2 => '100张',     //清远庄

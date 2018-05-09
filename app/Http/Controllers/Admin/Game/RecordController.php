@@ -6,8 +6,8 @@ use App\Exceptions\CustomException;
 use App\Exceptions\GameApiServiceException;
 use App\Http\Requests\AdminRequest;
 use App\Services\Game\GameApiService;
-use App\Services\Game\MaJiangOptionsMap;
-use App\Services\Game\MajiangTypeMap;
+use App\Traits\MaJiangOptionsMap;
+use App\Traits\MajiangTypeMap;
 use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -59,20 +59,6 @@ class RecordController extends Controller
                 $records = GameApiService::request('POST', $api, [
                     'uid' => $searchUid,
                 ]);         //$records为空时分页数据也为空，不会报错
-                krsort($records);
-
-                foreach ($records as &$record) {
-                    $record['game_type'] = $this->maJiangTypes[$record['kind']];
-                    $record['time'] = $record['ins_time'];
-
-                    $recordDetail = json_decode($record['infos']['rec_jstr'], true);
-                    $record['room_id'] = $recordDetail['room']['room_id'];
-                    $record['owner_id'] = isset($recordDetail['room']['owner_uid'])
-                        ? $recordDetail['room']['owner_uid']    //游戏后端数据更新，兼容新的数据格式
-                        : $recordDetail['room']['creator']['uid'];
-
-                    unset($record['infos']);
-                }
                 break;
             case 1:
                 //房间id
@@ -80,25 +66,28 @@ class RecordController extends Controller
                 $records = GameApiService::request('POST', $api, [
                     'rid' => $searchUid,
                 ]);         //$records为空时分页数据也为空，不会报错
-                krsort($records);
-                foreach ($records as &$record) {
-                    $record['game_type'] = $this->maJiangTypes[$record['kind']];
-                    $record['time'] = $record['ins_time'];
-
-                    $recordDetail = json_decode($record['infos']['rec_jstr'], true);
-                    $record['room_id'] = $recordDetail['room']['room_id'];
-                    $record['owner_id'] = $record['uid'];
-
-                    unset($record['infos']);
-                }
                 break;
             default:
-                $records = [];
+                throw new CustomException('未知的type');
                 break;
         }
 
-        OperationLogs::add($request->user()->id, $request->path(), $request->method(),
-            '战绩查询', $request->header('User-Agent'), json_encode($request->all()));
+        krsort($records);
+
+        foreach ($records as &$record) {
+            $record['time'] = $record['ins_time'];
+
+            $recordDetail = json_decode($record['infos']['rec_jstr'], true);
+            $record['game_type'] = $this->maJiangTypes[$recordDetail['room']['options'][1]];    //选项里面key为1的值表示玩法
+            $record['room_id'] = $recordDetail['room']['room_id'];
+            $record['owner_id'] = isset($recordDetail['room']['owner_uid'])
+                ? $recordDetail['room']['owner_uid']    //游戏后端数据更新，兼容新的数据格式
+                : $recordDetail['room']['creator']['uid'];
+
+            unset($record['infos']);
+        }
+
+        $this->addLog('战绩查询');
 
         return Paginator::paginate($records, $this->per_page, $this->page);
     }

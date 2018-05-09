@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Agent;
 
 use App\Http\Requests\AgentRequest;
 use App\Models\CommunityList;
-use App\Services\Game\MajiangTypeMap;
+use App\Traits\MajiangTypeMap;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;

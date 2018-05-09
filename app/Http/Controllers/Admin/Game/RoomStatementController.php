@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Game;
 use App\Exceptions\CustomException;
 use App\Exceptions\RoomStatementServiceException;
 use App\Http\Requests\AdminRequest;
-use App\Services\Game\MajiangTypeMap;
+use App\Traits\MajiangTypeMap;
 use App\Services\Game\RoomStatementService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

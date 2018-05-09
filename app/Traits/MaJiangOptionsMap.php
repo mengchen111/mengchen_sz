@@ -1,10 +1,10 @@
 <?php
-namespace App\Services\Game;
+namespace App\Traits;
 
 trait MaJiangOptionsMap
 {
     protected $maJiangOptionsMap = [
-//        1 => '房间类型',
+//        1 => '房间类型',  //目前只有广东麻将(kind4)，表示玩法类型(清远庄，惠州庄等)
 //        2 => '局数',
 //        3 => '人数',
 
