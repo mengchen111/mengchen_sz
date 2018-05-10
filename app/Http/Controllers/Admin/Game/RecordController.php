@@ -6,7 +6,7 @@ use App\Exceptions\CustomException;
 use App\Exceptions\GameApiServiceException;
 use App\Http\Requests\AdminRequest;
 use App\Services\Game\GameApiService;
-use App\Traits\MaJiangOptionsMap;
+use App\Services\Game\GameOptionsService;
 use App\Traits\MajiangTypeMap;
 use App\Services\Paginator;
 use Illuminate\Http\Request;
@@ -16,7 +16,6 @@ use App\Models\OperationLogs;
 class RecordController extends Controller
 {
     //载入游戏规则配置关系
-    use MaJiangOptionsMap;
     use MajiangTypeMap;
 
     protected $per_page = 15;
@@ -93,7 +92,7 @@ class RecordController extends Controller
     }
 
     //查询指定战绩id的战绩流水
-    public function getRecordInfo(AdminRequest $request, $recId)
+    public function getRecordInfo(AdminRequest $request, $recId, GameOptionsService $gameOptionsService)
     {
         $api = config('custom.game_api_record_info');
         $record = GameApiService::request('POST', $api, [
@@ -104,44 +103,12 @@ class RecordController extends Controller
 
         $result['rounds'] = $this->getRounds($recordDetail);                    //战绩流水
         $result['ranking'] = $this->getRanking($recordDetail);                  //总分排行
-        $result['rules'] = $this->getRules($recordDetail['room']['options']);   //房间玩法
+        $result['rules'] = $gameOptionsService->formatOptions($recordDetail['room']['options']);   //房间玩法
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '战绩流水查询', $request->header('User-Agent'), json_encode($request->all()));
 
         return $result;
-    }
-
-    protected function getRules($options)
-    {
-        ksort($options);
-        $rules = [
-            'wanfa' => '',       //玩法
-            'gui_pai' => '',    //鬼牌
-            'ma_pai' => '',     //马牌
-        ];
-
-        array_walk($options, function ($v, $k) use (&$rules) {
-            foreach ($this->maJiangOptionsMap as $category => $categoryOptions) {
-                if (array_key_exists($k, $categoryOptions)) {
-                    if ((! empty($v)) or $k == 16) {    //无鬼补花类型值可能为0
-                        if (is_array($categoryOptions[$k])) {
-                            $rules[$category] .= "{$categoryOptions[$k]['name']}: {$categoryOptions[$k]['options'][$v]},";
-                        } else {
-                            if ($category === 'ma_pai') {
-                                $rules[$category] .= "{$categoryOptions[$k]}: $v,";      //买了多少马
-                            } elseif ($k === 26) {
-                                $rules[$category] .= "{$categoryOptions[$k]}: $v,";      //底分多少
-                            } else {
-                                $rules[$category] .= "{$categoryOptions[$k]},";
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        return $rules;
     }
 
     //获取总分排行数据

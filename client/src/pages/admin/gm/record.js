@@ -19,6 +19,7 @@ new Vue({
       'wanfa': '玩法',
       'gui_pai': '鬼牌',
       'ma_pai': '马牌',
+      'di_fen': '底分',
     },
     searchType: '0',
 
