@@ -16,10 +16,16 @@ new Vue({
     rankingData: {},    //总分排行
     roomRules: {},      //房间玩法
     rulesMap: {         //房间玩法显示信息
+      'room_type': '房间类型',
+      'rounds': '局数',
+      'players': '玩家数量',
       'wanfa': '玩法',
+      'hua_pai': '花牌',
       'gui_pai': '鬼牌',
       'ma_pai': '马牌',
       'di_fen': '底分',
+      'qing_hun': '清混',
+      'score_limit': '分数封顶',
     },
     searchType: '0',
 

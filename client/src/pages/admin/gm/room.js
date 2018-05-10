@@ -16,19 +16,10 @@ new Vue({
     httpClient: myTools.axiosInstance,
     msgResolver: myTools.msgResolver,
     rooms: {},      //可创建的房间
-    roomType: {},   //每种房间对应的可用选项
+    roomTypes: {},   //每种房间对应的可用选项
     currentPageData: null,  //当前页面的数据
-    activeRoomType: '惠州庄',  //默认的打开的tab
-    createRoomFormData: {
-      'room': null,
-      'rounds': null,
-      'wanfa': [],
-      'gui_pai': {},
-      'ma_pai': null,
-    },
-    guiPaiData: {
-      '花牌类型': null,
-    },
+    activeRoomType: '惠州',  //默认的打开的tab
+    createRoomFormData: {},
 
     roomTypeApi: '/admin/api/gm/room/type',  //房间类型接口
     roomCreateApi: '/admin/api/gm/room',     //房间创建接口
@@ -56,21 +47,16 @@ new Vue({
 
     //玩法默认选中
     tabClick (room) {
-      this.createRoomFormData.wanfa = this.roomType[room]['wanfa']
+      this.createRoomFormData = {}
+      this.createRoomFormData.wanfa = this.roomTypes[room]['wanfa']['options']
     },
 
     createRoom (room) {
       let _self = this
       let toastr = this.$refs.toastr
-      this.createRoomFormData.room = room
-
-      //鬼牌的选项的值传递到表单数据上
-      for (let [type, value] of _.entries(this.guiPaiData)) {
-        if (value !== null) {
-          this.createRoomFormData.gui_pai[type] = value
-        }
-      }
-
+      this.createRoomFormData.room = _.findKey(this.rooms, (value) => value === room)   //房间类型id
+      this.createRoomFormData.players = 4 //玩家数量
+      
       this.httpClient.post(this.roomCreateApi, this.createRoomFormData)
         .then(function (res) {
           _self.msgResolver(res, toastr)
@@ -81,7 +67,7 @@ new Vue({
     },
 
     setActiveRoomWanfa () {
-      this.createRoomFormData.wanfa = this.roomType[this.activeRoomType]['wanfa']
+      this.createRoomFormData.wanfa = this.roomTypes[this.activeRoomType]['wanfa']['options']
     },
   },
 
@@ -96,7 +82,7 @@ new Vue({
     this.httpClient.get(this.roomTypeApi)
       .then(function (res) {
         _self.rooms = res.data.rooms
-        _self.roomType = res.data.room_type
+        _self.roomTypes = res.data.room_types
         _self.setActiveRoomWanfa()     //填充默认选中的tab的玩法菜单
       })
       .catch(function (err) {

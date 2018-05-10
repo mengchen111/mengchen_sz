@@ -158,70 +158,34 @@
                                     <li v-for="room of rooms" :class="{ active: room === activeRoomType}">
                                         <a :href="'#' + room" data-toggle="tab" @click="tabClick(room)">{{ room }}</a>
                                     </li>
-                                    <li class="pull-left header"><i class="fa fa-home"></i><span class="hidden-xs">房间选项</span></li>
+                                    <li class="pull-left header"><i class="fa fa-home"></i><span class="hidden-xs"></span></li>
                                 </ul>
 
                                 <div class="tab-content no-padding">
                                     <div v-for="room of rooms" class="tab-pane" :id="room" :class="{ active: room === activeRoomType}">
                                         <form class="form-horizontal" @submit.prevent="createRoom(room)">
-                                            <div class="form-group">
-                                                <div class="col-md-2 text-center">局数</div>
+                                            <div class="form-group" v-for="(category, categoryKey) of roomTypes[room]">
+                                                <div class="col-md-2 text-center" :class="{hidden: category.hasOwnProperty('value')}">{{ category['name'] }}</div>
                                                 <div class="col-md-10">
-                                                    <div class="row">
-                                                        <div class="col-md-3 col-xs-3">
-                                                            <radio value="4" checked v-model="createRoomFormData['rounds']">&nbsp;&nbsp; 4局</radio>
-                                                        </div>
-                                                        <div class="col-md-3 col-xs-3">
-                                                            <radio value="8" v-model="createRoomFormData['rounds']">&nbsp;&nbsp; 8局</radio>
-                                                        </div>
-                                                        <div class="col-md-3 col-xs-3">
-                                                            <radio value="16" v-model="createRoomFormData['rounds']">&nbsp;&nbsp; 16局</radio>
+                                                    <div class="row" v-if="category.hasOwnProperty('options')">
+                                                        <div class="col-md-3 col-xs-6" v-for="option of category['options']">
+                                                            <checkbox :value="option"
+                                                                      v-model="createRoomFormData[categoryKey]">{{ option }}
+                                                            </checkbox>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-md-2 text-center">玩法</div>
-                                                <div class="col-md-10">
-                                                    <div class="row">
-                                                        <div class="col-md-3 col-xs-6"  v-for="option of roomType[room]['wanfa']">
-                                                            <checkbox :value="option" v-model="createRoomFormData.wanfa">{{ option }}</checkbox>
+                                                    <div class="row" v-else-if="category.hasOwnProperty('choices')">
+                                                        <div class="col-md-4 col-xs-6" v-for="(choiceName, choiceValue) of category['choices']">
+                                                            <radio :value="choiceValue" required v-model="createRoomFormData[categoryKey]">
+                                                                {{ choiceName }}
+                                                            </radio>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group" v-if="roomType[room]['gui_pai']['花牌类型']">
-                                                <div class="col-md-2 text-center">花牌</div>
-                                                <div class="col-md-10">
-                                                    <div class="row">
-                                                        <div class="col-md-3 col-xs-6" v-for="(huaPaiOption, key) of roomType[room]['gui_pai']['花牌类型']">
-                                                            <radio :value="key" v-if="key == 0" v-model="guiPaiData['花牌类型']" checked>&nbsp;&nbsp; {{ huaPaiOption }}</radio>
-                                                            <radio :value="key" v-else v-model="guiPaiData['花牌类型']">&nbsp;&nbsp; {{ huaPaiOption }}</radio>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group" v-if="roomType[room]['ma_pai'].hasOwnProperty('抓马数')">
-                                                <div class="col-md-2 text-center">马牌</div>
-                                                <div class="col-md-10">
-                                                    <div class="row">
-                                                        <div class="col-md-2 col-xs-4">
-                                                            <radio value="0" checked v-model="createRoomFormData.ma_pai">无马</radio>
-                                                        </div>
-                                                        <div class="col-md-2 col-xs-4">
-                                                            <radio value="2" v-model="createRoomFormData.ma_pai">2马</radio>
-                                                        </div>
-                                                        <div class="col-md-2 col-xs-4">
-                                                            <radio value="4" v-model="createRoomFormData.ma_pai">4马</radio>
-                                                        </div>
-                                                        <div class="col-md-2 col-xs-4">
-                                                            <radio value="6" v-model="createRoomFormData.ma_pai">6马</radio>
-                                                        </div>
-                                                        <div class="col-md-2 col-xs-4">
-                                                            <radio value="8" v-model="createRoomFormData.ma_pai">8马</radio>
-                                                        </div>
-                                                        <div class="col-md-2 col-xs-4">
-                                                            <radio value="10" v-model="createRoomFormData.ma_pai">10马</radio>
+                                                    <div class="row" v-else-if="category.hasOwnProperty('value')"
+                                                         :class="{hidden: category.hasOwnProperty('value')}">
+                                                        <div class="col-md-6 col-xs-6">
+                                                            <input type="text" class="form-control" v-model="createRoomFormData[categoryKey]">
+                                                            </input>
                                                         </div>
                                                     </div>
                                                 </div>

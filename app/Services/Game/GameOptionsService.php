@@ -17,28 +17,88 @@ class GameOptionsService
     public function formatOptions($options)
     {
         ksort($options);
+        //获取选项的分类key，分类的值为填充为''
         $rules = array_fill_keys(array_keys($this->maJiangOptionsMap), '');
+        $roomType = $options[$this->maJiangOptionsMap['room']['key']]; //游戏玩法类型（广东，清远，惠州等）
 
-        array_walk($options, function ($v, $k) use (&$rules) {
-            foreach ($this->maJiangOptionsMap as $category => $categoryOptions) {
-                if (array_key_exists($k, $categoryOptions)) {
-                    if ((! empty($v)) or $k == 16) {    //无鬼补花类型值可能为0（选项的值不为0或false，或者选项的key为16时才格式化数据）
-                        if (is_array($categoryOptions[$k])) {
-                            $rules[$category] .= "{$categoryOptions[$k]['name']}: {$categoryOptions[$k]['options'][$v]},";
-                        } else {
-                            if ($category === 'ma_pai') {
-                                $rules[$category] = $v;      //买了多少马
-                            } elseif ($category === 'di_fen') {
-                                $rules[$category] = $v;      //底分多少
-                            } else {
-                                $rules[$category] .= "{$categoryOptions[$k]},";
-                            }
-                        }
+        array_walk($options, function ($v, $k) use (&$rules, $roomType) {
+            //过滤此玩法不可用的options
+            if (! in_array($k, $this->maJiangtypeOptions[$roomType])) {
+                return;
+            }
+
+            foreach ($this->maJiangOptionsMap as $categoryKey => $categoryValue) {
+                if ($categoryKey === 'wanfa') {
+                    if (array_key_exists($k, $categoryValue['options'])) {
+                        //玩法的值为false或0，那么此玩法就没启用，就不显示
+                        $rules[$categoryKey] .= empty($v) ? '' : $categoryValue['options'][$k] . ',';
+                    }
+                } else {
+                    if ($k === $categoryValue['key']) {
+                        $rules[$categoryKey] = isset($categoryValue['options'])
+                        //如果存在此分类下面存在options，则显示对应的options的中文解释，否则显示此option的值
+                            ? $categoryValue['options'][$v] : $v;
                     }
                 }
             }
         });
 
+        $rules = array_filter($rules);  //过滤值为空的分类
         return $rules;
+    }
+
+    //获取某一玩法的选项（格式化前端通用的json格式）
+    public function getCategoricalOption($typeId)
+    {
+        $categoricalOptions = [];
+        $availableOptions = $this->maJiangtypeOptions[$typeId];
+        foreach ($availableOptions as $optionKey) {
+            foreach ($this->maJiangOptionsMap as $categoryKey => $categoryValue) {
+                if ($categoryKey === 'wanfa') {
+                    if (array_key_exists($optionKey, $categoryValue['options'])) {
+                        //options表示此'wanfa'分类下面的值是可以勾选的，options是数组
+                        $categoricalOptions[$categoryKey]['options'][] = $categoryValue['options'][$optionKey];
+                        $categoricalOptions[$categoryKey]['name']= $categoryValue['name'];
+                    }
+                } else {
+                    if ($optionKey === $categoryValue['key']) {
+                        $categoricalOptions[$categoryKey]['name']= $categoryValue['name'];
+                        if (isset($categoryValue['options'])) {
+                            //choice说明此分类的玩法是排他选项
+                            $categoricalOptions[$categoryKey]['choices'] = $categoryValue['options'];
+                        } else {
+                            //此玩法分类是可以直接输入数值的
+                            $categoricalOptions[$categoryKey]['value'] = 0;
+                        }
+                    }
+                }
+            }
+        }
+        return $categoricalOptions;
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     *
+     * 将前端发送过来的统一的json格式选项反解成游戏端可识别的数据
+     */
+    public function convertCategoricalOption2GameOption($data)
+    {
+        $gameOptions = [];
+        $data = array_intersect_key($data, $this->maJiangOptionsMap);
+        foreach ($data as $categoryName => $value) {
+            if ($categoryName === 'wanfa') {
+                foreach ($value as $wanfaOption) {
+                    $wanfaOptionKey = array_search($wanfaOption, $this->maJiangOptionsMap['wanfa']['options']);
+                    $gameOptions[$wanfaOptionKey] = 1;
+                }
+            } else {
+                $optionKey = $this->maJiangOptionsMap[$categoryName]['key'];
+                $gameOptions[$optionKey] = (int) $value;
+            }
+        }
+        ksort($gameOptions);
+        return $gameOptions;
     }
 }
