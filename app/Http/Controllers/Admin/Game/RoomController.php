@@ -25,7 +25,7 @@ class RoomController extends Controller
     protected $page = 1;
 
     protected $availableRoomType = [    //目前可创建的几种房间类型
-          1, 2, 4, 5, 6, 7, 8,
+          1, 2, 4, 5, 6, 7, 8, 9, 10, 11
     ];
 
     public function showOpenRoom(AdminRequest $request)
