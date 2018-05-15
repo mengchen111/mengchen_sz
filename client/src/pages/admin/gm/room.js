@@ -49,7 +49,7 @@ new Vue({
     tabClick (room) {
       this.createRoomFormData = {}
 
-      if (this.createRoomFormData.wanfa) {
+      if (this.roomTypes[room]['wanfa'].hasOwnProperty('options')) {
         this.createRoomFormData.wanfa = this.roomTypes[room]['wanfa']['options']
       }
     },
