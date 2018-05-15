@@ -126,7 +126,7 @@ class RoomController extends Controller
             'room' => 'required|in:'.implode(',', array_keys($this->maJiangTypes)), //玩法类型
             'players' => 'required|integer',    //玩家数量
             'rounds' => 'required|integer',     //局数
-            'wanfa' => 'required',              //玩法选项
+            'wanfa' => 'nullable',              //玩法选项
             'gui_pai' => 'integer',             //鬼牌
             'hui_pai' => 'ineger',              //花牌
             'ma_pai' => 'integer',              //马牌

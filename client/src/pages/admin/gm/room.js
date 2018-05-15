@@ -48,7 +48,10 @@ new Vue({
     //玩法默认选中
     tabClick (room) {
       this.createRoomFormData = {}
-      this.createRoomFormData.wanfa = this.roomTypes[room]['wanfa']['options']
+
+      if (this.createRoomFormData.wanfa) {
+        this.createRoomFormData.wanfa = this.roomTypes[room]['wanfa']['options']
+      }
     },
 
     createRoom (room) {
