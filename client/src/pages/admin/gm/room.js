@@ -1,4 +1,4 @@
-import { myTools } from '../index.js'
+import {myTools} from '../index.js'
 import MyToastr from '../../../components/MyToastr.vue'
 import MyPagination from '../../../components/MyPagination.vue'
 import {Checkbox, Radio} from 'vue-checkbox-radio'
@@ -49,7 +49,7 @@ new Vue({
     tabClick (room) {
       this.createRoomFormData = {}
 
-      if (this.roomTypes[room]['wanfa'].hasOwnProperty('options')) {
+      if (this.roomTypes[room]['wanfa']) {
         this.createRoomFormData.wanfa = this.roomTypes[room]['wanfa']['options']
       }
     },
@@ -59,7 +59,7 @@ new Vue({
       let toastr = this.$refs.toastr
       this.createRoomFormData.room = _.findKey(this.rooms, (value) => value === room)   //房间类型id
       this.createRoomFormData.players = 4 //玩家数量
-      
+
       this.httpClient.post(this.roomCreateApi, this.createRoomFormData)
         .then(function (res) {
           _self.msgResolver(res, toastr)
