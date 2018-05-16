@@ -7,7 +7,7 @@ use App\Exceptions\GameApiServiceException;
 use App\Http\Requests\AdminRequest;
 use App\Services\Game\GameApiService;
 use App\Services\Game\GameOptionsService;
-use App\Traits\MajiangTypeMap;
+use App\Traits\GameTypeMap;
 use App\Services\Paginator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,7 +16,7 @@ use App\Models\OperationLogs;
 class RecordController extends Controller
 {
     //载入游戏规则配置关系
-    use MajiangTypeMap;
+    use GameTypeMap;
 
     protected $per_page = 15;
     protected $page = 1;
@@ -77,7 +77,7 @@ class RecordController extends Controller
             $record['time'] = $record['ins_time'];
 
             $recordDetail = json_decode($record['infos']['rec_jstr'], true);
-            $record['game_type'] = $this->maJiangTypes[$recordDetail['room']['options'][1]];    //选项里面key为1的值表示玩法
+            $record['game_type'] = $this->gameTypes[$recordDetail['room']['options'][1]];    //选项里面key为1的值表示玩法
             $record['room_id'] = $recordDetail['room']['room_id'];
             $record['owner_id'] = isset($recordDetail['room']['owner_uid'])
                 ? $recordDetail['room']['owner_uid']    //游戏后端数据更新，兼容新的数据格式
@@ -103,7 +103,8 @@ class RecordController extends Controller
 
         $result['rounds'] = $this->getRounds($recordDetail);                    //战绩流水
         $result['ranking'] = $this->getRanking($recordDetail);                  //总分排行
-        $result['rules'] = $gameOptionsService->formatOptions($recordDetail['room']['options']);   //房间玩法
+        $gameType = $recordDetail['room']['options'][1];    //options中key为1表示房间类型
+        $result['rules'] = $gameOptionsService->formatOptions($recordDetail['room']['options'], $gameType);   //房间玩法
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '战绩流水查询', $request->header('User-Agent'), json_encode($request->all()));

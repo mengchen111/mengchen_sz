@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Game;
 use App\Exceptions\CustomException;
 use App\Exceptions\RoomStatementServiceException;
 use App\Http\Requests\AdminRequest;
-use App\Traits\MajiangTypeMap;
+use App\Traits\GameTypeMap;
 use App\Services\Game\RoomStatementService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ use App\Models\OperationLogs;
 
 class RoomStatementController extends Controller
 {
-    use MajiangTypeMap;
+    use GameTypeMap;
 
     public function getRoomStatement(AdminRequest $request)
     {
@@ -61,7 +61,7 @@ class RoomStatementController extends Controller
 
         //获取所有房间类型的数据报表
         $roomStatement['全部'] = $this->getRoomStatement($request);
-        foreach ($this->maJiangTypes as $typeId => $typeName) {
+        foreach ($this->gameTypes as $typeId => $typeName) {
             $request->merge(['game_kind' => $typeId]);  //每种游戏类型都请求一次，获取数据
             $roomStatement[$typeName] = $this->getRoomStatement($request);
         }

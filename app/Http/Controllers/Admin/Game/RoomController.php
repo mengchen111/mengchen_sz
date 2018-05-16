@@ -6,8 +6,8 @@ use App\Models\OperationLogs;
 use App\Models\User;
 use App\Services\Game\GameApiService;
 use App\Services\Game\GameOptionsService;
-use App\Traits\MaJiangOptionsMap;
-use App\Traits\MajiangTypeMap;
+use App\Traits\GameRulesMap;
+use App\Traits\GameTypeMap;
 use App\Services\Game\PlayerService;
 use App\Services\Paginator;
 use Illuminate\Http\Request;
@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Cache;
 
 class RoomController extends Controller
 {
-    use MajiangTypeMap;
-    use MaJiangOptionsMap;
+    use GameTypeMap;
+    use GameRulesMap;
 
     protected $per_page = 15;
     protected $page = 1;
@@ -96,7 +96,8 @@ class RoomController extends Controller
     public function create(AdminRequest $request, GameOptionsService $gameOptionsService)
     {
         $this->validateCreateForm($request);
-        $formData = $gameOptionsService->convertCategoricalOption2GameOption($request->all());
+        $gameType = $request->room;
+        $formData = $gameOptionsService->convertCategoricalOption2GameOption($request->all(), $gameType);
         $formData['creator'] = Auth::id();
         $api = config('custom.game_api_room_create');
         $res = GameApiService::request('POST', $api, $formData);
@@ -108,10 +109,10 @@ class RoomController extends Controller
 
     public function getRoomType(AdminRequest $request, GameOptionsService $gameOptionsService)
     {
-        $rooms = array_intersect_key($this->maJiangTypes, array_fill_keys($this->availableRoomType, ''));        //可创建的玩法列表
+        $rooms = array_intersect_key($this->gameTypes, array_fill_keys($this->availableRoomType, ''));        //可创建的玩法列表
         $roomOptions = [];  //每种房间可用的选项
         foreach ($this->availableRoomType as $typeId) {
-            $typeName = $this->maJiangTypes[$typeId];
+            $typeName = $this->gameTypes[$typeId];
             $roomOptions[$typeName] = $gameOptionsService->getCategoricalOption($typeId);
         }
         return [
@@ -123,7 +124,7 @@ class RoomController extends Controller
     protected function validateCreateForm($request)
     {
         $this->validate($request, [
-            'room' => 'required|in:'.implode(',', array_keys($this->maJiangTypes)), //玩法类型
+            'room' => 'required|in:'.implode(',', array_keys($this->gameTypes)), //玩法类型
             'players' => 'required|integer',    //玩家数量
             'rounds' => 'required|integer',     //局数
             'wanfa' => 'nullable',              //玩法选项
@@ -136,6 +137,6 @@ class RoomController extends Controller
     //获取游戏类型映射关系，公共接口
     public function getRoomTypeMap(Request $request)
     {
-        return $this->maJiangTypes;
+        return $this->gameTypes;
     }
 }

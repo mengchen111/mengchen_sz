@@ -1,9 +1,41 @@
 <?php
 namespace App\Traits;
 
-trait MaJiangOptionsMap
+trait GameRulesMap
 {
-    protected $maJiangOptionsMap = [
+    public function __get($name)
+    {
+        if ($name === 'gameRules') {
+            return $this->getGameRules();
+        } else {
+            $trace = debug_backtrace();
+            trigger_error( 'Undefined property via __get(): ' . $name .
+                ' in ' . $trace[0]['file'] .
+                ' on line ' . $trace[0]['line'],
+                E_USER_NOTICE);
+            return null;
+        }
+    }
+
+    private function getGameRules()
+    {
+        return [
+            1 => $this->majiangCommonRules,
+            2 => $this->majiangCommonRules,
+            3 => $this->majiangCommonRules,
+            4 => $this->majiangCommonRules,
+            5 => $this->majiangCommonRules,
+            6 => $this->majiangCommonRules,
+            7 => $this->majiangCommonRules,
+            8 => $this->majiangCommonRules,
+            9 => $this->majiangCommonRules,
+            10 => $this->majiangCommonRules,
+            11 => $this->majiangCommonRules,
+        ];
+    }
+
+    //麻将的通用options
+    private $majiangCommonRules = [
 //        1 => '房间类型',  //目前只有广东麻将(kind4)，表示玩法类型(清远庄，惠州庄等)
 //        2 => '局数',
 //        3 => '人数',

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Agent;
 
 use App\Http\Requests\AgentRequest;
 use App\Models\CommunityList;
-use App\Traits\MajiangTypeMap;
+use App\Traits\GameTypeMap;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
@@ -13,7 +13,7 @@ use App\Services\Game\PlayerService;
 
 class CommunityRoomController extends Controller
 {
-    use MajiangTypeMap;
+    use GameTypeMap;
 
     //获取牌艺馆正在玩的房间信息
     public function getCommunityOpenRoom(AgentRequest $request, $communityId)
@@ -34,7 +34,7 @@ class CommunityRoomController extends Controller
 //        $allPlayers = collect(PlayerService::getAllPlayers());
 //        foreach ($rooms as &$room) {
 //            unset($room['options_jstr']);
-//            $room['rtype'] = $this->maJiangTypes[$room['rtype']];
+//            $room['rtype'] = $this->gameTypes[$room['rtype']];
 //            $room['players'] = [];
 //            for ($i = 1; $i <= 4; $i++) {
 //                $tmp = [];

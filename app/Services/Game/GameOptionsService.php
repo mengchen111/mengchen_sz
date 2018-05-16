@@ -5,29 +5,28 @@
 
 namespace App\Services\Game;
 
-use App\Traits\MajiangTypeMap;
-use App\Traits\MaJiangOptionsMap;
+use App\Traits\GameTypeMap;
+use App\Traits\GameRulesMap;
 
 class GameOptionsService
 {
-    use MajiangTypeMap;
-    use MaJiangOptionsMap;
+    use GameTypeMap;
+    use GameRulesMap;
 
     //将游戏的options格式化成前端可阅读格式
-    public function formatOptions($options)
+    public function formatOptions($options, $gameType)
     {
         ksort($options);
         //获取选项的分类key，分类的值为填充为''
-        $rules = array_fill_keys(array_keys($this->maJiangOptionsMap), '');
-        $roomType = $options[$this->maJiangOptionsMap['room']['key']]; //游戏玩法类型（广东，清远，惠州等）
+        $rules = array_fill_keys(array_keys($this->gameRules[$gameType]), '');
 
-        array_walk($options, function ($v, $k) use (&$rules, $roomType) {
+        array_walk($options, function ($v, $k) use (&$rules, $gameType) {
             //过滤此玩法不可用的options
-            if (! in_array($k, $this->maJiangtypeOptions[$roomType])) {
+            if (! in_array($k, $this->gameTypeAvailableRules[$gameType])) {
                 return;
             }
 
-            foreach ($this->maJiangOptionsMap as $categoryKey => $categoryValue) {
+            foreach ($this->gameRules[$gameType] as $categoryKey => $categoryValue) {
                 if ($categoryKey === 'wanfa') {
                     if (array_key_exists($k, $categoryValue['options'])) {
                         //玩法的值为false或0，那么此玩法就没启用，就不显示
@@ -55,9 +54,9 @@ class GameOptionsService
     public function getCategoricalOption($typeId)
     {
         $categoricalOptions = [];
-        $availableOptions = $this->maJiangtypeOptions[$typeId];
+        $availableOptions = $this->gameTypeAvailableRules[$typeId];
         foreach ($availableOptions as $optionKey) {
-            foreach ($this->maJiangOptionsMap as $categoryKey => $categoryValue) {
+            foreach ($this->gameRules[$typeId] as $categoryKey => $categoryValue) {
                 if ($categoryKey === 'wanfa') {
                     if (array_key_exists($optionKey, $categoryValue['options'])) {
                         //options表示此'wanfa'分类下面的值是可以勾选的，options是数组
@@ -87,18 +86,18 @@ class GameOptionsService
      *
      * 将前端发送过来的统一的json格式选项反解成游戏端可识别的数据
      */
-    public function convertCategoricalOption2GameOption($data)
+    public function convertCategoricalOption2GameOption($data, $gameType)
     {
         $gameOptions = [];
-        $data = array_intersect_key($data, $this->maJiangOptionsMap);
+        $data = array_intersect_key($data, $this->gameRules[$gameType]);
         foreach ($data as $categoryName => $value) {
             if ($categoryName === 'wanfa') {
                 foreach ($value as $wanfaOption) {
-                    $wanfaOptionKey = array_search($wanfaOption, $this->maJiangOptionsMap['wanfa']['options']);
+                    $wanfaOptionKey = array_search($wanfaOption, $this->gameRules[$gameType]['wanfa']['options']);
                     $gameOptions[$wanfaOptionKey] = 1;
                 }
             } else {
-                $optionKey = $this->maJiangOptionsMap[$categoryName]['key'];
+                $optionKey = $this->gameRules[$gameType][$categoryName]['key'];
                 $gameOptions[$optionKey] = (int) $value;
             }
         }

@@ -2,10 +2,10 @@
 
 namespace App\Traits;
 
-trait MajiangTypeMap
+trait GameTypeMap
 {
     //麻将类型映射(广东麻将里面的玩法类型，不是kind，对应的是options里面的key1(房间类型))
-    protected $maJiangTypes = [
+    protected $gameTypes = [
         1 => '广东',     //广东庄
         2 => '清远',     //清远庄
         3 => '赣州',
@@ -20,7 +20,7 @@ trait MajiangTypeMap
     ];
 
     //每种麻将可用的选项
-    protected $maJiangtypeOptions = [
+    protected $gameTypeAvailableRules = [
         1 => [2,37,17,30,10,11,14,31,32,33,34,35,13,28,36,],
         2 => [2,37,17,50,10,11,33,51,34,],
         4 => [2,3,10,11,12,13,14,15,16,17,18],
