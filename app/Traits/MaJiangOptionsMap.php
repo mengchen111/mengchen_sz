@@ -17,7 +17,7 @@ trait MaJiangOptionsMap
         'rounds' => [
             'key' => 2,
             'name' => '局数',
-            'options' => [
+            'choices' => [
                 8 => '8局',
                 16 => '16局',
             ]
@@ -92,7 +92,7 @@ trait MaJiangOptionsMap
         'hua_pai' => [
             'key' => 16,
             'name' => '花牌类型',
-            'options' => [
+            'choices' => [
                 0 => '无鬼补花',
                 35 => '花牌做鬼',
             ],
@@ -101,7 +101,7 @@ trait MaJiangOptionsMap
         'gui_pai' => [
             'key' => 37,
             'name' => '鬼牌类型',
-            'options' => [
+            'choices' => [
                 1 => '翻鬼',
                 2 => '白板鬼',
                 3 => '双鬼',
@@ -112,7 +112,7 @@ trait MaJiangOptionsMap
         'ma_pai' => [
             'key' => 17,
             'name' => '抓马个数',
-            'options' => [
+            'choices' => [
                 0 => '无马',
                 2 => '买2马',
                 4 => '买4马',
@@ -130,7 +130,7 @@ trait MaJiangOptionsMap
         'qing_hun' => [
             'key' => 64,
             'name' => '清混',
-            'options' => [
+            'choices' => [
                 0 => '清混',
                 1 => '硬胡',
             ],
@@ -139,7 +139,7 @@ trait MaJiangOptionsMap
         'score_limit' => [
             'key' => 65,
             'name' => '分数封顶',
-            'options' => [
+            'choices' => [
                 0 => '不封顶',
                 1 => '10分封顶',
                 2 => '15分封顶',

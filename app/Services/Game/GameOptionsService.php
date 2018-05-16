@@ -35,9 +35,13 @@ class GameOptionsService
                     }
                 } else {
                     if ($k === $categoryValue['key']) {
-                        $rules[$categoryKey] = isset($categoryValue['options'])
-                        //如果存在此分类下面存在options，则显示对应的options的中文解释，否则显示此option的值
-                            ? $categoryValue['options'][$v] : $v;
+                        if ($k === 2) {     //局数直接显示值，不翻译成中文，因为有的局数不包含在choices中
+                            $rules[$categoryKey] = $v;
+                        } else {
+                            $rules[$categoryKey] = isset($categoryValue['choices'])
+                                //如果存在此分类下面存在choices，则显示对应的choice的中文解释，否则显示此choice的值
+                                ? $categoryValue['choices'][$v] : $v;
+                        }
                     }
                 }
             }
@@ -63,9 +67,9 @@ class GameOptionsService
                 } else {
                     if ($optionKey === $categoryValue['key']) {
                         $categoricalOptions[$categoryKey]['name']= $categoryValue['name'];
-                        if (isset($categoryValue['options'])) {
+                        if (isset($categoryValue['choices'])) {
                             //choice说明此分类的玩法是排他选项
-                            $categoricalOptions[$categoryKey]['choices'] = $categoryValue['options'];
+                            $categoricalOptions[$categoryKey]['choices'] = $categoryValue['choices'];
                         } else {
                             //此玩法分类是可以直接输入数值的
                             $categoricalOptions[$categoryKey]['value'] = 0;
