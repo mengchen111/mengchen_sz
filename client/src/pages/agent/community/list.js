@@ -38,6 +38,10 @@ new Vue({
         name: 'name',
         title: '名称',
       },
+      {
+        name: 'game_group_name',
+        title: '游戏包',
+      },
       // {
       //   name: 'info',
       //   title: '简介',
@@ -108,6 +112,7 @@ new Vue({
   },
 
   created: function () {
+    //
   },
 
   mounted: function () {
