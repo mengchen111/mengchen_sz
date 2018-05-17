@@ -4,9 +4,26 @@ namespace App\Traits;
 
 trait GameTypeMap
 {
+    /**
+     * 获取所有游戏分组id
+     * @return array
+     */
     public function getGameGroupIds()
     {
         return array_keys($this->gameGroups);
+    }
+
+    /**
+     * 获取游戏组id和分组名字的映射表
+     * @return array
+     */
+    public function getGameGroupIdNameMap()
+    {
+        $gameGroupIdNameMap = [];
+        foreach ($this->gameGroups as $id => $item) {
+            $gameGroupIdNameMap[$id] = $item['name'];
+        }
+        return $gameGroupIdNameMap;
     }
 
     //麻将类型映射(广东麻将里面的玩法类型，不是kind，对应的是options里面的key1(房间类型))

@@ -6,6 +6,7 @@ use App\Http\Requests\AdminRequest;
 use App\Models\CommunityCardTopupLog;
 use App\Services\Game\GameApiService;
 use App\Services\Paginator;
+use App\Traits\GameTypeMap;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLogs;
@@ -15,6 +16,8 @@ use App\Services\CommunityService;
 
 class CommunityController extends Controller
 {
+    use GameTypeMap;
+
     public function showCommunityList(AdminRequest $request)
     {
         $admin = $request->user();
@@ -109,13 +112,15 @@ class CommunityController extends Controller
     public function auditCommunityApplication(AdminRequest $request, CommunityList $community)
     {
         $this->validate($request, [
-            'status' => 'required|integer|in:1,2',
+            'approval' => 'required|integer|in:1,2',
+            'game_group_id' => 'required|integer|in:' . implode(',', $this->getGameGroupIds()),
         ]);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '审批牌艺馆', $request->header('User-Agent'));
 
-        $community->status = $request->input('status');
+        $community->status = $request->input('approval');
+        $community->game_group = $request->input('game_group_id');
         $community->save();
 
         return [

@@ -120,8 +120,13 @@
                             <form role="form" class="form-group" @submit.prevent="auditCommunity">
                                 <div class="form-group">
                                     <label>通过/拒绝</label>
-                                    <v-select :searchable="false" v-model="auditCommunityValue"
+                                    <v-select :searchable="false" v-model="auditCommunityApproval"
                                               :options="auditCommunityOptions"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <label>游戏包</label>
+                                    <v-select :searchable="false" required v-model="auditCommunityGameGroup"
+                                              :options="_.values(gameGroupIdNameMap)"></v-select>
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>

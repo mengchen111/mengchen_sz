@@ -124,6 +124,7 @@ Route::group([
     Route::delete('community/{community}', 'CommunityController@deleteCommunity')->where('community', '[0-9]+');
     Route::post('community/audit/{community}', 'CommunityController@auditCommunityApplication')->where('community', '[0-9]+');
     Route::get('community/valid-card-consumed', 'CommunityController@getCommunityValidCardConsumedLog');
+    Route::get('community/game-group/id-name-map', 'CommunityController@getGameGroupIdNameMap');
 
     Route::post('stock', 'StockController@apply');
     Route::get('stock/list', 'StockController@applyList');

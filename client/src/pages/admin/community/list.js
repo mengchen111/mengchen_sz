@@ -25,10 +25,17 @@ new Vue({
       2: '拒绝',
     },
     statusDefaultValue: '待审核',
-    auditCommunityValue: '通过',
+    auditCommunityApproval: '通过',
+    auditCommunityGameGroup: '',
+    auditCommunityForm: {
+      'approval': '通过',
+      'game_group_id': '',
+    },
     addCommunityForm: {},
     type_id: '',
+    gameGroupIdNameMap: {},
 
+    gameGroupIdNameMapApi: '/admin/api/community/game-group/id-name-map',
     communityApi: '/admin/api/community',
     auditCommunityApi: '/admin/api/community/audit',
     tableUrl: '/admin/api/community?status=0',  //默认显示待审核
@@ -54,6 +61,10 @@ new Vue({
       {
         name: 'info',
         title: '简介',
+      },
+      {
+        name: 'game_group_name',
+        title: '游戏包',
       },
       {
         name: 'card_stock',
@@ -146,11 +157,10 @@ new Vue({
       let _self = this
       let toastr = this.$refs.toastr
       let api = `${_self.auditCommunityApi}/${_self.activatedRow.id}`
-      let status = _.findKey(this.auditCommunityMap, (v) => v === this.auditCommunityValue)
+      this.auditCommunityForm.approval = _.findKey(this.auditCommunityMap, (v) => v === _self.auditCommunityApproval)
+      this.auditCommunityForm.game_group_id = _.findKey(this.gameGroupIdNameMap, (v) => v === _self.auditCommunityGameGroup)
 
-      myTools.axiosInstance.post(api, {
-        status: status,
-      })
+      myTools.axiosInstance.post(api, this.auditCommunityForm)
         .then(function (res) {
           myTools.msgResolver(res, toastr)
           _self.$root.eventHub.$emit('MyVuetable:refresh')
@@ -165,6 +175,17 @@ new Vue({
       let type_id = this.type_id
       this.tableUrl = '/admin/api/community?status=' + status + '&type_id=' + type_id
     },
+  },
+
+  created: function () {
+    let _self = this
+    myTools.axiosInstance.get(this.gameGroupIdNameMapApi)
+      .then(function (res) {
+        _self.gameGroupIdNameMap = res.data
+      })
+      .catch(function (err) {
+        alert(err)
+      })
   },
 
   mounted: function () {
