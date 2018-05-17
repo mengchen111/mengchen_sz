@@ -5,9 +5,12 @@ namespace App\Models;
 use App\Services\Game\PlayerService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\GameTypeMap;
 
 class CommunityList extends Model
 {
+    use GameTypeMap;
+
     public $timestamps = true;
     protected $table = 'community_list';
     protected $primaryKey = 'id';
@@ -22,6 +25,8 @@ class CommunityList extends Model
 
     protected $appends = [
         'members_count',
+        'game_group_name',
+        'game_group_game_types',
     ];
 
     public function ownerAgent()
@@ -168,4 +173,28 @@ class CommunityList extends Model
         return in_array($playerId, $this->member_ids);
     }
 
+    public function getGameGroupNameAttribute()
+    {
+        $gameGroupId = $this->attributes['game_group'];
+        if (in_array($gameGroupId, $this->getGameGroupIds())) {
+            return $this->gameGroups[$gameGroupId]['name'];
+        } else {
+            return null;
+        }
+    }
+
+    public function getGameGroupGameTypesAttribute()
+    {
+        $gameGroupId = $this->attributes['game_group'];
+        if (in_array($gameGroupId, $this->getGameGroupIds())) {
+            $gameTypesIds = $this->gameGroups[$gameGroupId]['game_types'];
+            $gameTypes = [];
+            array_walk($gameTypesIds, function ($id) use (&$gameTypes) {
+                $gameTypes[$id] = $this->gameTypes[$id];
+            });
+            return $gameTypes;
+        } else {
+            return [];
+        }
+    }
 }

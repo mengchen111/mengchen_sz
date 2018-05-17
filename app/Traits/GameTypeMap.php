@@ -4,6 +4,11 @@ namespace App\Traits;
 
 trait GameTypeMap
 {
+    public function getGameGroupIds()
+    {
+        return array_keys($this->gameGroups);
+    }
+
     //麻将类型映射(广东麻将里面的玩法类型，不是kind，对应的是options里面的key1(房间类型))
     protected $gameTypes = [
         1 => '广东',     //广东庄
@@ -17,6 +22,18 @@ trait GameTypeMap
         9 => '普宁',
         10 => '揭阳',
         11 => '万年',
+    ];
+
+    //游戏包（每个包包含不同的游戏类型）
+    protected $gameGroups = [
+        1 => [
+            'name' => '江西',
+            'game_types' => [3,5,11],
+        ],
+        2 => [
+            'name' => '广东',
+            'game_types' => [1,2,4,6,7,8,9,10],
+        ]
     ];
 
     //每种麻将可用的选项
