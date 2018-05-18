@@ -112,8 +112,8 @@ class RoomController extends Controller
         $rooms = array_intersect_key($this->gameTypes, array_fill_keys($this->availableRoomType, ''));        //可创建的玩法列表
         $roomOptions = [];  //每种房间可用的选项
         foreach ($this->availableRoomType as $typeId) {
-            $typeName = $this->gameTypes[$typeId];
-            $roomOptions[$typeName] = $gameOptionsService->getCategoricalOption($typeId);
+            //$typeName = $this->gameTypes[$typeId];
+            $roomOptions[$typeId] = $gameOptionsService->getCategoricalOption($typeId);
         }
         return [
             'rooms' => $rooms,

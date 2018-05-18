@@ -155,16 +155,16 @@
                         <div class="modal-body">
                             <div class="nav-tabs-custom">
                                 <ul class="nav nav-tabs pull-right" style="margin-bottom: 10px;">
-                                    <li v-for="room of rooms" :class="{ active: room === activeRoomType}">
-                                        <a :href="'#' + room" data-toggle="tab" @click="tabClick(room)">{{ room }}</a>
+                                    <li v-for="(room, roomId) of rooms" :class="{ active: room === activeRoomType}">
+                                        <a :href="'#' + room" data-toggle="tab" @click="tabClick(roomId)">{{ room }}</a>
                                     </li>
                                     <li class="pull-left header"><i class="fa fa-home"></i><span class="hidden-xs"></span></li>
                                 </ul>
 
                                 <div class="tab-content no-padding">
-                                    <div v-for="room of rooms" class="tab-pane" :id="room" :class="{ active: room === activeRoomType}">
+                                    <div v-for="(room, roomId) of rooms" class="tab-pane" :id="room" :class="{ active: room === activeRoomType}">
                                         <form class="form-horizontal" @submit.prevent="createRoom(room)">
-                                            <div class="form-group" v-for="(category, categoryKey) of roomTypes[room]">
+                                            <div class="form-group" v-for="(category, categoryKey) of roomTypes[roomId]">
                                                 <div class="col-md-2 text-center" :class="{hidden: category.hasOwnProperty('value')}">{{ category['name'] }}</div>
                                                 <div class="col-md-10">
                                                     <div class="row" v-if="category.hasOwnProperty('options')">

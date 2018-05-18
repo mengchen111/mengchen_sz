@@ -1,11 +1,14 @@
 <template>
     <div class="table-actions">
-        <button class="btn btn-primary btn-block btn-flat"
+        <button class="btn btn-primary btn-flat"
+                @click="editCommunityGameOption(rowData)" title="玩法" v-if="rowData.status == 1">玩法
+        </button>
+        <button class="btn btn-primary btn-flat"
                 @click="manageCommunityAction(rowData)" title="管理" v-if="rowData.status == 1">管理
         </button>
-        <button class="btn btn-primary btn-block btn-flat" title="待审核" v-if="rowData.status == 0">待审核
+        <button class="btn btn-primary btn-flat" title="待审核" v-if="rowData.status == 0">待审核
         </button>
-        <button class="btn btn-danger btn-block btn-flat" title="待审核" v-if="rowData.status == 2">审核不通过
+        <button class="btn btn-danger btn-flat" title="待审核" v-if="rowData.status == 2">审核不通过
         </button>
         <!--代理商不允许删除社区-->
         <!--<button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#delete-community-modal"-->
@@ -31,6 +34,9 @@
       },
       deleteCommunityAction (data) {
         this.$root.eventHub.$emit('deleteCommunityEvent', data)
+      },
+      editCommunityGameOption (data) {
+        this.$root.eventHub.$emit('editCommunityGameOptionEvent', data)
       },
     },
   }

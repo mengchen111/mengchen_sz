@@ -17,7 +17,7 @@ new Vue({
     msgResolver: myTools.msgResolver,
     rooms: {},      //可创建的房间
     roomTypes: {},   //每种房间对应的可用选项
-    currentPageData: null,  //当前页面的数据
+    currentPageData: {},  //当前页面的数据
     activeRoomType: '惠州',  //默认的打开的tab
     createRoomFormData: {},
 
@@ -25,7 +25,7 @@ new Vue({
     roomCreateApi: '/admin/api/gm/room',     //房间创建接口
     getOpenRoomApi: '/admin/api/gm/room/open',
     getRoomHistoryApi: '/admin/api/gm/room/history',
-    paginationUrl: null,
+    paginationUrl: '/admin/api/gm/room/open',
   },
 
   methods: {
@@ -46,11 +46,11 @@ new Vue({
     },
 
     //玩法默认选中
-    tabClick (room) {
+    tabClick (roomId) {
       this.createRoomFormData = {}
 
-      if (this.roomTypes[room]['wanfa']) {
-        this.createRoomFormData.wanfa = this.roomTypes[room]['wanfa']['options']
+      if (this.roomTypes[roomId]['wanfa']) {
+        this.createRoomFormData.wanfa = this.roomTypes[roomId]['wanfa']['options']
       }
     },
 
@@ -70,12 +70,13 @@ new Vue({
     },
 
     setActiveRoomWanfa () {
-      this.createRoomFormData.wanfa = this.roomTypes[this.activeRoomType]['wanfa']['options']
+      let activeRoomTypeId = _.findKey(this.rooms, (value) => value === this.activeRoomType)
+      this.createRoomFormData.wanfa = this.roomTypes[activeRoomTypeId]['wanfa']['options']
     },
   },
 
   created () {
-    this.paginationUrl = this.getOpenRoomApi
+    //this.paginationUrl = this.getOpenRoomApi
   },
 
   mounted () {

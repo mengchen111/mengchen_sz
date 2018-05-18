@@ -278,6 +278,9 @@ Route::group([
     Route::get('community/room/{communityId}', 'CommunityRoomController@getCommunityOpenRoom')->where('communityId', '[0-9]+');
     Route::get('community/game-record/{communityId}', 'CommunityGameRecordController@search')->where('communityId', '[0-9]+');
     Route::put('community/game-record/mark/{recordInfoId}', 'CommunityGameRecordController@markRecord')->where('recordInfoId', '[0-9]+');
+    Route::get('community/game-type/rules/{community}', 'CommunityGameTypeController@getGameRules')->where('community', '[0-9]+');
+    Route::post('community/game-type/rule/{community}', 'CommunityGameTypeController@modifyGameRuleTemplate')->where('community', '[0-9]+');
+    Route::get('community/game-type/rule', 'CommunityGameTypeController@getGameRule');
 
     Route::post('top-up/child/{receiver}/{type}/{amount}', 'TopUpController@topUp2Child')->where('amount', '[0-9]+');
     Route::post('top-up/player/{player}/{type}/{amount}', 'TopUpController@topUp2Player')->where('amount', '[0-9]+');

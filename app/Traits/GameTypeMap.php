@@ -13,6 +13,11 @@ trait GameTypeMap
         return array_keys($this->gameGroups);
     }
 
+    public function getGameTypeIds()
+    {
+        return array_keys($this->gameTypes);
+    }
+
     /**
      * 获取游戏组id和分组名字的映射表
      * @return array
@@ -44,13 +49,13 @@ trait GameTypeMap
     //游戏包（每个包包含不同的游戏类型）
     protected $gameGroups = [
         1 => [
-            'name' => '江西',
-            'game_types' => [3,5,11],
-        ],
-        2 => [
             'name' => '广东',
             'game_types' => [1,2,4,6,7,8,9,10],
-        ]
+        ],
+        2 => [
+            'name' => '江西',
+            'game_types' => [5,11],
+        ],
     ];
 
     //每种麻将可用的选项
