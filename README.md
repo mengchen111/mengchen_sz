@@ -181,6 +181,7 @@ cd $codeDir
 | community/{community} | DELETE | 删除牌艺馆 |
 | community/audit/{community} | POST | 审核牌艺馆创建申请 |
 | community/valid-card-consumed | GET | 获取牌艺馆有效耗卡数据 |
+| community/game-group/id-name-map | GET | 获取游戏组id和分组名字的映射表 |
 | stock | POST | 申请库存 |
 | stock/list | GET | 库存申请列表 |
 | stock/history | GET | 库存审批记录 |
@@ -254,7 +255,10 @@ cd $codeDir
 | community/member/log/read| PUT | 标记社区动态为已读 |
 | community/room/{communityId} | GET | 获取牌艺馆房间(正在玩) |
 | community/game-record/{communityId} | GET | 查询社区玩家战绩 |
-| community/game-record/mark/{ruid} | PUT | 标记战绩为已读 |
+| community/game-record/mark/{recordInfoId} | PUT | 标记战绩为已读 |
+| community/game-type/rules/{community} | GET | 获取牌艺馆所关联的游戏包的所有游戏的游戏规则 |
+| community/game-type/rule/{community} | POST | 创建/编辑牌艺馆游戏默认规则 |
+| community/game-type/rule | GET | 获取某个牌艺馆的某个游戏类型的游戏规则模版 |
 | top-up/child/{receiver}/{type}/{amount} | POST | 给子代理商充值 |
 | top-up/player/{player}/{type}/{amount} | POST | 给玩家充值 |
 | top-up/child | GET | 给自代理商的充值记录 |
