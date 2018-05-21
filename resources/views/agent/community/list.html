@@ -139,14 +139,14 @@
                                                 <div class="col-md-10">
                                                     <div class="row" v-if="category.hasOwnProperty('options')">
                                                         <div class="col-md-3 col-xs-6" v-for="option of category['options']">
-                                                            <checkbox :value="option" v-model="createGameRulesForm[categoryKey]">
+                                                            <checkbox :value="option" :name="categoryKey" v-model="createGameRulesForm[categoryKey]">
                                                                 {{ option }}
                                                             </checkbox>
                                                         </div>
                                                     </div>
                                                     <div class="row" v-else-if="category.hasOwnProperty('choices')">
                                                         <div class="col-md-4 col-xs-6" v-for="(choiceName, choiceValue) of category['choices']">
-                                                            <radio :value="choiceValue" required v-model="createGameRulesForm[categoryKey]">
+                                                            <radio :value="choiceValue" :name="categoryKey" v-model="createGameRulesForm[categoryKey]">
                                                                 {{ choiceName }}
                                                             </radio>
                                                         </div>
@@ -154,7 +154,8 @@
                                                     <div class="row" v-else-if="category.hasOwnProperty('value')"
                                                          :class="{hidden: category.hasOwnProperty('value')}">
                                                         <div class="col-md-6 col-xs-6">
-                                                            <input type="text" class="form-control" v-model="createGameRulesForm[categoryKey]">
+                                                            <input type="text" :name="categoryKey" class="form-control"
+                                                                   v-model="createGameRulesForm[categoryKey]">
                                                             </input>
                                                         </div>
                                                     </div>
