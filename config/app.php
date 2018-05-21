@@ -187,6 +187,8 @@ return [
         Overtrue\LaravelWechat\ServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         L5Swagger\L5SwaggerServiceProvider::class,
+
+        Mews\Captcha\CaptchaServiceProvider::class,
     ],
 
     /*
@@ -240,6 +242,8 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'EasyWeChat' => Overtrue\LaravelWechat\Facade::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+
+        'Captcha' => Mews\Captcha\Facades\Captcha::class,
     ],
 
 ];

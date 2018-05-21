@@ -15,6 +15,7 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "maatwebsite/excel": "~2.1.0",
+        "mews/captcha": "^2.2",
         "overtrue/laravel-wechat": "~3.0",
         "predis/predis": "^1.1",
         "sentry/sentry-laravel": "^0.8.0",
