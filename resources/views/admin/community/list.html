@@ -108,7 +108,48 @@
                     </div>
                 </div>
             </div>
-
+            <div id="edit-community-modal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">x</button>
+                            <h3 class="text-center">修改牌艺馆</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" class="form-group" @submit.prevent="editCommunity">
+                                <!--<div class="form-group">-->
+                                    <!--<label>游戏id</label>-->
+                                    <!--<input name="owner_player_id" type="number" class="form-control" required-->
+                                           <!--v-model.trim="addCommunityForm.owner_player_id" placeholder="玩家id">-->
+                                <!--</div>-->
+                                <!--<div class="form-group">-->
+                                    <!--<label>代理商id</label>-->
+                                    <!--<input name="owner_agent_id" type="number" class="form-control" required-->
+                                           <!--v-model.trim="addCommunityForm.owner_agent_id" placeholder="代理商id">-->
+                                <!--</div>-->
+                                <div class="form-group">
+                                    <label>名称</label>
+                                    <input name="name" type="text" class="form-control" required
+                                           v-model.trim="editCommunityForm.name" placeholder="名称(12个字符之内)">
+                                </div>
+                                <div class="form-group">
+                                    <label>简介</label>
+                                    <input name="info" type="text" class="form-control"
+                                           v-model.trim="editCommunityForm.info" placeholder="简介(可留空,12个字符之内)">
+                                </div>
+                                <div class="form-group">
+                                    <label>游戏包</label>
+                                    <v-select :searchable="false" required v-model="editCommunityForm.game_group"
+                                              :options="_.values(gameGroupIdNameMap)"></v-select>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="autdit-community-modal" class="modal fade" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -124,7 +165,7 @@
                                               :options="auditCommunityOptions"></v-select>
                                 </div>
                                 <div class="form-group">
-                                    <label>游戏包</label>
+                                    <label>游戏包{{auditCommunityGameGroup}}</label>
                                     <v-select :searchable="false" required v-model="auditCommunityGameGroup"
                                               :options="_.values(gameGroupIdNameMap)"></v-select>
                                 </div>

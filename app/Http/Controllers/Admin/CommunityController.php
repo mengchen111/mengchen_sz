@@ -23,11 +23,13 @@ class CommunityController extends Controller
         $admin = $request->user();
         OperationLogs::add($admin->id, $request->path(), $request->method(),
             '查看牌艺馆列表', $request->header('User-Agent'));
+
         return CommunityList::with(['ownerAgent'])
             ->when($request->has('status'), function ($query) use ($request) {
                 if ((int)$request->input('status') === 3) {     //返回所有状态的社区列表
                     return $query;
                 }
+
                 return $query->where('status', $request->input('status'));
             })
             //查找指定的社区
@@ -66,6 +68,22 @@ class CommunityController extends Controller
 
         return [
             'message' => '创建牌艺馆' . $community->id . '成功, 等待管理员审核',
+        ];
+    }
+
+    public function updateCommunity(AdminRequest $request, CommunityList $community)
+    {
+        $this->validate($request, [
+            'name' => 'required|string|max:12|unique:community_list,name,' . $community->id,
+            'info' => 'required|string|max:12',
+            'game_group' => 'required|integer|in:' . implode(',', $this->getGameGroupIds()),
+        ]);
+        $community->update($request->all());
+
+        $this->addLog('修改牌艺馆');
+
+        return [
+            'message' => '修改牌艺馆' . $community->id . '成功, 等待管理员审核',
         ];
     }
 
@@ -124,7 +142,7 @@ class CommunityController extends Controller
         $community->save();
 
         return [
-            'message' => '操作成功'
+            'message' => '操作成功',
         ];
     }
 

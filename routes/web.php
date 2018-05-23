@@ -45,24 +45,24 @@ Route::group([
 ], function () {
     Route::group([
         'middleware' => ['auth'],
-    ],function (){
+    ], function () {
         //微信订单
-        Route::get('order','WeChatPaymentController@index'); //管理员查看
-        Route::get('order/agent','WeChatPaymentController@agentOrder'); //代理商查看列表
-        Route::get('order/agent/{order}','WeChatPaymentController@getAgentOrder'); //代理商查看
-        Route::post('order','WeChatPaymentController@store');
+        Route::get('order', 'WeChatPaymentController@index'); //管理员查看
+        Route::get('order/agent', 'WeChatPaymentController@agentOrder'); //代理商查看列表
+        Route::get('order/agent/{order}', 'WeChatPaymentController@getAgentOrder'); //代理商查看
+        Route::post('order', 'WeChatPaymentController@store');
 
-        Route::get('order/search/{orderNo?}','WeChatPaymentController@search'); // 微信订单查询
+        Route::get('order/search/{orderNo?}', 'WeChatPaymentController@search'); // 微信订单查询
     });
 
-    Route::any('order/notification','WeChatPaymentController@getNotification'); //通知
+    Route::any('order/notification', 'WeChatPaymentController@getNotification'); //通知
 });
 
 //管理员接口
 Route::group([
     'middleware' => ['auth'],
     'prefix' => 'admin/api',
-    'namespace' => 'Admin'
+    'namespace' => 'Admin',
 ], function () {
     Route::put('self/password', 'AdminController@updatePass');
 
@@ -121,6 +121,7 @@ Route::group([
 
     Route::get('community', 'CommunityController@showCommunityList');
     Route::post('community', 'CommunityController@createCommunity');
+    Route::put('community/{community}', 'CommunityController@updateCommunity');
     Route::delete('community/{community}', 'CommunityController@deleteCommunity')->where('community', '[0-9]+');
     Route::post('community/audit/{community}', 'CommunityController@auditCommunityApplication')->where('community', '[0-9]+');
     Route::get('community/valid-card-consumed', 'CommunityController@getCommunityValidCardConsumedLog');
@@ -161,23 +162,23 @@ Route::group([
     Route::get('system/log', 'SystemController@showLog');
 
     //微信充值规则
-    Route::get('wx-top-up-rules','WxTopUpRuleController@index');
-    Route::post('wx-top-up-rules','WxTopUpRuleController@store');
-    Route::put('wx-top-up-rules/{rule}','WxTopUpRuleController@update');
-    Route::delete('wx-top-up-rules/{rule}','WxTopUpRuleController@destroy');
+    Route::get('wx-top-up-rules', 'WxTopUpRuleController@index');
+    Route::post('wx-top-up-rules', 'WxTopUpRuleController@store');
+    Route::put('wx-top-up-rules/{rule}', 'WxTopUpRuleController@update');
+    Route::delete('wx-top-up-rules/{rule}', 'WxTopUpRuleController@destroy');
     //返利规则
-    Route::get('rebate-rules','RebateRuleController@index');
-    Route::post('rebate-rules','RebateRuleController@store');
-    Route::put('rebate-rules/{rule}','RebateRuleController@update');
-    Route::delete('rebate-rules/{rule}','RebateRuleController@destroy');
+    Route::get('rebate-rules', 'RebateRuleController@index');
+    Route::post('rebate-rules', 'RebateRuleController@store');
+    Route::put('rebate-rules/{rule}', 'RebateRuleController@update');
+    Route::delete('rebate-rules/{rule}', 'RebateRuleController@destroy');
 
     //提现审核
-    Route::get('withdrawals','WithdrawalController@index');
-    Route::post('withdrawals/audit/{withdrawal}','WithdrawalController@audit');
+    Route::get('withdrawals', 'WithdrawalController@index');
+    Route::post('withdrawals/audit/{withdrawal}', 'WithdrawalController@audit');
 
     //查看代理商返利
-    Route::get('rebates/user/{user?}','RebateController@showUserRebate');
-    Route::get('rebates/user/statistics/{user}','RebateController@statistics');
+    Route::get('rebates/user/{user?}', 'RebateController@showUserRebate');
+    Route::get('rebates/user/statistics/{user}', 'RebateController@statistics');
 
 });
 
@@ -185,7 +186,7 @@ Route::group([
 Route::group([
     'middleware' => ['auth'],
     'prefix' => 'admin',
-    'namespace' => 'Admin'
+    'namespace' => 'Admin',
 ], function () {
     Route::get('home', 'ViewController@home');
 
@@ -231,22 +232,22 @@ Route::group([
 
     Route::get('order/wechat', 'ViewController@orderWechat');
     //提现
-    Route::get('order/withdrawals','ViewController@withdrawals');
-    Route::get('order/rebates','ViewController@agentRebate');
+    Route::get('order/withdrawals', 'ViewController@withdrawals');
+    Route::get('order/rebates', 'ViewController@agentRebate');
     //规则
-    Route::get('rules/wx-top-up','ViewController@wxTopUpRule');
-    Route::get('rules/rebate','ViewController@rebateRule');
+    Route::get('rules/wx-top-up', 'ViewController@wxTopUpRule');
+    Route::get('rules/rebate', 'ViewController@rebateRule');
 
     // 微信订单
-    Route::get('order/search','ViewController@searchWxOrder');
+    Route::get('order/search', 'ViewController@searchWxOrder');
 
 });
 
 //代理商接口
 Route::group([
-    'middleware' => ['auth','agent.active'],
+    'middleware' => ['auth', 'agent.active'],
     'prefix' => 'agent/api',
-    'namespace' => 'Agent'
+    'namespace' => 'Agent',
 ], function () {
     Route::put('self/info', 'AgentController@update');
     Route::put('self/password', 'AgentController@updatePass');
@@ -288,23 +289,23 @@ Route::group([
     Route::get('top-up/player', 'TopUpController@topUp2PlayerHistory');
 
     //返利
-    Route::get('rebates','RebateController@index');
-    Route::get('rebates/statistics','RebateController@statistics');
+    Route::get('rebates', 'RebateController@index');
+    Route::get('rebates/statistics', 'RebateController@statistics');
     //提现
-    Route::get('withdrawals','WithdrawalController@index');
-    Route::get('withdrawals/amount-limit','WithdrawalController@amountLimit');
-    Route::post('withdrawals','WithdrawalController@store');
+    Route::get('withdrawals', 'WithdrawalController@index');
+    Route::get('withdrawals/amount-limit', 'WithdrawalController@amountLimit');
+    Route::post('withdrawals', 'WithdrawalController@store');
 
-    Route::get('wx-top-up-rules','WxTopUpRuleController@index');
+    Route::get('wx-top-up-rules', 'WxTopUpRuleController@index');
 
 
 });
 
 //代理商视图
 Route::group([
-    'middleware' => ['auth','agent.active'],
+    'middleware' => ['auth', 'agent.active'],
     'prefix' => 'agent',
-    'namespace' => 'Agent'
+    'namespace' => 'Agent',
 ], function () {
     Route::get('home', 'ViewController@home');
 
@@ -328,11 +329,11 @@ Route::group([
     Route::get('info', 'ViewController@info');
 
     //返利管理
-    Route::get('pay/rebates','ViewController@rebates');
+    Route::get('pay/rebates', 'ViewController@rebates');
     //提现申请
-    Route::get('pay/withdrawals','ViewController@withdrawals');
+    Route::get('pay/withdrawals', 'ViewController@withdrawals');
     //微信订单
-    Route::get('pay/wx-order','ViewController@wxOrder');
+    Route::get('pay/wx-order', 'ViewController@wxOrder');
 });
 
 //微信回调接口

@@ -32,9 +32,11 @@ new Vue({
       'game_group_id': '',
     },
     addCommunityForm: {},
+    editCommunityForm: {},
     type_id: '',
     gameGroupIdNameMap: {},
 
+    editCommunityApi: '/admin/api/community',
     gameGroupIdNameMapApi: '/admin/api/community/game-group/id-name-map',
     communityApi: '/admin/api/community',
     auditCommunityApi: '/admin/api/community/audit',
@@ -137,6 +139,32 @@ new Vue({
           alert(err)
         })
     },
+    onEditItem (data){
+      this.editCommunityForm = _.cloneDeep(data)
+      this.editCommunityForm.name = data.name
+      this.editCommunityForm.info = data.info
+      this.editCommunityForm.game_group = this.gameGroupIdNameMap[data.game_group]
+    },
+    editCommunity (){
+      let _self = this
+      let toastr = this.$refs.toastr
+      let api = `${_self.communityApi}/${_self.editCommunityForm.id}`
+
+      let game_group = _.findKey(this.gameGroupIdNameMap, (v) => v === _self.editCommunityForm.game_group)
+
+      myTools.axiosInstance.put(api, {
+        'name': _self.editCommunityForm.name,
+        'info': _self.editCommunityForm.info,
+        'game_group': game_group,
+      })
+        .then(function (res) {
+          myTools.msgResolver(res, toastr)
+          _self.$root.eventHub.$emit('MyVuetable:refresh')
+        })
+        .catch(function (err) {
+          alert(err)
+        })
+    },
 
     deleteCommunity () {
       let _self = this
@@ -192,5 +220,6 @@ new Vue({
     let _self = this
     this.$root.eventHub.$on('auditMemberEvent', (data) => _self.activatedRow = data)
     this.$root.eventHub.$on('deleteCommunityEvent', (data) => _self.activatedRow = data)
+    this.$root.eventHub.$on('editCommunityEvent', this.onEditItem)
   },
 })
