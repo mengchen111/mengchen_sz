@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Wechat;
 
 use App\Services\Game\GameApiService;
 use App\Services\WechatService;
+use EasyWeChat\Message\Transfer;
 use Illuminate\Http\Request;
 use GuzzleHttp;
 use App\Http\Controllers\Controller;
@@ -31,7 +32,7 @@ class OfficialAccountController extends Controller
         $this->wechatServer->setMessageHandler(function ($message) use ($request) {
             // 注意，这里的 $message 不仅仅是用户发来的消息，也可能是事件
             // 当 $message->MsgType 为 event 时为事件
-            if ($message->MsgType == 'event') {
+            if ($message->MsgType === 'event') {
                 OperationLogs::add(0, $request->path(), $request->method(),
                     '微信回调 - 事件:' . $message->Event . ' openid:' . $message->FromUserName,
                     $request->header('User-Agent'), json_encode($request->all()));
@@ -47,6 +48,8 @@ class OfficialAccountController extends Controller
                         # code...
                         break;
                 }
+            } elseif ($message->MsgType === 'text') {   //将公众号用户消息转发到客服
+                return new Transfer();
             }
         });
 
