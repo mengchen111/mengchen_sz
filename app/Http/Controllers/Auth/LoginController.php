@@ -22,6 +22,7 @@ class LoginController extends Controller
 
     use AuthenticatesUsers {
         AuthenticatesUsers::login as doLogin;
+        AuthenticatesUsers::logout as doLogout;
     }
 
     /**
@@ -123,5 +124,24 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $this->doLogin($request);
+    }
+
+    /**
+     *
+     * @SWG\Post(
+     *     path="/logout",
+     *     description="登出",
+     *     operationId="logout",
+     *     tags={"login"},
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="logout success",
+     *     ),
+     * )
+     */
+    public function logout(Request $request)
+    {
+        $this->doLogout($request);
     }
 }

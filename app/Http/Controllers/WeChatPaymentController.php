@@ -52,6 +52,60 @@ class WeChatPaymentController extends Controller
         return $order->append('order_qr_code');
     }
 
+    /**
+     *
+     * @SWG\Post(
+     *     path="/api/wechat/order",
+     *     description="创建微信订单",
+     *     operationId="wechat.order.create",
+     *     tags={"wx-top-up"},
+     *
+     *     @SWG\Parameter(
+     *         name="wx_top_up_rule_id",
+     *         description="微信充值房卡套餐id",
+     *         in="query",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=422,
+     *         description="参数验证错误",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/ValidationError"),
+     *             },
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="创建微信订单成功",
+     *         @SWG\Property(
+     *             type="object",
+     *             @SWG\Property(
+     *                 property="code_url",
+     *                 description="code_url",
+     *                 type="string",
+     *                 example="weixin://wxpay/bizpayurl?pr=tp8cyui",
+     *             ),
+     *             @SWG\Property(
+     *                 property="message",
+     *                 description="接口返回消息",
+     *                 type="string",
+     *                 example="订单创建成功",
+     *             ),
+     *             @SWG\Property(
+     *                 property="order_qr_code",
+     *                 description="订单的二维码图片的base64字符串",
+     *                 type="string",
+     *                 example="iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAD/klEQVR4nO3dwW7bOBRA0SaY///koIsCsxAwwrh6l5Tsc9ZN7BgXwjNLUV8/Pz+/YNr37jfAexIWCWGREBYJYZEQFglhkRAWCWGREBYJYZEQFglhkRAWCWGREBYJYZEQFglhkRAWCWGREBYJYZEQFglhkRAWiX/Gf+P396JYzw8HOLyNwZMEzv/Al97V+c/e5JP8O65YJIRFQlgkhEVifng/WDY1vzTqXhnAd43nyz7JmZeoX4DPJCwSwiIhLBL58H7Qjavnc/Hgcvn5Cy1bPd81+P9PrlgkhEVCWCSERWL18N7ZteT90iz/OVyxSAiLhLBICIvE+wzvg6vn3et+jg/9s6kJi4SwSAiLxOrhvVuJvrLkfWWWv/K63ZeG7VyxSAiLhLBICItEPrw/Yum529U+uIvmEZ/kv570XnkQYZEQFglhkfi6+QLuGlf2y+86sfLmXLFICIuEsEgIi8Stz3nvTm7p7kEdPM/yyn8AbL+N1hWLhLBICIuEsEjkK++Dd4oOHrA+6CbPXbrbLO+KRUJYJIRFQlgkVm+bWbZ6fuVLw+ABMt0XjptvyHHFIiEsEsIiISwS88P7rhXwl97GwbJpfdBNPuf/4opFQlgkhEVCWCRWD++7DO4b2TXLD269P7BthscQFglhkRAWifyoyG6T+0F33OP5uxqcqXcdQllwxSIhLBLCIiEsEve6YXXXTH0w+OykXaP99lneFYuEsEgIi4SwSKx+wuq5K6NuN60vO6pl2VNhF7jXu+FtCIuEsEgIi8S9TpsZPF9l8B/vOrjm0Q+HcsUiISwSwiIhLBKbb1i9MghvP8r8L17obuvjf7hhlccQFglhkRAWiVvfsHpwkyNirjxDtdvMc/6zVt55E8IiISwSwiKxec/74H6V8/l01xaUwY35L72r7aO9KxYJYZEQFglhkci3zXT3VS7bmX6w7A8cZOWdNyEsEsIiISwS8yvvL62AL9M90mjX+Y5XvkNYeeephEVCWCSERWJ+eF+29Dy4M+Ruk2/9Qgu+QrlikRAWCWGREBaJ1TesXtE9lmhw9XzQlb/Innfek7BICIuEsEisvmF18NSX7jd3u+nPf3bwa8H256+6YpEQFglhkRAWiXs9YbVzZSf+4C7+wYNrrvx/gJV3nkpYJIRFQlgkPmV4P9h1hHp36v1LrLzzVMIiISwSwiKxenjfddrMue6xqN2k3+0pGuGKRUJYJIRFQlgk8uF917nng2vcVzaqX9k+v+tLwwhXLBLCIiEsEsIiMf+QJvjlikVEWCSERUJYJIRFQlgkhEVCWCSERUJYJIRFQlgkhEVCWCSERUJYJIRFQlgkhEVCWCSERUJYJIRFQlgkhEVCWCSEReI3RqAjeMqZJjYAAAAASUVORK5CYII=",
+     *             ),
+     *         ),
+     *     ),
+     * )
+     */
     public function store(Request $request)
     {
         $data = $this->validateCreateOrderRequest($request);

@@ -99,12 +99,45 @@ class CommunityController extends Controller
         ];
     }
 
+    /**
+     *
+     * @SWG\Get(
+     *     path="/agent/api/community/info/{community_id}",
+     *     description="查看某个牌艺馆的信息(只能查看自己拥有的)",
+     *     operationId="community.info.get",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         name="community_id",
+     *         description="牌艺馆id",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回此牌艺馆信息",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Community"),
+     *             },
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=404,
+     *         description="未找到此牌艺馆",
+     *     ),
+     * )
+     */
     public function getCommunityInfo(AgentRequest $request, $communityId)
     {
         $agent = $request->user();
 
         $community = CommunityList::where('owner_agent_id', $agent->id) //只能获取他拥有的牌艺馆信息
-            ->find($communityId);
+            ->findOrFail($communityId);
 
         OperationLogs::add($agent->id, $request->path(), $request->method(),
             '查看单个牌艺馆基本信息', $request->header('User-Agent'));
@@ -162,6 +195,44 @@ class CommunityController extends Controller
         return true;
     }
 
+    /**
+     *
+     * @SWG\Get(
+     *     path="/agent/api/communities",
+     *     description="获取此代理商已审核通过的牌艺馆信息",
+     *     operationId="communities.get",
+     *     tags={"community"},
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回牌艺馆信息和牌艺馆id",
+     *         @SWG\Property(
+     *             type="object",
+     *             @SWG\Property(
+     *                 property="communities",
+     *                 description="牌艺馆信息集合",
+     *                 type="array",
+     *                 @SWG\Items(
+     *                     type="object",
+     *                     allOf={
+     *                         @SWG\Schema(ref="#/definitions/Community"),
+     *                     },
+     *                 ),
+     *             ),
+     *             @SWG\Property(
+     *                 property="community_ids",
+     *                 description="牌艺馆id数组",
+     *                 type="array",
+     *                 @SWG\Items(
+     *                     type="string",
+     *                     example="10000",
+     *                 ),
+     *                 example={"10000","10001"},
+     *             ),
+     *         ),
+     *     ),
+     * )
+     */
     public function getAgentOwnerCommunities(AgentRequest $request)
     {
         $agent = $request->user();

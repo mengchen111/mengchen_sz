@@ -4,6 +4,42 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ *
+ * @SWG\Definition(
+ *   definition="WxTopUpRule",
+ *   description="微信充值套餐模型",
+ *   type="object",
+ *   @SWG\Property(
+ *       property="id",
+ *       description="套餐id",
+ *       type="integer",
+ *       format="int32",
+ *       example=1,
+ *   ),
+ *   @SWG\Property(
+ *       property="price",
+ *       description="套餐价格(单位分)",
+ *       type="integer",
+ *       format="int32",
+ *       example=8000,
+ *   ),
+ *   @SWG\Property(
+ *       property="price_yuan",
+ *       description="套餐价格(单位元)",
+ *       type="integer",
+ *       format="int32",
+ *       example=80,
+ *   ),
+ *   @SWG\Property(
+ *       property="remark",
+ *       description="套餐备注",
+ *       type="string",
+ *       example="100张",
+ *   ),
+ * )
+ *
+ */
 class WxTopUpRule extends Model
 {
     protected $fillable = [

@@ -7,6 +7,97 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use App\Traits\GameTypeMap;
 
+/**
+ *
+ * @SWG\Definition(
+ *   definition="Community",
+ *   type="object",
+ *   @SWG\Property(
+ *       property="id",
+ *       description="牌艺馆id",
+ *       type="integer",
+ *       format="int32",
+ *       example=10000,
+ *   ),
+ *   @SWG\Property(
+ *       property="owner_agent_id",
+ *       description="牌艺馆馆主代理商id",
+ *       type="integer",
+ *       format="int32",
+ *       example=540,
+ *   ),
+ *   @SWG\Property(
+ *       property="owner_player_id",
+ *       description="牌艺馆馆主玩家id",
+ *       type="integer",
+ *       format="int32",
+ *       example=12000,
+ *   ),
+ *   @SWG\Property(
+ *       property="game_group",
+ *       description="牌艺馆关联的游戏包id",
+ *       type="integer",
+ *       format="int32",
+ *       example=1,
+ *   ),
+ *   @SWG\Property(
+ *       property="name",
+ *       description="牌艺馆名称",
+ *       type="string",
+ *       example="xx牌艺馆",
+ *   ),
+ *   @SWG\Property(
+ *       property="info",
+ *       description="牌艺馆简介",
+ *       type="string",
+ *       example="这是一个牌艺馆简介",
+ *   ),
+ *   @SWG\Property(
+ *       property="card_stock",
+ *       description="牌艺馆房卡库存",
+ *       type="integer",
+ *       format="int32",
+ *       example=29,
+ *   ),
+ *   @SWG\Property(
+ *       property="card_frozen",
+ *       description="牌艺馆已冻结房卡数量",
+ *       type="integer",
+ *       format="int32",
+ *       example=1,
+ *   ),
+ *   @SWG\Property(
+ *       property="status",
+ *       description="申请状态(0-待审核,1-审核通过,2-审核不通过)",
+ *       type="integer",
+ *       format="int32",
+ *       example=1,
+ *   ),
+ *   @SWG\Property(
+ *       property="members",
+ *       description="牌艺馆成员玩家id(逗号分隔)",
+ *       type="string",
+ *       example="10007,11000,10001,10001",
+ *   ),
+ *   @SWG\Property(
+ *       property="members_count",
+ *       description="牌艺馆成员数量(不包括馆主)",
+ *       type="integer",
+ *       format="int32",
+ *       example=4,
+ *   ),
+ *   @SWG\Property(
+ *       property="game_group_name",
+ *       description="牌艺馆所属游戏包的中文名字",
+ *       type="string",
+ *       example="广东",
+ *   ),
+ *   allOf={
+ *       @SWG\Schema(ref="#/definitions/CreatedAtUpdatedAt"),
+ *   }
+ * )
+ *
+ */
 class CommunityList extends Model
 {
     use GameTypeMap;

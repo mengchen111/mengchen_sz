@@ -144,6 +144,59 @@ class TopUpController extends Controller
             ->paginate($this->per_page);
     }
 
+    /**
+     *
+     * @SWG\Post(
+     *     path="/agent/api/top-up/player/{player}/{type}/{amount}",
+     *     description="代理商给玩家充值",
+     *     operationId="top-up.agent2player.post",
+     *     tags={"agent-top-up"},
+     *
+     *     @SWG\Parameter(
+     *         name="player",
+     *         description="玩家id",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="type",
+     *         description="道具类型id(目前只有一种：房卡-1)",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="amount",
+     *         description="充值数量",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=422,
+     *         description="参数验证错误",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/ValidationError"),
+     *             },
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="充值成功",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function topUp2Player(AgentRequest $request, $player, $type, $amount)
     {
         Validator::make($request->route()->parameters,[

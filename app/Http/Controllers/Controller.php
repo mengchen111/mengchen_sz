@@ -71,6 +71,8 @@ use Illuminate\Http\Request;
  *     ),
  * )
  */
+require app_path('Swagger/PlayerDefination.php');   //载入玩家模型的swagger定义
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;

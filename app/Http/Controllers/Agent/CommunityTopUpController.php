@@ -15,6 +15,66 @@ use App\Models\CommunityCardTopupLog;
 
 class CommunityTopUpController extends Controller
 {
+    /**
+     *
+     * @SWG\Post(
+     *     path="/agent/api/community/card/top-up",
+     *     description="代理商给牌艺馆充值",
+     *     operationId="agent.community.card.top-up",
+     *     tags={"community-top-up"},
+     *
+     *     @SWG\Parameter(
+     *         name="community_id",
+     *         description="牌艺馆id",
+     *         in="query",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="item_amount",
+     *         description="充值数量",
+     *         in="query",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="item_type_id",
+     *         description="充值道具类型id(目前只有房卡-1)",
+     *         in="query",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="remark",
+     *         description="备注",
+     *         in="query",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=422,
+     *         description="参数验证错误",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/ValidationError"),
+     *             },
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="充值成功",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function topUpCommunity(AgentRequest $request)
     {
         $this->validate($request, [
