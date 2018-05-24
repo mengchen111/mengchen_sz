@@ -10,6 +10,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ *
+ * @SWG\Definition(
+ *   definition="Group",
+ *   type="object",
+ *   @SWG\Property(
+ *       property="id",
+ *       description="组id",
+ *       type="integer",
+ *       format="int32",
+ *       example=1,
+ *   ),
+ *   @SWG\Property(
+ *       property="name",
+ *       description="组名称",
+ *       type="string",
+ *       example="总代",
+ *   ),
+ * )
+ *
+ */
 class Group extends Model
 {
     use GroupIdMap;

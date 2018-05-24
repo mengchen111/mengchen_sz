@@ -25,9 +25,51 @@ class InfoController extends Controller
     }
 
     /**
-     * 获取登录用户信息
      *
-     * @return \Illuminate\Http\Response
+     * @SWG\Get(
+     *     path="/api/info",
+     *     description="获取用户信息",
+     *     operationId="user.info",
+     *     tags={"user"},
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回用户信息",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/User"),
+     *             },
+     *             @SWG\Property(
+     *                 property="group",
+     *                 description="组信息",
+     *                 type="object",
+     *                 allOf={
+     *                     @SWG\Schema(ref="#/definitions/Group"),
+     *                 },
+     *             ),
+     *             @SWG\Property(
+     *                 property="parent",
+     *                 description="上级代理商",
+     *                 type="object",
+     *                 allOf={
+     *                     @SWG\Schema(ref="#/definitions/User"),
+     *                 },
+     *             ),
+     *             @SWG\Property(
+     *                 property="inventorys",
+     *                 description="道具库存",
+     *                 type="array",
+     *                 @SWG\Items(
+     *                     type="object",
+     *                     allOf={
+     *                         @SWG\Schema(ref="#/definitions/Inventory"),
+     *                     },
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     * )
      */
     public function info(Request $request)
     {

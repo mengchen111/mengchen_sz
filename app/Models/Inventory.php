@@ -10,6 +10,53 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ *
+ * @SWG\Definition(
+ *   definition="Inventory",
+ *   type="object",
+ *   @SWG\Property(
+ *       property="id",
+ *       description="id",
+ *       type="integer",
+ *       format="int32",
+ *       example=1,
+ *   ),
+ *   @SWG\Property(
+ *       property="user_id",
+ *       description="用户id",
+ *       type="integer",
+ *       format="int32",
+ *       example=1
+ *   ),
+ *   @SWG\Property(
+ *       property="item_id",
+ *       description="道具id",
+ *       type="integer",
+ *       format="int32",
+ *       example=1
+ *   ),
+ *   @SWG\Property(
+ *       property="stock",
+ *       description="库存数量",
+ *       type="integer",
+ *       format="int32",
+ *       example=987
+ *   ),
+ *   @SWG\Property(
+ *       property="item",
+ *       description="道具类型",
+ *       type="object",
+ *       allOf={
+ *           @SWG\Schema(ref="#/definitions/ItemType"),
+ *       },
+ *   ),
+ *   allOf={
+ *       @SWG\Schema(ref="#/definitions/CreatedAtUpdatedAt"),
+ *   }
+ * )
+ *
+ */
 class Inventory extends Model
 {
     protected $table = 'inventory';

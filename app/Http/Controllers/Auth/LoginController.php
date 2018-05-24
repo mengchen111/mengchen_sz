@@ -20,7 +20,9 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        AuthenticatesUsers::login as doLogin;
+    }
 
     /**
      * Where to redirect users after login.
@@ -80,5 +82,46 @@ class LoginController extends Controller
     protected function credentials(Request $request)
     {
         return array_merge($request->only($this->username(), 'password'), ['active' => 1]);
+    }
+
+    /**
+     *
+     * @SWG\Post(
+     *     path="/login",
+     *     description="登录",
+     *     operationId="login",
+     *     tags={"login"},
+     *
+     *     @SWG\Parameter(
+     *         name="account",
+     *         description="帐号",
+     *         in="query",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="password",
+     *         description="密码",
+     *         in="query",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="remember",
+     *         description="记住我",
+     *         in="query",
+     *         required=true,
+     *         type="boolean",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=301,
+     *         description="登录成功，跳转主页",
+     *     ),
+     * )
+     */
+    public function login(Request $request)
+    {
+        $this->doLogin($request);
     }
 }

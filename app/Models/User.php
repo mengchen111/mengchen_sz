@@ -4,7 +4,57 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+/**
+ *
+ * @SWG\Definition(
+ *   definition="User",
+ *   type="object",
+ *   @SWG\Property(
+ *       property="id",
+ *       description="用户id",
+ *       type="integer",
+ *       format="int32",
+ *       example=1,
+ *   ),
+ *   @SWG\Property(
+ *       property="name",
+ *       description="用户昵称",
+ *       type="string",
+ *       example="admin",
+ *   ),
+ *   @SWG\Property(
+ *       property="account",
+ *       description="用户帐号",
+ *       type="string",
+ *       example="admin",
+ *   ),
+ *   @SWG\Property(
+ *       property="group_id",
+ *       description="用户组id",
+ *       type="integer",
+ *       format="int32",
+ *       example=1
+ *   ),
+ *   @SWG\Property(
+ *       property="parent_id",
+ *       description="上级代理商id",
+ *       type="integer",
+ *       format="int32",
+ *       example=1
+ *   ),
+ *   @SWG\Property(
+ *       property="active",
+ *       description="禁用状态（0-禁用,1-正常）",
+ *       type="integer",
+ *       format="int32",
+ *       example=1,
+ *   ),
+ *   allOf={
+ *       @SWG\Schema(ref="#/definitions/CreatedAtUpdatedAt"),
+ *   }
+ * )
+ *
+ */
 class User extends Authenticatable
 {
     use Notifiable;
