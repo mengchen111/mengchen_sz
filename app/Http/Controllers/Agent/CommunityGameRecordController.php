@@ -10,6 +10,42 @@ use App\Models\OperationLogs;
 
 class CommunityGameRecordController extends Controller
 {
+    /**
+     *
+     * @SWG\Get(
+     *     path="/agent/api/community/game-record/{player_id}",
+     *     description="查询玩家的战绩",
+     *     operationId="agent.community.game-record.get",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         name="player_id",
+     *         description="玩家id",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="start_time",
+     *         description="开始时间",
+     *         in="query",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="end_time",
+     *         description="结束时间",
+     *         in="query",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回战绩详情",
+     *     ),
+     * )
+     */
     public function search(AgentRequest $request, $communityId)
     {
         $this->validate($request, [
@@ -76,6 +112,34 @@ class CommunityGameRecordController extends Controller
         return $result;
     }
 
+    /**
+     *
+     * @SWG\Put(
+     *     path="/agent/api/community/game-record/mark/{record_info_id}",
+     *     description="审查战绩(标记战绩为已读)",
+     *     operationId="agent.community.info.put",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         name="record_info_id",
+     *         description="战绩id",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="审查成功",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function markRecord(AgentRequest $request, $recordInfoId)
     {
         $api = config('custom.game_api_community_record_mark');

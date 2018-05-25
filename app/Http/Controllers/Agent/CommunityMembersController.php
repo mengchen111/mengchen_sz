@@ -17,7 +17,52 @@ use App\Services\Game\GameApiService;
 
 class CommunityMembersController extends Controller
 {
-    //邀请入群
+    /**
+     *
+     * @SWG\Post(
+     *     path="/agent/api/community/member/invitation",
+     *     description="牌艺馆主邀请玩家入群",
+     *     operationId="agent.community.member.invitation.post",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         name="community_id",
+     *         description="牌艺馆id",
+     *         in="formData",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="player_id",
+     *         description="玩家id",
+     *         in="formData",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=422,
+     *         description="参数验证错误",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/ValidationError"),
+     *             },
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="邀请成功",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function inviteMember(AgentRequest $request)
     {
         $this->validate($request, [
@@ -73,7 +118,39 @@ class CommunityMembersController extends Controller
         return true;
     }
 
-    //群主同意入群申请
+    /**
+     *
+     * @SWG\Put(
+     *     path="/agent/api/community/member/approval-application/{application_id}",
+     *     description="牌艺馆主同意入群申请",
+     *     operationId="agent.community.member.approval-application.put",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         name="application_id",
+     *         description="入馆申请id",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="操作成功",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=404,
+     *         description="未找到此条申请",
+     *     ),
+     * )
+     */
     public function approveApplication(AgentRequest $request, CommunityInvitationApplication $application)
     {
         if ((int)$application->status !== 0) {
@@ -94,7 +171,39 @@ class CommunityMembersController extends Controller
         ];
     }
 
-    //群主拒绝入群申请
+    /**
+     *
+     * @SWG\Put(
+     *     path="/agent/api/community/member/decline-application/{application_id}",
+     *     description="牌艺馆主拒绝入群申请",
+     *     operationId="agent.community.member.decline-application.put",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         name="application_id",
+     *         description="入馆申请id",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="操作成功",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=404,
+     *         description="未找到此条申请",
+     *     ),
+     * )
+     */
     public function declineApplication(AgentRequest $request, CommunityInvitationApplication $application)
     {
         if ((int)$application->status !== 0) {
@@ -160,6 +269,52 @@ class CommunityMembersController extends Controller
         });
     }
 
+    /**
+     *
+     * @SWG\Put(
+     *     path="/agent/api/community/member/kick-out",
+     *     description="牌艺馆主提出成员",
+     *     operationId="agent.community.member.kick-out.put",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         name="community_id",
+     *         description="牌艺馆id",
+     *         in="formData",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="player_id",
+     *         description="玩家id",
+     *         in="formData",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="踢出成功",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=422,
+     *         description="参数验证错误",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/ValidationError"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function kickOutMember(AgentRequest $request)
     {
         $this->validate($request, [
@@ -221,11 +376,36 @@ class CommunityMembersController extends Controller
                 'player_id' => $playerId,
                 'action' => '踢出',
             ]);
-
-            //todo 社区踢出玩家需要通知游戏后端
         });
     }
 
+    /**
+     *
+     * @SWG\Put(
+     *     path="/agent/api/community/member/log/read/{community_id}",
+     *     description="牌艺馆主标记牌艺馆动态为已读",
+     *     operationId="agent.community.member.log.read.put",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         name="community_id",
+     *         description="牌艺馆id",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="标记为已读",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=404,
+     *         description="未找到此牌艺馆",
+     *     ),
+     * )
+     */
     public function readCommunityLog(AgentRequest $request, CommunityList $community)
     {
         $communityId = $community->id;

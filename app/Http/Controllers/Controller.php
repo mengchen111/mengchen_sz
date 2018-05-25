@@ -27,13 +27,6 @@ use Illuminate\Http\Request;
  *         definition="Success",
  *         type="object",
  *         @SWG\Property(
- *             property="code",
- *             description="返回码，成功为-1",
- *             type="integer",
- *             format="int32",
- *             default="-1",
- *         ),
- *         @SWG\Property(
  *             property="message",
  *             description="消息",
  *             type="string",

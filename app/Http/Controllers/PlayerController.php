@@ -47,6 +47,12 @@ class PlayerController extends Controller
      *             allOf={
      *                 @SWG\Schema(ref="#/definitions/GamePlayer"),
      *             },
+     *             @SWG\Property(
+     *                 property="in_community",
+     *                 description="此玩家是否存在于查询时输入的牌艺馆(community_id)中",
+     *                 type="boolean",
+     *                 example=false,
+     *             )
      *         ),
      *     ),
      * )
