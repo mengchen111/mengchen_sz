@@ -145,9 +145,21 @@ class CommunityList extends Model
         $players = PlayerService::batchFindPlayer($members);
         foreach ($players as $player) {
             $player = collect($player)->only($remainedPlayerInfo)->toArray();
+            $player['join_time'] = $this->getPlayerJoinCommunityTime($player['id'], $this->id);    //玩家加入时间
             array_push($returnData, $player);
         }
         return $returnData;
+    }
+
+    protected function getPlayerJoinCommunityTime($playerId, $communityId)
+    {
+        $application = CommunityInvitationApplication::where('player_id', $playerId)
+            ->where('community_id', $communityId)
+            ->where('status', 1)
+            ->latest()
+            ->first();
+
+        return empty($application) ? null: $application->toArray()['created_at'];
     }
 
     //获取此社区的申请列表
