@@ -100,11 +100,13 @@ class WeChatPaymentController extends Controller
      *     description="创建微信订单",
      *     operationId="wechat.order.create",
      *     tags={"wx-top-up"},
+     *     consumes={"application/x-www-form-urlencoded"},
+     *     produces={"application/json"},
      *
      *     @SWG\Parameter(
      *         name="wx_top_up_rule_id",
      *         description="微信充值房卡套餐id",
-     *         in="query",
+     *         in="formData",
      *         required=true,
      *         type="integer",
      *     ),

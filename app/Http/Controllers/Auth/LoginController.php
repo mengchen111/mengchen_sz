@@ -92,27 +92,31 @@ class LoginController extends Controller
      *     description="登录",
      *     operationId="login",
      *     tags={"login"},
+     *     consumes={"application/x-www-form-urlencoded"},
+     *     produces={"application/json"},
      *
      *     @SWG\Parameter(
      *         name="account",
      *         description="帐号",
-     *         in="query",
+     *         in="formData",
      *         required=true,
      *         type="string",
      *     ),
      *     @SWG\Parameter(
      *         name="password",
      *         description="密码",
-     *         in="query",
+     *         in="formData",
      *         required=true,
      *         type="string",
      *     ),
      *     @SWG\Parameter(
      *         name="remember",
      *         description="记住我",
-     *         in="query",
+     *         in="formData",
      *         required=true,
      *         type="boolean",
+     *         default=true,
+     *         enum={true, false},
      *     ),
      *
      *     @SWG\Response(

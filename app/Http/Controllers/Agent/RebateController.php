@@ -30,6 +30,7 @@ class RebateController extends Controller
      *         in="query",
      *         required=false,
      *         type="integer",
+     *         default=1,
      *     ),
      *     @SWG\Parameter(
      *         name="per_page",
@@ -37,14 +38,14 @@ class RebateController extends Controller
      *         in="query",
      *         required=false,
      *         type="integer",
-     *         default="15",
+     *         default=15,
      *     ),
      *     @SWG\Parameter(
      *         name="date",
      *         description="搜索日期",
      *         in="query",
      *         required=false,
-     *         type="integer",
+     *         type="string",
      *     ),
      *
      *     @SWG\Response(
