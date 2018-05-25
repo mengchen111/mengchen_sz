@@ -61,15 +61,17 @@ class WeChatPaymentController extends Controller
      *         name="page",
      *         description="第几页",
      *         in="query",
-     *         required=true,
+     *         required=false,
      *         type="integer",
+     *         default=1,
      *     ),
      *     @SWG\Parameter(
      *         name="per_page",
      *         description="每页多少条数据",
      *         in="query",
-     *         required=true,
+     *         required=false,
      *         type="integer",
+     *         default=15,
      *     ),
      *
      *     @SWG\Response(
