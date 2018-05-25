@@ -133,27 +133,13 @@ class TopUpController extends Controller
      *     tags={"agent-top-up"},
      *
      *     @SWG\Parameter(
-     *         name="sort",
-     *         description="排序(id|desc)",
-     *         in="query",
-     *         required=false,
-     *         type="string",
+     *         ref="#/parameters/sort",
      *     ),
      *     @SWG\Parameter(
-     *         name="page",
-     *         description="第几页",
-     *         in="query",
-     *         required=false,
-     *         type="integer",
-     *         default=1,
+     *         ref="#/parameters/page",
      *     ),
      *     @SWG\Parameter(
-     *         name="per_page",
-     *         description="每页多少条数据",
-     *         in="query",
-     *         required=false,
-     *         type="integer",
-     *         default=15
+     *         ref="#/parameters/per_page",
      *     ),
      *     @SWG\Parameter(
      *         name="filter",

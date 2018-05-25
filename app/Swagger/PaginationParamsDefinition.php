@@ -8,6 +8,7 @@
  *         in="query",
  *         required=false,
  *         type="string",
+ *         default="id|desc",
  *     ),
  *     @SWG\Parameter(
  *         name="page",

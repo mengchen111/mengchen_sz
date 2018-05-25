@@ -71,7 +71,8 @@ use Illuminate\Http\Request;
  *     ),
  * )
  */
-require app_path('Swagger/PlayerDefination.php');   //载入玩家模型的swagger定义
+require app_path('Swagger/PlayerDefinition.php');   //载入玩家模型的swagger定义
+require app_path('Swagger/PaginationParamsDefinition.php'); //分页通用参数
 
 class Controller extends BaseController
 {
