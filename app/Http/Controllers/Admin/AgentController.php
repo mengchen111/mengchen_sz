@@ -68,7 +68,7 @@ class AgentController extends Controller
             unset($user->playerTopUpRecords);
 
             //添加有效耗卡数
-            $user['valid_card_consumed_num'] = ValidCardConsumedService::getAgentValidCardConsumedNum($user->id);
+            //$user['valid_card_consumed_num'] = ValidCardConsumedService::getAgentValidCardConsumedNum($user->id);
         }
         return $data;
     }
