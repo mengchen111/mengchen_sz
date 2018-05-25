@@ -16,6 +16,49 @@ use App\Models\User;
 
 class CommunityController extends Controller
 {
+    /**
+     *
+     * @SWG\Get(
+     *     path="/agent/api/community",
+     *     description="获取牌艺馆列表(带分页)",
+     *     operationId="agent.community.get",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         ref="#/parameters/sort",
+     *     ),
+     *     @SWG\Parameter(
+     *         ref="#/parameters/page",
+     *     ),
+     *     @SWG\Parameter(
+     *         ref="#/parameters/per_page",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="status",
+     *         description="状态(0-待审核,1-审核通过,2-审核不通过,3-查看全部)",
+     *         in="query",
+     *         required=false,
+     *         type="integer",
+     *         enum={0, 1, 2, 3},
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回牌艺馆列表(带分页)",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Community"),
+     *             },
+     *             @SWG\Property(
+     *                 property="owner_agent",
+     *                 type="object",
+     *                 allOf={@SWG\Schema(ref="#/definitions/User")},
+     *             )
+     *         ),
+     *     ),
+     * )
+     */
     public function showCommunityList(AgentRequest $request)
     {
         $agent = $request->user();
@@ -145,6 +188,110 @@ class CommunityController extends Controller
         return $community;
     }
 
+    /**
+     *
+     * @SWG\Get(
+     *     path="/agent/api/community/detail/{community_id}",
+     *     description="查看某个牌艺馆的详细信息",
+     *     operationId="agent.community.detail.get",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         name="community_id",
+     *         description="牌艺馆id",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回此牌艺馆详细信息",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Community"),
+     *             },
+     *             @SWG\Property(
+     *                 property="owner_agent",
+     *                 description="牌艺馆主信息",
+     *                 type="object",
+     *                 allOf={
+     *                     @SWG\Schema(ref="#/definitions/User"),
+     *                 },
+     *             ),
+     *             @SWG\Property(
+     *                 property="application_data",
+     *                 description="成员申请信息",
+     *                 type="object",
+     *                 @SWG\Property(
+     *                     property="application_count",
+     *                     description="申请数量",
+     *                     type="integer",
+     *                     example=1,
+     *                 ),
+     *                 @SWG\Property(
+     *                     property="applications",
+     *                     description="申请记录",
+     *                     type="array",
+     *                     @SWG\Items(
+     *                         type="object",
+     *                         allOf={@SWG\Schema(ref="#/definitions/CommunityInvitationApplication"),},
+     *                         @SWG\Property(
+     *                             property="player",
+     *                             type="object",
+     *                             allOf={
+     *                                 @SWG\Schema(ref="#/definitions/GamePlayerSimplified"),
+     *                             },
+     *                         ),
+     *                     ),
+     *                 ),
+     *             ),
+     *             @SWG\Property(
+     *                 property="members_info",
+     *                 description="成员信息",
+     *                 type="array",
+     *                 @SWG\Items(
+     *                     type="object",
+     *                     allOf={@SWG\Schema(ref="#/definitions/GamePlayerSimplified"),},
+     *                 ),
+     *             ),
+     *             @SWG\Property(
+     *                 property="member_log",
+     *                 description="牌艺馆成员动态信息",
+     *                 type="object",
+     *                 @SWG\Property(
+     *                     property="has_read",
+     *                     description="牌艺馆动态是否已读标识(0-未读,1-已读)",
+     *                     type="integer",
+     *                     example=1,
+     *                 ),
+     *                 @SWG\Property(
+     *                     property="member_logs",
+     *                     description="牌艺馆动态记录(只显示最新的30条)",
+     *                     type="array",
+     *                     @SWG\Items(
+     *                         type="object",
+     *                         allOf={@SWG\Schema(ref="#/definitions/CommunityMemberLog"),},
+     *                         @SWG\Property(
+     *                             property="player",
+     *                             type="object",
+     *                             allOf={
+     *                                 @SWG\Schema(ref="#/definitions/GamePlayerSimplified"),
+     *                             },
+     *                         ),
+     *                     ),
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=404,
+     *         description="未找到此牌艺馆",
+     *     ),
+     * )
+     */
     public function getCommunityDetail(AgentRequest $request, $communityId)
     {
         $agent = $request->user();
@@ -163,6 +310,59 @@ class CommunityController extends Controller
         return $community;
     }
 
+    /**
+     *
+     * @SWG\Put(
+     *     path="/agent/api/community/info/{community_id}",
+     *     description="更新牌艺馆信息",
+     *     operationId="community.info.put",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         name="community_id",
+     *         description="牌艺馆id",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="info",
+     *         description="牌艺馆简介",
+     *         in="formData",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="name",
+     *         description="牌艺馆名字",
+     *         in="formData",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=422,
+     *         description="参数验证错误",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/ValidationError"),
+     *             },
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="更新成功",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function updateCommunityInfo(AgentRequest $request, CommunityList $community)
     {
         $this->validate($request, [

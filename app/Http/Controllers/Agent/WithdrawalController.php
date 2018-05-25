@@ -15,6 +15,43 @@ class WithdrawalController extends Controller
     ];
     public $contactType = ['wechat', 'phone'];
 
+    /**
+     *
+     * @SWG\Get(
+     *     path="/agent/api/withdrawals",
+     *     description="获取提现申请列表(带分页)",
+     *     operationId="agent.withdrawals.get",
+     *     tags={"rebate"},
+     *
+     *     @SWG\Parameter(
+     *         ref="#/parameters/sort",
+     *     ),
+     *     @SWG\Parameter(
+     *         ref="#/parameters/page",
+     *     ),
+     *     @SWG\Parameter(
+     *         ref="#/parameters/per_page",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="date",
+     *         description="日期",
+     *         in="query",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回提现申请列表",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Withdrawal"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function index(AgentRequest $request)
     {
         $withdrawals = auth()->user()->withdrawals();
@@ -25,6 +62,63 @@ class WithdrawalController extends Controller
         return $withdrawals;
     }
 
+    /**
+     *
+     * @SWG\Post(
+     *     path="/agent/api/withdrawals",
+     *     description="代理商申请提现",
+     *     operationId="agent.withdrawals.post",
+     *     tags={"rebate"},
+     *     consumes={"application/x-www-form-urlencoded"},
+     *     produces={"application/json"},
+     *
+     *     @SWG\Parameter(
+     *         name="amount",
+     *         description="提现金额",
+     *         in="formData",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="contact_type",
+     *         description="联系方式类型(微信-0, 电话-1)",
+     *         in="formData",
+     *         required=true,
+     *         type="integer",
+     *         default="0",
+     *         enum={0, 1},
+     *     ),
+     *     @SWG\Parameter(
+     *         name="contact",
+     *         description="联系方式",
+     *         in="formData",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=422,
+     *         description="参数验证错误",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/ValidationError"),
+     *             },
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="提交申请成功",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function store(AgentRequest $request, WithdrawalStatisticsService $statisticsService)
     {
         $this->validator($request);

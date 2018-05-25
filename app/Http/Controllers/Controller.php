@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
  * @SWG\Swagger(
  *     host=L5_SWAGGER_CONST_HOST,
  *     schemes={"http"},
- *     consumes={"application/json"},
+ *     consumes={"application/x-www-form-urlencoded"},
+ *     produces={"application/json"},
  *
  *     @SWG\Info(
  *         version="1.0.0",
