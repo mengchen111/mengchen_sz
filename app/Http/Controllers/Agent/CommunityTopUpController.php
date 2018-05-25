@@ -134,6 +134,72 @@ class CommunityTopUpController extends Controller
         });
     }
 
+    /**
+     *
+     * @SWG\Get(
+     *     path="/agent/api/community/card/top-up-history",
+     *     description="获取牌艺馆充值记录(带分页)",
+     *     operationId="community.top-up-history.get",
+     *     tags={"community-top-up"},
+     *
+     *     @SWG\Parameter(
+     *         name="sort",
+     *         description="排序(id|desc)",
+     *         in="query",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="page",
+     *         description="第几页",
+     *         in="query",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="per_page",
+     *         description="每页多少条数据",
+     *         in="query",
+     *         required=true,
+     *         type="integer",
+     *         default="15",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="item_type_id",
+     *         description="道具id(目前只有一种，传1)",
+     *         in="query",
+     *         required=true,
+     *         type="integer",
+     *         default=1,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="filter",
+     *         description="搜索牌艺馆id",
+     *         in="query",
+     *         required=false,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回充值记录信息",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/CommunityCardTopUpLog"),
+     *             },
+     *             @SWG\Property(
+     *                 property="item",
+     *                 description="充值道具信息",
+     *                 type="object",
+     *                 allOf={
+     *                     @SWG\Schema(ref="#/definitions/ItemType"),
+     *                 },
+     *             ),
+     *         ),
+     *     ),
+     * )
+     */
     protected function getTopUpHistory(AgentRequest $request)
     {
         $this->validate($request, [
@@ -145,7 +211,8 @@ class CommunityTopUpController extends Controller
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '查看牌艺馆充值历史', $request->header('User-Agent'), json_encode($request->all()));
 
-         return CommunityCardTopupLog::where('agent_id', $agent->id)
+         return CommunityCardTopupLog::with(['item'])
+            ->where('agent_id', $agent->id)
             ->where('item_type_id', $request->input('item_type_id'))
             ->when($request->has('filter'), function ($query) use ($request) {
                 return $query->where('community_id', 'like', "%{$request->input('filter')}%");

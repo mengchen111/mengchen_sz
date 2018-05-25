@@ -42,9 +42,48 @@ class WeChatPaymentController extends Controller
         return $model->latest()->paginate($this->per_page);
     }
 
+    /**
+     *
+     * @SWG\Get(
+     *     path="/api/wechat/order/agent",
+     *     description="代理商获取微信订单列表(带分页)",
+     *     operationId="wechat.order.agent.get",
+     *     tags={"wx-top-up"},
+     *
+     *     @SWG\Parameter(
+     *         name="sort",
+     *         description="排序(id|desc)",
+     *         in="query",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="page",
+     *         description="第几页",
+     *         in="query",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="per_page",
+     *         description="每页多少条数据",
+     *         in="query",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回订单信息",
+     *     ),
+     * )
+     */
     public function agentOrder(AgentRequest $request)
     {
-        return auth()->user()->wxOrders()->latest()->paginate($this->per_page);
+        return auth()->user()->wxOrders()
+            //->latest()
+            ->orderBy($this->order[0], $this->order[1])
+            ->paginate($this->per_page);
     }
 
     public function getAgentOrder(AgentRequest $request, WxOrder $order)

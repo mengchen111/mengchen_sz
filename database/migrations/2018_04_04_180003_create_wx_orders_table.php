@@ -28,7 +28,7 @@ class CreateWxOrdersTable extends Migration
             //5-支付失败
             //6-取消订单成功
             //7-取消订单失败
-            $table->unsignedTinyInteger('order_status')->default(1)->comment('订单状态');
+            $table->unsignedTinyInteger('order_status')->default(1)->comment('订单状态(1-内部订单创建成功,2-预支付订单创建成功,3-预支付订单创建失败,4-支付成功,5-支付失败,6-取消订单成功,7-取消订单失败)');
             $table->string('order_err_msg')->nullable()->comment('支付过程中的错误信息');
             $table->string('prepay_id')->nullable()->comment('微信预支付id');
             $table->string('transaction_id')->nullable()->comment('微信支付订单号');

@@ -11,6 +11,7 @@ use App\Traits\GameTypeMap;
  *
  * @SWG\Definition(
  *   definition="Community",
+ *   description="牌艺馆模型",
  *   type="object",
  *   @SWG\Property(
  *       property="id",

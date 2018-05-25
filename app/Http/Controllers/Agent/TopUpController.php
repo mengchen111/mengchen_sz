@@ -124,6 +124,71 @@ class TopUpController extends Controller
             ->paginate($this->per_page);
     }
 
+    /**
+     *
+     * @SWG\Get(
+     *     path="/agent/api/top-up/player",
+     *     description="代理商获取其给玩家充值记录(带分页)",
+     *     operationId="agent.top-up.player.get",
+     *     tags={"agent-top-up"},
+     *
+     *     @SWG\Parameter(
+     *         name="sort",
+     *         description="排序(id|desc)",
+     *         in="query",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="page",
+     *         description="第几页",
+     *         in="query",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="per_page",
+     *         description="每页多少条数据",
+     *         in="query",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="filter",
+     *         description="搜索玩家id",
+     *         in="query",
+     *         required=false,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回充值记录信息",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/TopUpPlayer"),
+     *             },
+     *             @SWG\Property(
+     *                 property="provider",
+     *                 description="发起充值的代理商的用户信息",
+     *                 type="object",
+     *                 allOf={
+     *                     @SWG\Schema(ref="#/definitions/User"),
+     *                 },
+     *             ),
+     *             @SWG\Property(
+     *                 property="item",
+     *                 description="充值道具信息",
+     *                 type="object",
+     *                 allOf={
+     *                     @SWG\Schema(ref="#/definitions/ItemType"),
+     *                 },
+     *             ),
+     *         ),
+     *     ),
+     * )
+     */
     public function topUp2PlayerHistory(AgentRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
