@@ -16,6 +16,7 @@ class WithdrawalController extends Controller
     public $contactType = ['wechat', 'phone'];
 
     /**
+     * 获取提现申请列表(带分页)
      *
      * @SWG\Get(
      *     path="/agent/api/withdrawals",
@@ -63,6 +64,7 @@ class WithdrawalController extends Controller
     }
 
     /**
+     * 申请提现
      *
      * @SWG\Post(
      *     path="/agent/api/withdrawals",

@@ -16,6 +16,7 @@ use App\Models\CommunityCardTopupLog;
 class CommunityTopUpController extends Controller
 {
     /**
+     * 代理商给牌艺馆充值
      *
      * @SWG\Post(
      *     path="/agent/api/community/card/top-up",
@@ -139,6 +140,7 @@ class CommunityTopUpController extends Controller
     }
 
     /**
+     * 获取牌艺馆充值记录(带分页)
      *
      * @SWG\Get(
      *     path="/agent/api/community/card/top-up-history",

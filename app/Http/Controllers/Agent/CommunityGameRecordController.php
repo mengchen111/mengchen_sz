@@ -11,6 +11,7 @@ use App\Models\OperationLogs;
 class CommunityGameRecordController extends Controller
 {
     /**
+     * 查询玩家战绩
      *
      * @SWG\Get(
      *     path="/agent/api/community/game-record/{player_id}",
@@ -113,6 +114,7 @@ class CommunityGameRecordController extends Controller
     }
 
     /**
+     * 审查战绩
      *
      * @SWG\Put(
      *     path="/agent/api/community/game-record/mark/{record_info_id}",

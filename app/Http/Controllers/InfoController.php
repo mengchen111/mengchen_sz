@@ -25,6 +25,7 @@ class InfoController extends Controller
     }
 
     /**
+     * 获取代理商个人信息
      *
      * @SWG\Get(
      *     path="/api/info",

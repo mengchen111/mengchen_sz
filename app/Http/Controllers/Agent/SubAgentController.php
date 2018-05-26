@@ -17,7 +17,53 @@ class SubAgentController extends Controller
 {
     protected $agentGroups = [2, 3, 4];     //agent代理商的组id号
 
-    //查看下级代理商列表
+    /**
+     * 查看子代理商列表(带分页)
+     *
+     * @SWG\Get(
+     *     path="/agent/api/subagent",
+     *     description="查看子代理商列表(带分页)",
+     *     operationId="agent.subagent.get",
+     *     tags={"subagent"},
+     *
+     *     @SWG\Parameter(
+     *         ref="#/parameters/sort",
+     *     ),
+     *     @SWG\Parameter(
+     *         ref="#/parameters/page",
+     *     ),
+     *     @SWG\Parameter(
+     *         ref="#/parameters/per_page",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="filter",
+     *         description="搜索子代理商帐号",
+     *         in="query",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回子代理商分页数据",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/User"),
+     *             },
+     *             @SWG\Property(
+     *                 property="inventorys",
+     *                 type="array",
+     *                 @SWG\Items(
+     *                     allOf={
+     *                         @SWG\Schema(ref="#/definitions/Inventory"),
+     *                     },
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     * )
+     */
     public function show(AgentRequest $request)
     {
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
@@ -69,7 +115,64 @@ class SubAgentController extends Controller
         return $data;
     }
 
-    //创建下级代理商
+    /**
+     * 创建子代理商
+     *
+     * @SWG\Post(
+     *     path="/agent/api/subagent",
+     *     description="创建子代理商",
+     *     operationId="agent.subagent.post",
+     *     tags={"subagent"},
+     *
+     *     @SWG\Parameter(
+     *         name="account",
+     *         description="登录帐号",
+     *         in="formData",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="group_id",
+     *         description="代理级别id(2-总代,3-钻石,4-黄金)",
+     *         in="formData",
+     *         required=true,
+     *         type="integer",
+     *         enum={2,3,4},
+     *         default=2,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="name",
+     *         description="昵称",
+     *         in="formData",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="password",
+     *         description="密码",
+     *         in="formData",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="password_confirmation",
+     *         description="再次输入密码",
+     *         in="formData",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回创建成功或验证失败",
+     *         @SWG\Property(
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function create(AgentRequest $request)
     {
         Validator::make($request->all(), [
@@ -127,7 +230,69 @@ class SubAgentController extends Controller
         ];
     }
 
-    //代理商更新其子代理商的信息
+    /**
+     * 编辑子代理商的信息
+     *
+     * @SWG\Put(
+     *     path="/agent/api/subagent/{subagent_id}",
+     *     description="编辑子代理商的信息",
+     *     operationId="agent.subagent.put",
+     *     tags={"subagent"},
+     *
+     *     @SWG\Parameter(
+     *         name="subagent_id",
+     *         description="子代理商id",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="name",
+     *         description="子代理商昵称",
+     *         in="formData",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="account",
+     *         description="子代理商帐号",
+     *         in="formData",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="password",
+     *         description="密码",
+     *         in="formData",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="email",
+     *         description="子代理商email",
+     *         in="formData",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="phone",
+     *         description="手机",
+     *         in="formData",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回更新成功或验证失败",
+     *         @SWG\Property(
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function updateChild(AgentRequest $request, User $child)
     {
         //检查是否是其子代理商

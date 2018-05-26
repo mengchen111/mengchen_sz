@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 class WxTopUpRuleController extends Controller
 {
     /**
+     * 获取充值套餐
      *
      * @SWG\Get(
      *     path="/agent/api/wx-top-up-rules",

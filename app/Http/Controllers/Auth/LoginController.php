@@ -86,6 +86,7 @@ class LoginController extends Controller
     }
 
     /**
+     * 登录
      *
      * @SWG\Post(
      *     path="/login",
@@ -131,6 +132,7 @@ class LoginController extends Controller
     }
 
     /**
+     * 登出
      *
      * @SWG\Post(
      *     path="/logout",

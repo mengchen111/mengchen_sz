@@ -17,6 +17,7 @@ use App\Models\User;
 class CommunityController extends Controller
 {
     /**
+     * 获取牌艺馆列表(带分页)
      *
      * @SWG\Get(
      *     path="/agent/api/community",
@@ -143,6 +144,7 @@ class CommunityController extends Controller
     }
 
     /**
+     * 获取牌艺馆信息
      *
      * @SWG\Get(
      *     path="/agent/api/community/info/{community_id}",
@@ -189,6 +191,7 @@ class CommunityController extends Controller
     }
 
     /**
+     * 查看牌艺馆详细信息
      *
      * @SWG\Get(
      *     path="/agent/api/community/detail/{community_id}",
@@ -311,6 +314,7 @@ class CommunityController extends Controller
     }
 
     /**
+     * 更新牌艺馆信息
      *
      * @SWG\Put(
      *     path="/agent/api/community/info/{community_id}",
@@ -396,6 +400,7 @@ class CommunityController extends Controller
     }
 
     /**
+     * 获取已审核通过的牌艺馆信息
      *
      * @SWG\Get(
      *     path="/agent/api/communities",

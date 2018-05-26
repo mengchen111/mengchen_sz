@@ -27,7 +27,50 @@ class TopUpController extends Controller
         $this->order = $request->sort ? explode('|', $request->sort) : $this->order;
     }
 
-    //给当前代理商的下级代理商充房卡
+    /**
+     * 给下级代理商充值
+     *
+     * @SWG\Post(
+     *     path="/agent/api/top-up/child/{subagent_account}/{item_type}/{amount}",
+     *     description="给下级代理商充值",
+     *     operationId="agent.top-up.child.post",
+     *     tags={"subagent"},
+     *
+     *     @SWG\Parameter(
+     *         name="subagent_account",
+     *         description="子代理商帐号",
+     *         in="path",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="item_type",
+     *         description="道具id(1-房卡,2-金币,目前只有房卡)",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *         enum={1},
+     *         default=1,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="amount",
+     *         description="充值数量",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回充值成功或验证失败",
+     *         @SWG\Property(
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function topUp2Child(AgentRequest $request, $receiver, $type, $amount)
     {
         Validator::make($request->route()->parameters,[
@@ -125,6 +168,7 @@ class TopUpController extends Controller
     }
 
     /**
+     * 获取玩家充值记录(带分页)
      *
      * @SWG\Get(
      *     path="/agent/api/top-up/player",
@@ -198,6 +242,7 @@ class TopUpController extends Controller
     }
 
     /**
+     * 代理商给玩家充值
      *
      * @SWG\Post(
      *     path="/agent/api/top-up/player/{player}/{type}/{amount}",

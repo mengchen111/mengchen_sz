@@ -65,7 +65,6 @@ use Illuminate\Http\Request;
  *     ),
  * )
  */
-include app_path('Swagger/RequireDefinitions.php');
 
 class Controller extends BaseController
 {

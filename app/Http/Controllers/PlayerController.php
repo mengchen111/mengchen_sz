@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 class PlayerController extends Controller
 {
     /**
+     * 根据玩家id查找玩家信息
      *
      * @SWG\Get(
      *     path="/api/game/player",

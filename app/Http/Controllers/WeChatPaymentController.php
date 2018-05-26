@@ -43,6 +43,7 @@ class WeChatPaymentController extends Controller
     }
 
     /**
+     * 获取微信订单列表(带分页)
      *
      * @SWG\Get(
      *     path="/api/wechat/order/agent",
@@ -80,6 +81,7 @@ class WeChatPaymentController extends Controller
     }
 
     /**
+     * 创建微信订单
      *
      * @SWG\Post(
      *     path="/api/wechat/order",

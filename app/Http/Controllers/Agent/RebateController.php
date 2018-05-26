@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 class RebateController extends Controller
 {
     /**
+     * 获取代理商的佣金记录详情（带分页）
      *
      * @SWG\Get(
      *     path="/agent/api/rebates",
@@ -101,6 +102,7 @@ class RebateController extends Controller
     }
 
     /**
+     * 获取代理商的佣金状态
      *
      * @SWG\Get(
      *     path="/agent/api/rebates/statistics",

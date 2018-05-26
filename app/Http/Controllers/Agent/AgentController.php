@@ -20,7 +20,59 @@ use App\Http\Requests\AgentRequest;
 
 class AgentController extends Controller
 {
-    //代理商更新自己密码
+    /**
+     * 代理商更改密码
+     *
+     * @SWG\Put(
+     *     path="/agent/api/self/password",
+     *     description="更改密码",
+     *     operationId="agent.self.password.put",
+     *     tags={"user"},
+     *
+     *     @SWG\Parameter(
+     *         name="password",
+     *         description="原密码",
+     *         in="formData",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="new_password",
+     *         description="新密码",
+     *         in="formData",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="new_password_confirmation",
+     *         description="再次输入新密码",
+     *         in="formData",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回更新密码成功或验证失败",
+     *         @SWG\Property(
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/Success"),
+     *             },
+     *         ),
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=422,
+     *         description="参数验证错误",
+     *         @SWG\Property(
+     *             type="object",
+     *             allOf={
+     *                 @SWG\Schema(ref="#/definitions/ValidationError"),
+     *             },
+     *         ),
+     *     ),
+     * )
+     */
     public function updatePass(AgentRequest $request)
     {
         Validator::make($request->all(), [

@@ -18,6 +18,7 @@ use App\Services\Game\GameApiService;
 class CommunityMembersController extends Controller
 {
     /**
+     * 牌艺馆主邀请玩家入群
      *
      * @SWG\Post(
      *     path="/agent/api/community/member/invitation",
@@ -119,6 +120,7 @@ class CommunityMembersController extends Controller
     }
 
     /**
+     * 牌艺馆主同意入群申请
      *
      * @SWG\Put(
      *     path="/agent/api/community/member/approval-application/{application_id}",
@@ -172,6 +174,7 @@ class CommunityMembersController extends Controller
     }
 
     /**
+     * 牌艺馆主拒绝入群申请
      *
      * @SWG\Put(
      *     path="/agent/api/community/member/decline-application/{application_id}",
@@ -270,6 +273,7 @@ class CommunityMembersController extends Controller
     }
 
     /**
+     * 牌艺馆主提出成员
      *
      * @SWG\Put(
      *     path="/agent/api/community/member/kick-out",
@@ -380,6 +384,7 @@ class CommunityMembersController extends Controller
     }
 
     /**
+     * 牌艺馆主标记牌艺馆动态为已读
      *
      * @SWG\Put(
      *     path="/agent/api/community/member/log/read/{community_id}",

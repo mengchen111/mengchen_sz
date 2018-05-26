@@ -15,7 +15,46 @@ class CommunityRoomController extends Controller
 {
     use GameTypeMap;
 
-    //获取牌艺馆正在玩的房间信息
+    /**
+     * 获取牌艺馆正在玩的房间信息
+     *
+     * @SWG\Get(
+     *     path="/agent/api/community/room/{community_id}",
+     *     description="获取牌艺馆正在玩的房间信息",
+     *     operationId="agent.community.room.get",
+     *     tags={"community"},
+     *
+     *     @SWG\Parameter(
+     *         name="community_id",
+     *         description="牌艺馆id",
+     *         in="path",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *
+     *     @SWG\Response(
+     *         response=200,
+     *         description="返回牌艺馆正在玩的房间信息",
+     *         @SWG\Property(
+     *             type="array",
+     *             @SWG\Items(
+     *                 allOf={
+     *                     @SWG\Schema(ref="#/definitions/ServerRoom4"),
+     *                 },
+     *                 @SWG\Property(
+     *                     property="players",
+     *                     type="array",
+     *                     @SWG\Items(
+     *                         allOf={
+     *                             @SWG\Schema(ref="#/definitions/GamePlayerCommunityRoom"),
+     *                         },
+     *                     ),
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     * )
+     */
     public function getCommunityOpenRoom(AgentRequest $request, $communityId)
     {
         $api = config('custom.game_api_community_room_open');
