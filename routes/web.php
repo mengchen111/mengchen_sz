@@ -10,9 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-//auth()->loginUsingId(13);
-//Route::get('calc', function (\App\Services\CalcWxOrderRebate $orderRebate){
-//    var_dump($orderRebate->syncCalcData('2018-04'));
+//auth()->loginUsingId(1);
+//Route::get('calc', function (\App\Services\Game\ValidCardConsumedService $orderRebate){
+//    var_dump($orderRebate->getAgentTopUpLogs());
+//    var_dump(cache()->get(config('custom.game_server_cache_valid_card_agent_log')));
+//    var_dump(\Carbon\Carbon::parse('1996-10-18')->age);
 //});
 
 Route::get('/', 'HomeController@index');
@@ -342,6 +344,7 @@ Route::group([
     'namespace' => 'Wechat',
 ], function () {
     Route::any('official-account/callback', 'OfficialAccountController@callback');  //微信公众号事件回调
+    Route::post('menus','WxMenuController@store'); //编辑微信菜单
     //Route::any('official-account/authorization', 'TestWebAuthController@callback');    //网页授权回调(使用路由不需要此回调)
 });
 

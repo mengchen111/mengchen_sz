@@ -54,6 +54,12 @@ class RoomController extends Controller
                 ->toArray();
             return $this->formatRoomData($roomsHistory);
         });
+        $result = $this->formatRoomData($result);
+
+        // 新版
+//        $result = GameApiService::request('GET', $api,[
+//            'page' => $request->get('page')
+//        ]);
 
         krsort($result);    //最新的房间放最上
 
