@@ -33,7 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  *   ),
  *   @SWG\Property(
  *       property="action",
- *       description="动作('加入'等)",
+ *       description="动作(加入,踢出,退出)",
  *       type="string",
  *       example="加入",
  *   ),
