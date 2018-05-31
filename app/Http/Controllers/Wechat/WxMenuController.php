@@ -23,12 +23,12 @@ class WxMenuController extends Controller
             [
                 "type" => "view",
                 "name" => "游戏下载",
-                "key"  => "https://yymj.max78.com/casino/web/index.php?package=yyjdzmj&kind=4"
+                "url"  => "https://yymj.max78.com/casino/web/index.php?package=yyjdzmj&kind=4"
             ],
             [
                 "type" => "view",
                 "name" => "后台",
-                "key"  => "https://www.baidu.com"
+                "url"  => "https://www.baidu.com"
             ],
         ];
     }
