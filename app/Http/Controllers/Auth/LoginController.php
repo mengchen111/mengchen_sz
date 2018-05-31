@@ -128,7 +128,7 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        $this->doLogin($request);
+        return $this->doLogin($request);
     }
 
     /**
@@ -148,6 +148,6 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $this->doLogout($request);
+        return $this->doLogout($request);
     }
 }
