@@ -61,6 +61,12 @@ class OfficialAccountController extends Controller
                         # code...
                         break;
                 }
+                switch ($message->EventKey){
+                    case 'ACCESS_TRANSFER':
+                        $this->sendTextMessage('您好，请等待接入人工客服···');
+                        return new Transfer();
+                        break;
+                }
             } elseif ($message->MsgType === 'text') {   //将公众号用户消息转发到客服
                 switch ($message->Content) {
                     case '客服':
