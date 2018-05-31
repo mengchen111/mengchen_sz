@@ -26,6 +26,11 @@ class WxMenuController extends Controller
                 "url"  => "https://yymj.max78.com/casino/web/index.php?package=yyjdzmj&kind=4"
             ],
             [
+                "type" => "click",
+                "name" => "人工客服",
+                "key"  => "ACCESS_TRANSFER"
+            ],
+            [
                 "type" => "view",
                 "name" => "后台",
                 "url"  => "https://www.baidu.com"

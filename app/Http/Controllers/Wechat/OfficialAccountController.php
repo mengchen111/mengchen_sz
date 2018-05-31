@@ -37,7 +37,7 @@ class OfficialAccountController extends Controller
                 OperationLogs::add(0, $request->path(), $request->method(),
                     '微信回调 - 事件:' . $message->Event . ' openid:' . $message->FromUserName,
                     $request->header('User-Agent'), json_encode($request->all()));
-
+                logger()->warning($message);
                 switch ($message->Event) {
                     case 'subscribe':   //关注公众号事件
                         $this->handleSubscribeEvent($message);
@@ -71,7 +71,7 @@ class OfficialAccountController extends Controller
                             '《壹壹麻将》欢迎您！
 客服工作时间：
 上午8：00-凌晨2：00，
-请输入“客服”或详细描述您要咨询的问题，客服接入后会帮您解答！（人工客服需逐一接入，给您带来不便还望谅解！）'
+请点击“人工客服”按钮进入咨询或留言。请详细描述您要咨询的问题，客服接入后会帮您解答！（人工客服需逐一接入，给您带来不便还望谅解！）'
                         );
                 }
             }
