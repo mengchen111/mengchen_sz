@@ -33,6 +33,6 @@ class WxTopUpRuleController extends Controller
      */
     public function index()
     {
-        return WxTopUpRule::select('id', 'price', 'remark')->get()->sortBy('price');
+        return WxTopUpRule::all()->sortBy('price');
     }
 }
