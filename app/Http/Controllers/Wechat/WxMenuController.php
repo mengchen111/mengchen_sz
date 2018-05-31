@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Wechat;
 
-use App\Http\Requests\AdminRequest;
 use EasyWeChat\Foundation\Application;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -33,7 +32,7 @@ class WxMenuController extends Controller
             ],
         ];
     }
-    public function store(AdminRequest $request)
+    public function store(Request $request)
     {
         return $this->menu->add($this->menus());
     }
