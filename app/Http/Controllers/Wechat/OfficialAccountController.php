@@ -37,7 +37,7 @@ class OfficialAccountController extends Controller
                 OperationLogs::add(0, $request->path(), $request->method(),
                     '微信回调 - 事件:' . $message->Event . ' openid:' . $message->FromUserName,
                     $request->header('User-Agent'), json_encode($request->all()));
-                logger()->warning($message);
+
                 switch ($message->Event) {
                     case 'subscribe':   //关注公众号事件
                         $this->handleSubscribeEvent($message);
@@ -63,7 +63,6 @@ class OfficialAccountController extends Controller
                 }
                 switch ($message->EventKey){
                     case 'ACCESS_TRANSFER':
-                        $this->sendTextMessage('您好，请等待接入人工客服···');
                         return new Transfer();
                         break;
                 }
