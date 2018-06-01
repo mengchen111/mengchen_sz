@@ -252,7 +252,7 @@ Route::group([
     'namespace' => 'Agent',
 ], function () {
     Route::put('self/info', 'AgentController@update');
-    Route::put('self/password', 'AgentController@updatePass');
+    Route::match(['put', 'post'], 'self/password', 'AgentController@updatePass');
     Route::get('self/agent-type', 'AgentController@agentType');
 
     Route::post('stock', 'StockController@apply');
@@ -261,7 +261,7 @@ Route::group([
     Route::get('subagent', 'SubAgentController@show');
     Route::post('subagent', 'SubAgentController@create');
     Route::delete('subagent/{user}', 'SubAgentController@destroy')->where('user', '[0-9]+');
-    Route::put('subagent/{child}', 'SubAgentController@updateChild')->where('child', '[0-9]+');
+    Route::match(['put', 'post'],'subagent/{child}', 'SubAgentController@updateChild')->where('child', '[0-9]+');
 
     Route::get('community', 'CommunityController@showCommunityList');
     Route::get('communities', 'CommunityController@getAgentOwnerCommunities');
