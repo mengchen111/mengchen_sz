@@ -20,17 +20,17 @@ trait GameRulesMap
     private function getGameRules()
     {
         return [
-            1 => $this->majiangCommonRules,
-            2 => $this->majiangCommonRules,
-            3 => $this->majiangCommonRules,
-            4 => $this->majiangCommonRules,
-            5 => $this->majiangCommonRules,
-            6 => $this->majiangCommonRules,
-            7 => $this->majiangCommonRules,
-            8 => $this->majiangCommonRules,
-            9 => $this->majiangCommonRules,
-            10 => $this->majiangCommonRules,
-            11 => $this->majiangCommonRules,
+            257 => $this->majiangCommonRules,
+            258 => $this->majiangCommonRules,
+            259 => $this->majiangCommonRules,
+            260 => $this->majiangCommonRules,
+            261 => $this->majiangCommonRules,
+            262 => $this->majiangCommonRules,
+            263 => $this->majiangCommonRules,
+            264 => $this->majiangCommonRules,
+            265 => $this->majiangCommonRules,
+            266 => $this->majiangCommonRules,
+            267 => $this->majiangCommonRules,
         ];
     }
 
