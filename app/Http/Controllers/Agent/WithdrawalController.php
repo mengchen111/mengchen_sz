@@ -7,6 +7,7 @@ use App\Exceptions\WithdrawalException;
 use App\Http\Requests\AgentRequest;
 use App\Http\Controllers\Controller;
 use App\Services\WithdrawalStatisticsService;
+use Carbon\Carbon;
 
 class WithdrawalController extends Controller
 {
@@ -57,7 +58,9 @@ class WithdrawalController extends Controller
     {
         $withdrawals = auth()->user()->withdrawals();
         if ($request->has('date')) {
-            $withdrawals = $withdrawals->whereDate('created_at', $request->get('date'));
+            $date = Carbon::parse($request->get('date'))->format('Y-m');
+            list($year, $month) = explode('-', $date);
+            $withdrawals = $withdrawals->whereYear('created_at', $year)->whereMonth('created_at', $month);
         }
         $withdrawals = $withdrawals->paginate($this->per_page);
         return $withdrawals;

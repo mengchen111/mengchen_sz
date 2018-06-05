@@ -15,9 +15,9 @@ new Vue({
   },
   data: {
     eventHub: new Vue(),
-    dateFormat: 'YYYY-MM-DD',
+    dateFormat: 'YYYY-MM',
     formData: {
-      date: moment().format('YYYY-MM-DD'),
+      date: moment().format('YYYY-MM'),
     },
     httpClient: myTools.axiosInstance,
 
