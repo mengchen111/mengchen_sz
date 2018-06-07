@@ -28,6 +28,9 @@ trait AuthorizationMap
             'record' => [
                 'ifShown' => true,
             ],
+            'marquee' => [
+                'ifShown' => true,
+            ],
         ],
         'activities' => [
             'ifShown' => true,

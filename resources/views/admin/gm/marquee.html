@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--#include virtual="/ssi/header.html"-->
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <!-- Main Header -->
+  <!--#include virtual="/ssi/main-header.html"-->
+
+  <!-- Main sidebar -->
+  <!--#include virtual="/ssi/admin/sidebar.html"-->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <!--#include virtual="/ssi/content-header-h1.html"-->
+
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+        <li>GM功能</li>
+        <li class="active">跑马灯管理</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content" id="app">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">跑马灯列表</h3>
+            </div>
+
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-3 col-xs-12">
+                  <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
+                          data-target="#add-modal">
+                    添加跑马灯
+                  </button>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 col-xs-12">
+                  <my-vuetable
+                    :table-url="tableUrl"
+                    :table-fields="tableFields"
+                    :callbacks="callbacks"
+                  >
+                  </my-vuetable>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="add-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button class="close" type="button" data-dismiss="modal">x</button>
+              <h3 class="text-center">添加跑马灯</h3>
+            </div>
+            <div class="modal-body">
+              <form role="form" class="form-group" @submit.prevent="store">
+                <div class="form-group">
+                  <label>公告优先级</label>
+                  <input name="level" type="number" min="1" required class="form-control" placeholder="公告优先级"
+                         v-model.trim="createdForm.level">
+                </div>
+                <div class="form-group">
+                  <label>公告内容</label>
+                  <input name="content" type="text" class="form-control" required
+                         v-model.trim="createdForm.content" placeholder="公告内容">
+                </div>
+                <div class="form-group">
+                  <label>开始时间</label>
+                  <my-date-picker required v-model="startTime.date"
+                                  placeholder="选择开始日期"
+                                  :date-format="dateFormat">
+                  </my-date-picker>
+                </div>
+                <div class="form-group">
+                  <label>结束时间</label>
+                  <my-date-picker required v-model="endTime.date"
+                                  placeholder="选择结束日期"
+                                  :date-format="dateFormat">
+                  </my-date-picker>
+                </div>
+                <div class="form-group">
+                  <label>间隔时间</label>
+                  <input name="diff_time" type="number" min="1" required class="form-control" placeholder="间隔时间"
+                         v-model.trim="createdForm.diff_time">
+                </div>
+                <div class="form-group">
+                  <label>开启状态</label>
+                  <select class="form-control" name="status" v-model.trim="createdForm.status">
+                    <option :value="key" v-for="(status, key) in statusData">{{status}}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>同步状态</label>
+                  <select class="form-control" name="sync" v-model.trim="createdForm.sync">
+                    <option :value="key" v-for="(sync, key) in syncData">{{sync}}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="edit-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button class="close" type="button" data-dismiss="modal">x</button>
+              <h3 class="text-center">修改跑马灯</h3>
+            </div>
+            <div class="modal-body">
+              <form role="form" class="form-group" @submit.prevent="update">
+                <div class="form-group">
+                  <label>公告优先级</label>
+                  <input name="level" type="number" min="1" required class="form-control" placeholder="公告优先级"
+                         v-model.trim="editedForm.level">
+                </div>
+                <div class="form-group">
+                  <label>公告内容</label>
+                  <input name="content" type="text" class="form-control" required
+                         v-model.trim="editedForm.content" placeholder="公告内容">
+                </div>
+                <div class="form-group">
+                  <label>开始时间</label>
+                  <my-date-picker required v-model="startTime.date"
+                                  placeholder="选择开始日期"
+                                  :date-format="dateFormat">
+                  </my-date-picker>
+                </div>
+                <div class="form-group">
+                  <label>结束时间</label>
+                  <my-date-picker required v-model="endTime.date"
+                                  placeholder="选择结束日期"
+                                  :date-format="dateFormat">
+                  </my-date-picker>
+                </div>
+                <div class="form-group">
+                  <label>间隔时间</label>
+                  <input name="diff_time" type="number" min="1" required class="form-control" placeholder="间隔时间"
+                         v-model.trim="editedForm.diff_time">
+                </div>
+                <div class="form-group">
+                  <label>开启状态</label>
+                  <select class="form-control" name="status" v-model.trim="editedForm.status">
+                    <option :value="key" v-for="(status, key) in statusData">{{status}}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>同步状态</label>
+                  <select class="form-control" name="sync" v-model.trim="editedForm.sync">
+                    <option :value="key" v-for="(sync, key) in syncData">{{sync}}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="delete-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button class="close" type="button" data-dismiss="modal">x</button>
+              <h3 class="text-center text-danger">确定删除跑马灯？</h3>
+            </div>
+
+            <div class="modal-footer">
+              <button class="btn btn-flat btn-danger btn-lg pull-left" @click="deleteItem">
+                删除
+              </button>
+              <button class="btn btn-flat btn-success btn-lg" data-dismiss="modal">
+                取消
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <my-toastr ref="toastr"></my-toastr>
+    </section>
+    <!-- /.content -->
+
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <!--#include virtual="/ssi/main-footer.html"-->
+
+</div>
+<!-- ./wrapper -->
+
+<script src="/dist/webpack/admin/gm/marquee.js"></script>
+</body>
+</html>

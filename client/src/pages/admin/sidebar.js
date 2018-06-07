@@ -29,6 +29,9 @@ new Vue({
         record: {
           isActive: false,
         },
+        marquee: {
+          isActive: false,
+        },
       },
       activities: {
         isActive: false,

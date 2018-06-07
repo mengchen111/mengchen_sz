@@ -196,4 +196,8 @@ class ViewController extends Controller
     {
         return view('admin.order.search');
     }
+    public function gmMarquee(Request $request)
+    {
+        return view('admin.gm.marquee');
+    }
 }

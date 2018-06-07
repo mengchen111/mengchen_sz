@@ -22,6 +22,9 @@ export default {
     record: {
       ifShown: false,
     },
+    marquee: {
+      ifShown: false,
+    },
   },
   activities: {
     ifShown: false,

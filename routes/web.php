@@ -85,6 +85,11 @@ Route::group([
     Route::post('gm/room', 'Game\RoomController@create');
     Route::get('gm/room/open', 'Game\RoomController@showOpenRoom');
     Route::get('gm/room/history', 'Game\RoomController@showRoomHistory');
+    //跑马灯
+    Route::get('gm/marquee','Game\MarqueeController@index');
+    Route::post('gm/marquee','Game\MarqueeController@store');
+    Route::put('gm/marquee/{id}','Game\MarqueeController@update')->where('id','[0-9]+');
+    Route::delete('gm/marquee/{id}','Game\MarqueeController@destroy')->where('id','[0-9]+');
 
     Route::get('activities/list', 'Game\ActivitiesController@getActivitiesList');
     Route::put('activities/list', 'Game\ActivitiesController@editActivitiesList');
@@ -200,6 +205,7 @@ Route::group([
 
     Route::get('gm/record', 'ViewController@gmRecord');
     Route::get('gm/room', 'ViewController@gmRoom');
+    Route::get('gm/marquee', 'ViewController@gmMarquee');
 
     Route::get('activities/activities-list', 'ViewController@activitiesActivitiesList');
     Route::get('activities/rewards-list', 'ViewController@activitiesRewardsList');

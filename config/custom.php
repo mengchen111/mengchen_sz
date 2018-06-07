@@ -85,4 +85,5 @@ return [
     'game_api_community_record_search' => 'community/record/search',    //查询社区玩家战绩
     'game_api_community_record_mark' => 'community/record/mark',    //标记战绩为已读/未读
     'game_api_community_room_open' => 'community/room/open',    //获取社团开房信息(正在玩的房间)
+    'game_api_marquee' => 'marquees',  //跑马灯
 ];

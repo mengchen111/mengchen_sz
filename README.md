@@ -142,6 +142,10 @@ cd $codeDir
 | gm/room | POST | 创建游戏房间 |
 | gm/room/open | GET | 获取正在玩的房间 |
 | gm/room/history | GET | 获取房间历史 |
+| gm/marquee | GET | 跑马灯列表 |
+| gm/marquee | POST | 添加跑马灯 |
+| gm/marquee/{id} | PUT | 修改跑马灯 |
+| gm/marquee/{id} | DELETE | 删除跑马灯 |
 | activities/list | GET | 获取活动列表 |
 | activities/list | PUT | 编辑活动列表 |
 | activities/list/{aid} | DELETE | 删除活动列表 |
@@ -223,6 +227,7 @@ cd $codeDir
 | withdrawals/audit/{withdrawal} | POST | 审核提现 |
 | rebates/user/{user?} | GET | 查看代理商返利 |
 | rebates/user/statistics/{user} | GET | 查看代理商返利统计 |
+
 
 
 ### 代理商接口
