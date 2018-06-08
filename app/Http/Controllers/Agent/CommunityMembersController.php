@@ -354,10 +354,8 @@ class CommunityMembersController extends Controller
         $openRooms = GameApiService::request('GET', $api);
         $inGameUids = [];
         foreach ($openRooms as $openRoom) {
-            $uids = collect($openRoom)
-                ->only(['creator_uid', 'uid_1', 'uid_2', 'uid_3', 'uid_4'])
-                ->flatten()
-                ->toArray();
+            $players = $openRoom['room_players'];
+            $uids = collect($players)->pluck('uid')->toArray();
             $inGameUids = array_merge($inGameUids, $uids);
         }
         if (in_array($playerId, $inGameUids)) {
