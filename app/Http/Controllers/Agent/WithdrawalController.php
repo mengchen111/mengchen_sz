@@ -12,7 +12,7 @@ use Carbon\Carbon;
 class WithdrawalController extends Controller
 {
     public $amountLimit = [
-        '500', '1000', '5000', '10000', '50000'
+        '500', '1000', '5000', '10000', '50000',
     ];
     public $contactType = ['wechat', 'phone'];
 
@@ -56,13 +56,19 @@ class WithdrawalController extends Controller
      */
     public function index(AgentRequest $request)
     {
+        $this->validate($request, [
+            'date' => 'date_format:"Y-m-d"',
+            'end_time' => 'date_format:"Y-m-d"',
+        ]);
+
         $withdrawals = auth()->user()->withdrawals();
-        if ($request->has('date')) {
-            $date = Carbon::parse($request->get('date'))->format('Y-m');
-            list($year, $month) = explode('-', $date);
-            $withdrawals = $withdrawals->whereYear('created_at', $year)->whereMonth('created_at', $month);
+        if ($request->has('date') && $request->has('end_time')) {
+            $start_time = Carbon::parse($request->get('date'))->format('Y-m-d');
+            $end_time = Carbon::parse($request->get('end_time'))->format('Y-m-d');
+            $withdrawals = $withdrawals->whereBetween('created_at', [$start_time, $end_time]);
         }
         $withdrawals = $withdrawals->paginate($this->per_page);
+
         return $withdrawals;
     }
 
@@ -161,7 +167,7 @@ class WithdrawalController extends Controller
         $this->validate($request, [
             'amount' => 'required',
             'contact_type' => 'required|in:0,1',
-            'contact' => 'required'
+            'contact' => 'required',
         ]);
     }
 }

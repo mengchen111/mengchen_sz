@@ -27,8 +27,10 @@ class MarqueeController extends Controller
     public function store(AdminRequest $request)
     {
         $this->validator($request);
-        GameApiService::request('POST', $this->api, $request->all());
-        return $this->res('添加成功');
+        $result = GameApiService::request('POST', $this->api, $request->all());
+        $notify = $result['notify_game'] === true ? '通知游戏接口成功' : $result['notify_game'];
+
+        return $this->res('添加成功 - ' . $notify);
     }
 
     public function update(AdminRequest $request, $id)
@@ -37,8 +39,10 @@ class MarqueeController extends Controller
 
         $api = $this->api . '/' . $id;
 
-        GameApiService::request('POST', $api, $request->all());
-        return $this->res('修改成功');
+        $result = GameApiService::request('POST', $api, $request->all());
+        $notify = $result['notify_game'] === true ? '通知游戏接口成功' : $result['notify_game'];
+
+        return $this->res('修改成功 - ' . $notify);
 
     }
 
@@ -54,10 +58,13 @@ class MarqueeController extends Controller
             'sync' => 'required|integer',
         ]);
     }
+
     public function destroy(AdminRequest $request, $id)
     {
         $api = $this->api . '/destroy/' . $id;
-        GameApiService::request('POST', $api);
-        return $this->res('删除成功');
+        $result = GameApiService::request('POST', $api);
+        $notify = $result['notify_game'] === true ? '通知游戏接口成功' : $result['notify_game'];
+
+        return $this->res('删除成功 - ' . $notify);
     }
 }

@@ -88,14 +88,20 @@ class RebateController extends Controller
      */
     public function index(AgentRequest $request)
     {
+        $this->validate($request, [
+            'date' => 'date_format:"Y-m-d"',
+            'end_time' => 'date_format:"Y-m-d"',
+        ]);
         $rebates = auth()->user()->rebates()->with(['children' => function ($query) {
             $query->select('id', 'name', 'group_id')->with(['group']);
         }, 'rule']);
-        if ($request->has('date')) {
-            $date = Carbon::parse($request->get('date'))->format('Y-m');
-            list($year, $month) = explode('-', $date);
-            $rebates = $rebates->whereYear('rebate_at', $year)->whereMonth('rebate_at', $month);
+
+        if ($request->has('date') && $request->has('end_time')) {
+            $start_time = Carbon::parse($request->get('date'))->format('Y-m-d');
+            $end_time = Carbon::parse($request->get('end_time'))->format('Y-m-d');
+            $rebates = $rebates->whereBetween('created_at', [$start_time, $end_time]);
         }
+
         $rebates = $rebates->orderBy($this->order[0], $this->order[1])
             ->paginate($this->per_page);
         return $rebates;
