@@ -82,7 +82,8 @@ return [
     'game_api_wechat_official-account_unionid-openid_delete' => 'wechat/official-account/unionid-openid/delete', //
     'game_api_wechat_red-packet_send-list' => 'wechat/red-packet/send-list', //获取待发送红包列表
     'game_api_wechat_red-packet_update' => 'wechat/red-packet/update', //更新发送红包状态
-    'game_api_community_record_search' => 'community/record/search',    //查询社区玩家战绩
+    'game_api_community_record_search' => 'community/record/search',    //旧 - 查询社区玩家战绩
+    'game_api_community_record_search_v1' => 'v1/community/record/search',    //新版 - 查询社区玩家战绩
     'game_api_community_record_mark' => 'community/record/mark',    //标记战绩为已读/未读
     'game_api_community_room_open' => 'community/room/open',    //获取社团开房信息(正在玩的房间)
     'game_api_marquee' => 'marquees',  //跑马灯

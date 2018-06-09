@@ -203,16 +203,16 @@
                             <div class="box-body phone-scrollable" v-if="communityRooms.length > 0" style="padding: 2px;">
                                 <div class="box box-default" v-for="communityRoom in communityRooms" style="margin-bottom: 5px;">
                                     <div class="box-header" style="padding: 5px;font-size: 12px;">
-                                        <p><span>{{communityRoom.rtype}}</span>&nbsp;&nbsp;&nbsp;
+                                        <p><span>{{communityRoom.kind}}</span>&nbsp;&nbsp;&nbsp;
                                             <span>房号:{{communityRoom.rid}}</span>&nbsp;&nbsp;&nbsp;
-                                            <span>回合数：({{communityRoom.cur_round}} / {{communityRoom.max_round}})</span>
-                                            <span>时间：{{communityRoom.time}}</span>
+                                            <span>回合数：({{communityRoom.round}} / {{communityRoom.rounds}})</span>
+                                            <span>时间：{{communityRoom.ctime}}</span>
                                         </p>
                                     </div>
                                     <div class="box-body" style="padding: 2px;">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <div class="col-md-3 col-xs-3" style="padding: 5px;" v-for="player in communityRoom.players">
+                                                <div class="col-md-3 col-xs-3" style="padding: 5px;" v-for="player in communityRoom.room_players">
                                                     <div class="info-box" style="min-height: 40px;margin-bottom: 2px;">
                                                     <span class="info-box-icon center-block" style="height: 40px;width: 40px;font-size: 14px;line-height: 40px;">
                                                         <img style="vertical-align: top;" :src="player.headimg">
@@ -308,15 +308,15 @@
                                                             <th>操作</th>
                                                         </tr>
                                                         <tr v-for="record in playerGameRecord.records">
-                                                            <td class="text-center">{{ record.time.split(' ')[0] }}<br>
-                                                                {{ record.time.split(' ')[1] }}<br>
+                                                            <td class="text-center">{{ record.ctime.split(' ')[0] }}<br>
+                                                                {{ record.ctime.split(' ')[1] }}<br>
                                                                 <span class="text-red">房号:&nbsp;{{ record.rid }}</span><br>
-                                                                <span>局数：{{ record.cur_round + '/' + record.max_round}}</span>
+                                                                <span>局数：{{ record.round + '/' + record.rounds}}</span>
                                                             </td>
                                                             <td>
                                                                 <span v-for="v in [1,2,3,4]"  :class="{ 'text-red': record.uid_ + v == searchRecordForm.player_id }">
-                                                                    <span v-if="record['player'+v].nickname" :class="{ 'text-green': record['player'+v].is_winner }">{{ record['player'+v].nickname }}：
-                                                                        <span :class="{ 'text-red': record['player'+v].is_winner }">{{ record['score_'+v] }}</span>
+                                                                    <span v-if="record['player'+v]?record['player'+v].nickname:''" :class="{ 'text-green': record['player'+v]?record['player'+v].is_winner:'' }">{{ record['player'+v]?record['player'+v].nickname:'' }}：
+                                                                        <span :class="{ 'text-red': record['player'+v]?record['player'+v].is_winner:'' }">{{ record['player'+v]?record['player'+v].score:'' }}</span>
                                                                     </span><br>
                                                                 </span>
                                                             </td>

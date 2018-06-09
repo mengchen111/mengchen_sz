@@ -58,14 +58,48 @@ class CommunityGameRecordController extends Controller
         $params = $request->intersect(['start_time', 'end_time', 'player_id']);
         $params['community_id'] = $communityId;
 
-        $api = config('custom.game_api_community_record_search');
+        $api = config('custom.game_api_community_record_search_v1');
         $records = GameApiService::request('POST', $api, $params);
 
-        $result = $this->formatRecords($records);
+        $result = $this->formatRecordsV1($records);
 
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '查询牌艺馆玩家战绩', $request->header('User-Agent'), json_encode($request->all()));
 
+        return $result;
+    }
+    protected function formatRecordsV1($records)
+    {
+        $count = 0;
+        foreach ($records['records'] as &$record) {
+            unset($record['options']); //不显示玩法详情
+            if (!empty($record['records_info'])) {
+                unset($record['records_info']['jstr']);  //不现实战绩详情
+                if ((int)$record['records_info']['if_read'] === 0) {
+                    $count += 1;
+                }
+            }
+            // winter 最大赢家
+            foreach ($records['records'] as &$item){
+                $score = 0;
+                // 初始化赋值为 false , 并找出最大的分值
+                for ($i = 1; $i <= $item['player']; $i++){
+                    $item['player'.$i]['is_witter'] = false;
+                    if ($item['player'.$i]['score'] > $score){
+                        $score = $item['player'.$i]['score'];
+                    }
+                }
+                //根据最大分值进行赋值 true
+                for ($i = 1; $i <= $item['player']; $i++){
+                    if ($item['player'.$i]['score'] == $score){
+                        $item['player'.$i]['is_witter'] = true;
+                    }
+                }
+            }
+        }
+        $result['unread_records'] = $count;
+        $result['records'] = $records['records'];
+        $result['total_unread_record_cnt'] = $records['total_unread_record_cnt'];
         return $result;
     }
 

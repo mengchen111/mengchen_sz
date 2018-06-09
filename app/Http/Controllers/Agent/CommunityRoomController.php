@@ -62,10 +62,19 @@ class CommunityRoomController extends Controller
         $params['is_full'] = 2; //显示所有（包括满员和非满员）
         $openRooms = GameApiService::request('GET', $api, $params);
 
+        $openRooms = $this->formatRoomData($openRooms);
         OperationLogs::add($request->user()->id, $request->path(), $request->method(),
             '查看社区房间', $request->header('User-Agent'), json_encode($request->all()));
 
         return $openRooms;
+    }
+    protected function formatRoomData($rooms)
+    {
+        foreach ($rooms as &$room){
+            unset($room['options']);
+            $room['kind'] = $this->gameTypes[$room['kind']];
+        }
+        return $rooms;
     }
 
 //    protected function formatRoomData($rooms)
