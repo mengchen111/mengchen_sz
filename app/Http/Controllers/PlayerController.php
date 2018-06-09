@@ -66,13 +66,13 @@ class PlayerController extends Controller
             'nickname' => 'filled|string',
         ]);
 
-        $playerId = $request->has('player_id') ? $request->input('player_id') : '';
-        $nickname = $request->has('nickname') ? $request->input('nickname') : '';
+        $playerId = $request->input('player_id');
+//        $nickname = $request->has('nickname') ? $request->input('nickname') : '';
 
-        $result = PlayerService::searchPlayers($playerId, $nickname);
-        $player = $result[0];
+        $player = PlayerService::findPlayer($playerId);
+
         //因为后端是模糊搜索，所以需要比较下具体的id是否与用户输入相等
-        if (empty($result) || $player['id'] != $playerId) {
+        if (empty($player) || $player['id'] != $playerId) {
             throw new CustomException('玩家不存在');
         }
 
