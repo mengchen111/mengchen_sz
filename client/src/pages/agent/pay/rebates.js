@@ -14,9 +14,10 @@ new Vue({
   data: {
     eventHub: new Vue(),
     httpClient: myTools.axiosInstance,
-    dateFormat: 'YYYY-MM',
+    dateFormat: 'YYYY-MM-DD',
     formData: {
-      date: moment().format('YYYY-MM'),
+      date: moment().format('YYYY-MM-DD'),
+      end_date: moment().format('YYYY-MM-DD'),
     },
     statisticsData:{},
 
@@ -57,7 +58,7 @@ new Vue({
     getStatement () {
       let date = this.formData.date
       // tableUrl 改变 前端 vue-table 会自动刷新
-      this.tableUrl = '/agent/api/rebates?date=' + date
+      this.tableUrl = '/agent/api/rebates?date=' + date + '&end_time=' + this.formData.end_date
     },
   },
   mounted: function () {

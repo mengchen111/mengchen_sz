@@ -15,9 +15,10 @@ new Vue({
   },
   data: {
     eventHub: new Vue(),
-    dateFormat: 'YYYY-MM',
+    dateFormat: 'YYYY-MM-DD',
     formData: {
-      date: moment().format('YYYY-MM'),
+      date: moment().format('YYYY-MM-DD'),
+      end_date: moment().format('YYYY-MM-DD'),
     },
     httpClient: myTools.axiosInstance,
 
@@ -72,7 +73,7 @@ new Vue({
     getStatement () {
       let date = this.formData.date
       // tableUrl 改变 前端 vue-table 会自动刷新
-      this.tableUrl = '/agent/api/withdrawals?date=' + date
+      this.tableUrl = '/agent/api/withdrawals?date=' + date + '&end_time=' + this.formData.end_date
     },
 
   },

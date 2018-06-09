@@ -4,132 +4,144 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-    <!-- Main Header -->
-    <!--#include virtual="/ssi/main-header.html"-->
+  <!-- Main Header -->
+  <!--#include virtual="/ssi/main-header.html"-->
 
-    <!-- Main sidebar -->
-    <!--#include virtual="/ssi/agent/sidebar.html"-->
+  <!-- Main sidebar -->
+  <!--#include virtual="/ssi/agent/sidebar.html"-->
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <!--#include virtual="/ssi/content-header-h1.html"-->
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <!--#include virtual="/ssi/content-header-h1.html"-->
 
-            <ol class="breadcrumb">
-                <li><a href="/agent/home"><i class="fa fa-dashboard"></i>首页</a></li>
-                <li>返现管理</li>
-                <li class="active">代返列表</li>
-            </ol>
-        </section>
+      <ol class="breadcrumb">
+        <li><a href="/agent/home"><i class="fa fa-dashboard"></i>首页</a></li>
+        <li>返现管理</li>
+        <li class="active">代返列表</li>
+      </ol>
+    </section>
 
-        <!-- Main content -->
-        <section class="content" id="app">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">返现管理</h3>
+    <!-- Main content -->
+    <section class="content" id="app">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">返现管理</h3>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body">
+          <form role="form" method="GET" action="#" @submit.prevent="getStatement" style="margin-bottom: 20px;">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="from-group">
+                  <div class="input-group">
+                    <span class="input-group-addon">选择日期</span>
+                    <my-date-picker required v-model="formData.date"
+                                    placeholder="选择日期"
+                                    :date-format="dateFormat">
+                    </my-date-picker>
+                  </div>
                 </div>
-                <!-- /.box-header -->
+              </div>
+              <div class="col-md-3">
+                <div class="from-group">
+                  <div class="input-group">
+                    <span class="input-group-addon">结束日期</span>
+                    <my-date-picker required v-model="formData.end_date"
+                                    placeholder="选择日期"
+                                    :date-format="dateFormat">
+                    </my-date-picker>
+                  </div>
+                </div>
+              </div>
 
-                <div class="box-body">
-                    <form role="form" method="GET" action="#" @submit.prevent="getStatement" style="margin-bottom: 20px;">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="from-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">选择日期</span>
-                                        <my-date-picker required v-model="formData.date"
-                                                        placeholder="选择日期"
-                                                        :date-format="dateFormat">
-                                        </my-date-picker>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="from-group">
-                                            <button class="btn btn-block btn-primary btn-flat" type="submit">查询</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+              <div class="col-md-3">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="from-group">
+                      <button class="btn btn-block btn-primary btn-flat" type="submit">查询</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
 
 
-                    <div class="row">
-                        <div class="col-md-3 col-xs-6">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">累计返利总额</span>
-                                    <span class="info-box-number">
+          <div class="row">
+            <div class="col-md-3 col-xs-6">
+              <div class="info-box">
+                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">累计返利总额</span>
+                  <span class="info-box-number">
                                         {{statisticsData.rebate_count}}
                                     </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-xs-6">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">已提现总额</span>
-                                    <span class="info-box-number">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-xs-6">
+              <div class="info-box">
+                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">已提现总额</span>
+                  <span class="info-box-number">
                                         {{statisticsData.has_withdrawal}}
                                     </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-xs-6">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">等待提现总额</span>
-                                    <span class="info-box-number">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-xs-6">
+              <div class="info-box">
+                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">等待提现总额</span>
+                  <span class="info-box-number">
                                         {{statisticsData.wait_withdrawal}}
                                     </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-xs-6">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">提现余额</span>
-                                    <span class="info-box-number">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-xs-6">
+              <div class="info-box">
+                <span class="info-box-icon bg-aqua hidden-xs"><i class="fa fa-users"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">提现余额</span>
+                  <span class="info-box-number">
                                         {{statisticsData.rebate_balance}}
                                     </span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 col-xs-12 vue-table">
-                            <my-vuetable
-                                    :table-url="tableUrl"
-                                    :table-fields="tableFields"
-                            >
-                            </my-vuetable>
-                        </div>
-                    </div>
                 </div>
-                <!-- /.box-body -->
+              </div>
             </div>
 
-        </section>
-        <!-- /.content -->
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-xs-12 vue-table">
+              <my-vuetable
+                :table-url="tableUrl"
+                :table-fields="tableFields"
+              >
+              </my-vuetable>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
 
-    </div>
-    <!-- /.content-wrapper -->
+    </section>
+    <!-- /.content -->
 
-    <!-- Main Footer -->
-    <!--#include virtual="/ssi/main-footer.html"-->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <!--#include virtual="/ssi/main-footer.html"-->
 
 </div>
 <!-- ./wrapper -->
-<link rel="stylesheet" type="text/css" href="/css/admin/order/rebates.css" />
+<link rel="stylesheet" type="text/css" href="/css/admin/order/rebates.css"/>
 <script src="/dist/webpack/agent/pay/rebates.js"></script>
 </body>
 </html>

@@ -4,123 +4,135 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-    <!-- Main Header -->
-    <!--#include virtual="/ssi/main-header.html"-->
+  <!-- Main Header -->
+  <!--#include virtual="/ssi/main-header.html"-->
 
-    <!-- Main sidebar -->
-    <!--#include virtual="/ssi/agent/sidebar.html"-->
+  <!-- Main sidebar -->
+  <!--#include virtual="/ssi/agent/sidebar.html"-->
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <!--#include virtual="/ssi/content-header-h1.html"-->
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <!--#include virtual="/ssi/content-header-h1.html"-->
 
-            <ol class="breadcrumb">
-                <li><a href="/agent/home"><i class="fa fa-dashboard"></i>首页</a></li>
-                <li>申请提现管理</li>
-                <li class="active">申请提现列表</li>
-            </ol>
-        </section>
+      <ol class="breadcrumb">
+        <li><a href="/agent/home"><i class="fa fa-dashboard"></i>首页</a></li>
+        <li>申请提现管理</li>
+        <li class="active">申请提现列表</li>
+      </ol>
+    </section>
 
-        <!-- Main content -->
-        <section class="content" id="app">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">申请提现列表</h3>
-                </div>
-                <!-- /.box-header -->
+    <!-- Main content -->
+    <section class="content" id="app">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">申请提现列表</h3>
+        </div>
+        <!-- /.box-header -->
 
-                <div class="box-body">
-                    <div class="row" style="margin-bottom: 5px;">
-                        <div class="col-md-3 col-xs-12">
-                            <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
-                                    data-target="#add-modal">
-                                申请提现
-                            </button>
-                        </div>
-                        <form role="form" method="GET" action="#" @submit.prevent="getStatement">
-                            <div class="col-md-3">
-                                <div class="from-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">选择日期</span>
-                                        <my-date-picker required v-model="formData.date"
-                                                        placeholder="选择日期"
-                                                        :date-format="dateFormat">
-                                        </my-date-picker>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="from-group">
-                                            <button class="btn btn-block btn-primary btn-flat" type="submit">查询</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="row phone-scrollable">
-                        <div class="col-md-12 col-xs-12">
-                            <my-vuetable
-                                    :table-url="tableUrl"
-                                    :table-fields="tableFields"
-                            >
-                            </my-vuetable>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.box-body -->
+        <div class="box-body">
+          <div class="row" style="margin-bottom: 5px;">
+            <div class="col-md-3 col-xs-12">
+              <button class="btn btn-primary btn-block btn-flat" data-toggle="modal"
+                      data-target="#add-modal">
+                申请提现
+              </button>
             </div>
-
-            <div id="add-modal" class="modal fade" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" type="button" data-dismiss="modal">x</button>
-                            <h3 class="text-center">申请提现</h3>
-                        </div>
-                        <div class="modal-body">
-                            <form role="form" class="form-group" @submit.prevent="store">
-                                <div class="form-group">
-                                    <label>联系方式类型</label>
-                                    <select name="contact_type" class="form-control" v-model="addForm.contact_type">
-                                        <option value="0">微信</option>
-                                        <option value="1">电话</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>联系方式</label>
-                                    <input name="contact" type="text" class="form-control" required
-                                           v-model.trim="addForm.contact" placeholder="联系方式">
-                                </div>
-                                <div class="form-group">
-                                    <label>提现金额</label>
-                                    <v-select :searchable="false" v-model="addForm.amount" :options="amountLimitData"></v-select>
-
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+            <form role="form" method="GET" action="#" @submit.prevent="getStatement">
+              <div class="col-md-3">
+                <div class="from-group">
+                  <div class="input-group">
+                    <span class="input-group-addon">开始日期</span>
+                    <my-date-picker required v-model="formData.date"
+                                    placeholder="选择日期"
+                                    :date-format="dateFormat">
+                    </my-date-picker>
+                  </div>
                 </div>
+              </div>
+              <div class="col-md-3">
+                <div class="from-group">
+                  <div class="input-group">
+                    <span class="input-group-addon">结束日期</span>
+                    <my-date-picker required v-model="formData.end_date"
+                                    placeholder="选择日期"
+                                    :date-format="dateFormat">
+                    </my-date-picker>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="from-group">
+                      <button class="btn btn-block btn-primary btn-flat" type="submit">查询</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="row phone-scrollable">
+            <div class="col-md-12 col-xs-12">
+              <my-vuetable
+                :table-url="tableUrl"
+                :table-fields="tableFields"
+              >
+              </my-vuetable>
             </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+
+      <div id="add-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button class="close" type="button" data-dismiss="modal">x</button>
+              <h3 class="text-center">申请提现</h3>
+            </div>
+            <div class="modal-body">
+              <form role="form" class="form-group" @submit.prevent="store">
+                <div class="form-group">
+                  <label>联系方式类型</label>
+                  <select name="contact_type" class="form-control" v-model="addForm.contact_type">
+                    <option value="0">微信</option>
+                    <option value="1">电话</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>联系方式</label>
+                  <input name="contact" type="text" class="form-control" required
+                         v-model.trim="addForm.contact" placeholder="联系方式">
+                </div>
+                <div class="form-group">
+                  <label>提现金额</label>
+                  <v-select :searchable="false" v-model="addForm.amount" :options="amountLimitData"></v-select>
+
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary btn-block btn-flat" type="submit">提交</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
-            <my-toastr ref="toastr"></my-toastr>
-        </section>
-        <!-- /.content -->
+      <my-toastr ref="toastr"></my-toastr>
+    </section>
+    <!-- /.content -->
 
-    </div>
-    <!-- /.content-wrapper -->
+  </div>
+  <!-- /.content-wrapper -->
 
-    <!-- Main Footer -->
-    <!--#include virtual="/ssi/main-footer.html"-->
+  <!-- Main Footer -->
+  <!--#include virtual="/ssi/main-footer.html"-->
 
 </div>
 <!-- ./wrapper -->
